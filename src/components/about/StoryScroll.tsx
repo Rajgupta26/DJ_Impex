@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
+const clamp = (value: number) => Math.min(1, Math.max(0, value));
+
 import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
 import { withReg } from "@/components/ui/Reg";
 
@@ -17,11 +19,14 @@ export type StoryChapter = {
 /**
  * The house story, read the way a bolt of cloth runs off the loom.
  *
- * Each chapter pins: it holds still in the viewport while its stretch of scrolling
- * passes, then releases as the next arrives, which is the movement the client
- * asked for. It is done with position: sticky rather than a scroll library, so it
- * costs nothing to download and degrades to a plain stacked list wherever sticky
- * is unavailable.
+ * Each chapter pins and then dissolves: it holds still in the viewport while its
+ * stretch of scrolling passes, fading as it goes, so the next chapter rises into
+ * its place rather than merely covering it. That dissolve is the whole effect;
+ * pinning alone reads as the page having stalled.
+ *
+ * Done with position: sticky and one custom property per chapter rather than a
+ * scroll library, so it costs nothing to download and degrades to a plain stacked
+ * list wherever sticky is unavailable.
  *
  * A thread-thin gold line runs the length of the section, with the selvedge's own
  * diamond travelling down it as you scroll. The diamond is the marker; the
@@ -43,16 +48,34 @@ export function StoryScroll({ chapters }: { chapters: StoryChapter[] }) {
       return;
     }
 
+    const runs = Array.from(section.querySelectorAll<HTMLElement>(".story__run"));
     let frame = 0;
+
     const update = () => {
       frame = 0;
       const rect = section.getBoundingClientRect();
-      // 0 when the section's top reaches the middle of the screen,
-      // 1 when its bottom does.
+
+      // The thread fills from the moment the section reaches mid-screen.
       const start = window.innerHeight * 0.5;
-      const travelled = start - rect.top;
-      const progress = Math.min(1, Math.max(0, travelled / Math.max(1, rect.height)));
-      section.style.setProperty("--story-progress", progress.toFixed(4));
+      const progress = (start - rect.top) / Math.max(1, rect.height);
+      section.style.setProperty("--story-progress", clamp(progress).toFixed(4));
+
+      // Each chapter dissolves while it is held, so the next rises into its
+      // place rather than merely covering it.
+      const pin = parseFloat(getComputedStyle(section).getPropertyValue("--story-pin")) || 0;
+      for (const run of runs) {
+        const chapter = run.firstElementChild as HTMLElement | null;
+        if (!chapter) continue;
+        const runRect = run.getBoundingClientRect();
+        const hold = runRect.height - chapter.offsetHeight;
+        if (hold <= 0) {
+          run.style.setProperty("--chapter-fade", "0");
+          continue;
+        }
+        const held = clamp((pin - runRect.top) / hold);
+        // Stay fully legible for the first third of the hold, then dissolve.
+        run.style.setProperty("--chapter-fade", clamp((held - 0.34) / 0.66).toFixed(4));
+      }
     };
 
     const onScroll = () => {

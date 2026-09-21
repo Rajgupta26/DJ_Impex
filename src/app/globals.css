@@ -255,6 +255,9 @@
     position: sticky;
     top: var(--story-pin);
     min-height: calc(100vh - var(--story-pin) - 4rem);
+    /* Dissolving as it is held is what makes the hand-over read as one movement
+       rather than as a stalled page. --chapter-fade is set per chapter. */
+    opacity: calc(1 - var(--chapter-fade, 0));
     grid-template-columns: 7fr 5fr;
     align-content: center;
     align-items: center;
@@ -265,6 +268,7 @@
   .story__run:last-child .story__chapter {
     position: static;
     min-height: 0;
+    opacity: 1;
   }
 
   /* Alternate which side the drawn plate sits on, so the column never reads
@@ -318,6 +322,7 @@
   .story__chapter {
     position: static;
     min-height: 0;
+    opacity: 1;
   }
 
   .story__diamond {

@@ -88,3 +88,6 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 
 55. **`overflow-x: hidden` on `body` was breaking every sticky element on the site.** It makes the body a scroll container, and a sticky descendant then has no scrollport to stick within. It is now `overflow-x: clip`, which contains overflow without creating a scroll container. Worth remembering before anyone adds it back.
 
+56. **The dissolve was the missing half of the story scroll.** Measured on the reference site: a chapter pins and its opacity runs 1 to 0 across the hold, so the next chapter rises into its place instead of sliding over a still-solid one. Pinning on its own reads as a stalled page. Ours now follows the same curve.
+57. **Composition still differs from the reference.** Siyaram centres each chapter — title, paragraph, then a large illustration beneath, all centred in one column. Ours is left-aligned in a 7/5 split, because `02-design-system.md` says "Left-aligned, editorial... Centre alignment only inside the popup and small empty states." If the client wants the centred composition too, that rule needs relaxing for this section. **Ask.**
+
