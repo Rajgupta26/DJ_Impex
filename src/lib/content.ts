@@ -21,11 +21,18 @@ function read(file: string): string {
   return fs.readFileSync(file, "utf8");
 }
 
+/**
+ * Parsing is cached for the production build, where the files cannot change.
+ * In development the cache is skipped, so editing a file in brand-kit/content
+ * shows up on the next request instead of surviving hot reload.
+ */
+const CACHE = process.env.NODE_ENV === "production";
+
 let siteCache: Site | null = null;
 
 /** The facts file, validated. A schema failure stops the build, which is the point. */
 export function getSite(): Site {
-  if (siteCache) return siteCache;
+  if (CACHE && siteCache) return siteCache;
   const raw = JSON.parse(read(path.join(CONTENT_DIR, "site.json")));
   const parsed = siteSchema.safeParse(raw);
   if (!parsed.success) {
@@ -42,10 +49,28 @@ const pageCache = new Map<PageSlug, ParsedDoc>();
 /** A page brief from brand-kit/content/{slug}.md, parsed into sections and fields. */
 export function getPage(slug: PageSlug): ParsedDoc {
   const cached = pageCache.get(slug);
-  if (cached) return cached;
+  if (CACHE && cached) return cached;
   const doc = parseDoc(matter(read(path.join(CONTENT_DIR, `${slug}.md`))).content);
   pageCache.set(slug, doc);
   return doc;
+}
+
+/* ---- Brand film ----------------------------------------------------------- */
+
+/**
+ * Public paths for the client's film, or nulls while the file is still missing.
+ * Checked on disk so the section degrades to drawn cloth rather than a dead
+ * <video> element if the file has not landed yet.
+ */
+export function getBrandFilm(): { src: string | null; poster: string | null; caption: string } {
+  const film = getSite().brandFilm;
+  const exists = (name: string) => fs.existsSync(path.join(process.cwd(), "public", "video", name));
+
+  return {
+    src: exists(film.file) ? `/video/${film.file}` : null,
+    poster: exists(film.poster) ? `/video/${film.poster}` : null,
+    caption: film.caption,
+  };
 }
 
 /* ---- Gallery -------------------------------------------------------------- */
@@ -162,7 +187,7 @@ let postsCache: Post[] | null = null;
 
 /** All journal posts, newest first. */
 export function getPosts(): Post[] {
-  if (postsCache) return postsCache;
+  if (CACHE && postsCache) return postsCache;
   const files = fs.readdirSync(JOURNAL_DIR).filter((file) => file.endsWith(".mdx"));
 
   const posts = files.map((file) => {

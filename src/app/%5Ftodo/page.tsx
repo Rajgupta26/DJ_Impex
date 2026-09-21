@@ -33,6 +33,7 @@ export default function TodoPage() {
   add("Address", site.contact.address.status, site.contact.address.note);
   add("Google rating", site.ratings.googleRating.status, site.ratings.googleRating.note);
   add("Happy customers figure", site.ratings.happyCustomers.status, site.ratings.happyCustomers.note);
+  add("Brand film", site.brandFilm.status, site.brandFilm._note);
   add("Fabric types", site.fabricTypes.status, site.fabricTypes._note);
   add("Signature lines", site.signatureLines.status, site.signatureLines._note);
   add(
@@ -64,6 +65,7 @@ export default function TodoPage() {
     "Real photographs of the Wear2Care education work (never stock photos of children)",
     "Real factory and process photographs",
     "SVG versions of the Nabeen and DJI logos",
+    "The Marconi reel as a source MP4, plus a poster still (see brand-kit/assets/video)",
   ];
 
   const held = rows.filter((row) => row.status === "hold");

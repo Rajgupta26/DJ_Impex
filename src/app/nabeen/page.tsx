@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { EnquiryBand } from "@/components/layout/EnquiryBand";
+import { BrandFilm } from "@/components/ui/BrandFilm";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import { withReg } from "@/components/ui/Reg";
@@ -9,7 +10,7 @@ import { TbcTag } from "@/components/ui/TbcTag";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WeaveArt, weaveFor } from "@/components/ui/WeaveArt";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
-import { getPage, getSite } from "@/lib/content";
+import { getBrandFilm, getPage, getSite } from "@/lib/content";
 import { fabricPrefill, whatsappLink } from "@/lib/contact";
 import { field, section } from "@/lib/markdown";
 import { buildMetadata, pageTitle } from "@/lib/seo";
@@ -30,6 +31,7 @@ export default function NabeenPage() {
   const promise = section(page, "brand-promise-brochure-p-3");
   const quality = section(page, "quality");
   const closing = section(page, "closing");
+  const film = getBrandFilm();
 
   // The brochure runs "Honesty · Integrity · Human dignity. Nabeen stands for
   // Trust, Quality and Excellence." The three words are set large; the first
@@ -96,6 +98,14 @@ export default function NabeenPage() {
           </div>
         </Container>
       </section>
+
+      {/* The client's own film of the cloth, between the range and the fabrics. */}
+      <BrandFilm
+        src={film.src}
+        poster={film.poster}
+        caption={film.caption}
+        heading="Not all whites are made equal"
+      />
 
       {/* Browse by fabric. Each fabric owns an anchor so the footer tags and the
           journal can deep-link straight to it. */}

@@ -19,6 +19,14 @@ Our operational proficiency is underpinned by a dedicated team of skilled profes
 
 Committed to achieving optimal outcomes, DJI adheres to the highest professional standards while upholding ethical business practices. Today we export textile fabrics to discerning markets throughout Africa and the Middle East under the brand Nabeen®. As our journey continues, DJI remains steadfast in delivering value, quality and trust to our customers worldwide.
 
+## Story chapters
+These are PROPOSED chapter labels for the threaded story scroll on /about. The client's
+story copy above is unchanged; these only label it. Edit freely, or ask the client for
+their own wording.
+1. **The beginning.** Mumbai, 1995
+2. **The craft.** Sourcing, manufacturing, supplying, trading
+3. **Today.** Africa and the Middle East
+
 ## Recognition
 In recognition of our consistent export excellence, D J Impex & Co. has earned the esteemed "Star Export House" status from the Government of India.
 (Show as a trust mark alongside: Since 1995 · Make in India. Do not use the middle-dot separator in the UI; lay them out as separate items.)

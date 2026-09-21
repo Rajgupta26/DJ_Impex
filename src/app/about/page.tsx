@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 
+import { StoryScroll, type StoryChapter } from "@/components/about/StoryScroll";
 import { EnquiryBand } from "@/components/layout/EnquiryBand";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
@@ -27,11 +28,39 @@ const STEP_IMAGES = [
   "/images/manufacturing/07-finished-rolls.jpg",
 ];
 
+/**
+ * The client's four story paragraphs, split across the three chapter labels:
+ * the founding, then the craft, then where the cloth goes today. No copy is
+ * rewritten here; it is only grouped.
+ */
+const CHAPTER_PATTERNS = ["rib", "herringbone", "ogee"] as const;
+// Drawn large enough to read as an illustration of the cloth, not a texture.
+const CHAPTER_SCALES = [3.4, 2.6, 1.9];
+const CHAPTER_SPANS: Array<[number, number]> = [
+  [0, 1],
+  [1, 3],
+  [3, 4],
+];
+
+function buildChapters(
+  labels: Array<{ lead?: string; text: string }>,
+  paragraphs: string[],
+): StoryChapter[] {
+  return labels.map((label, index) => ({
+    title: label.lead ?? "",
+    kicker: label.text,
+    body: paragraphs.slice(...(CHAPTER_SPANS[index] ?? [index, index + 1])),
+    pattern: CHAPTER_PATTERNS[index] ?? "ogee",
+    plateScale: CHAPTER_SCALES[index] ?? 2,
+  }));
+}
+
 export default function AboutPage() {
   const site = getSite();
   const about = getPage("about");
   const head = section(about, "about-d-j-impex-co-dji");
   const story = section(about, "our-story");
+  const chapters = section(about, "story-chapters");
   const recognition = section(about, "recognition");
   const process = section(about, "how-our-fabric-is-made-brochure-p-4-p-6");
 
@@ -44,29 +73,22 @@ export default function AboutPage() {
         alt="Spinning frames drawing cotton into yarn"
       />
 
+      {/* The story runs down a thread, the way cloth runs off the loom.
+          Chapter labels come from content/about.md; the copy itself is the
+          client's, split across the three chapters. */}
       <section className="bg-white py-[var(--spacing-section)]">
         <Container>
-          <div className="grid gap-14 lg:grid-cols-[7fr_5fr] lg:gap-20">
-            <div>
-              <h2 className="t-h2 max-w-[14ch]">Our story</h2>
-              <div className="mt-8 grid gap-5">
-                {story.paragraphs.map((paragraph) => (
-                  <p key={paragraph} className="measure text-slate">
-                    {withReg(paragraph)}
-                  </p>
-                ))}
-              </div>
-            </div>
+          <div className="max-w-[46rem]">
+            <h2 className="t-h2">Our threads, our story</h2>
+            <p className="t-lead mt-5">
+              {withReg(
+                `Since ${site.brand.founded.value}, from a counter in Mangaldas Market to ${site.brand.markets.value}.`,
+              )}
+            </p>
+          </div>
 
-            <figure className="relative aspect-[4/5] overflow-hidden bg-mist">
-              <Image
-                src="/images/brand-imagery/weaving-loom.jpg"
-                alt="Warp threads running through a loom"
-                fill
-                sizes="(max-width: 1024px) 100vw, 34vw"
-                className="object-cover saturate-[0.5]"
-              />
-            </figure>
+          <div className="mt-16 lg:mt-24">
+            <StoryScroll chapters={buildChapters(chapters.items, story.paragraphs)} />
           </div>
         </Container>
       </section>

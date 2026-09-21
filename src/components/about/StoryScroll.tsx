@@ -1,0 +1,108 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
+import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
+import { withReg } from "@/components/ui/Reg";
+
+export type StoryChapter = {
+  title: string;
+  kicker: string;
+  body: string[];
+  pattern: WeavePattern;
+  /** How large to draw the weave on this chapter's plate. */
+  plateScale: number;
+};
+
+/**
+ * The house story, read the way a bolt of cloth runs off the loom.
+ *
+ * A thread-thin gold line runs the length of the section, with the selvedge's own
+ * diamond travelling down it as you scroll. The diamond is the marker; the
+ * selvedge band itself stays unique to the hero and the footer.
+ *
+ * Scroll progress is written to a CSS custom property and everything else is CSS,
+ * so there is no animation library here and nothing runs off the main thread's
+ * critical path. Under prefers-reduced-motion the thread is simply drawn in full
+ * and the diamond sits still.
+ */
+export function StoryScroll({ chapters }: { chapters: StoryChapter[] }) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      section.style.setProperty("--story-progress", "1");
+      return;
+    }
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const rect = section.getBoundingClientRect();
+      // 0 when the section's top reaches the middle of the screen,
+      // 1 when its bottom does.
+      const start = window.innerHeight * 0.5;
+      const travelled = start - rect.top;
+      const progress = Math.min(1, Math.max(0, travelled / Math.max(1, rect.height)));
+      section.style.setProperty("--story-progress", progress.toFixed(4));
+    };
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return (
+    <div ref={sectionRef} className="story" style={{ ["--story-progress" as string]: 0 }}>
+      {/* The thread: a dashed gold rule that fills as the page moves, with the
+          diamond riding its leading edge. */}
+      <div className="story__thread" aria-hidden="true">
+        <span className="story__thread-drawn" />
+        <span className="story__diamond" />
+      </div>
+
+      <ol className="story__chapters">
+        {chapters.map((chapter) => (
+          <li key={chapter.title} className="story__chapter">
+            <div className="story__marker" aria-hidden="true" />
+
+            <div className="story__text">
+              <p className="t-small text-slate">{chapter.kicker}</p>
+              <h3 className="t-h2 mt-3 text-[clamp(1.75rem,1.3rem+1.6vw,2.75rem)]">
+                {withReg(chapter.title)}
+              </h3>
+              <div className="mt-6 grid gap-5">
+                {chapter.body.map((paragraph) => (
+                  <p key={paragraph} className="measure text-slate">
+                    {withReg(paragraph)}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            <div className="story__plate">
+              <WeaveArt
+                pattern={chapter.pattern}
+                tone="mist"
+                scale={chapter.plateScale}
+                intensity={0.34}
+              />
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}

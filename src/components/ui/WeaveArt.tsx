@@ -121,12 +121,19 @@ export function WeaveArt({
   pattern = "ogee",
   tone = "navy",
   scale = 1,
+  intensity,
   className = "",
 }: {
   pattern?: WeavePattern;
   /** navy: a dark panel. mist: a light panel for alternating sections. */
   tone?: "navy" | "mist";
   scale?: number;
+  /**
+   * Line strength. The default is a texture sitting behind other content; raise
+   * it when the weave is the subject, as on the story plates, so it reads as a
+   * drawing of the cloth rather than a watermark.
+   */
+  intensity?: number;
   className?: string;
 }) {
   const tile = TILES[pattern];
@@ -144,14 +151,17 @@ export function WeaveArt({
       />
       <svg
         className={`absolute inset-0 h-full w-full ${dark ? "text-zari" : "text-navy"}`}
-        style={{ opacity: dark ? 0.26 : 0.14 }}
+        style={{ opacity: intensity ?? (dark ? 0.26 : 0.14) }}
         focusable="false"
       >
         <defs>
+          {/* The tile is declared at its own size and the whole pattern is scaled
+              by patternTransform. Scaling the box as well would leave the motif
+              tiling inside a larger cell, with gaps between repeats. */}
           <pattern
             id={id}
-            width={tile.size * scale}
-            height={tile.size * scale}
+            width={tile.size}
+            height={tile.size}
             patternUnits="userSpaceOnUse"
             patternTransform={`scale(${scale})`}
           >

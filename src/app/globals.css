@@ -156,6 +156,126 @@
   transform: translateY(0);
 }
 
+/* ---- The threaded story scroll (/about) ---------------------------------- */
+/* A thread runs the length of the section and the selvedge's diamond travels down
+   it as the page moves. --story-progress (0 to 1) is set by StoryScroll; every
+   other part of this is CSS. */
+.story {
+  position: relative;
+  --story-rail: 0.75rem;
+}
+
+@media (min-width: 48rem) {
+  .story {
+    --story-rail: 2.5rem;
+  }
+}
+
+.story__thread {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--story-rail);
+  width: 1px;
+  /* The unfilled thread: the same dashed gold as the selvedge's edge threads. */
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--color-line) 0 8px,
+    transparent 8px 14px
+  );
+}
+
+.story__thread-drawn {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(var(--story-progress, 0) * 100%);
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--color-zari) 0 8px,
+    transparent 8px 14px
+  );
+}
+
+.story__diamond {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--story-progress, 0) * 100%);
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  margin-top: -4.5px;
+  background: var(--color-zari);
+  transform: rotate(45deg);
+}
+
+.story__chapters {
+  display: grid;
+  gap: clamp(4.5rem, 3rem + 7vw, 9rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.story__chapter {
+  position: relative;
+  display: grid;
+  gap: 2.5rem;
+  padding-left: calc(var(--story-rail) + 1.75rem);
+}
+
+@media (min-width: 64rem) {
+  .story__chapter {
+    grid-template-columns: 7fr 5fr;
+    align-items: center;
+    gap: 4rem;
+    padding-left: calc(var(--story-rail) + 4rem);
+  }
+
+  /* Alternate which side the drawn plate sits on, so the column never reads
+     as a list of identical rows. */
+  .story__chapter:nth-child(even) .story__text {
+    order: 2;
+  }
+
+  .story__chapter:nth-child(even) .story__plate {
+    order: 1;
+  }
+}
+
+/* A short tick joining each chapter to the thread. */
+.story__marker {
+  position: absolute;
+  left: var(--story-rail);
+  top: 0.9rem;
+  width: calc(1.25rem);
+  height: 1px;
+  background: var(--color-line);
+}
+
+@media (min-width: 64rem) {
+  .story__marker {
+    width: 3rem;
+  }
+}
+
+.story__plate {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+@media (min-width: 64rem) {
+  .story__plate {
+    aspect-ratio: 5 / 4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story__diamond {
+    display: none;
+  }
+}
+
 /* ---- Dev-only TBC tag ---------------------------------------------------- */
 .tbc-tag {
   display: inline-block;

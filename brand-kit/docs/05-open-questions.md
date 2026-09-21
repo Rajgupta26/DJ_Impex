@@ -58,3 +58,10 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 37. **Hero legibility depends on the photograph.** The veil is deliberately light so the cloth reads, with the scrim weighted into the bottom-left corner where the words sit. A hero image that is bright in that corner will need its crop adjusting. Re-check when the client's own hero images land.
 38. **DJI mark placed.** `dji-logo-transparent.png` now appears on the About page beside Recognition, and in the footer small print, per ASSETS.md. On the Midnight Loom footer the mark's dark triangles read as a quiet watermark; confirm the client is happy with that, or supply a white version.
 
+## Story scroll and film
+
+39. **The film file.** The client's Marconi reel (facebook.com/reel/1400076468857662) is on the Nabeen page as a full-bleed film band, but Facebook only serves it behind a login and a copy pulled off the platform would be re-encoded and watermarked. **Ask Binoli for the source MP4 and a poster still**, and drop them in `brand-kit/assets/video/` then `public/video/`. Filenames are set in `site.json` under `brandFilm`. Until they land the band renders drawn cloth.
+40. **The film's caption is the client's own Facebook copy**, recorded in `site.json.brandFilm` with `status: tbc`. Confirm it may be used on the site as written, and confirm the section heading "Not all whites are made equal" (proposed, drawn from their caption).
+41. **Story chapter labels are proposed.** `about.md` now carries "The beginning / The craft / Today" under `## Story chapters`, purely as labels; the client's story copy is unchanged and only grouped beneath them. Ask whether they would rather write their own chapter titles.
+42. **No counters yet.** The Siyaram reference ends its story section with eight animated statistics. We have only two usable numbers (1995 and 1000+ designs) because the Google rating and the "2.37 million happy customers" figure are on hold (questions 4 and 5). The trust marks cover these for now; a counter row needs those answers first.
+

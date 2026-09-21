@@ -61,6 +61,16 @@ export const siteSchema = z.object({
     }),
     website: fact(z.string().url()),
   }),
+  brandFilm: z.object({
+    _note: z.string().optional(),
+    status: statusSchema,
+    source: z.string().url(),
+    caption: z.string(),
+    /** Filenames inside public/video. The section falls back to a placeholder
+        until the client sends the file. */
+    file: z.string(),
+    poster: z.string(),
+  }),
   social: z.array(
     z.object({
       name: z.string(),
