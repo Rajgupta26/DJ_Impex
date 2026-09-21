@@ -25,7 +25,10 @@ export function PageHero({
   objectPosition?: string;
 }) {
   return (
-    <section className="on-dark relative flex h-[45vh] min-h-[22rem] items-end overflow-hidden bg-navy-deep text-white md:h-[55vh] md:min-h-[26rem]">
+    <section
+      data-hero
+      className="on-dark relative flex h-[45vh] min-h-[22rem] items-end overflow-hidden bg-navy-deep text-white md:h-[55vh] md:min-h-[26rem]"
+    >
       {image ? (
         <Image
           src={image}

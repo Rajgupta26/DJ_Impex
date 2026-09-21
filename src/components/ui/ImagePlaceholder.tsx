@@ -1,34 +1,43 @@
+import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
 import { showTodo } from "@/lib/env";
 
 /**
  * Stands in for an image the client has not sent yet.
  *
- * With NEXT_PUBLIC_SHOW_TODO=true the team sees exactly what is missing.
- * Otherwise it renders as a quiet navy weave so a client preview still looks
- * intentional rather than broken.
+ * With NEXT_PUBLIC_SHOW_TODO=true the team sees exactly what is missing, over the
+ * drawn cloth. In production it is just the cloth, so a client preview reads as
+ * art direction rather than a hole in the page.
  */
 export function ImagePlaceholder({
   pending,
+  pattern = "ogee",
+  tone = "navy",
+  scale = 1,
   className = "",
 }: {
   /** What is missing, e.g. "Ali Nuhu campaign portrait". */
   pending: string;
+  pattern?: WeavePattern;
+  tone?: "navy" | "mist";
+  scale?: number;
   className?: string;
 }) {
-  if (!showTodo) {
-    return (
-      <div
-        aria-hidden="true"
-        className={`h-full w-full bg-[linear-gradient(135deg,var(--color-navy-deep),var(--color-navy)_55%,var(--color-navy-soft))] ${className}`.trim()}
-      />
-    );
-  }
-
   return (
-    <div
-      className={`flex h-full w-full items-center justify-center border border-navy bg-mist p-6 text-center ${className}`.trim()}
-    >
-      <span className="t-small text-slate">Image pending: {pending}</span>
+    <div className={`relative h-full w-full overflow-hidden ${className}`.trim()}>
+      <WeaveArt pattern={pattern} tone={tone} scale={scale} />
+      {showTodo ? (
+        <div className="absolute inset-0 flex items-start justify-end p-5">
+          <span
+            className={`t-small border border-dashed px-2.5 py-1 ${
+              tone === "navy"
+                ? "border-white/45 text-white/80"
+                : "border-navy/35 text-slate"
+            }`}
+          >
+            Image pending: {pending}
+          </span>
+        </div>
+      ) : null}
     </div>
   );
 }

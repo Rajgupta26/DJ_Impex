@@ -48,6 +48,89 @@ export function getPage(slug: PageSlug): ParsedDoc {
   return doc;
 }
 
+/* ---- Gallery -------------------------------------------------------------- */
+
+export type GalleryImage = {
+  src: string;
+  /** "Aqua jacquard", read from the filename. */
+  name: string;
+  alt: string;
+};
+
+/**
+ * The World of Nabeen tiles, read from the folder rather than a hard-coded list:
+ * when the client sends the two missing fabrics, dropping them in fills the grid
+ * and the wide "See the full range" tile shrinks to match.
+ */
+export function getGalleryImages(): GalleryImage[] {
+  const dir = path.join(process.cwd(), "public", "images", "gallery");
+  return fs
+    .readdirSync(dir)
+    .filter((file) => /\.(jpe?g|png|avif|webp)$/i.test(file))
+    .sort()
+    .map((file) => {
+      const name = file
+        .replace(/\.[^.]+$/, "")
+        .replace(/^\d+[-_]/, "")
+        .split("-")
+        .join(" ");
+      const label = name.charAt(0).toUpperCase() + name.slice(1);
+      return {
+        src: `/images/gallery/${file}`,
+        name: label,
+        alt: `${label} fabric from the Nabeen range`,
+      };
+    });
+}
+
+/* ---- Home hero ------------------------------------------------------------ */
+
+export type HeroSlide = {
+  headline: string;
+  sub: string;
+  href?: string;
+};
+
+/**
+ * The hero slides are written in content/home.md as a nested list
+ * ("Slide 1" / "Headline: ..." / "Sub: ..."), which the brief parser flattens.
+ * Group it back up so the carousel is content-driven.
+ */
+export function getHeroSlides(): HeroSlide[] {
+  const { items } = getPage("home").sections.find((s) => s.id === "2-hero-carousel") ?? { items: [] };
+  const slides: HeroSlide[] = [];
+  let current: Partial<HeroSlide> | null = null;
+
+  const commit = () => {
+    if (current?.headline && current.sub) {
+      slides.push({ headline: current.headline, sub: current.sub, href: current.href });
+    }
+    current = null;
+  };
+
+  for (const item of items) {
+    if (/^Slide\s+\d/i.test(item.text)) {
+      commit();
+      current = {};
+      continue;
+    }
+    // The parser lifts "Headline: ..." into a lead plus text.
+    if (!current || !item.lead) continue;
+    const key = item.lead.trim().toLowerCase();
+    const value = item.text.trim();
+    if (!value) continue;
+    if (key === "headline") current.headline = value;
+    if (key === "sub") current.sub = value;
+    if (key === "link") current.href = value;
+  }
+  commit();
+
+  if (slides.length === 0) {
+    throw new Error("No hero slides found in brand-kit/content/home.md");
+  }
+  return slides;
+}
+
 /* ---- The Fabric Journal --------------------------------------------------- */
 
 export const postFrontmatterSchema = z.object({

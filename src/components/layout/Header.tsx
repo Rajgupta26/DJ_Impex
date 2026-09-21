@@ -65,7 +65,7 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
       <header
         ref={headerRef}
         data-solid="true"
-        className="group on-dark fixed inset-x-0 top-0 z-40 border-b border-transparent text-white transition-colors duration-[var(--duration-base)] data-[solid=true]:border-line data-[solid=true]:bg-white data-[solid=true]:text-navy"
+        className="site-header on-dark fixed inset-x-0 top-0 z-40 border-b border-transparent text-white transition-colors duration-[var(--duration-base)] data-[solid=true]:border-line data-[solid=true]:bg-white data-[solid=true]:text-navy"
       >
         <div className="container-site flex h-[4.5rem] items-center justify-between gap-6 lg:h-[5.25rem]">
           <Link href="/" aria-label="Nabeen, luxury fabrics by DJI: home" className="relative block">
@@ -75,7 +75,7 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
               width={1088}
               height={345}
               priority
-              className="h-8 w-auto transition-opacity duration-[var(--duration-base)] group-data-[solid=true]:opacity-0 lg:h-10"
+              className="site-header__logo site-header__logo--white h-8 w-auto lg:h-10"
             />
             <Image
               src="/images/logos/nabeen-logo-navy.png"
@@ -84,7 +84,7 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
               width={1088}
               height={345}
               priority
-              className="absolute inset-0 h-8 w-auto opacity-0 transition-opacity duration-[var(--duration-base)] group-data-[solid=true]:opacity-100 lg:h-10"
+              className="site-header__logo site-header__logo--navy absolute left-0 top-0 h-8 w-auto lg:h-10"
             />
           </Link>
 

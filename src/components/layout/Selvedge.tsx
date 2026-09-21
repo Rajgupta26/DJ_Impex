@@ -42,7 +42,7 @@ export function Selvedge({ variant }: { variant: "hero" | "footer" }) {
 
   return (
     <div className="selvedge" aria-hidden="true">
-      <div className="selvedge__track" style={variant === "footer" ? { animation: "none" } : undefined}>
+      <div className="selvedge__track" style={variant === "footer" ? { animation: "none" } : { animationDelay: "1.2s" }}>
         {run}
       </div>
     </div>

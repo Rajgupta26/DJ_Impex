@@ -30,10 +30,14 @@ export function buildMetadata({
   keywords,
 }: BuildMetadata): Metadata {
   const url = path === "/" ? SITE_URL : `${SITE_URL}${path}`;
-  const ogImage = image ?? `${path === "/" ? "" : path}/opengraph-image`;
+  // Routes share the branded card at /opengraph-image unless they pass their own.
+  // Pointing at "{route}/opengraph-image" would 404 for every route without one.
+  const ogImage = image ?? "/opengraph-image";
 
   return {
-    title,
+    // Absolute: pageTitle() has already applied the suffix, and the root layout's
+    // template would otherwise append it a second time.
+    title: { absolute: title },
     description,
     keywords,
     alternates: { canonical: url },

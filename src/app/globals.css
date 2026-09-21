@@ -120,6 +120,23 @@
   box-shadow: 0 0 0 2px var(--color-navy-deep), 0 0 0 4px var(--color-zari);
 }
 
+/* ---- Header logo swap ----------------------------------------------------- */
+/* Two stacked logos, cross-faded from the header's data-solid attribute. Explicit
+   rules rather than utility variants, so the state is unambiguous. */
+.site-header__logo {
+  transition: opacity var(--duration-base) var(--ease-weave);
+}
+
+.site-header[data-solid="true"] .site-header__logo--white,
+.site-header[data-solid="false"] .site-header__logo--navy {
+  opacity: 0;
+}
+
+.site-header[data-solid="true"] .site-header__logo--navy,
+.site-header[data-solid="false"] .site-header__logo--white {
+  opacity: 1;
+}
+
 /* ---- Skip link ----------------------------------------------------------- */
 .skip-link {
   position: absolute;

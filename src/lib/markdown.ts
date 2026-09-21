@@ -57,12 +57,29 @@ export function slugify(input: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/** Strip the inline markdown we allow in the briefs. */
+/**
+ * A trailing parenthetical that is an instruction to the build rather than part
+ * of the sentence: "(Link -> /nabeen-x-ali-nuhu)", "(01-cotton.jpg)",
+ * "(site.json -> testimonials)". Real asides like "D J Impex & Co. (DJI)" and
+ * "(2026 Guide)" do not match and are kept.
+ */
+const TRAILING_NOTE =
+  /\s*\((?:(?:link|note|show|render|default|client|source|data|images?|use)\b[^)]*|[^)]*(?:\u2192|->|site\.json|assets\/|\.(?:jpg|jpeg|png|webp|mdx|md|json))[^)]*)\)\s*$/i;
+
+/** Strip the inline markdown, and any build note, from a line of the briefs. */
 export function plain(input: string): string {
-  return input
+  let text = input
     .replace(/\*\*(.+?)\*\*/g, "$1")
     .replace(/\[(.+?)\]\((.+?)\)/g, "$1")
     .trim();
+
+  let previous: string;
+  do {
+    previous = text;
+    text = text.replace(TRAILING_NOTE, "").trim();
+  } while (text !== previous);
+
+  return text;
 }
 
 function isBuildNote(line: string): boolean {
@@ -88,8 +105,15 @@ function readListItem(line: string): ListItem | null {
   const match = /^(?:[-*]|\d+\.)\s+(.*)$/.exec(line);
   if (!match) return null;
   const body = match[1];
-  const lead = /^\*\*(.+?)\.?\*\*\s*(.*)$/.exec(body);
-  if (lead) return { lead: lead[1].replace(/\.$/, ""), text: plain(lead[2]) };
+
+  // "**Inspiring Admiration.** We aspire to..."
+  const bold = /^\*\*(.+?)\.?\*\*\s*(.*)$/.exec(body);
+  if (bold) return { lead: bold[1].replace(/\.$/, ""), text: plain(bold[2]) };
+
+  // "Cotton: the finest, best-sourced cotton is selected for spinning."
+  const labelled = /^([A-Z][A-Za-z][A-Za-z -]{1,22}):\s+(.+)$/.exec(body);
+  if (labelled) return { lead: labelled[1].trim(), text: plain(labelled[2]) };
+
   return { text: plain(body) };
 }
 
@@ -142,6 +166,15 @@ export function parseDoc(markdown: string): ParsedDoc {
     if (item) {
       flushParagraph();
       if (!isBuildNote(item.text)) current.items.push(item);
+      continue;
+    }
+
+    // A labelled line stands alone, so two of them on consecutive lines do not
+    // get joined into one paragraph and lose the second label.
+    const inlineField = readField(line.trim());
+    if (inlineField) {
+      flushParagraph();
+      current.fields[inlineField.key] = inlineField.value;
       continue;
     }
 
