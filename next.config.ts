@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    // Next 16 only serves qualities declared here. 88 is the hero and page-hero
+    // photography; 75 is the default for everything else.
+    qualities: [75, 88],
   },
   poweredByHeader: false,
 };

@@ -22,9 +22,7 @@ export default function JournalPage() {
       <PageHero
         title="The Fabric Journal"
         strapline="Guides to choosing, judging and wearing fine fabric."
-        image="/images/gallery/08-champagne-check.jpg"
-        alt="Champagne check fabric from the Nabeen range"
-        objectPosition="50% 50%"
+        pattern="check"
       />
 
       <section className="bg-white py-[var(--spacing-section)]">

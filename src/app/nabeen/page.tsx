@@ -43,9 +43,7 @@ export default function NabeenPage() {
       <PageHero
         title={withReg(field(head, "h1"))}
         strapline={withReg(field(head, "strapline"))}
-        image="/images/gallery/01-aqua-jacquard.jpg"
-        alt="Aqua jacquard fabric from the Nabeen range"
-        objectPosition="50% 50%"
+        pattern="ogee"
       />
 
       <section className="bg-white py-[var(--spacing-section)]">

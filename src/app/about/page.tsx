@@ -40,9 +40,8 @@ export default function AboutPage() {
       <PageHero
         title={withReg(field(head, "page-title-h1"))}
         strapline={withReg(field(head, "strapline"))}
-        image="/images/brand-imagery/spinning-frames-bw.jpg"
+        image="/images/hero/spinning-frames.jpg"
         alt="Spinning frames drawing cotton into yarn"
-        objectPosition="50% 45%"
       />
 
       <section className="bg-white py-[var(--spacing-section)]">
@@ -76,6 +75,13 @@ export default function AboutPage() {
         <Container>
           <div className="grid gap-14 lg:grid-cols-[7fr_5fr] lg:gap-20">
             <div>
+              <Image
+                src="/images/logos/dji-logo-transparent.png"
+                alt="D J Impex & Co."
+                width={736}
+                height={735}
+                className="mb-8 h-16 w-16"
+              />
               <h2 className="t-h2 max-w-[14ch]">Recognition</h2>
               {recognition.paragraphs.map((paragraph) => (
                 <p key={paragraph} className="measure mt-8 text-slate">

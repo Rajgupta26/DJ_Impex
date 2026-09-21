@@ -30,9 +30,7 @@ export default function VisionPage() {
     <>
       <PageHero
         title={withReg(field(head, "h1"))}
-        image="/images/gallery/03-white-jacquard.jpg"
-        alt="White jacquard fabric, folded"
-        objectPosition="50% 55%"
+        pattern="dobby"
       />
 
       {/* The Nino Cerruti line opens the page, set very large. */}

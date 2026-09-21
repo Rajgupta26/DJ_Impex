@@ -20,27 +20,32 @@ import { visible } from "@/lib/site";
  * Hero photography is still pending. Until it arrives, the best of the brand
  * imagery carries the first slides and the campaign slide uses drawn cloth,
  * because there is no honest photograph for it yet.
+ *
+ * The sources in /images/hero are landscape crops of the portrait originals,
+ * resampled and sharpened at build time: letting the browser upscale a portrait
+ * photograph into a full-bleed landscape is what made the hero look soft.
  */
 const HERO_MEDIA: HeroSlideView["media"][] = [
   {
     kind: "image",
-    src: "/images/brand-imagery/fabric-blush-stripe-macro.jpg",
+    src: "/images/hero/blush-stripe.jpg",
     alt: "Blush striped Nabeen shirting fabric folded in raking light",
-    position: "60% 40%",
+    // Keeps the bright fold to the right of the headline.
+    position: "62% center",
   },
   {
     kind: "image",
-    src: "/images/brand-imagery/weaving-loom.jpg",
+    src: "/images/hero/weaving-loom.jpg",
     alt: "Warp threads running through a loom",
-    position: "50% 45%",
+    position: "center",
     muted: true,
   },
   { kind: "weave", pattern: "lace", pending: "Wear2Care campaign photograph" },
   {
     kind: "image",
-    src: "/images/brand-imagery/spinning-frames-bw.jpg",
+    src: "/images/hero/spinning-frames.jpg",
     alt: "Spinning frames drawing cotton into yarn",
-    position: "50% 50%",
+    position: "center",
     muted: true,
   },
 ];

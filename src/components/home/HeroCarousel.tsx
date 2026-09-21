@@ -98,7 +98,7 @@ export function HeroCarousel({
                   priority={index === 0}
                   loading={index === 0 ? "eager" : "lazy"}
                   sizes="100vw"
-                  quality={82}
+                  quality={88}
                   className={`object-cover ${slide.media.muted ? "saturate-[0.45]" : ""}`}
                   style={{ objectPosition: slide.media.position ?? "60% 40%" }}
                 />
@@ -110,11 +110,23 @@ export function HeroCarousel({
         </div>
       </div>
 
-      {/* The navy veil: heavy at the left where the words sit, clearing to the right
-          so the cloth is still legible. */}
+      {/* Two light veils rather than one heavy one: a wash from the left that keeps
+          the words legible, and a scrim along the bottom where they actually sit.
+          The cloth stays readable across most of the frame, which is the point of
+          putting a photograph there at all. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(95deg,rgb(13_23_51/0.93)_0%,rgb(23_40_80/0.74)_44%,rgb(23_40_80/0.16)_80%)]"
+        className="absolute inset-0 bg-[linear-gradient(100deg,rgb(13_23_51/0.82)_0%,rgb(13_23_51/0.5)_34%,rgb(23_40_80/0.16)_64%,rgb(23_40_80/0.04)_100%)]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(to_top,rgb(13_23_51/0.62)_0%,rgb(13_23_51/0.22)_44%,transparent_100%)]"
+      />
+      {/* Weighted into the bottom-left corner, where the words actually sit, so the
+          cloth at the top right stays bright. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(130%_118%_at_0%_100%,rgb(13_23_51/0.92)_0%,rgb(13_23_51/0.64)_34%,rgb(13_23_51/0.3)_56%,transparent_78%)]"
       />
 
       <div className="container-site absolute inset-x-0 bottom-[clamp(3.5rem,10vh,6.5rem)]">
@@ -213,7 +225,11 @@ function HeroWords({
   rise: boolean;
 }) {
   const words = slide.headline.split(" ");
-  const animate = rise && !reduceMotion;
+  // Frozen at mount: this instance keeps the mode it was born with. Embla can fire
+  // its first "select" within milliseconds, and letting `rise` change on a live
+  // element left the words mid-animation and invisible.
+  const [risesOnMount] = useState(rise);
+  const animate = risesOnMount && !reduceMotion;
 
   return (
     <div key={slideKey}>
@@ -241,7 +257,7 @@ function HeroWords({
       </h1>
 
       <motion.p
-        className="t-lead mt-6 max-w-[34rem] text-white/80"
+        className="t-lead mt-6 max-w-[30rem] text-white/90"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: reduceMotion ? 0.01 : 0.5, delay: animate ? 0.5 : 0 }}

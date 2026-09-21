@@ -28,9 +28,7 @@ export default function ContactPage() {
       <PageHero
         title={withReg(field(head, "h1"))}
         strapline={withReg(field(head, "intro"))}
-        image="/images/gallery/10-slate-rib.jpg"
-        alt="Slate rib fabric from the Nabeen range"
-        objectPosition="50% 50%"
+        pattern="rib"
       />
 
       <section className="bg-white py-[var(--spacing-section)]">

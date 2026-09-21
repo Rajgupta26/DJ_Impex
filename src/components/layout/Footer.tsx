@@ -136,7 +136,15 @@ export function Footer() {
         </ul>
       </div>
 
-      <div className="container-site flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/12 py-7">
+      <div className="container-site flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/12 py-7">
+        {/* The parent-company mark, per ASSETS.md. */}
+        <Image
+          src="/images/logos/dji-logo-transparent.png"
+          alt="D J Impex & Co."
+          width={736}
+          height={735}
+          className="h-10 w-10 shrink-0"
+        />
         <p className="t-small text-white/50">
           © {year} {site.brand.company.value.replace(/\.$/, "")}. All rights reserved.
         </p>

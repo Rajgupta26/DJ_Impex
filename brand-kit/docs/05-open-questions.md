@@ -51,3 +51,10 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 33. **Pending photography is drawn, not stock.** Where the client has not sent an image (hero slide 3, the Ali Nuhu portrait, the Wear2Care panel) the site draws the weave in SVG in brand navy rather than using stock photography. Replace each with a real photograph as it arrives; `/_todo` lists them.
 34. **Prototype copy stays out.** The reference site at djimpex.vercel.app was reviewed for art direction only. Its facts (1998, 27 years, 14 export markets, 1.2M metres, 100% piece-inspected, the Zürique specs, the named testimonials, the Ali Nuhu quote) remain unused, per CLAUDE.md rule 4.
 
+## Hero and imagery (build note)
+
+35. **Hero sources are upscaled.** `fabric-blush-stripe-macro.jpg` is 1189x1679, a portrait. `/public/images/hero/*.jpg` are 16:9 crops resampled to 2000x1125 and sharpened at build time (see the note in `src/app/page.tsx`). They hold up to about 1600px wide. Real landscape hero photography at 2400px or more is still needed (question 7) before launch.
+36. **Gallery scans are not used large.** ASSETS.md marks the 480px brochure fabric photographs as tile-sized. Inner-page heroes therefore draw the weave instead of upscaling one across a full-bleed band. Swap to photography when the high-resolution originals arrive (question 8).
+37. **Hero legibility depends on the photograph.** The veil is deliberately light so the cloth reads, with the scrim weighted into the bottom-left corner where the words sit. A hero image that is bright in that corner will need its crop adjusting. Re-check when the client's own hero images land.
+38. **DJI mark placed.** `dji-logo-transparent.png` now appears on the About page beside Recognition, and in the footer small print, per ASSETS.md. On the Midnight Loom footer the mark's dark triangles read as a quiet watermark; confirm the client is happy with that, or supply a white version.
+
