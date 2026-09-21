@@ -1,0 +1,154 @@
+/* ==========================================================================
+   Nabeen® / D J Impex & Co. design tokens
+   Concept: "The Selvedge". See docs/02-design-system.md for rationale.
+   Tailwind CSS v4: import this file from app/globals.css AFTER @import "tailwindcss".
+   ========================================================================== */
+
+@theme {
+  /* ---- Colour ------------------------------------------------------------ */
+  --color-navy: #172850;          /* Nabeen Navy. Brand primary (client spec). Also the main text colour on light backgrounds. */
+  --color-navy-deep: #0d1733;     /* Midnight Loom. Footer, image overlays, pressed states. */
+  --color-navy-soft: #24386a;     /* Hover state for navy fills. */
+  --color-white: #ffffff;         /* Brand secondary (client spec). */
+  --color-mist: #eef1f6;          /* Giza Mist. Cool off-white for alternating sections. NOT cream. */
+  --color-slate: #5a6680;         /* Thread Slate. Secondary text on white (5.6:1 contrast). */
+  --color-line: #d5dbe6;          /* Hairlines, input borders on light backgrounds. */
+  --color-zari: #b8925a;          /* Zari Gold. PROPOSED accent (confirm with Binoli). Thread-thin use only:
+                                     selvedge pinstripes, focus ring, active indicators. Never large fills, never body text. */
+  --color-success: #2f6b4f;
+  --color-error: #a23b3b;
+
+  /* ---- Type -------------------------------------------------------------- */
+  /* Open Sans is the brand font. Load the VARIABLE version with the wdth axis via next/font:
+     Open_Sans({ subsets: ['latin'], axes: ['wdth'], variable: '--font-open-sans', display: 'swap' }) */
+  --font-sans: var(--font-open-sans), "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Fluid type scale (1.25 ratio at mobile, opening to ~1.333 at desktop) */
+  --text-display: clamp(3rem, 1.6rem + 6vw, 7rem);     /* hero only */
+  --text-h1: clamp(2.5rem, 1.6rem + 3.6vw, 4.75rem);
+  --text-h2: clamp(2rem, 1.45rem + 2.2vw, 3.5rem);
+  --text-h3: clamp(1.375rem, 1.2rem + 0.7vw, 1.875rem);
+  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
+  --text-body: 1.0625rem;   /* 17px */
+  --text-small: 0.875rem;   /* 14px */
+  --text-micro: 0.75rem;    /* 12px, selvedge text only */
+
+  /* ---- Layout ------------------------------------------------------------ */
+  --container-site: 82rem;        /* 1312px max content width */
+  --container-prose: 40rem;       /* ~65-70 characters for body copy */
+  --spacing-gutter: clamp(1.25rem, 0.6rem + 3vw, 3rem);
+  --spacing-section: clamp(5rem, 3rem + 7vw, 10rem);   /* vertical rhythm between sections */
+
+  /* ---- Shape & depth ----------------------------------------------------- */
+  --radius-none: 0;         /* photography: cut cloth has square corners */
+  --radius-control: 2px;    /* buttons, inputs */
+  --radius-pill: 999px;     /* floating action buttons only */
+  --shadow-float: 0 10px 30px -12px rgb(13 23 51 / 0.45);  /* floating buttons + popup only. No card shadows. */
+
+  /* ---- Motion ------------------------------------------------------------ */
+  --ease-weave: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --duration-quick: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 900ms;     /* hero reveal only */
+  --selvedge-speed: 60s;      /* one full loop of the selvedge marquee */
+}
+
+/* ---- Width axis helpers (Open Sans variable, wdth 75-100) ----------------- */
+.font-condensed { font-stretch: 75%; }
+.font-semicondensed { font-stretch: 87.5%; }
+.font-normal-width { font-stretch: 100%; }
+
+/* ---- Base ---------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+  --focus-ring: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-zari);
+}
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.65;
+  color: var(--color-navy);
+  background: var(--color-white);
+}
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+::selection { background: var(--color-navy); color: var(--color-white); }
+
+/* ---- Type roles ---------------------------------------------------------- */
+.t-display { font-size: var(--text-display); font-weight: 300; font-stretch: 75%; line-height: 0.95; letter-spacing: -0.02em; }
+.t-h1      { font-size: var(--text-h1); font-weight: 300; font-stretch: 75%; line-height: 1.02; letter-spacing: -0.015em; }
+.t-h2      { font-size: var(--text-h2); font-weight: 300; font-stretch: 80%; line-height: 1.08; letter-spacing: -0.01em; }
+.t-h3      { font-size: var(--text-h3); font-weight: 600; font-stretch: 87.5%; line-height: 1.25; }
+.t-lead    { font-size: var(--text-lead); font-weight: 400; line-height: 1.55; color: var(--color-slate); }
+.t-small   { font-size: var(--text-small); line-height: 1.5; }
+.t-number  { font-weight: 300; font-stretch: 75%; font-variant-numeric: lining-nums tabular-nums; }
+
+/* The ® mark must never render at full size in headings. Wrap it: <sup class="reg">®</sup> */
+.reg { font-size: 0.42em; vertical-align: super; line-height: 0; margin-left: 0.04em; font-stretch: 100%; font-weight: 400; }
+.selvedge .reg { font-size: 1em; vertical-align: baseline; }
+
+/* ---- Signature: the selvedge band --------------------------------------- */
+/* A real bolt of cloth has its maker's name woven into the edge. The site does the same:
+   a thin navy band with the brand woven into it, framed by two zari-gold threads.
+   Used exactly twice: bottom edge of the hero, top edge of the footer. */
+.selvedge {
+  position: relative;
+  height: 2.25rem;
+  background: var(--color-navy-deep);
+  color: rgb(255 255 255 / 0.72);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  font-stretch: 75%;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;        /* selvedge text is uppercase in real cloth; this is the ONLY uppercase in the UI */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.selvedge::before,
+.selvedge::after {                  /* the two gold edge threads */
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--color-zari) 0 14px, transparent 14px 18px);
+  opacity: 0.85;
+}
+.selvedge::before { top: 5px; }
+.selvedge::after  { bottom: 5px; }
+.selvedge__track { display: inline-flex; gap: 3.5rem; padding-inline: 1.75rem; animation: selvedge-run var(--selvedge-speed) linear infinite; }
+.selvedge__mark  { display: inline-block; width: 5px; height: 5px; background: var(--color-zari); transform: rotate(45deg); align-self: center; }
+@keyframes selvedge-run { to { transform: translateX(-50%); } }
+
+/* ---- Secondary motif: pinked swatch edge (gallery tiles ONLY) ----------- */
+/* Pinking shears leave a zig-zag edge on fabric swatches. */
+.swatch-pinked {
+  --tooth: 7px;   /* zig-zag on the top and bottom edges, like a pinked swatch-book card */
+  -webkit-mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--tooth) * 2) 51% repeat-x,
+    conic-gradient(from 135deg at top,     #0000, #000 1deg 89deg, #0000 90deg) top    / calc(var(--tooth) * 2) 51% repeat-x;
+          mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--tooth) * 2) 51% repeat-x,
+    conic-gradient(from 135deg at top,     #0000, #000 1deg 89deg, #0000 90deg) top    / calc(var(--tooth) * 2) 51% repeat-x;
+}
+
+/* ---- Buttons ------------------------------------------------------------- */
+.btn { display: inline-flex; align-items: center; gap: 0.625rem; min-height: 3rem; padding: 0 1.5rem;
+       border-radius: var(--radius-control); font-weight: 600; font-size: 0.9375rem; letter-spacing: 0.01em;
+       transition: background-color var(--duration-quick) var(--ease-weave), color var(--duration-quick) var(--ease-weave), border-color var(--duration-quick) var(--ease-weave); }
+.btn-primary { background: var(--color-navy); color: var(--color-white); }
+.btn-primary:hover { background: var(--color-navy-soft); }
+.btn-outline { border: 1px solid currentColor; color: var(--color-navy); }
+.btn-outline:hover { background: var(--color-navy); color: var(--color-white); border-color: var(--color-navy); }
+.btn-on-dark { background: var(--color-white); color: var(--color-navy); }
+.btn-on-dark:hover { background: var(--color-mist); }
+
+/* ---- Reduced motion ------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .selvedge__track { animation: none; }
+}

@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nabeen® style guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wdth,wght@75..100,300..800&display=swap" rel="stylesheet">
+<style>
+/* tokens.css (with @theme swapped for :root so it works without Tailwind) */
+/* ==========================================================================
+   Nabeen® / D J Impex & Co. design tokens
+   Concept: "The Selvedge". See docs/02-design-system.md for rationale.
+   Tailwind CSS v4: import this file from app/globals.css AFTER @import "tailwindcss".
+   ========================================================================== */
+
+:root {
+  /* ---- Colour ------------------------------------------------------------ */
+  --color-navy: #172850;          /* Nabeen Navy. Brand primary (client spec). Also the main text colour on light backgrounds. */
+  --color-navy-deep: #0d1733;     /* Midnight Loom. Footer, image overlays, pressed states. */
+  --color-navy-soft: #24386a;     /* Hover state for navy fills. */
+  --color-white: #ffffff;         /* Brand secondary (client spec). */
+  --color-mist: #eef1f6;          /* Giza Mist. Cool off-white for alternating sections. NOT cream. */
+  --color-slate: #5a6680;         /* Thread Slate. Secondary text on white (5.6:1 contrast). */
+  --color-line: #d5dbe6;          /* Hairlines, input borders on light backgrounds. */
+  --color-zari: #b8925a;          /* Zari Gold. PROPOSED accent (confirm with Binoli). Thread-thin use only:
+                                     selvedge pinstripes, focus ring, active indicators. Never large fills, never body text. */
+  --color-success: #2f6b4f;
+  --color-error: #a23b3b;
+
+  /* ---- Type -------------------------------------------------------------- */
+  /* Open Sans is the brand font. Load the VARIABLE version with the wdth axis via next/font:
+     Open_Sans({ subsets: ['latin'], axes: ['wdth'], variable: '--font-open-sans', display: 'swap' }) */
+  --font-sans: "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Fluid type scale (1.25 ratio at mobile, opening to ~1.333 at desktop) */
+  --text-display: clamp(3rem, 1.6rem + 6vw, 7rem);     /* hero only */
+  --text-h1: clamp(2.5rem, 1.6rem + 3.6vw, 4.75rem);
+  --text-h2: clamp(2rem, 1.45rem + 2.2vw, 3.5rem);
+  --text-h3: clamp(1.375rem, 1.2rem + 0.7vw, 1.875rem);
+  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
+  --text-body: 1.0625rem;   /* 17px */
+  --text-small: 0.875rem;   /* 14px */
+  --text-micro: 0.75rem;    /* 12px, selvedge text only */
+
+  /* ---- Layout ------------------------------------------------------------ */
+  --container-site: 82rem;        /* 1312px max content width */
+  --container-prose: 40rem;       /* ~65-70 characters for body copy */
+  --spacing-gutter: clamp(1.25rem, 0.6rem + 3vw, 3rem);
+  --spacing-section: clamp(5rem, 3rem + 7vw, 10rem);   /* vertical rhythm between sections */
+
+  /* ---- Shape & depth ----------------------------------------------------- */
+  --radius-none: 0;         /* photography: cut cloth has square corners */
+  --radius-control: 2px;    /* buttons, inputs */
+  --radius-pill: 999px;     /* floating action buttons only */
+  --shadow-float: 0 10px 30px -12px rgb(13 23 51 / 0.45);  /* floating buttons + popup only. No card shadows. */
+
+  /* ---- Motion ------------------------------------------------------------ */
+  --ease-weave: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --duration-quick: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 900ms;     /* hero reveal only */
+  --selvedge-speed: 60s;      /* one full loop of the selvedge marquee */
+}
+
+/* ---- Width axis helpers (Open Sans variable, wdth 75-100) ----------------- */
+.font-condensed { font-stretch: 75%; }
+.font-semicondensed { font-stretch: 87.5%; }
+.font-normal-width { font-stretch: 100%; }
+
+/* ---- Base ---------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+  --focus-ring: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-zari);
+}
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.65;
+  color: var(--color-navy);
+  background: var(--color-white);
+}
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+::selection { background: var(--color-navy); color: var(--color-white); }
+
+/* ---- Type roles ---------------------------------------------------------- */
+.t-display { font-size: var(--text-display); font-weight: 300; font-stretch: 75%; line-height: 0.95; letter-spacing: -0.02em; }
+.t-h1      { font-size: var(--text-h1); font-weight: 300; font-stretch: 75%; line-height: 1.02; letter-spacing: -0.015em; }
+.t-h2      { font-size: var(--text-h2); font-weight: 300; font-stretch: 80%; line-height: 1.08; letter-spacing: -0.01em; }
+.t-h3      { font-size: var(--text-h3); font-weight: 600; font-stretch: 87.5%; line-height: 1.25; }
+.t-lead    { font-size: var(--text-lead); font-weight: 400; line-height: 1.55; color: var(--color-slate); }
+.t-small   { font-size: var(--text-small); line-height: 1.5; }
+.t-number  { font-weight: 300; font-stretch: 75%; font-variant-numeric: lining-nums tabular-nums; }
+
+/* The ® mark must never render at full size in headings. Wrap it: <sup class="reg">®</sup> */
+.reg { font-size: 0.42em; vertical-align: super; line-height: 0; margin-left: 0.04em; font-stretch: 100%; font-weight: 400; }
+.selvedge .reg { font-size: 1em; vertical-align: baseline; }
+
+/* ---- Signature: the selvedge band --------------------------------------- */
+/* A real bolt of cloth has its maker's name woven into the edge. The site does the same:
+   a thin navy band with the brand woven into it, framed by two zari-gold threads.
+   Used exactly twice: bottom edge of the hero, top edge of the footer. */
+.selvedge {
+  position: relative;
+  height: 2.25rem;
+  background: var(--color-navy-deep);
+  color: rgb(255 255 255 / 0.72);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  font-stretch: 75%;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;        /* selvedge text is uppercase in real cloth; this is the ONLY uppercase in the UI */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.selvedge::before,
+.selvedge::after {                  /* the two gold edge threads */
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--color-zari) 0 14px, transparent 14px 18px);
+  opacity: 0.85;
+}
+.selvedge::before { top: 5px; }
+.selvedge::after  { bottom: 5px; }
+.selvedge__track { display: inline-flex; gap: 3.5rem; padding-inline: 1.75rem; animation: selvedge-run var(--selvedge-speed) linear infinite; }
+.selvedge__mark  { display: inline-block; width: 5px; height: 5px; background: var(--color-zari); transform: rotate(45deg); align-self: center; }
+@keyframes selvedge-run { to { transform: translateX(-50%); } }
+
+/* ---- Secondary motif: pinked swatch edge (gallery tiles ONLY) ----------- */
+/* Pinking shears leave a zig-zag edge on fabric swatches. */
+.swatch-pinked {
+  --tooth: 7px;   /* zig-zag on the top and bottom edges, like a pinked swatch-book card */
+  -webkit-mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--tooth) * 2) 51% repeat-x,
+    conic-gradient(from 135deg at top,     #0000, #000 1deg 89deg, #0000 90deg) top    / calc(var(--tooth) * 2) 51% repeat-x;
+          mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--tooth) * 2) 51% repeat-x,
+    conic-gradient(from 135deg at top,     #0000, #000 1deg 89deg, #0000 90deg) top    / calc(var(--tooth) * 2) 51% repeat-x;
+}
+
+/* ---- Buttons ------------------------------------------------------------- */
+.btn { display: inline-flex; align-items: center; gap: 0.625rem; min-height: 3rem; padding: 0 1.5rem;
+       border-radius: var(--radius-control); font-weight: 600; font-size: 0.9375rem; letter-spacing: 0.01em;
+       transition: background-color var(--duration-quick) var(--ease-weave), color var(--duration-quick) var(--ease-weave), border-color var(--duration-quick) var(--ease-weave); }
+.btn-primary { background: var(--color-navy); color: var(--color-white); }
+.btn-primary:hover { background: var(--color-navy-soft); }
+.btn-outline { border: 1px solid currentColor; color: var(--color-navy); }
+.btn-outline:hover { background: var(--color-navy); color: var(--color-white); border-color: var(--color-navy); }
+.btn-on-dark { background: var(--color-white); color: var(--color-navy); }
+.btn-on-dark:hover { background: var(--color-mist); }
+
+/* ---- Reduced motion ------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .selvedge__track { animation: none; }
+}
+
+/* style-guide layout only */
+*{box-sizing:border-box;margin:0}
+button,input,select{font:inherit}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.sg-header{position:absolute;inset:0 0 auto;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:1.5rem var(--spacing-gutter);color:#fff}
+.sg-header img{height:40px;width:auto}
+.sg-header nav{display:flex;gap:1.75rem;font-size:.9375rem;font-weight:500}
+.sg-header nav a{opacity:.88}
+.sg-header nav .is-cta{opacity:1;border-bottom:1px solid var(--color-zari);padding-bottom:2px}
+.sg-hero{position:relative;height:min(92vh,860px);min-height:560px;overflow:hidden;color:#fff;background:var(--color-navy-deep)}
+.sg-hero__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 40%}
+.sg-hero__veil{position:absolute;inset:0;background:linear-gradient(95deg,rgb(13 23 51/.92) 0%,rgb(23 40 80/.72) 42%,rgb(23 40 80/.15) 78%)}
+.sg-hero__content{position:absolute;left:var(--spacing-gutter);bottom:clamp(4rem,10vh,7rem);max-width:44rem}
+.sg-hero__kicker{font-size:.9375rem;font-weight:500;opacity:.8;margin-bottom:1.25rem}
+.sg-hero__sub{color:rgb(255 255 255/.82);margin:1.5rem 0 2.25rem;max-width:32rem}
+.sg-btn-ghost{border:1px solid rgb(255 255 255/.6);color:#fff}
+.sg-btn-ghost:hover{background:rgb(255 255 255/.1)}
+.sg-hero__progress{position:absolute;right:var(--spacing-gutter);bottom:clamp(4rem,10vh,7rem);display:flex;gap:.5rem}
+.sg-hero__progress span,.sg-quote-nav span{width:36px;height:2px;background:rgb(255 255 255/.35)}
+.sg-hero__progress .is-on{background:var(--color-zari)}
+.sg-row{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+.sg-wrap{max-width:var(--container-site);margin:0 auto;padding:0 var(--spacing-gutter)}
+.sg-section{padding:var(--spacing-section) 0 0}
+.sg-section:last-child{padding-bottom:var(--spacing-section)}
+.sg-intro{display:grid;grid-template-columns:7fr 5fr;gap:4rem;align-items:end}
+.sg-intro .t-lead{margin-top:1.5rem;max-width:36rem}
+.sg-trust{display:grid;gap:1.5rem;border-left:1px solid var(--color-line);padding-left:2rem}
+.sg-trust dt{font-size:3.25rem;line-height:1}
+.sg-trust dd{color:var(--color-slate);font-size:var(--text-small);margin-top:.25rem}
+.sg-note{color:var(--color-slate);max-width:var(--container-prose);margin:1rem 0 2.5rem}
+.sg-palette{display:grid;grid-template-columns:repeat(6,1fr);gap:1.25rem}
+.sg-palette div{aspect-ratio:1/1.15}
+.sg-palette figcaption{font-size:var(--text-small);margin-top:.75rem;color:var(--color-slate);line-height:1.5}
+.sg-palette b{display:block;color:var(--color-navy)}
+.sg-type>div{display:grid;grid-template-columns:14rem 1fr;gap:2rem;padding:1.75rem 0;border-top:1px solid var(--color-line);align-items:baseline}
+.sg-spec{font-size:var(--text-small);color:var(--color-slate)}
+.sg-body{max-width:65ch}
+.sg-link{font-weight:600;border-bottom:1px solid var(--color-zari);padding-bottom:3px}
+.sg-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+.sg-gallery figure{position:relative;aspect-ratio:1;overflow:hidden;background:var(--color-mist)}
+.sg-gallery img{width:100%;height:100%;object-fit:cover;transition:transform var(--duration-base) var(--ease-weave)}
+.sg-gallery figure:hover img{transform:scale(1.04)}
+.sg-gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:1.5rem 1rem 1.1rem;color:#fff;font-size:var(--text-small);font-weight:600;background:linear-gradient(transparent,rgb(13 23 51/.75));opacity:0;transition:opacity var(--duration-base)}
+.sg-gallery figure:hover figcaption{opacity:1}
+.sg-gallery__ask{grid-column:span 2;display:flex;flex-direction:column;justify-content:center;gap:.5rem;padding:2rem 2.5rem;background:var(--color-navy);color:#fff}
+.sg-gallery__ask .t-small{opacity:.75}
+.sg-quote-wrap{text-align:left}
+.sg-quote{margin:3rem 0 2rem;max-width:52rem;border-left:1px solid var(--color-zari);padding-left:2.5rem}
+.sg-quote p{font-size:clamp(1.5rem,1.1rem + 1.6vw,2.5rem);font-weight:300;font-stretch:87.5%;line-height:1.3}
+.sg-quote footer{margin-top:1.5rem;color:var(--color-slate);font-size:var(--text-small)}
+.sg-tbc{margin-left:.5rem;padding:.1rem .45rem;border:1px dashed var(--color-error);color:var(--color-error);font-size:.7rem}
+.sg-quote-nav{display:flex;gap:.5rem;padding-left:2.5rem}
+.sg-quote-nav span{background:var(--color-line)}
+.sg-quote-nav .is-on{background:var(--color-navy)}
+.sg-ui{display:grid;grid-template-columns:1fr 1fr;gap:5rem}
+.sg-popup{position:relative;max-width:26rem;padding:2.5rem 2rem 2rem;background:#fff;box-shadow:var(--shadow-float);border-top:3px solid var(--color-navy);display:grid;gap:1rem}
+.sg-popup__close{position:absolute;top:.75rem;right:.9rem;border:0;background:none;font-size:1.5rem;color:var(--color-slate);cursor:pointer}
+.sg-popup label{display:grid;gap:.35rem;font-size:var(--text-small);font-weight:600}
+.sg-popup input,.sg-popup select{font:inherit;font-weight:400;height:2.9rem;padding:0 .9rem;border:1px solid var(--color-line);border-radius:var(--radius-control);color:var(--color-navy);background:#fff}
+.sg-muted{color:var(--color-slate)}
+.sg-full{justify-content:center;width:100%;border:0;cursor:pointer}
+.sg-center{justify-self:center;font-size:var(--text-small)}
+.sg-fabs{display:grid;gap:.9rem;justify-content:start;padding:2rem;background:var(--color-mist)}
+.sg-fab{width:56px;height:56px;border-radius:var(--radius-pill);display:grid;place-items:center;box-shadow:var(--shadow-float)}
+.sg-fab--wa{background:var(--color-navy);color:#fff}
+.sg-fab--map{background:#fff;color:var(--color-navy)}
+.sg-footer{background:var(--color-navy-deep);color:#fff;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding:4.5rem var(--spacing-gutter) 5rem}
+.sg-footer img{height:44px;width:auto;margin-bottom:1.25rem}
+.sg-footer__muted{color:rgb(255 255 255/.6);max-width:22rem}
+.sg-footer b{display:block;margin-bottom:.5rem;color:var(--color-zari);font-weight:600}
+@media (max-width:860px){
+ .sg-header nav{display:none}
+ .sg-intro,.sg-ui{grid-template-columns:1fr;gap:3rem}
+ .sg-palette{grid-template-columns:repeat(3,1fr)}
+ .sg-type>div{grid-template-columns:1fr;gap:.5rem}
+ .sg-gallery{grid-template-columns:repeat(2,1fr);gap:.75rem}
+ .sg-footer{grid-template-columns:1fr 1fr}
+ .sg-hero__progress{display:none}
+}
+
+</style>
+</head>
+<body>
+<header class="sg-header">
+  <img src="../assets/logos/nabeen-logo-white.png" alt="Nabeen, luxury fabrics by DJI" height="40">
+  <nav aria-label="Main">
+    <a href="#">About DJI</a><a href="#">Our Vision</a><a href="#">Nabeen<sup class="reg">®</sup></a><a href="#">Nabeen x Ali Nuhu</a><a href="#">The Fabric Journal</a><a href="#" class="is-cta">Contact Us</a>
+  </nav>
+</header>
+
+<section class="sg-hero">
+  <img class="sg-hero__img" src="../assets/brand-imagery/fabric-blush-stripe-macro.jpg" alt="">
+  <div class="sg-hero__veil"></div>
+  <div class="sg-hero__content">
+    <p class="sg-hero__kicker">Nabeen<sup class="reg">®</sup> by D J Impex &amp; Co.</p>
+    <h1 class="t-display">House of luxury<br>men's fabrics</h1>
+    <p class="t-lead sg-hero__sub">Woven in India since 1995 for Africa and the Middle East.</p>
+    <div class="sg-row">
+      <a class="btn btn-on-dark" href="#">Enquire on WhatsApp</a>
+      <a class="btn sg-btn-ghost" href="#"><span>Explore Nabeen<sup class="reg">®</sup></span></a>
+    </div>
+  </div>
+  <div class="sg-hero__progress" aria-hidden="true"><span class="is-on"></span><span></span><span></span><span></span></div>
+</section>
+<div class="selvedge" aria-hidden="true"><div class="selvedge__track">
+  <span>Nabeen<sup class="reg">®</sup></span><i class="selvedge__mark"></i><span>Luxury fabrics by DJI</span><i class="selvedge__mark"></i><span>Est. 1995</span><i class="selvedge__mark"></i><span>Star Export House</span><i class="selvedge__mark"></i>
+  <span>Nabeen<sup class="reg">®</sup></span><i class="selvedge__mark"></i><span>Luxury fabrics by DJI</span><i class="selvedge__mark"></i><span>Est. 1995</span><i class="selvedge__mark"></i><span>Star Export House</span><i class="selvedge__mark"></i>
+  <span>Nabeen<sup class="reg">®</sup></span><i class="selvedge__mark"></i><span>Luxury fabrics by DJI</span><i class="selvedge__mark"></i><span>Est. 1995</span><i class="selvedge__mark"></i><span>Star Export House</span><i class="selvedge__mark"></i>
+  <span>Nabeen<sup class="reg">®</sup></span><i class="selvedge__mark"></i><span>Luxury fabrics by DJI</span><i class="selvedge__mark"></i><span>Est. 1995</span><i class="selvedge__mark"></i><span>Star Export House</span><i class="selvedge__mark"></i>
+</div></div>
+
+<main class="sg-wrap">
+  <section class="sg-section sg-intro">
+    <div>
+      <h2 class="t-h1">Nabeen<sup class="reg">®</sup> style guide</h2>
+      <p class="t-lead">The look and feel for djimpex.in. This page is a reference for the build and for client sign-off. Open it in a browser; it uses the real brand font, colours and assets.</p>
+    </div>
+    <dl class="sg-trust">
+      <div><dt class="t-number">1995</dt><dd>Founded</dd></div>
+      <div><dt class="t-number">1000+</dt><dd>Designs and variations</dd></div>
+      <div><dt class="t-number sg-star">Star</dt><dd>Export House, Govt. of India</dd></div>
+    </dl>
+  </section>
+
+  <section class="sg-section">
+    <h2 class="t-h2">Colour</h2>
+    <p class="sg-note">Navy and white are the client's brand colours. Everything else supports them. Zari gold is a proposal and is used only as thread: never as a fill, never for text.</p>
+    <div class="sg-palette">
+      <figure><div style="background:var(--color-navy)"></div><figcaption><b>Nabeen Navy</b>#172850<br>Brand. Text on light.</figcaption></figure>
+      <figure><div style="background:var(--color-navy-deep)"></div><figcaption><b>Midnight Loom</b>#0D1733<br>Footer, overlays</figcaption></figure>
+      <figure><div style="background:#fff;border:1px solid var(--color-line)"></div><figcaption><b>White</b>#FFFFFF<br>Brand. Main ground.</figcaption></figure>
+      <figure><div style="background:var(--color-mist)"></div><figcaption><b>Giza Mist</b>#EEF1F6<br>Alternate sections</figcaption></figure>
+      <figure><div style="background:var(--color-slate)"></div><figcaption><b>Thread Slate</b>#5A6680<br>Secondary text</figcaption></figure>
+      <figure><div style="background:var(--color-zari)"></div><figcaption><b>Zari Gold</b>#B8925A<br>Proposed accent, thread-thin only</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="sg-section">
+    <h2 class="t-h2">Type</h2>
+    <p class="sg-note">One family, the brand's Open Sans, used as a variable font. Headlines use its condensed width at a light weight, which gives the tall, tailored silhouette. Body text stays at normal width for easy reading.</p>
+    <div class="sg-type">
+      <div><span class="sg-spec">Display · wdth 75 · wght 300</span><p class="t-display">Woven with excellence</p></div>
+      <div><span class="sg-spec">H1 · wdth 75 · wght 300</span><p class="t-h1">About D J Impex &amp; Co.</p></div>
+      <div><span class="sg-spec">H2 · wdth 80 · wght 300</span><p class="t-h2">World of Nabeen<sup class="reg">®</sup></p></div>
+      <div><span class="sg-spec">H3 · wdth 87.5 · wght 600</span><p class="t-h3">Ethical excellence</p></div>
+      <div><span class="sg-spec">Lead · wght 400</span><p class="t-lead">From Giza to Jacquard, our fabrics unfold a world of choice, backed by uncompromising quality and craftsmanship.</p></div>
+      <div><span class="sg-spec">Body · 17px / 1.65 · max 65ch</span><p class="sg-body">Nabeen<sup class="reg">®</sup> fabrics are meticulously crafted to offer a wide array of affordable textile solutions, with over 1000 distinctive designs and variations. Each fabric is tailored to the elegance and preferences of our discerning customers.</p></div>
+    </div>
+  </section>
+
+  <section class="sg-section">
+    <h2 class="t-h2">Buttons and actions</h2>
+    <p class="sg-note">Rectangular with a 2px radius, like a folded fabric ticket. Labels say exactly what happens. No arrows appended to text.</p>
+    <div class="sg-row">
+      <a class="btn btn-primary" href="#">Enquire on WhatsApp</a>
+      <a class="btn btn-outline" href="#">Read our story</a>
+      <a class="sg-link" href="#">Read the journal</a>
+    </div>
+  </section>
+
+  <section class="sg-section">
+    <h2 class="t-h2">World of Nabeen<sup class="reg">®</sup></h2>
+    <p class="sg-note">The gallery is laid out like a swatch book: square tiles with pinked top and bottom edges. This is the only place the pinked edge appears. Hover or tap shows the fabric name.</p>
+    <div class="sg-gallery">
+      <figure class="swatch-pinked"><img src="../assets/gallery/01-aqua-jacquard.jpg" alt="Aqua jacquard"><figcaption>Aqua jacquard</figcaption></figure>
+      <figure class="swatch-pinked"><img src="../assets/gallery/02-taupe-dobby.jpg" alt="Taupe dobby"><figcaption>Taupe dobby</figcaption></figure>
+      <figure class="swatch-pinked"><img src="../assets/gallery/03-white-jacquard.jpg" alt="White jacquard"><figcaption>White jacquard</figcaption></figure>
+      <figure class="swatch-pinked"><img src="../assets/gallery/04-charcoal-herringbone.jpg" alt="Charcoal herringbone"><figcaption>Charcoal herringbone</figcaption></figure>
+      <figure class="swatch-pinked"><img src="../assets/gallery/05-camel-check-jacquard.jpg" alt="Camel check jacquard"><figcaption>Camel check jacquard</figcaption></figure>
+      <figure class="swatch-pinked"><img src="../assets/gallery/06-mint-dobby.jpg" alt="Mint dobby"><figcaption>Mint dobby</figcaption></figure>
+      <figure class="swatch-pinked"><img src="../assets/gallery/07-blush-stripe.jpg" alt="Blush stripe"><figcaption>Blush stripe</figcaption></figure>
+      <figure class="swatch-pinked"><img src="../assets/gallery/08-champagne-check.jpg" alt="Champagne check"><figcaption>Champagne check</figcaption></figure>
+      <figure class="swatch-pinked"><img src="../assets/gallery/09-sky-circle-jacquard.jpg" alt="Sky circle jacquard"><figcaption>Sky circle jacquard</figcaption></figure>
+      <figure class="swatch-pinked"><img src="../assets/gallery/10-slate-rib.jpg" alt="Slate rib"><figcaption>Slate rib</figcaption></figure>
+      <a class="sg-gallery__ask swatch-pinked" href="#"><span class="t-h3">See the full range</span><span class="t-small">Ask our team for swatches on WhatsApp</span></a>
+    </div>
+  </section>
+
+  <section class="sg-section sg-quote-wrap">
+    <h2 class="t-h2">People love us, as much as we love serving them</h2>
+    <blockquote class="sg-quote">
+      <p>Our customers love Nabeen. They are trustworthy and transparent. Super customer experience and support.</p>
+      <footer>Retailer, Nigeria <span class="sg-tbc">name TBC</span></footer>
+    </blockquote>
+    <div class="sg-quote-nav" aria-hidden="true"><span class="is-on"></span><span></span><span></span><span></span></div>
+  </section>
+
+  <section class="sg-section sg-ui">
+    <div>
+      <h2 class="t-h2">Contact pop-up</h2>
+      <p class="sg-note">Appears once per visit, 5 seconds after load. Closes on Esc, on the close button or on the backdrop. Adjust to the client's reference image when it arrives.</p>
+      <div class="sg-popup" role="dialog" aria-label="Talk to the Nabeen team">
+        <button class="sg-popup__close" aria-label="Close">×</button>
+        <p class="t-h3">Talk to the Nabeen team</p>
+        <p class="t-small sg-muted">Tell us what you trade in. We reply on WhatsApp.</p>
+        <label>Name<input value="Ibrahim Musa"></label>
+        <label>WhatsApp number<input value="+234 "></label>
+        <label>Market<select><option>Nigeria</option></select></label>
+        <button class="btn btn-primary sg-full">Send enquiry</button>
+        <a class="sg-link sg-center" href="#">Or chat with us on WhatsApp now</a>
+      </div>
+    </div>
+    <div>
+      <h2 class="t-h2">Floating actions</h2>
+      <p class="sg-note">Fixed to the bottom-right corner of every page. WhatsApp on top, Directions below. 56px targets, labelled for screen readers.</p>
+      <div class="sg-fabs">
+        <a class="sg-fab sg-fab--wa" href="#" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2Zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.36-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.93-4.66-4.11-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.27.25-.27.54-.34.72-.34h.52c.17 0 .39-.06.61.46.24.55.79 1.9.86 2.04.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.28-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.07.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg></a>
+        <a class="sg-fab sg-fab--map" href="#" aria-label="Get directions to our office"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="selvedge" aria-hidden="true"><div class="selvedge__track" style="animation:none">
+  <span>Nabeen<sup class="reg">®</sup></span><i class="selvedge__mark"></i><span>Luxury fabrics by DJI</span><i class="selvedge__mark"></i><span>Est. 1995</span><i class="selvedge__mark"></i><span>Star Export House</span><i class="selvedge__mark"></i><span>Nabeen<sup class="reg">®</sup></span><i class="selvedge__mark"></i><span>Luxury fabrics by DJI</span><i class="selvedge__mark"></i><span>Est. 1995</span><i class="selvedge__mark"></i><span>Star Export House</span>
+</div></div>
+<footer class="sg-footer">
+  <div>
+    <img src="../assets/logos/nabeen-logo-white.png" alt="Nabeen, luxury fabrics by DJI" height="44">
+    <p class="t-small sg-footer__muted">A brand of D J Impex &amp; Co. Star Export House, Government of India.</p>
+  </div>
+  <div class="t-small"><b>Visit</b><br>B-90, 2nd Building, Gopal Gully<br>Mangaldas Market, Mumbai 400002</div>
+  <div class="t-small"><b>Talk to us</b><br>+91 98196 93626<br>ceo@djimpex.in</div>
+  <div class="t-small"><b>Follow</b><br>Instagram<br>Facebook</div>
+</footer>
+
+</body>
+</html>

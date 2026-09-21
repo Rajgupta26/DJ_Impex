@@ -1,0 +1,107 @@
+{
+  "_readme": "Single source of truth for facts used across the site. Every fact carries a status. confirmed = use as-is. tbc = render it, but show a dev-only 'TBC' badge when NEXT_PUBLIC_SHOW_TODO=true. hold = do NOT render anywhere until the client confirms it.",
+
+  "brand": {
+    "company": { "value": "D J Impex & Co.", "short": "DJI", "status": "confirmed" },
+    "brand": { "value": "Nabeen®", "status": "confirmed" },
+    "logoTagline": { "value": "Luxury Fabrics by DJI", "status": "confirmed" },
+    "tagline": { "value": "House of Luxury Men Fabrics", "source": "Instagram & Facebook bio", "status": "confirmed" },
+    "brandPromiseSignoff": { "value": "Made for You, With Love", "source": "Brochure p.3", "status": "confirmed" },
+    "founded": { "value": 1995, "source": "About DJI PDF + Brochure cover", "status": "confirmed", "note": "The old prototype said 1998 / 27 years. That is WRONG. Never use 1998." },
+    "starExportHouse": { "value": "Star Export House, Government of India", "status": "confirmed" },
+    "makeInIndia": { "value": true, "source": "Brochure cover", "status": "confirmed" },
+    "designsCount": { "value": "1000+", "source": "About Nabeen PDF + Brochure p.4", "status": "confirmed" },
+    "markets": { "value": "Africa and the Middle East", "note": "Nabeen is strongest in Nigeria (Kano). Nabeen has been part of Nigeria's community for over a decade.", "status": "confirmed" }
+  },
+
+  "contact": {
+    "phonePrimary": { "display": "+91 98196 93626", "e164": "+919819693626", "status": "confirmed", "note": "Appears in brochure, Facebook and prototype." },
+    "phoneSecondary": { "display": "+91 98193 41904", "e164": "+919819341904", "status": "tbc", "note": "Brochure only." },
+    "whatsapp": { "e164": "919819693626", "prefill": "Hello Nabeen team, I would like to know more about your fabrics.", "status": "tbc", "note": "Assumed to be the primary phone. Confirm which number is on WhatsApp." },
+    "emailPrimary": { "value": "ceo@djimpex.in", "status": "confirmed", "note": "Brochure + Facebook." },
+    "emailSecondary": { "value": "djimpex479@gmail.com", "status": "hold", "note": "Brochure only. Ask whether to show a gmail address publicly." },
+    "address": {
+      "lines": ["B-90, 2nd Building, Gopal Gully", "Mangaldas Market", "Mumbai 400002, Maharashtra, India"],
+      "mapsQuery": "B-90 Gopal Gully Mangaldas Market Mumbai 400002",
+      "status": "tbc",
+      "note": "Facebook page and prototype use B-90 Gopal Gully. Brochure (2023) says 355, Mangaldas Mkt, 7th New Lane, Mumbai-02. Confirm before launch - the Directions button depends on it."
+    },
+    "website": { "value": "https://www.djimpex.in", "status": "confirmed" }
+  },
+
+  "social": [
+    { "name": "Instagram", "handle": "@nabeen.ng", "url": "https://www.instagram.com/nabeen.ng", "status": "confirmed" },
+    { "name": "Facebook", "handle": "nabeen.ng", "url": "https://www.facebook.com/nabeen.ng", "status": "confirmed" },
+    { "name": "Pinterest", "handle": null, "url": null, "status": "hold", "note": "Required by the home page spec, but no Pinterest account found anywhere. Ask the client." }
+  ],
+
+  "navigation": [
+    { "label": "About DJI", "href": "/about" },
+    { "label": "Our Vision", "href": "/vision" },
+    { "label": "Nabeen®", "href": "/nabeen" },
+    { "label": "Nabeen x Ali Nuhu", "href": "/nabeen-x-ali-nuhu" },
+    { "label": "The Fabric Journal", "href": "/journal" },
+    { "label": "Contact Us", "href": "/contact" }
+  ],
+
+  "trustMarks": [
+    { "label": "Since 1995", "status": "confirmed" },
+    { "label": "Star Export House, Govt. of India", "status": "confirmed" },
+    { "label": "1000+ designs", "status": "confirmed" },
+    { "label": "Make in India", "status": "confirmed" }
+  ],
+
+  "ratings": {
+    "googleRating": { "value": null, "candidates": ["4.8/5 (brochure)", "4.9/5 (About Nabeen PDF)"], "status": "hold", "note": "Two different numbers in client material. Check the live Google Business listing." },
+    "happyCustomers": { "value": "2.37 million", "status": "hold", "note": "Brochure shows it with an unexplained asterisk. Ask what it means before using." }
+  },
+
+  "testimonials": {
+    "_note": "Texts are from the brochure (p.8), which gives no names. The home page needs 5-6. The prototype's named testimonials (Mr. Obum O., Mr. Alin, Mr. Mohammed A.) are UNVERIFIED - do not use them.",
+    "items": [
+      { "quote": "Nabeen fabrics are absolutely amazing and good quality. Huge shoutout to the DJI team.", "name": null, "role": "Trade partner", "status": "tbc" },
+      { "quote": "Top notch fabrics by Nabeen. I am blessed to partner with Nabeen and team. Excellent selection of designs, quality and colours.", "name": null, "role": "Trade partner", "status": "tbc" },
+      { "quote": "Our customers love Nabeen. They are trustworthy and transparent. Super customer experience and support. God bless.", "name": null, "role": "Retailer", "status": "tbc" },
+      { "quote": "Nabeen supports small businesses and businesswomen. Excellent team.", "name": null, "role": "Business owner", "status": "tbc" }
+    ]
+  },
+
+  "fabricTypes": {
+    "_note": "How the brand describes its range publicly (Instagram/Facebook bio + Fabric Journal). Proposed as the primary way to browse the range. Structure needs client approval. The one-line descriptions are PROPOSED microcopy written for the site, not client text - get them approved.",
+    "status": "tbc",
+    "items": [
+      { "slug": "giza-cotton", "name": "Giza Cotton", "line": "Egyptian Giza cotton shirting." },
+      { "slug": "swiss-lace", "name": "Swiss Lace", "line": "Swiss-inspired men's lace, including Zürique.", "highlight": "Zürique" },
+      { "slug": "atiku", "name": "Atiku", "line": "Atiku fabric for traditional menswear." },
+      { "slug": "voile-jacquard", "name": "Voile & Jacquard", "line": "Light voiles and woven jacquard patterns." },
+      { "slug": "suiting", "name": "Suiting", "line": "Suiting fabrics for tailored menswear." },
+      { "slug": "wool", "name": "Wool", "line": "Australian and Turkish wool." }
+    ]
+  },
+
+  "signatureLines": {
+    "_note": "CONFLICT: the About Nabeen PDF and the 2023 brochure group the range differently. Build the Nabeen page from 'fourLines' (the more detailed, newer document) but keep the data swappable. Do not merge or guess mappings between the two.",
+    "status": "tbc",
+    "fourLines": [
+      { "name": "Nabeen Classic", "products": ["Oscar", "Fantasy", "Delicacy™", "Excelsor", "Spencer", "Golden Arc", "Four Corners"] },
+      { "name": "Nabeen Royale", "products": ["Star Rose", "Mark Polo", "Cotton House Egyptian Giza", "Silver Rock (Designs)", "Sicora, Luxe and Harrier", "President & Vice President"] },
+      { "name": "Nabeen Luxuré", "products": ["Zare NX", "Trident", "Morocco", "Gold Pearl", "Lenova ZX", "Millionaire", "Switzerland Look", "Australian, Turkish Wool"] },
+      { "name": "Nabeen #White", "products": ["Fantasy", "Marconi", "Silver Rock", "Vice President", "President Plain Giza"] }
+    ],
+    "brochurePairs2023": [
+      "Nabeen Luxe & Delicacy", "Nabeen President & Vice President", "Nabeen Trident & Majesty",
+      "Nabeen Giza & Hausa", "Nabeen Royal Excellency", "Nabeen Delicacy & Mizzoni",
+      "Nabeen Zare & Zare NX", "Nabeen Voile & Jacquard", "Nabeen Star Rose"
+    ]
+  },
+
+  "values": ["Honesty", "Integrity", "Human Dignity", "Trust", "Quality", "Excellence"],
+
+  "socialCause": {
+    "headline": "Nabeen sponsors a share of its profits towards child education in Nigeria.",
+    "body": "Nabeen® contributes a percentage of its profits to support child education in Nigeria. Every dollar you spend with Nabeen goes towards shaping a brighter future for Nigeria.",
+    "campaign": "Wear2Care x Ali Nuhu",
+    "percentage": { "value": null, "status": "hold", "note": "Client material says 'a percentage (%)'. Never invent a number." },
+    "status": "confirmed"
+  }
+}
