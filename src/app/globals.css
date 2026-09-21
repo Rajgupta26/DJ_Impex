@@ -1,0 +1,188 @@
+@import "tailwindcss";
+@import "../../brand-kit/design/tokens.css";
+
+/* ==========================================================================
+   App-level base styles.
+   The design system itself lives in brand-kit/design/tokens.css (the single
+   source of truth, shared with brand-kit/design/style-guide.html).
+   Only things the tokens file cannot express belong here.
+   ========================================================================== */
+
+@theme {
+  --breakpoint-xs: 26.25rem; /* 420px: the phone breakpoint we design to first */
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    overflow-x: hidden;
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+
+  :where(h1, h2, h3) {
+    text-wrap: balance;
+  }
+}
+
+/* ---- Layout primitives --------------------------------------------------- */
+.container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+.measure {
+  max-width: var(--container-prose);
+}
+
+/* ---- Buttons: extra variants on top of tokens.css ------------------------ */
+.btn {
+  cursor: pointer;
+  text-align: left;
+}
+
+.btn-ghost {
+  border: 1px solid rgb(255 255 255 / 0.6);
+  color: var(--color-white);
+}
+
+.btn-ghost:hover {
+  background: rgb(255 255 255 / 0.12);
+}
+
+.btn[aria-disabled="true"],
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---- Text link: navy, 600, thread-thin gold underline -------------------- */
+.text-link {
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-zari);
+  padding-bottom: 3px;
+  transition: border-color var(--duration-quick) var(--ease-weave);
+}
+
+.text-link:hover {
+  border-bottom-color: var(--color-navy);
+}
+
+.text-link-on-dark {
+  color: var(--color-white);
+}
+
+.text-link-on-dark:hover {
+  border-bottom-color: var(--color-white);
+}
+
+/* ---- Focus ring on dark grounds ------------------------------------------ */
+.on-dark :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  box-shadow: 0 0 0 2px var(--color-navy-deep), 0 0 0 4px var(--color-zari);
+}
+
+/* ---- Skip link ----------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 0.85rem 1.25rem;
+  background: var(--color-navy);
+  color: var(--color-white);
+  font-size: var(--text-small);
+  font-weight: 600;
+  transform: translateY(-120%);
+  transition: transform var(--duration-quick) var(--ease-weave);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ---- Dev-only TBC tag ---------------------------------------------------- */
+.tbc-tag {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.45rem;
+  border: 1px dashed var(--color-error);
+  color: var(--color-error);
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-stretch: 100%;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* ---- Utilities ----------------------------------------------------------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hairline-left {
+  border-left: 1px solid var(--color-line);
+}
+
+/* Scroll anchoring for the fabric anchors on /nabeen, clear of the header. */
+:target {
+  scroll-margin-top: 6.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
