@@ -258,27 +258,20 @@
     /* Dissolving as it is held is what makes the hand-over read as one movement
        rather than as a stalled page. --chapter-fade is set per chapter. */
     opacity: calc(1 - var(--chapter-fade, 0));
-    grid-template-columns: 7fr 5fr;
+    /* One centred column, matching the reference: words, then the cloth drawn
+       large beneath them. */
+    grid-template-rows: auto 1fr;
+    justify-items: center;
     align-content: center;
-    align-items: center;
-    gap: 4rem;
+    gap: 2.5rem;
     padding-left: calc(var(--story-rail) + 4rem);
+    padding-right: calc(var(--story-rail) + 4rem);
   }
 
   .story__run:last-child .story__chapter {
     position: static;
     min-height: 0;
     opacity: 1;
-  }
-
-  /* Alternate which side the drawn plate sits on, so the column never reads
-     as a list of identical rows. */
-  .story__run:nth-child(even) .story__text {
-    order: 2;
-  }
-
-  .story__run:nth-child(even) .story__plate {
-    order: 1;
   }
 }
 
@@ -298,15 +291,33 @@
   }
 }
 
+.story__text {
+  width: 100%;
+}
+
 .story__plate {
   position: relative;
+  width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
 }
 
 @media (min-width: 64rem) {
+  .story__text {
+    max-width: 46rem;
+    text-align: center;
+  }
+
+  /* The text keeps its comfortable measure even when centred. */
+  .story__text .measure {
+    margin-inline: auto;
+  }
+
   .story__plate {
-    aspect-ratio: 5 / 4;
+    max-width: 58rem;
+    aspect-ratio: auto;
+    min-height: 0;
+    align-self: stretch;
   }
 }
 

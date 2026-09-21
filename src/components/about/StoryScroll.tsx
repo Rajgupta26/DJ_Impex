@@ -62,10 +62,13 @@ export function StoryScroll({ chapters }: { chapters: StoryChapter[] }) {
 
       // Each chapter dissolves while it is held, so the next rises into its
       // place rather than merely covering it.
-      const pin = parseFloat(getComputedStyle(section).getPropertyValue("--story-pin")) || 0;
       for (const run of runs) {
         const chapter = run.firstElementChild as HTMLElement | null;
         if (!chapter) continue;
+        // Read the pin from the chapter's own resolved `top`, which is in pixels.
+        // --story-pin is authored in rem, and parsing that as a number silently
+        // yields 8.5 instead of 136.
+        const pin = parseFloat(getComputedStyle(chapter).top) || 0;
         const runRect = run.getBoundingClientRect();
         const hold = runRect.height - chapter.offsetHeight;
         if (hold <= 0) {
