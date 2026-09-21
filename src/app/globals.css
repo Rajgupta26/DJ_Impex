@@ -21,7 +21,10 @@
 
   body {
     margin: 0;
-    overflow-x: hidden;
+    /* clip, not hidden: `overflow-x: hidden` makes body a scroll container, and a
+       scroll container with no scrollport breaks every `position: sticky`
+       descendant. `clip` contains overflow without creating one. */
+    overflow-x: clip;
     text-wrap: pretty;
   }
 
@@ -216,35 +219,52 @@
   list-style: none;
 }
 
-/* The run is the scroll distance a chapter holds for. The chapter inside it
-   sticks to --story-pin until the run is spent. */
+/* On a phone the chapters simply stack and scroll: there is not enough height to
+   hold one still and still show it. */
 .story__run {
   position: relative;
-  /* How long a chapter holds before the next takes over. Three chapters at this
-     height run about 3.3 screens, matching the pace of the reference. */
-  height: 140vh;
-}
-
-.story__run:last-child {
-  height: auto;
+  margin-bottom: clamp(4rem, 3rem + 5vw, 7rem);
 }
 
 .story__chapter {
-  position: sticky;
-  top: var(--story-pin);
   display: grid;
   gap: 2.5rem;
   padding-left: calc(var(--story-rail) + 1.75rem);
-  padding-bottom: 4rem;
   background: var(--color-white);
 }
 
 @media (min-width: 64rem) {
+  /* From here the chapter is sized to the screen and the run is taller than it,
+     so it pins for the difference: the run's height minus the chapter's is how
+     far you scroll with it held. Sticky releases the moment the element's bottom
+     meets its container's, which is why the chapter must be shorter than its run
+     rather than merely inside it. */
+  .story__run {
+    height: 175vh;
+    margin-bottom: 0;
+  }
+
+  /* The last chapter does not pin; it simply ends the section, as the reference
+     site's does. */
+  .story__run:last-child {
+    height: auto;
+    padding-bottom: 4rem;
+  }
+
   .story__chapter {
+    position: sticky;
+    top: var(--story-pin);
+    min-height: calc(100vh - var(--story-pin) - 4rem);
     grid-template-columns: 7fr 5fr;
+    align-content: center;
     align-items: center;
     gap: 4rem;
     padding-left: calc(var(--story-rail) + 4rem);
+  }
+
+  .story__run:last-child .story__chapter {
+    position: static;
+    min-height: 0;
   }
 
   /* Alternate which side the drawn plate sits on, so the column never reads
@@ -289,13 +309,15 @@
 /* Holding a chapter still is a scroll effect; under reduced motion the chapters
    simply stack and scroll normally. */
 @media (prefers-reduced-motion: reduce) {
-  .story__run {
+  .story__run,
+  .story__run:last-child {
     height: auto;
     margin-bottom: clamp(4rem, 3rem + 5vw, 7rem);
   }
 
   .story__chapter {
     position: static;
+    min-height: 0;
   }
 
   .story__diamond {
