@@ -4,16 +4,15 @@ import { useEffect, useRef } from "react";
 
 const clamp = (value: number) => Math.min(1, Math.max(0, value));
 
-import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
+import { StoryIllustration, type StoryDrawing } from "@/components/about/StoryIllustration";
 import { withReg } from "@/components/ui/Reg";
 
 export type StoryChapter = {
   title: string;
   kicker: string;
   body: string[];
-  pattern: WeavePattern;
-  /** How large to draw the weave on this chapter's plate. */
-  plateScale: number;
+  /** The line drawing that sits beneath the words. */
+  drawing: StoryDrawing;
 };
 
 /**
@@ -129,12 +128,7 @@ export function StoryScroll({ chapters }: { chapters: StoryChapter[] }) {
               </div>
 
               <div className="story__plate">
-                <WeaveArt
-                  pattern={chapter.pattern}
-                  tone="mist"
-                  scale={chapter.plateScale}
-                  intensity={0.34}
-                />
+                <StoryIllustration drawing={chapter.drawing} />
               </div>
             </article>
           </li>

@@ -90,3 +90,10 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 
 56. **The dissolve was the missing half of the story scroll.** Measured on the reference site: a chapter pins and its opacity runs 1 to 0 across the hold, so the next chapter rises into its place instead of sliding over a still-solid one. Pinning on its own reads as a stalled page. Ours now follows the same curve.
 57. **Composition now matches the reference, which means a documented deviation.** Each chapter is a centred column — kicker, title, paragraph, then the cloth drawn large beneath — like Siyaram's. `02-design-system.md` says "Left-aligned, editorial... Centre alignment only inside the popup and small empty states", so this section is a deliberate exception, made on the client's instruction to match the reference exactly. **Worth showing Binoli**, since it is the one centred block on the site.
+
+## Story illustrations
+
+58. **The two pencil drawings offered for the story chapters are Siyaram's own**, lifted from their website: the spinning frame is their "The Beginning" plate and the rolled bolt is their "The Rise" plate. They are a direct competitor's copyrighted artwork and are not on the site. If the client wants illustration of that quality, commission it, or brief an illustrator against these three subjects.
+59. **The chapters now carry original line drawings** in `src/components/about/StoryIllustration.tsx`: a spinning frame for the founding, a rolled bolt for the craft, and folded lengths for the cloth as it ships. Drawn as SVG, about 2KB, sharp at any size, and Nabeen's own. The bolt's falling cloth is finished with the pinked edge from the gallery motif.
+60. **Each pinned chapter is now sized to the screen** rather than given a minimum height, so the drawing can never run off the bottom while the chapter is held. The words take the height they need and the drawing takes the rest, which is why the plate is larger on the short first chapter than on the longer second one.
+

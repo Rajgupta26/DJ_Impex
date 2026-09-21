@@ -254,7 +254,10 @@
   .story__chapter {
     position: sticky;
     top: var(--story-pin);
-    min-height: calc(100vh - var(--story-pin) - 4rem);
+    /* Fixed, not a floor: the chapter has to fit the screen while it is held, or
+       the drawing runs off the bottom. The words take what they need and the
+       drawing takes the rest. */
+    height: calc(100vh - var(--story-pin) - 3rem);
     /* Dissolving as it is held is what makes the hand-over read as one movement
        rather than as a stalled page. --chapter-fade is set per chapter. */
     opacity: calc(1 - var(--chapter-fade, 0));
@@ -270,7 +273,7 @@
 
   .story__run:last-child .story__chapter {
     position: static;
-    min-height: 0;
+    height: auto;
     opacity: 1;
   }
 }
@@ -332,7 +335,7 @@
 
   .story__chapter {
     position: static;
-    min-height: 0;
+    height: auto;
     opacity: 1;
   }
 

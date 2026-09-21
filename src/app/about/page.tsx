@@ -33,9 +33,8 @@ const STEP_IMAGES = [
  * the founding, then the craft, then where the cloth goes today. No copy is
  * rewritten here; it is only grouped.
  */
-const CHAPTER_PATTERNS = ["rib", "herringbone", "ogee"] as const;
-// Drawn large enough to read as an illustration of the cloth, not a texture.
-const CHAPTER_SCALES = [3.4, 2.6, 1.9];
+// One drawing per chapter: the yarn, the cloth on the roll, the cloth as it ships.
+const CHAPTER_DRAWINGS = ["spinning-frame", "rolled-bolt", "folded-stack"] as const;
 const CHAPTER_SPANS: Array<[number, number]> = [
   [0, 1],
   [1, 3],
@@ -50,8 +49,7 @@ function buildChapters(
     title: label.lead ?? "",
     kicker: label.text,
     body: paragraphs.slice(...(CHAPTER_SPANS[index] ?? [index, index + 1])),
-    pattern: CHAPTER_PATTERNS[index] ?? "ogee",
-    plateScale: CHAPTER_SCALES[index] ?? 2,
+    drawing: CHAPTER_DRAWINGS[index] ?? "rolled-bolt",
   }));
 }
 
