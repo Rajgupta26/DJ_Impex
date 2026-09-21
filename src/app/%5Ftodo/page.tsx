@@ -65,7 +65,7 @@ export default function TodoPage() {
     "Real photographs of the Wear2Care education work (never stock photos of children)",
     "Real factory and process photographs",
     "SVG versions of the Nabeen and DJI logos",
-    "The Marconi reel as a source MP4, plus a poster still (see brand-kit/assets/video)",
+    "A smaller encode of the Marconi film: 4.5 MB is heavy on mobile data",
   ];
 
   const held = rows.filter((row) => row.status === "hold");

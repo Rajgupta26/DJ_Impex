@@ -63,7 +63,13 @@ export default function HomePage() {
   // frame carries the slide, so the composition is already right.
   const film = getBrandFilm();
   const opening: HeroSlideView["media"] = film.src
-    ? { kind: "video", src: film.src, poster: MARCONI_POSTER, alt: MARCONI_ALT }
+    ? {
+        kind: "video",
+        src: film.src,
+        // The film's own first frame, at the footage's 9:16, not the landscape crop.
+        poster: film.poster ?? MARCONI_POSTER,
+        alt: MARCONI_ALT,
+      }
     : { kind: "image", src: MARCONI_POSTER, alt: MARCONI_ALT, position: "74% center" };
 
   const slides: HeroSlideView[] = getHeroSlides().map((slide, index) => ({

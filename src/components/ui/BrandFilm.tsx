@@ -61,44 +61,37 @@ export function BrandFilm({
 
   return (
     <section className="on-dark relative overflow-hidden bg-navy-deep text-white">
-      <div className="relative aspect-[4/5] w-full sm:aspect-[16/9] lg:aspect-[21/9]">
-        {src ? (
-          <video
-            ref={videoRef}
-            className="absolute inset-0 h-full w-full object-cover"
-            poster={poster ?? undefined}
-            preload="none"
-            muted
-            loop
-            playsInline
-            onPlay={() => setPlaying(true)}
-            onPause={() => setPlaying(false)}
-          >
-            <source src={src} type="video/mp4" />
-          </video>
-        ) : (
-          <WeaveArt pattern="check" scale={1.6} />
-        )}
+      <div className="container-site grid items-center gap-10 py-[clamp(3.5rem,2.5rem+4vw,6rem)] lg:grid-cols-[1fr_auto] lg:gap-20">
+        <div className="order-2 lg:order-1">
+          <h2 className="t-h2 max-w-[14ch] text-[clamp(1.75rem,1.3rem+1.6vw,3rem)]">
+            {withReg(heading)}
+          </h2>
+          <p className="measure mt-5 text-white/80">{withReg(caption)}</p>
+        </div>
 
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[linear-gradient(to_top,rgb(13_23_51/0.86)_0%,rgb(13_23_51/0.3)_46%,rgb(13_23_51/0.12)_100%)]"
-        />
+        {/* The footage is a 9:16 reel, so it is set as a standing panel at its own
+            proportions rather than cropped into a landscape band. */}
+        <div className="relative order-1 aspect-[9/16] w-full max-w-[20rem] justify-self-center overflow-hidden bg-navy lg:order-2 lg:h-[34rem] lg:w-auto lg:max-w-none">
+          {src ? (
+            <>
+              <video
+                ref={videoRef}
+                className="absolute inset-0 h-full w-full object-cover"
+                poster={poster ?? undefined}
+                preload="none"
+                muted
+                loop
+                playsInline
+                onPlay={() => setPlaying(true)}
+                onPause={() => setPlaying(false)}
+              >
+                <source src={src} type="video/mp4" />
+              </video>
 
-        <div className="container-site absolute inset-x-0 bottom-0 pb-[clamp(2rem,4vw,4rem)]">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <h2 className="t-h2 max-w-[16ch] text-[clamp(1.75rem,1.3rem+1.6vw,3rem)]">
-                {withReg(heading)}
-              </h2>
-              <p className="measure mt-4 text-white/80">{withReg(caption)}</p>
-            </div>
-
-            {src ? (
               <button
                 type="button"
                 onClick={toggle}
-                className="flex h-12 w-12 shrink-0 items-center justify-center border border-white/50 transition-colors hover:bg-white/10"
+                className="absolute bottom-4 right-4 flex h-12 w-12 items-center justify-center border border-white/50 bg-navy-deep/40 transition-colors hover:bg-navy-deep/70"
               >
                 <span className="visually-hidden">
                   {playing ? "Pause the film" : "Play the film"}
@@ -109,8 +102,10 @@ export function BrandFilm({
                   <Play aria-hidden="true" size={16} strokeWidth={1.75} />
                 )}
               </button>
-            ) : null}
-          </div>
+            </>
+          ) : (
+            <WeaveArt pattern="check" scale={1.2} />
+          )}
         </div>
       </div>
     </section>

@@ -95,7 +95,7 @@
     }
   },
   "brandFilm": {
-    "_note": "The client's own reel from the Nabeen Facebook page. The video FILE is still needed. Facebook streams video as MediaSource blobs, so neither a page visit nor a browser 'Save Page As' captures it (a save of the reel page yields 172 JS files and no media; its <video> tags point at blob: URLs that die with the tab). Ask Binoli for the source MP4 and drop it in brand-kit/assets/video/ then public/video/. Until then the hero opens on a frame from the reel and the Nabeen page's film band renders drawn cloth.",
+    "_note": "The client's own reel from the Nabeen Facebook page. The source MP4 has been supplied and is in brand-kit/assets/video/ and public/video/: 720x1280 (9:16), 21.5s, H.264, 4.5MB. Because it is vertical it is never cropped into a landscape band; it plays as a standing panel on the home hero and on this page. Still tbc: whether the caption may be used as written, and whether a smaller encode can be supplied for mobile data.",
     "status": "tbc",
     "source": "https://www.facebook.com/reel/1400076468857662",
     "caption": "Made from the finest Egyptian Giza cotton to luxury jacquard fabric, Marconi by Nabeen ensures not all whites are made equal.",

@@ -1,34 +1,40 @@
 # Video
 
-Drop the client's original video files here, then copy them into `public/video/`.
+Source video files. Copy anything here into `public/video/` as well; the site
+serves from `public/video/`, and filenames are set in `brand-kit/content/site.json`
+under `brandFilm`.
 
-## Waiting on
+## In hand
 
-| File | What it is | Status |
-|---|---|---|
-| `nabeen-marconi.mp4` | The Marconi reel from the Nabeen Facebook page (https://www.facebook.com/reel/1400076468857662) | **Needed from Binoli** |
-| `nabeen-marconi.jpg` | A still from the reel, used as the poster frame | **Needed** |
+| File | What it is |
+|---|---|
+| `nabeen-marconi.mp4` | The Marconi reel. 720x1280 (9:16), 21.5s, H.264 + AAC, 4.5 MB. |
+| `nabeen-marconi.jpg` | Poster frame, taken from the film's own first frame. |
 
-Facebook streams video as MediaSource blobs. Neither visiting the page nor a
-browser "Save Page As" captures it: a full save of the reel page produced 172
-JavaScript files, 48 images and no media at all, and its `<video>` tags point at
-`blob:` URLs that stop existing when the tab closes. There is no way to recover
-the file from the platform, and a re-encoded copy would be watermarked and
-visibly worse anyway.
+## Where it plays
 
-**Ask Binoli for the source file.** She posted the reel, so she has it.
+- **Home hero**, as the opening slide. On a phone it fills the hero; from 1024px up
+  it stands as a tall panel on the right while the words sit on navy to the left.
+- **Nabeen page**, as a standing panel beside the caption.
 
-## What to send
+It is never cropped to 16:9. Doing that would throw away three quarters of a 9:16
+frame and cut the wordmark off the top.
 
-- **MP4 (H.264, AAC)**, 1080p or better, under about 8 MB if possible.
-- Landscape 16:9 suits the section best. A vertical reel works, but it is cropped.
+## How it behaves
+
+Muted, looping, `preload="none"`, and it starts only while its slide or section is
+actually on screen. The home hero holds on it for 13 seconds rather than the usual
+6.5, so it is not reduced to a fragment. Nothing plays under
+`prefers-reduced-motion`, and on a connection reporting Data Saver or 2G/3G the
+poster frame is shown and the video is never requested at all.
+
+## Still worth asking for
+
+- **A smaller encode.** 4.5 MB is a lot on Nigerian mobile data. A 720p encode at
+  around 900 kbps would roughly halve it with no visible loss at this size.
+- **A landscape cut**, if one exists. It would let the hero run full-bleed.
+
+## Sending more
+
+- **MP4 (H.264, AAC)**, 1080p or better.
 - A **poster still** as JPG at the same aspect ratio.
-
-## How it is used
-
-The film is muted, loops, and starts only when it scrolls into view, with a
-visible pause control. `preload="none"`, so a visitor in Kano on mobile data
-downloads nothing until they reach it. Nothing plays under
-`prefers-reduced-motion`.
-
-Filenames are set in `brand-kit/content/site.json` under `brandFilm`.

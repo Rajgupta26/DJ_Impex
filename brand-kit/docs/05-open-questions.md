@@ -71,3 +71,11 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 44. **The Swiss Cotton mark is cropped out.** Three of the four frames carry a "SWISS cotton" certification logo laid over the cloth. That is a third-party certification claim and it is not in the brand kit, so the hero crop deliberately sits below it. Confirm whether Nabeen holds Swiss Cotton certification and whether the client wants the mark shown; if so it belongs in `site.json` as a fact with a source, not as a detail inside a photograph.
 45. **The hero is already wired for the film.** Once the MP4 lands in `public/video/`, the first hero slide becomes the video automatically, with `marconi-white.jpg` as its poster. No code change needed. It is muted, loops, carries `preload="none"`, starts only while its slide is showing, and obeys the hero's existing pause button.
 
+## The film, once supplied
+
+46. **Received.** The Marconi MP4 arrived: 720x1280 (9:16), 21.5s, H.264 + AAC, 4.5 MB. Questions 39 and 45 are closed. It plays on the home hero and on the Nabeen page.
+47. **It is vertical, so the hero is now a split.** A 9:16 film cannot be cropped into a landscape hero without losing three quarters of the frame, cutting the burned-in wordmark off the top, and upscaling what survives. From 1024px up the film stands as a panel on the right with the words on navy to the left; below that it fills the hero, where 9:16 fits a phone exactly. This departs from the full-bleed hero in the style guide wireframe, which was drawn for a photograph. **Worth showing Binoli.**
+48. **Ask for a smaller encode.** 4.5 MB at 1661 kbps is heavy for a buyer in Kano on mobile data. A 720p encode at roughly 900 kbps would about halve it with no visible loss at the size we display. The site already declines to load it under Data Saver or on 2G/3G, but a lighter file helps everyone else.
+49. **A landscape cut, if one exists**, would let the hero run full-bleed as originally drawn.
+50. **The film carries a burned-in NABEEN wordmark** top-right, which sits near the site header's own logo on the hero. Confirm the client is happy with both showing, or ask for a clean version.
+

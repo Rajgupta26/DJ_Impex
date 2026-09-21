@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Pause, Play } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { Reg, withReg } from "@/components/ui/Reg";
 import { TrackedLink } from "@/components/ui/TrackedLink";
@@ -16,12 +16,11 @@ import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 export type HeroMedia =
   | { kind: "image"; src: string; alt: string; position?: string; muted?: boolean }
   | {
-      /** The client's film, running behind the headline. */
+      /** The client's film. Vertical footage, so it is set as a standing panel. */
       kind: "video";
       src: string;
       poster: string;
       alt: string;
-      position?: string;
     }
   | { kind: "weave"; pattern: WeavePattern; pending: string };
 
@@ -33,6 +32,8 @@ export type HeroSlideView = {
 };
 
 const INTERVAL = 6500;
+/** The film is 21s long; 6.5s of it would only ever be a fragment. */
+const FILM_INTERVAL = 13000;
 
 /**
  * The site's one orchestrated motion moment: on first load the headline rises
@@ -72,9 +73,10 @@ export function HeroCarousel({
 
   useEffect(() => {
     if (!embla || !playing || reduceMotion || slides.length < 2) return;
-    const timer = window.setInterval(() => embla.scrollNext(), INTERVAL);
-    return () => window.clearInterval(timer);
-  }, [embla, playing, reduceMotion, slides.length]);
+    const dwell = slides[selected]?.media.kind === "video" ? FILM_INTERVAL : INTERVAL;
+    const timer = window.setTimeout(() => embla.scrollNext(), dwell);
+    return () => window.clearTimeout(timer);
+  }, [embla, playing, reduceMotion, slides, selected]);
 
   const goTo = useCallback((index: number) => embla?.scrollTo(index), [embla]);
 
@@ -115,7 +117,6 @@ export function HeroCarousel({
                   src={slide.media.src}
                   poster={slide.media.poster}
                   alt={slide.media.alt}
-                  position={slide.media.position}
                   active={index === selected}
                   playing={playing}
                 />
@@ -225,34 +226,40 @@ export function HeroCarousel({
 }
 
 /**
- * The film behind the headline.
+ * The film.
+ *
+ * The footage is a 9:16 reel, so it is not cropped into a landscape band: on a
+ * phone it fills the hero, and on a wider screen it stands as a tall panel on the
+ * right, at its own proportions, like a bolt of cloth set on end. Cropping it to
+ * 16:9 would throw away three quarters of the frame, cut the wordmark off the top,
+ * and upscale what survived.
  *
  * The poster is a real image so it can be the LCP element and the hero is never
- * blank; the video itself carries preload="none" and only starts once its slide
- * is the one showing. It follows the carousel's own pause button, so one control
- * governs everything moving on the hero (WCAG 2.2.2).
+ * blank. The video carries preload="none", starts only while its slide is showing,
+ * and follows the carousel's own pause button, so one control governs everything
+ * moving on the hero (WCAG 2.2.2). On a metered or slow connection it never loads
+ * at all: the poster carries the slide instead.
  */
 function HeroVideo({
   src,
   poster,
   alt,
-  position,
   active,
   playing,
 }: {
   src: string;
   poster: string;
   alt: string;
-  position?: string;
   active: boolean;
   playing: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
+  const allowed = useCanStream();
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !allowed) return;
     if (active && playing && !reduceMotion) {
       void video.play().catch(() => {
         /* A browser may refuse autoplay; the poster still carries the slide. */
@@ -260,22 +267,54 @@ function HeroVideo({
     } else {
       video.pause();
     }
-  }, [active, playing, reduceMotion]);
+  }, [active, playing, reduceMotion, allowed]);
 
   return (
-    <video
-      ref={videoRef}
-      className="absolute inset-0 h-full w-full object-cover"
-      style={{ objectPosition: position ?? "center" }}
-      poster={poster}
-      preload="none"
-      muted
-      loop
-      playsInline
-      aria-label={alt}
-    >
-      <source src={src} type="video/mp4" />
-    </video>
+    <div className="absolute inset-0">
+      {/* The panel: full-bleed on a phone, a standing column from lg up. */}
+      <div className="absolute inset-0 lg:left-auto lg:right-0 lg:w-[46%] xl:w-[42%]">
+        {allowed ? (
+          <video
+            ref={videoRef}
+            className="h-full w-full object-cover"
+            poster={poster}
+            preload="none"
+            muted
+            loop
+            playsInline
+            aria-label={alt}
+          >
+            <source src={src} type="video/mp4" />
+          </video>
+        ) : (
+          <Image src={poster} alt={alt} fill sizes="(max-width: 1024px) 100vw, 46vw" priority className="object-cover" />
+        )}
+      </div>
+    </div>
+  );
+}
+
+type NetworkInformation = EventTarget & { saveData?: boolean; effectiveType?: string };
+
+/**
+ * Do not pull several megabytes down a metered or slow connection: a buyer in Kano
+ * on mobile data gets the poster frame instead. The server snapshot is false, so
+ * nothing is requested until the client has looked at the connection.
+ */
+function useCanStream(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+      connection?.addEventListener("change", onChange);
+      return () => connection?.removeEventListener("change", onChange);
+    },
+    () => {
+      const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+      if (!connection) return true;
+      if (connection.saveData) return false;
+      return !["slow-2g", "2g", "3g"].includes(connection.effectiveType ?? "");
+    },
+    () => false,
   );
 }
 
