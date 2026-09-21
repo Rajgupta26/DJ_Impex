@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Pause, Play } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Reg, withReg } from "@/components/ui/Reg";
 import { TrackedLink } from "@/components/ui/TrackedLink";
@@ -15,6 +15,14 @@ import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 
 export type HeroMedia =
   | { kind: "image"; src: string; alt: string; position?: string; muted?: boolean }
+  | {
+      /** The client's film, running behind the headline. */
+      kind: "video";
+      src: string;
+      poster: string;
+      alt: string;
+      position?: string;
+    }
   | { kind: "weave"; pattern: WeavePattern; pending: string };
 
 export type HeroSlideView = {
@@ -101,6 +109,15 @@ export function HeroCarousel({
                   quality={88}
                   className={`object-cover ${slide.media.muted ? "saturate-[0.45]" : ""}`}
                   style={{ objectPosition: slide.media.position ?? "60% 40%" }}
+                />
+              ) : slide.media.kind === "video" ? (
+                <HeroVideo
+                  src={slide.media.src}
+                  poster={slide.media.poster}
+                  alt={slide.media.alt}
+                  position={slide.media.position}
+                  active={index === selected}
+                  playing={playing}
                 />
               ) : (
                 <WeaveArt pattern={slide.media.pattern} scale={1.4} />
@@ -204,6 +221,61 @@ export function HeroCarousel({
         </div>
       ) : null}
     </section>
+  );
+}
+
+/**
+ * The film behind the headline.
+ *
+ * The poster is a real image so it can be the LCP element and the hero is never
+ * blank; the video itself carries preload="none" and only starts once its slide
+ * is the one showing. It follows the carousel's own pause button, so one control
+ * governs everything moving on the hero (WCAG 2.2.2).
+ */
+function HeroVideo({
+  src,
+  poster,
+  alt,
+  position,
+  active,
+  playing,
+}: {
+  src: string;
+  poster: string;
+  alt: string;
+  position?: string;
+  active: boolean;
+  playing: boolean;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (active && playing && !reduceMotion) {
+      void video.play().catch(() => {
+        /* A browser may refuse autoplay; the poster still carries the slide. */
+      });
+    } else {
+      video.pause();
+    }
+  }, [active, playing, reduceMotion]);
+
+  return (
+    <video
+      ref={videoRef}
+      className="absolute inset-0 h-full w-full object-cover"
+      style={{ objectPosition: position ?? "center" }}
+      poster={poster}
+      preload="none"
+      muted
+      loop
+      playsInline
+      aria-label={alt}
+    >
+      <source src={src} type="video/mp4" />
+    </video>
   );
 }
 

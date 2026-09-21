@@ -9,8 +9,14 @@ Drop the client's original video files here, then copy them into `public/video/`
 | `nabeen-marconi.mp4` | The Marconi reel from the Nabeen Facebook page (https://www.facebook.com/reel/1400076468857662) | **Needed from Binoli** |
 | `nabeen-marconi.jpg` | A still from the reel, used as the poster frame | **Needed** |
 
-Facebook serves the reel only behind a login, and a re-encoded copy off the
-platform would be watermarked and visibly worse. Ask Binoli for the source file.
+Facebook streams video as MediaSource blobs. Neither visiting the page nor a
+browser "Save Page As" captures it: a full save of the reel page produced 172
+JavaScript files, 48 images and no media at all, and its `<video>` tags point at
+`blob:` URLs that stop existing when the tab closes. There is no way to recover
+the file from the platform, and a re-encoded copy would be watermarked and
+visibly worse anyway.
+
+**Ask Binoli for the source file.** She posted the reel, so she has it.
 
 ## What to send
 

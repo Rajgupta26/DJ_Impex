@@ -65,3 +65,9 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 41. **Story chapter labels are proposed.** `about.md` now carries "The beginning / The craft / Today" under `## Story chapters`, purely as labels; the client's story copy is unchanged and only grouped beneath them. Ask whether they would rather write their own chapter titles.
 42. **No counters yet.** The Siyaram reference ends its story section with eight animated statistics. We have only two usable numbers (1995 and 1000+ designs) because the Google rating and the "2.37 million happy customers" figure are on hold (questions 4 and 5). The trust marks cover these for now; a counter row needs those answers first.
 
+## Marconi reel frames
+
+43. **The hero now opens on Marconi.** Four 1440x1440 frames from the client's reel were recovered from a saved copy of the Facebook page and are in `brand-kit/assets/incoming/reel-frames/`. One is cropped to `public/images/hero/marconi-white.jpg` and opens the home hero. They are frames from a compressed reel, not photographs: **ask for the original stills**, which will be sharper.
+44. **The Swiss Cotton mark is cropped out.** Three of the four frames carry a "SWISS cotton" certification logo laid over the cloth. That is a third-party certification claim and it is not in the brand kit, so the hero crop deliberately sits below it. Confirm whether Nabeen holds Swiss Cotton certification and whether the client wants the mark shown; if so it belongs in `site.json` as a fact with a source, not as a detail inside a photograph.
+45. **The hero is already wired for the film.** Once the MP4 lands in `public/video/`, the first hero slide becomes the video automatically, with `marconi-white.jpg` as its poster. No code change needed. It is muted, loops, carries `preload="none"`, starts only while its slide is showing, and obeys the hero's existing pause button.
+

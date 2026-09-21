@@ -5,7 +5,7 @@ import { JournalPreview } from "@/components/home/JournalPreview";
 import { NabeenGallery } from "@/components/home/NabeenGallery";
 import { TestimonialsCarousel } from "@/components/home/TestimonialsCarousel";
 import { Selvedge } from "@/components/layout/Selvedge";
-import { getHeroSlides, getPage, getSite } from "@/lib/content";
+import { getBrandFilm, getHeroSlides, getPage, getSite } from "@/lib/content";
 import { whatsappLink } from "@/lib/contact";
 import { field, section } from "@/lib/markdown";
 import { visible } from "@/lib/site";
@@ -25,6 +25,10 @@ import { visible } from "@/lib/site";
  * resampled and sharpened at build time: letting the browser upscale a portrait
  * photograph into a full-bleed landscape is what made the hero look soft.
  */
+const MARCONI_POSTER = "/images/hero/marconi-white.jpg";
+const MARCONI_ALT =
+  "Marconi by Nabeen: white jacquard shirting in raking light";
+
 const HERO_MEDIA: HeroSlideView["media"][] = [
   {
     kind: "image",
@@ -55,9 +59,16 @@ export default function HomePage() {
   const home = getPage("home");
   const testimonials = visible(site.testimonials.items);
 
+  // The client's film opens the hero. Until the source MP4 lands, its own poster
+  // frame carries the slide, so the composition is already right.
+  const film = getBrandFilm();
+  const opening: HeroSlideView["media"] = film.src
+    ? { kind: "video", src: film.src, poster: MARCONI_POSTER, alt: MARCONI_ALT }
+    : { kind: "image", src: MARCONI_POSTER, alt: MARCONI_ALT, position: "74% center" };
+
   const slides: HeroSlideView[] = getHeroSlides().map((slide, index) => ({
     ...slide,
-    media: HERO_MEDIA[index] ?? HERO_MEDIA[0],
+    media: index === 0 ? opening : (HERO_MEDIA[index] ?? HERO_MEDIA[0]),
   }));
 
   return (
