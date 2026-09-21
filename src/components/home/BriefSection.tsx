@@ -20,8 +20,11 @@ export function BriefSection() {
   return (
     <section className="bg-white py-[var(--spacing-section)]">
       <Container>
-        <div className="grid gap-14 lg:grid-cols-[7fr_5fr] lg:gap-20">
-          <div>
+        {/* The text column carries the trust marks beneath it and the photograph
+            runs the full height beside them, so neither column trails off into
+            empty page. */}
+        <div className="grid gap-14 lg:grid-cols-[7fr_5fr] lg:items-stretch lg:gap-20">
+          <div className="flex flex-col">
             <h2 className="t-h2 max-w-[15ch]">
               {withReg(`A house of cloth since ${site.brand.founded.value}`)}
             </h2>
@@ -37,24 +40,22 @@ export function BriefSection() {
             <p className="mt-9">
               <TextLink href="/about">{linkLabel}</TextLink>
             </p>
+
+            <TrustMarks className="mt-auto pt-14" />
           </div>
 
-          <div className="grid content-between gap-12">
-            <figure className="relative aspect-[5/4] overflow-hidden bg-mist lg:aspect-[4/5]">
-              <Image
-                src="/images/gallery/05-camel-check-jacquard.jpg"
-                alt="Camel check jacquard fabric from the Nabeen range"
-                fill
-                sizes="(max-width: 1024px) 100vw, 34vw"
-                className="object-cover"
-              />
-              <figcaption className="t-small absolute inset-x-0 bottom-0 bg-[linear-gradient(transparent,rgb(13_23_51/0.8))] p-5 font-semibold text-white">
-                Archive · camel check jacquard
-              </figcaption>
-            </figure>
-
-            <TrustMarks />
-          </div>
+          <figure className="relative min-h-[22rem] overflow-hidden bg-mist">
+            <Image
+              src="/images/gallery/05-camel-check-jacquard.jpg"
+              alt="Camel check jacquard fabric from the Nabeen range"
+              fill
+              sizes="(max-width: 1024px) 100vw, 34vw"
+              className="object-cover"
+            />
+            <figcaption className="t-small absolute inset-x-0 bottom-0 bg-[linear-gradient(transparent,rgb(13_23_51/0.8))] p-5 font-semibold text-white">
+              Archive · camel check jacquard
+            </figcaption>
+          </figure>
         </div>
       </Container>
     </section>

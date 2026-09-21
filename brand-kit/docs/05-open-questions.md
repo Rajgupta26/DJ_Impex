@@ -79,3 +79,10 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 49. **A landscape cut, if one exists**, would let the hero run full-bleed as originally drawn.
 50. **The film carries a burned-in NABEEN wordmark** top-right, which sits near the site header's own logo on the hero. Confirm the client is happy with both showing, or ask for a clean version.
 
+## Client-directed changes
+
+51. **The hero is one slide.** At the client's request only the first hero slide renders. The copy for slides 2, 3 and 4 is untouched in `content/home.md`; restoring them is a one-line change in `src/app/page.tsx` (drop the `.slice(0, 1)`).
+52. **The film fills the hero.** Asked for full screen rather than a panel, so a 9:16 film is shown through a landscape frame and its middle band is what you see. It crops the burned-in wordmark clear of the header, which reads better, but it also upscales 720px across a wide screen, so the film is softer on a large monitor than it was in the panel. A landscape cut (question 49) would remove the trade-off entirely.
+53. **"Home" added to the navigation.** It is now the first item in `site.json.navigation`, so it appears in the header and the footer. The client's stated menu order did not include it; the logo already linked home.
+54. **The story chapters pin.** Rebuilt to match the reference: each chapter holds still while its run of scrolling passes, then releases as the next arrives. Done with `position: sticky` rather than a scroll library, so it adds nothing to the page weight. Under `prefers-reduced-motion` the chapters simply stack.
+

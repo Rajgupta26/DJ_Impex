@@ -125,6 +125,10 @@
   ],
   "navigation": [
     {
+      "label": "Home",
+      "href": "/"
+    },
+    {
       "label": "About DJI",
       "href": "/about"
     },

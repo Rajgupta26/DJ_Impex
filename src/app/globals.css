@@ -158,16 +158,19 @@
 
 /* ---- The threaded story scroll (/about) ---------------------------------- */
 /* A thread runs the length of the section and the selvedge's diamond travels down
-   it as the page moves. --story-progress (0 to 1) is set by StoryScroll; every
-   other part of this is CSS. */
+   it as the page moves. Each chapter pins while its run of scrolling passes, then
+   releases as the next takes its place: position: sticky, no scroll library.
+   --story-progress (0 to 1) is set by StoryScroll; everything else is CSS. */
 .story {
   position: relative;
   --story-rail: 0.75rem;
+  --story-pin: 7rem;
 }
 
 @media (min-width: 48rem) {
   .story {
     --story-rail: 2.5rem;
+    --story-pin: 8.5rem;
   }
 }
 
@@ -177,7 +180,6 @@
   bottom: 0;
   left: var(--story-rail);
   width: 1px;
-  /* The unfilled thread: the same dashed gold as the selvedge's edge threads. */
   background: repeating-linear-gradient(
     to bottom,
     var(--color-line) 0 8px,
@@ -209,18 +211,32 @@
 }
 
 .story__chapters {
-  display: grid;
-  gap: clamp(4.5rem, 3rem + 7vw, 9rem);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.story__chapter {
+/* The run is the scroll distance a chapter holds for. The chapter inside it
+   sticks to --story-pin until the run is spent. */
+.story__run {
   position: relative;
+  /* How long a chapter holds before the next takes over. Three chapters at this
+     height run about 3.3 screens, matching the pace of the reference. */
+  height: 140vh;
+}
+
+.story__run:last-child {
+  height: auto;
+}
+
+.story__chapter {
+  position: sticky;
+  top: var(--story-pin);
   display: grid;
   gap: 2.5rem;
   padding-left: calc(var(--story-rail) + 1.75rem);
+  padding-bottom: 4rem;
+  background: var(--color-white);
 }
 
 @media (min-width: 64rem) {
@@ -233,11 +249,11 @@
 
   /* Alternate which side the drawn plate sits on, so the column never reads
      as a list of identical rows. */
-  .story__chapter:nth-child(even) .story__text {
+  .story__run:nth-child(even) .story__text {
     order: 2;
   }
 
-  .story__chapter:nth-child(even) .story__plate {
+  .story__run:nth-child(even) .story__plate {
     order: 1;
   }
 }
@@ -245,9 +261,9 @@
 /* A short tick joining each chapter to the thread. */
 .story__marker {
   position: absolute;
-  left: var(--story-rail);
+  left: 0;
   top: 0.9rem;
-  width: calc(1.25rem);
+  width: 1.25rem;
   height: 1px;
   background: var(--color-line);
 }
@@ -270,7 +286,18 @@
   }
 }
 
+/* Holding a chapter still is a scroll effect; under reduced motion the chapters
+   simply stack and scroll normally. */
 @media (prefers-reduced-motion: reduce) {
+  .story__run {
+    height: auto;
+    margin-bottom: clamp(4rem, 3rem + 5vw, 7rem);
+  }
+
+  .story__chapter {
+    position: static;
+  }
+
   .story__diamond {
     display: none;
   }

@@ -17,6 +17,12 @@ export type StoryChapter = {
 /**
  * The house story, read the way a bolt of cloth runs off the loom.
  *
+ * Each chapter pins: it holds still in the viewport while its stretch of scrolling
+ * passes, then releases as the next arrives, which is the movement the client
+ * asked for. It is done with position: sticky rather than a scroll library, so it
+ * costs nothing to download and degrades to a plain stacked list wherever sticky
+ * is unavailable.
+ *
  * A thread-thin gold line runs the length of the section, with the selvedge's own
  * diamond travelling down it as you scroll. The diamond is the marker; the
  * selvedge band itself stays unique to the hero and the footer.
@@ -75,31 +81,36 @@ export function StoryScroll({ chapters }: { chapters: StoryChapter[] }) {
 
       <ol className="story__chapters">
         {chapters.map((chapter) => (
-          <li key={chapter.title} className="story__chapter">
-            <div className="story__marker" aria-hidden="true" />
+          /* Each chapter holds still while its run of scrolling passes, then
+             releases as the next takes its place. Pure sticky positioning: the
+             same effect as a pinned scroll, with nothing to download. */
+          <li key={chapter.title} className="story__run">
+            <article className="story__chapter">
+              <div className="story__marker" aria-hidden="true" />
 
-            <div className="story__text">
-              <p className="t-small text-slate">{chapter.kicker}</p>
-              <h3 className="t-h2 mt-3 text-[clamp(1.75rem,1.3rem+1.6vw,2.75rem)]">
-                {withReg(chapter.title)}
-              </h3>
-              <div className="mt-6 grid gap-5">
-                {chapter.body.map((paragraph) => (
-                  <p key={paragraph} className="measure text-slate">
-                    {withReg(paragraph)}
-                  </p>
-                ))}
+              <div className="story__text">
+                <p className="t-small text-slate">{chapter.kicker}</p>
+                <h3 className="t-h2 mt-3 text-[clamp(1.75rem,1.3rem+1.6vw,2.75rem)]">
+                  {withReg(chapter.title)}
+                </h3>
+                <div className="mt-6 grid gap-5">
+                  {chapter.body.map((paragraph) => (
+                    <p key={paragraph} className="measure text-slate">
+                      {withReg(paragraph)}
+                    </p>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <div className="story__plate">
-              <WeaveArt
-                pattern={chapter.pattern}
-                tone="mist"
-                scale={chapter.plateScale}
-                intensity={0.34}
-              />
-            </div>
+              <div className="story__plate">
+                <WeaveArt
+                  pattern={chapter.pattern}
+                  tone="mist"
+                  scale={chapter.plateScale}
+                  intensity={0.34}
+                />
+              </div>
+            </article>
           </li>
         ))}
       </ol>

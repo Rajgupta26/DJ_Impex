@@ -181,7 +181,7 @@ export function HeroCarousel({
         </div>
       </div>
 
-      {slides.length > 1 ? (
+      {slides.length > 1 || active.media.kind === "video" ? (
         <div className="container-site absolute inset-x-0 bottom-[clamp(1.25rem,3vh,2rem)] flex items-center gap-4">
           <button
             type="button"
@@ -189,7 +189,13 @@ export function HeroCarousel({
             className="flex h-11 w-11 shrink-0 items-center justify-center text-white/70 transition-colors hover:text-white"
           >
             <span className="visually-hidden">
-              {playing ? "Pause the slideshow" : "Play the slideshow"}
+              {playing
+                ? slides.length > 1
+                  ? "Pause the slideshow"
+                  : "Pause the film"
+                : slides.length > 1
+                  ? "Play the slideshow"
+                  : "Play the film"}
             </span>
             {playing ? (
               <Pause aria-hidden="true" size={15} strokeWidth={1.75} />
@@ -199,7 +205,7 @@ export function HeroCarousel({
           </button>
 
           <div className="flex gap-2">
-            {slides.map((slide, index) => (
+            {(slides.length > 1 ? slides : []).map((slide, index) => (
               <button
                 key={slide.headline}
                 type="button"
@@ -226,13 +232,12 @@ export function HeroCarousel({
 }
 
 /**
- * The film.
+ * The film, filling the hero.
  *
- * The footage is a 9:16 reel, so it is not cropped into a landscape band: on a
- * phone it fills the hero, and on a wider screen it stands as a tall panel on the
- * right, at its own proportions, like a bolt of cloth set on end. Cropping it to
- * 16:9 would throw away three quarters of the frame, cut the wordmark off the top,
- * and upscale what survived.
+ * The footage is a 9:16 reel, so a landscape hero shows its middle band. That is
+ * the trade the client asked for: one uninterrupted frame rather than a panel with
+ * a seam through it. It also crops the burned-in wordmark away from the header.
+ * On a phone the 9:16 fits the hero almost exactly and nothing is lost.
  *
  * The poster is a real image so it can be the LCP element and the hero is never
  * blank. The video carries preload="none", starts only while its slide is showing,
@@ -271,25 +276,22 @@ function HeroVideo({
 
   return (
     <div className="absolute inset-0">
-      {/* The panel: full-bleed on a phone, a standing column from lg up. */}
-      <div className="absolute inset-0 lg:left-auto lg:right-0 lg:w-[46%] xl:w-[42%]">
-        {allowed ? (
-          <video
-            ref={videoRef}
-            className="h-full w-full object-cover"
-            poster={poster}
-            preload="none"
-            muted
-            loop
-            playsInline
-            aria-label={alt}
-          >
-            <source src={src} type="video/mp4" />
-          </video>
-        ) : (
-          <Image src={poster} alt={alt} fill sizes="(max-width: 1024px) 100vw, 46vw" priority className="object-cover" />
-        )}
-      </div>
+      {allowed ? (
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover"
+          poster={poster}
+          preload="none"
+          muted
+          loop
+          playsInline
+          aria-label={alt}
+        >
+          <source src={src} type="video/mp4" />
+        </video>
+      ) : (
+        <Image src={poster} alt={alt} fill sizes="100vw" priority className="object-cover" />
+      )}
     </div>
   );
 }

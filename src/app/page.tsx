@@ -72,10 +72,14 @@ export default function HomePage() {
       }
     : { kind: "image", src: MARCONI_POSTER, alt: MARCONI_ALT, position: "74% center" };
 
-  const slides: HeroSlideView[] = getHeroSlides().map((slide, index) => ({
-    ...slide,
-    media: index === 0 ? opening : (HERO_MEDIA[index] ?? HERO_MEDIA[0]),
-  }));
+  // One slide only, at the client's request. The other three slides' copy stays
+  // in content/home.md, so restoring them is a one-line change here.
+  const slides: HeroSlideView[] = getHeroSlides()
+    .slice(0, 1)
+    .map((slide, index) => ({
+      ...slide,
+      media: index === 0 ? opening : (HERO_MEDIA[index] ?? HERO_MEDIA[0]),
+    }));
 
   return (
     <>
