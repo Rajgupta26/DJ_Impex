@@ -42,7 +42,7 @@ export function EnquirySection() {
               beside it; pushing these to a far-off foot, or making them travel
               with the scroll, were both worse answers to the same gap. */}
           <div className="on-dark lg:pr-6">
-            <p className="t-small font-semibold text-zari">{field(copy, "eyebrow")}</p>
+            <p className="t-small font-semibold text-accent">{field(copy, "eyebrow")}</p>
             <h2 className="t-h2 mt-4 max-w-[15ch]">{withReg(field(copy, "heading"))}</h2>
             <p className="measure mt-6 text-white/75">{withReg(field(copy, "intro"))}</p>
 
@@ -111,7 +111,7 @@ export function EnquirySection() {
           <div className="relative bg-white p-[clamp(1.5rem,1rem+1.4vw,2.25rem)] text-navy">
             {/* A thread of gold at the corner rather than a rule across the whole
                 edge. The accent is meant to be thread-thin in both directions. */}
-            <span aria-hidden="true" className="absolute left-0 top-0 h-px w-24 bg-zari" />
+            <span aria-hidden="true" className="absolute left-0 top-0 h-px w-24 bg-accent" />
             <h3 className="t-h3">{field(copy, "form-heading")}</h3>
             <EnquiryForm
               variant="full"

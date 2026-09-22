@@ -262,15 +262,24 @@ export async function submitEnquiry(
   const fromAddress = smtpUser || "akshaychavan44.ac@gmail.com";
   const enquiryFrom = `"Nabeen Luxury Fabrics" <${fromAddress}>`;
 
-  // Fallback for development if SMTP is not yet configured
+  // No credentials, no email. This used to log the enquiry and then return
+  // success, which told the customer their enquiry had been sent when nothing
+  // had left the building: the only copy was one line in a server log, and on a
+  // serverless host those roll off. A form that lies about delivering is worse
+  // than a form that fails, because nobody goes looking for the lost ones.
+  //
+  // It now fails the way a send failure fails, which the form already handles:
+  // it shows the message and offers WhatsApp. The enquiry is still logged, at
+  // error level, so a misconfiguration is loud and the lead is recoverable from
+  // the logs while it is still there.
   if (!smtpUser || !smtpPass) {
-    console.info(
-      "[enquiry] SMTP credentials not configured. Logged enquiry:\n%s",
+    console.error(
+      "[enquiry] SMTP is not configured (EMAIL_USER / EMAIL_PASS are unset), so this enquiry was NOT sent:\n%s",
       asText(enquiry),
     );
     return {
-      status: "success",
-      message: "Enquiry sent. Our team will contact you on WhatsApp shortly.",
+      status: "error",
+      message: "We could not send your enquiry just now. Please message us on WhatsApp.",
     };
   }
 

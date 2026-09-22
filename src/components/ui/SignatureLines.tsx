@@ -47,7 +47,7 @@ export function SignatureLines({ lines }: { lines: SignatureLine[] }) {
             >
               <span
                 className={`t-h3 block border-l-2 pl-5 ${
-                  index === open ? "border-zari" : "border-transparent"
+                  index === open ? "border-accent" : "border-transparent"
                 }`}
               >
                 {withReg(line.name)}

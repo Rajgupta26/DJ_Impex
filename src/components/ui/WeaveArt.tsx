@@ -150,7 +150,7 @@ export function WeaveArt({
         }
       />
       <svg
-        className={`absolute inset-0 h-full w-full ${dark ? "text-zari" : "text-navy"}`}
+        className={`absolute inset-0 h-full w-full ${dark ? "text-accent" : "text-navy"}`}
         style={{ opacity: intensity ?? (dark ? 0.26 : 0.14) }}
         focusable="false"
       >

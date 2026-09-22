@@ -24,7 +24,9 @@
   --color-mist: #eef1f6;          /* Giza Mist. Cool off-white for alternating sections. NOT cream. */
   --color-slate: #5a6680;         /* Thread Slate. Secondary text on white (5.6:1 contrast). */
   --color-line: #d5dbe6;          /* Hairlines, input borders on light backgrounds. */
-  --color-zari: #b8925a;          /* Zari Gold. PROPOSED accent (confirm with Binoli). Thread-thin use only:
+  --color-accent: #5f95dd;        /* Selvedge Blue. The house's one accent, replacing the PROPOSED Zari Gold
+                                     on the agency's instruction (2026-09-22): the palette is blue only, to match
+                                     the client's logo. Thread-thin use only:
                                      selvedge pinstripes, focus ring, active indicators. Never large fills, never body text. */
   --color-success: #2f6b4f;
   --color-error: #a23b3b;
@@ -72,7 +74,7 @@
 /* ---- Base ---------------------------------------------------------------- */
 :root {
   color-scheme: light;
-  --focus-ring: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-zari);
+  --focus-ring: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-accent);
 }
 html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 body {
@@ -103,7 +105,7 @@ body {
 
 /* ---- Signature: the selvedge band --------------------------------------- */
 /* A real bolt of cloth has its maker's name woven into the edge. The site does the same:
-   a thin navy band with the brand woven into it, framed by two zari-gold threads.
+   a thin navy band with the brand woven into it, framed by two blue selvedge threads.
    Used exactly twice: bottom edge of the hero, top edge of the footer. */
 .selvedge {
   position: relative;
@@ -126,13 +128,13 @@ body {
   position: absolute;
   left: 0; right: 0;
   height: 1px;
-  background: repeating-linear-gradient(90deg, var(--color-zari) 0 14px, transparent 14px 18px);
+  background: repeating-linear-gradient(90deg, var(--color-accent) 0 14px, transparent 14px 18px);
   opacity: 0.85;
 }
 .selvedge::before { top: 5px; }
 .selvedge::after  { bottom: 5px; }
 .selvedge__track { display: inline-flex; gap: 3.5rem; padding-inline: 1.75rem; animation: selvedge-run var(--selvedge-speed) linear infinite; }
-.selvedge__mark  { display: inline-block; width: 5px; height: 5px; background: var(--color-zari); transform: rotate(45deg); align-self: center; }
+.selvedge__mark  { display: inline-block; width: 5px; height: 5px; background: var(--color-accent); transform: rotate(45deg); align-self: center; }
 @keyframes selvedge-run { to { transform: translateX(-50%); } }
 
 /* ---- Secondary motif: pinked swatch edge (gallery tiles ONLY) ----------- */
@@ -173,7 +175,7 @@ a{color:inherit;text-decoration:none}
 .sg-header img{height:40px;width:auto}
 .sg-header nav{display:flex;gap:1.75rem;font-size:.9375rem;font-weight:500}
 .sg-header nav a{opacity:.88}
-.sg-header nav .is-cta{opacity:1;border-bottom:1px solid var(--color-zari);padding-bottom:2px}
+.sg-header nav .is-cta{opacity:1;border-bottom:1px solid var(--color-accent);padding-bottom:2px}
 .sg-hero{position:relative;height:min(92vh,860px);min-height:560px;overflow:hidden;color:#fff;background:var(--color-navy-deep)}
 .sg-hero__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 40%}
 .sg-hero__veil{position:absolute;inset:0;background:linear-gradient(95deg,rgb(13 23 51/.92) 0%,rgb(23 40 80/.72) 42%,rgb(23 40 80/.15) 78%)}
@@ -184,7 +186,7 @@ a{color:inherit;text-decoration:none}
 .sg-btn-ghost:hover{background:rgb(255 255 255/.1)}
 .sg-hero__progress{position:absolute;right:var(--spacing-gutter);bottom:clamp(4rem,10vh,7rem);display:flex;gap:.5rem}
 .sg-hero__progress span,.sg-quote-nav span{width:36px;height:2px;background:rgb(255 255 255/.35)}
-.sg-hero__progress .is-on{background:var(--color-zari)}
+.sg-hero__progress .is-on{background:var(--color-accent)}
 .sg-row{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
 .sg-wrap{max-width:var(--container-site);margin:0 auto;padding:0 var(--spacing-gutter)}
 .sg-section{padding:var(--spacing-section) 0 0}
@@ -202,7 +204,7 @@ a{color:inherit;text-decoration:none}
 .sg-type>div{display:grid;grid-template-columns:14rem 1fr;gap:2rem;padding:1.75rem 0;border-top:1px solid var(--color-line);align-items:baseline}
 .sg-spec{font-size:var(--text-small);color:var(--color-slate)}
 .sg-body{max-width:65ch}
-.sg-link{font-weight:600;border-bottom:1px solid var(--color-zari);padding-bottom:3px}
+.sg-link{font-weight:600;border-bottom:1px solid var(--color-accent);padding-bottom:3px}
 .sg-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
 .sg-gallery figure{position:relative;aspect-ratio:1;overflow:hidden;background:var(--color-mist)}
 .sg-gallery img{width:100%;height:100%;object-fit:cover;transition:transform var(--duration-base) var(--ease-weave)}
@@ -212,7 +214,7 @@ a{color:inherit;text-decoration:none}
 .sg-gallery__ask{grid-column:span 2;display:flex;flex-direction:column;justify-content:center;gap:.5rem;padding:2rem 2.5rem;background:var(--color-navy);color:#fff}
 .sg-gallery__ask .t-small{opacity:.75}
 .sg-quote-wrap{text-align:left}
-.sg-quote{margin:3rem 0 2rem;max-width:52rem;border-left:1px solid var(--color-zari);padding-left:2.5rem}
+.sg-quote{margin:3rem 0 2rem;max-width:52rem;border-left:1px solid var(--color-accent);padding-left:2.5rem}
 .sg-quote p{font-size:clamp(1.5rem,1.1rem + 1.6vw,2.5rem);font-weight:300;font-stretch:87.5%;line-height:1.3}
 .sg-quote footer{margin-top:1.5rem;color:var(--color-slate);font-size:var(--text-small)}
 .sg-tbc{margin-left:.5rem;padding:.1rem .45rem;border:1px dashed var(--color-error);color:var(--color-error);font-size:.7rem}
@@ -234,7 +236,7 @@ a{color:inherit;text-decoration:none}
 .sg-footer{background:var(--color-navy-deep);color:#fff;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding:4.5rem var(--spacing-gutter) 5rem}
 .sg-footer img{height:44px;width:auto;margin-bottom:1.25rem}
 .sg-footer__muted{color:rgb(255 255 255/.6);max-width:22rem}
-.sg-footer b{display:block;margin-bottom:.5rem;color:var(--color-zari);font-weight:600}
+.sg-footer b{display:block;margin-bottom:.5rem;color:var(--color-accent);font-weight:600}
 @media (max-width:860px){
  .sg-header nav{display:none}
  .sg-intro,.sg-ui{grid-template-columns:1fr;gap:3rem}
@@ -298,7 +300,7 @@ a{color:inherit;text-decoration:none}
       <figure><div style="background:#fff;border:1px solid var(--color-line)"></div><figcaption><b>White</b>#FFFFFF<br>Brand. Main ground.</figcaption></figure>
       <figure><div style="background:var(--color-mist)"></div><figcaption><b>Giza Mist</b>#EEF1F6<br>Alternate sections</figcaption></figure>
       <figure><div style="background:var(--color-slate)"></div><figcaption><b>Thread Slate</b>#5A6680<br>Secondary text</figcaption></figure>
-      <figure><div style="background:var(--color-zari)"></div><figcaption><b>Zari Gold</b>#B8925A<br>Proposed accent, thread-thin only</figcaption></figure>
+      <figure><div style="background:var(--color-accent)"></div><figcaption><b>Zari Gold</b>#B8925A<br>Proposed accent, thread-thin only</figcaption></figure>
     </div>
   </section>
 

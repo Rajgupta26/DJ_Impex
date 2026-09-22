@@ -110,7 +110,7 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
                   }
                   aria-current={active ? "page" : undefined}
                   className={`text-[0.9375rem] font-medium transition-opacity duration-[var(--duration-quick)] ${
-                    active ? "border-b border-zari pb-0.5" : "opacity-85 hover:opacity-100"
+                    active ? "border-b border-accent pb-0.5" : "opacity-85 hover:opacity-100"
                   }`}
                 >
                   {withReg(item.label)}

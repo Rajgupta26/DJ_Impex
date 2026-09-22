@@ -25,7 +25,11 @@ A premium, mobile-first **portfolio** website for Nabeen®, the luxury fabric br
 7. Never use stock photos of children for the education cause.
 
 ## Design rules (short version; details in 02-design-system.md)
-- Colours: Navy #172850, White, Midnight Loom #0D1733, Giza Mist #EEF1F6, Thread Slate #5A6680, Zari Gold #B8925A (thread-thin accent only).
+- Colours: Navy #172850, White, Midnight Loom #0D1733, Giza Mist #EEF1F6, Thread Slate #5A6680, Selvedge Blue #5F95DD (thread-thin accent only).
+- **The palette is blue only.** Zari Gold #B8925A was the accent until 2026-09-22, when the agency
+  replaced it so the site matches the client's logo. It was only ever marked PROPOSED in tokens.css.
+  Selvedge Blue sits at the logo's own hue and is measured against every ground it lands on.
+  Do not reintroduce gold, or any other hue, without the client saying so.
 - Font: Open Sans variable only. Headlines at `font-stretch: 75%`, weight 300. Body at 100% width.
 - Signature: the **selvedge band**, only at the hero's bottom edge and the footer's top edge. Pinked edges only in the gallery.
 - Left-aligned, editorial, generous whitespace. No uppercase eyebrows, no fade-up on every section, no rows of identical shadowed cards, no arrows appended to button text.

@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Selvedge } from "@/components/layout/Selvedge";
 import { withReg } from "@/components/ui/Reg";
+import { TbcTag } from "@/components/ui/TbcTag";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { getSite } from "@/lib/content";
-import { fabricPrefill, mailtoLink, telLink, whatsappLink } from "@/lib/contact";
+import { directionsLink, fabricPrefill, mailtoLink, telLink, whatsappLink } from "@/lib/contact";
 import { visible } from "@/lib/site";
 
 export function Footer() {
@@ -15,25 +17,25 @@ export function Footer() {
 
   return (
     <footer className="on-dark bg-navy-deep text-white">
-      <div className="container-site grid items-start gap-12 pb-16 pt-16 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1.3fr_1fr] lg:gap-12 lg:pb-20 lg:pt-20">
-        <div className="flex flex-col">
+      <Selvedge variant="footer" />
+
+      <div className="container-site grid gap-12 pb-14 pt-16 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1.2fr] lg:gap-16 lg:pt-20">
+        <div>
           <Image
             src="/images/logos/nabeen-logo-white.png"
             alt="Nabeen, luxury fabrics by DJI"
             width={1088}
             height={345}
-            className="h-10 w-auto self-start"
+            className="h-11 w-auto"
           />
-          <p className="mt-6 max-w-[22rem] leading-relaxed text-white/60">
-            {withReg(
-              `${site.brand.brand.value} is the fabric brand of ${site.brand.company.value}, Mumbai. Woven in India since ${site.brand.founded.value} for ${site.brand.markets.value}.`,
-            )}
+          <p className="mt-6 max-w-[24rem] text-white/60">
+            {withReg(`${site.brand.brand.value} is the fabric brand of ${site.brand.company.value}, Mumbai. Woven in India since ${site.brand.founded.value} for ${site.brand.markets.value}.`)}
           </p>
         </div>
 
         <nav aria-label="Footer">
-          <h2 className="t-small mb-5 font-semibold text-zari">Explore</h2>
-          <ul className="grid gap-3 text-white/75">
+          <h2 className="t-small mb-4 font-semibold text-accent">Explore</h2>
+          <ul className="grid gap-2.5 text-white/75">
             {site.navigation.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="transition-colors hover:text-white">
@@ -44,63 +46,75 @@ export function Footer() {
           </ul>
         </nav>
 
-        <div>
-          <h2 className="t-small mb-5 font-semibold text-zari">Talk to us</h2>
-          <ul className="grid gap-3 text-white/75">
-            <li>
-              <TrackedLink
-                href={telLink()}
-                event="call_click"
-                location="footer"
-                external={false}
-                className="transition-colors hover:text-white"
-              >
-                {contact.phonePrimary.display}
-              </TrackedLink>
-            </li>
-            <li>
-              <TrackedLink
-                href={mailtoLink("Fabric enquiry")}
-                event="email_click"
-                location="footer"
-                external={false}
-                className="transition-colors hover:text-white"
-              >
-                {contact.emailPrimary.value}
-              </TrackedLink>
-            </li>
-            <li className="mt-1">
-              <address className="not-italic leading-relaxed text-white/60">
-                {contact.address.lines.map((line) => (
-                  <span key={line} className="block">
-                    {line}
-                  </span>
-                ))}
-              </address>
-            </li>
-          </ul>
-        </div>
-
-        {socials.length > 0 ? (
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-1">
           <div>
-            <h2 className="t-small mb-5 font-semibold text-zari">Follow</h2>
-            <ul className="grid gap-3 text-white/75">
-              {socials.map((social) => (
-                <li key={social.name}>
-                  <a
-                    href={social.url ?? "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="transition-colors hover:text-white"
-                  >
-                    {social.name}
-                    {social.handle ? <span className="text-white/45"> {social.handle}</span> : null}
-                  </a>
-                </li>
-              ))}
+            <h2 className="t-small mb-4 font-semibold text-accent">Talk to us</h2>
+            <ul className="grid gap-2.5 text-white/75">
+              <li>
+                <TrackedLink
+                  href={telLink()}
+                  event="call_click"
+                  location="footer"
+                  external={false}
+                  className="transition-colors hover:text-white"
+                >
+                  {contact.phonePrimary.display}
+                </TrackedLink>
+                <TbcTag status={contact.phonePrimary.status} note={contact.phonePrimary.note} />
+              </li>
+              <li>
+                <TrackedLink
+                  href={mailtoLink("Fabric enquiry")}
+                  event="email_click"
+                  location="footer"
+                  external={false}
+                  className="transition-colors hover:text-white"
+                >
+                  {contact.emailPrimary.value}
+                </TrackedLink>
+              </li>
+              <li className="mt-1">
+                <address className="not-italic text-white/60">
+                  {contact.address.lines.map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </address>
+                <TrackedLink
+                  href={directionsLink()}
+                  event="directions_click"
+                  location="footer"
+                  className="mt-2 inline-block text-white/75 transition-colors hover:text-white"
+                >
+                  Get directions
+                </TrackedLink>
+                <TbcTag status={contact.address.status} note={contact.address.note} />
+              </li>
             </ul>
           </div>
-        ) : null}
+
+          {socials.length > 0 ? (
+            <div>
+              <h2 className="t-small mb-4 font-semibold text-accent">Follow</h2>
+              <ul className="grid gap-2.5 text-white/75">
+                {socials.map((social) => (
+                  <li key={social.name}>
+                    <a
+                      href={social.url ?? "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="transition-colors hover:text-white"
+                    >
+                      {social.name}
+                      {social.handle ? <span className="text-white/45"> {social.handle}</span> : null}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </div>
       </div>
 
       <div className="container-site border-t border-white/12 py-8">
@@ -118,6 +132,9 @@ export function Footer() {
               </TrackedLink>
             </li>
           ))}
+          <li>
+            <TbcTag status={site.fabricTypes.status} note={site.fabricTypes._note} />
+          </li>
         </ul>
       </div>
 

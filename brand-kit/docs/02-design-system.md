@@ -25,7 +25,7 @@ Note: the navy inside the supplied Nabeen logo file is #012350, slightly differe
 | Giza Mist | `#EEF1F6` | Alternating section background. A cool off-white, deliberately not cream. |
 | Thread Slate | `#5A6680` | Secondary text, captions (5.6:1 on white). |
 | Line | `#D5DBE6` | Hairlines, input borders. |
-| Zari Gold | `#B8925A` | **Proposed** accent, named after zari thread. Thread-thin only: selvedge threads, focus ring, active carousel indicator, underline on text links. Never a fill, never body text. Confirm with Binoli; if rejected, swap for white at 60% and nothing else changes. |
+| Selvedge Blue | `#5F95DD` | The house's one accent, from 2026-09-22. Thread-thin only: selvedge threads, focus ring, active carousel indicator, underline on text links. Never a fill, never body text. It replaced the proposed Zari Gold `#B8925A` on the agency's instruction, so the palette is blue only and matches the client's logo. Set at the logo's own hue (214deg) and measured on every ground: 4.69:1 on navy and 5.75:1 on Midnight Loom, which both carry small text in it, and 3.07:1 on white, where the focus ring needs 3. The gold measured 2.88:1 on white and did not meet that. |
 
 Ratio guide per screen: roughly 60% white/mist, 35% navy, under 1% gold.
 

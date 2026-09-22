@@ -6,7 +6,11 @@ import { SITE_URL } from "@/lib/seo";
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const pages = ["/", ...getSite().navigation.map((item) => item.href)].map((href) => ({
+  // Deduplicated: the navigation carries its own "Home" entry pointing at "/",
+  // so seeding the list with "/" listed the homepage twice.
+  const hrefs = [...new Set(["/", ...getSite().navigation.map((item) => item.href)])];
+
+  const pages = hrefs.map((href) => ({
     url: href === "/" ? SITE_URL : `${SITE_URL}${href}`,
     lastModified: now,
     changeFrequency: "monthly" as const,

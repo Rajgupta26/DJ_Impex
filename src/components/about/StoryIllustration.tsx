@@ -1,4 +1,10 @@
 /**
+ * NOT CURRENTLY RENDERED: the story section that used these was deleted on
+ * 2026-09-22. The file stays because StoryScroll.tsx, which came in with the
+ * merge of dc50881, imports it -- and StoryScroll is itself unreferenced, since
+ * /about no longer has a story. If the story is not coming back, the pair should
+ * be removed together and deliberately.
+ *
  * Line illustrations for the story chapters.
  *
  * Drawn here rather than sourced, so they belong to Nabeen: a spinning frame for

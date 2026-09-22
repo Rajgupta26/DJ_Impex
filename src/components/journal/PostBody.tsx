@@ -24,7 +24,7 @@ const components: MDXComponents = {
     <li className="border-l border-line pl-4">{children}</li>
   ),
   blockquote: ({ children }) => (
-    <blockquote className="my-12 border-l border-zari pl-8 text-[clamp(1.25rem,1rem+1vw,1.75rem)] font-light leading-[1.35] [font-stretch:87.5%] text-navy">
+    <blockquote className="my-12 border-l border-accent pl-8 text-[clamp(1.25rem,1rem+1vw,1.75rem)] font-light leading-[1.35] [font-stretch:87.5%] text-navy">
       {children}
     </blockquote>
   ),

@@ -13,8 +13,13 @@
   --color-mist: #eef1f6;          /* Giza Mist. Cool off-white for alternating sections. NOT cream. */
   --color-slate: #5a6680;         /* Thread Slate. Secondary text on white (5.6:1 contrast). */
   --color-line: #d5dbe6;          /* Hairlines, input borders on light backgrounds. */
-  --color-zari: #b8925a;          /* Zari Gold. PROPOSED accent (confirm with Binoli). Thread-thin use only:
-                                     selvedge pinstripes, focus ring, active indicators. Never large fills, never body text. */
+  --color-accent: #5f95dd;        /* Selvedge Blue. The house's one accent, replacing the PROPOSED Zari Gold
+                                     on the agency's instruction (2026-09-22): the palette is blue only, to match
+                                     the client's logo. Set at the logo's own hue, 214deg, and measured against
+                                     every ground it lands on: 4.69:1 on navy, 5.75:1 on Midnight Loom (both carry
+                                     small text), 3.07:1 on white (the focus ring, a non-text indicator, needs 3).
+                                     The gold measured 2.88:1 on white and did not meet that. Thread-thin use only:
+                                     selvedge pinstripes, focus ring, active indicators, rules. Never large fills. */
   --color-success: #2f6b4f;
   --color-error: #a23b3b;
 
@@ -61,7 +66,7 @@
 /* ---- Base ---------------------------------------------------------------- */
 :root {
   color-scheme: light;
-  --focus-ring: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-zari);
+  --focus-ring: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-accent);
 }
 html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 body {
@@ -92,7 +97,7 @@ body {
 
 /* ---- Signature: the selvedge band --------------------------------------- */
 /* A real bolt of cloth has its maker's name woven into the edge. The site does the same:
-   a thin navy band with the brand woven into it, framed by two zari-gold threads.
+   a thin navy band with the brand woven into it, framed by two blue selvedge threads.
    Used exactly twice: bottom edge of the hero, top edge of the footer. */
 .selvedge {
   position: relative;
@@ -110,18 +115,18 @@ body {
   white-space: nowrap;
 }
 .selvedge::before,
-.selvedge::after {                  /* the two gold edge threads */
+.selvedge::after {                  /* the two edge threads */
   content: "";
   position: absolute;
   left: 0; right: 0;
   height: 1px;
-  background: repeating-linear-gradient(90deg, var(--color-zari) 0 14px, transparent 14px 18px);
+  background: repeating-linear-gradient(90deg, var(--color-accent) 0 14px, transparent 14px 18px);
   opacity: 0.85;
 }
 .selvedge::before { top: 5px; }
 .selvedge::after  { bottom: 5px; }
 .selvedge__track { display: inline-flex; gap: 3.5rem; padding-inline: 1.75rem; animation: selvedge-run var(--selvedge-speed) linear infinite; }
-.selvedge__mark  { display: inline-block; width: 5px; height: 5px; background: var(--color-zari); transform: rotate(45deg); align-self: center; }
+.selvedge__mark  { display: inline-block; width: 5px; height: 5px; background: var(--color-accent); transform: rotate(45deg); align-self: center; }
 @keyframes selvedge-run { to { transform: translateX(-50%); } }
 
 /* ---- Secondary motif: pinked swatch edge (gallery tiles ONLY) ----------- */

@@ -61,7 +61,7 @@ export function TestimonialsCarousel({
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`Quote ${index + 1} of ${items.length}`}
-                className="min-w-0 flex-[0_0_100%] border-l border-zari pl-8 sm:pl-10"
+                className="min-w-0 flex-[0_0_100%] border-l border-accent pl-8 sm:pl-10"
               >
                 <blockquote>
                   <p className="max-w-[52rem] text-[clamp(1.5rem,1.1rem+1.6vw,2.5rem)] font-light leading-[1.3] [font-stretch:87.5%]">
