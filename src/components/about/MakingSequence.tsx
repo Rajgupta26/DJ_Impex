@@ -37,7 +37,7 @@ export function MakingSequence() {
   const process = section(getPage("about"), "how-our-fabric-is-made-brochure-p-4-p-6");
 
   return (
-    <section className="bg-white py-[var(--spacing-section)]">
+    <section className="bg-mist py-[var(--spacing-section)]">
       <Container>
         <div className="max-w-[46rem]">
           <h2 className="t-h2">{withReg(process.heading.replace(/\s*\(.*\)$/, ""))}</h2>

@@ -1,4 +1,10 @@
 /**
+ * NOT CURRENTLY RENDERED on this branch: the story section that used these was
+ * deleted on 2026-09-22. Do not delete this file. The other side of the pending
+ * merge (origin/main, dc50881) has a StoryScroll component that imports it, and
+ * removing it here would break that merge. Once the merge is settled, this is
+ * either wired back up or goes with StoryScroll.
+ *
  * Line illustrations for the story chapters.
  *
  * Drawn here rather than sourced, so they belong to Nabeen: a spinning frame for

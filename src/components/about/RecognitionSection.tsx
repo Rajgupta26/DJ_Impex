@@ -23,7 +23,7 @@ export function RecognitionSection() {
   const recognition = section(getPage("about"), "recognition");
 
   return (
-    <section className="bg-mist py-[var(--spacing-section)]">
+    <section className="bg-white py-[var(--spacing-section)]">
       <Container>
         <div className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:items-stretch lg:gap-20">
           <div className="flex flex-col">
