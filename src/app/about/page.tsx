@@ -8,7 +8,7 @@ import { EnquiryBand } from "@/components/layout/EnquiryBand";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import { withReg } from "@/components/ui/Reg";
-import { getPage, getSite } from "@/lib/content";
+import { getPage } from "@/lib/content";
 import { field, section } from "@/lib/markdown";
 import { buildMetadata, pageTitle } from "@/lib/seo";
 
@@ -64,7 +64,6 @@ function buildChapters(
  * -- so no two sections of the same weight sit against each other.
  */
 export default function AboutPage() {
-  const site = getSite();
   const about = getPage("about");
   const head = section(about, "about-d-j-impex-co-dji");
   const story = section(about, "our-story");
@@ -75,23 +74,23 @@ export default function AboutPage() {
       <PageHero
         title={withReg(field(head, "page-title-h1"))}
         strapline={withReg(field(head, "strapline"))}
-        image="/images/hero/weaving-loom.jpg"
-        alt="A loom weaving fine cloth"
-        objectPosition="center 38%"
+        /* The loom frame is busy exactly where the strapline sits, and white text
+           across lit machinery is hard to read. The spinning frames are an even
+           field at that height. */
+        image="/images/hero/spinning-frames.jpg"
+        alt="Spinning frames drawing cotton into yarn"
+        objectPosition="center 42%"
       />
 
       <WelcomeSection />
 
       <section className="bg-white py-[var(--spacing-section)]">
         <Container>
-          <div className="max-w-[46rem]">
-            <h2 className="t-h2">Our threads, our story</h2>
-            <p className="t-lead mt-5">
-              {withReg(
-                `Since ${site.brand.founded.value}, from a counter in Mangaldas Market to ${site.brand.markets.value}.`,
-              )}
-            </p>
-          </div>
+          {/* Heading only. The line that used to sit here opened "Since 1995",
+              the first chapter's kicker reads "Mumbai, 1995" and its first
+              sentence is "Since its establishment in 1995" -- three statements of
+              the same date within one screen. */}
+          <h2 className="t-h2">Our threads, our story</h2>
 
           <div className="mt-16 lg:mt-24">
             <StoryChapters chapters={buildChapters(chapters.items, story.paragraphs)} />
