@@ -10,6 +10,24 @@ status: confirmed client copy
 **Page title / H1:** About D J Impex & Co.
 **Strapline (client):** Empowering the textile industry with high-quality fabrics.
 
+## The house
+PROPOSED. One line to open /about, assembled only from facts the client has already
+given: 1995 and the markets (site.json), Mangaldas Market (the address block), and the
+four activities named in "Our story" -- "from sourcing and manufacturing to supplying and
+trading". Nothing here is new information. Change it freely.
+
+**Eyebrow:** The house
+**Statement:** Sourcing, manufacturing, supplying and trading fine cloth from Mumbai since 1995.
+**Expansion:** D J Impex & Co. trades from Mangaldas Market in Mumbai and exports under the brand Nabeen® to Africa and the Middle East.
+**Photo caption:** Spinning frames drawing cotton into yarn.
+
+## Our promise
+The client's own sign-off, from brochure p.3 via site.json (brand.brandPromiseSignoff).
+The label above it is a UI label, not a claim.
+
+**Eyebrow:** Our promise
+**Photo caption:** Marconi by Nabeen®, white jacquard shirting in raking light.
+
 ## Welcome
 Client copy, lifted from the client's own prototype at djimpex.vercel.app ("About us"),
 on the agency's instruction 2026-09-22. It is their writing, and it carries no dates or
