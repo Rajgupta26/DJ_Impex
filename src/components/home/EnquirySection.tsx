@@ -35,7 +35,7 @@ export function EnquirySection() {
     <section className="relative isolate bg-navy text-white">
       <WeaveArt pattern="ogee" scale={1.3} />
 
-      <Container className="relative py-[var(--spacing-section)]">
+      <Container className="relative py-[clamp(3rem,2rem+2.6vw,4.5rem)]">
         <div className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
           {/* Both columns start at the top and read straight down. The form is set
               two fields to a row so that it is close to the height of the words
@@ -108,14 +108,17 @@ export function EnquirySection() {
             </dl>
           </div>
 
-          <div className="border-t border-zari bg-white p-[clamp(1.5rem,1rem+2.4vw,3.25rem)] text-navy">
+          <div className="relative bg-white p-[clamp(1.5rem,1rem+1.4vw,2.25rem)] text-navy">
+            {/* A thread of gold at the corner rather than a rule across the whole
+                edge. The accent is meant to be thread-thin in both directions. */}
+            <span aria-hidden="true" className="absolute left-0 top-0 h-px w-24 bg-zari" />
             <h3 className="t-h3">{field(copy, "form-heading")}</h3>
             <EnquiryForm
               variant="full"
               paired
               fabrics={site.fabricTypes.items.map(({ slug, name }) => ({ slug, name }))}
               whatsappHref={whatsappLink()}
-              className="mt-8"
+              className="mt-6"
             />
           </div>
         </div>

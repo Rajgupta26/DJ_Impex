@@ -144,7 +144,11 @@ export function EnquiryForm({
   }
 
   return (
-    <form action={action} className={`grid gap-5 ${className}`.trim()} noValidate>
+    <form
+      action={action}
+      className={`grid ${twoUp ? "gap-4" : "gap-5"} ${className}`.trim()}
+      noValidate
+    >
       <input type="hidden" name="variant" value={variant} />
 
       {/* Honeypot: hidden from people, irresistible to bots. */}
@@ -157,15 +161,15 @@ export function EnquiryForm({
         /* Who you are, how to reach you, where you are: three rows instead of
            six, and each row is still one thought. */
         <>
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
             {fullName}
             {company}
           </div>
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
             {whatsappNumber}
             {email}
           </div>
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
             {market}
             {city}
           </div>
