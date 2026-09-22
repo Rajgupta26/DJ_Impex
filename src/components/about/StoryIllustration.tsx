@@ -1,9 +1,9 @@
 /**
- * NOT CURRENTLY RENDERED on this branch: the story section that used these was
- * deleted on 2026-09-22. Do not delete this file. The other side of the pending
- * merge (origin/main, dc50881) has a StoryScroll component that imports it, and
- * removing it here would break that merge. Once the merge is settled, this is
- * either wired back up or goes with StoryScroll.
+ * NOT CURRENTLY RENDERED: the story section that used these was deleted on
+ * 2026-09-22. The file stays because StoryScroll.tsx, which came in with the
+ * merge of dc50881, imports it -- and StoryScroll is itself unreferenced, since
+ * /about no longer has a story. If the story is not coming back, the pair should
+ * be removed together and deliberately.
  *
  * Line illustrations for the story chapters.
  *

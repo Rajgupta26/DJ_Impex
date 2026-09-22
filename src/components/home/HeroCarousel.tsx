@@ -4,7 +4,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import Fade from "embla-carousel-fade";
 import Image from "next/image";
 import Link from "next/link";
-import { Pause, Play } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
@@ -53,7 +52,7 @@ export function HeroCarousel({
   const reduceMotion = useReducedMotion();
   const [emblaRef, embla] = useEmblaCarousel({ loop: true, duration: 40 }, [Fade()]);
   const [selected, setSelected] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const playing = true;
   // The line-by-line rise is the site's single orchestrated moment, so it plays
   // on first load only. Once the carousel has moved, later headlines cross-fade
   // instead, and are never mid-flight (and invisible) while a slide is showing.
@@ -87,7 +86,7 @@ export function HeroCarousel({
       data-hero
       aria-roledescription="carousel"
       aria-label="Nabeen fabrics"
-      className="on-dark relative h-[min(92vh,880px)] min-h-[34rem] overflow-hidden bg-navy-deep text-white"
+      className="on-dark relative h-screen h-[100dvh] min-h-[36rem] overflow-hidden bg-navy-deep text-white"
     >
       <div ref={emblaRef} className="h-full">
         <div className="flex h-full">
@@ -178,31 +177,10 @@ export function HeroCarousel({
         </div>
       </div>
 
-      {slides.length > 1 || active.media.kind === "video" ? (
+      {slides.length > 1 ? (
         <div className="container-site absolute inset-x-0 bottom-[clamp(1.25rem,3vh,2rem)] flex items-center gap-4">
-          <button
-            type="button"
-            onClick={() => setPlaying((value) => !value)}
-            className="flex h-11 w-11 shrink-0 items-center justify-center text-white/70 transition-colors hover:text-white"
-          >
-            <span className="visually-hidden">
-              {playing
-                ? slides.length > 1
-                  ? "Pause the slideshow"
-                  : "Pause the film"
-                : slides.length > 1
-                  ? "Play the slideshow"
-                  : "Play the film"}
-            </span>
-            {playing ? (
-              <Pause aria-hidden="true" size={15} strokeWidth={1.75} />
-            ) : (
-              <Play aria-hidden="true" size={15} strokeWidth={1.75} />
-            )}
-          </button>
-
           <div className="flex gap-2">
-            {(slides.length > 1 ? slides : []).map((slide, index) => (
+            {slides.map((slide, index) => (
               <button
                 key={slide.headline}
                 type="button"

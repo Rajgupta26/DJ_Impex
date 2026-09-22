@@ -1,6 +1,5 @@
 "use client";
 
-import { MapPin } from "lucide-react";
 
 import { useAnyOverlayOpen } from "@/components/layout/OverlayContext";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
@@ -13,10 +12,9 @@ import { track } from "@/lib/analytics";
  */
 export function FloatingActions({
   whatsappHref,
-  directionsHref,
 }: {
   whatsappHref: string;
-  directionsHref: string;
+  directionsHref?: string;
 }) {
   const overlayOpen = useAnyOverlayOpen();
 
@@ -36,16 +34,6 @@ export function FloatingActions({
         disabled={overlayOpen}
       >
         <WhatsAppGlyph size={24} />
-      </FloatingAction>
-
-      <FloatingAction
-        href={directionsHref}
-        label="Get directions to our Mumbai office"
-        tone="white"
-        onClick={() => track("directions_click", { location: "floating" })}
-        disabled={overlayOpen}
-      >
-        <MapPin aria-hidden="true" size={22} strokeWidth={1.5} />
       </FloatingAction>
     </div>
   );

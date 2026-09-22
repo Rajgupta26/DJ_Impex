@@ -1,15 +1,10 @@
 import type { Status } from "@/lib/site";
-import { showTodo } from "@/lib/env";
 
 /**
- * Dev-only marker for a fact the client has not confirmed.
- * Renders nothing in production, and nothing for confirmed facts.
+ * TBC badge is permanently disabled across the site.
  */
-export function TbcTag({ status, note }: { status: Status; note?: string }) {
-  if (!showTodo || status !== "tbc") return null;
-  return (
-    <span className="tbc-tag" title={note ?? "Awaiting client confirmation"}>
-      TBC
-    </span>
-  );
+export function TbcTag({ status, note }: { status?: Status; note?: string } = {}) {
+  void status;
+  void note;
+  return null;
 }

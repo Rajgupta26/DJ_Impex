@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Mail, Phone, X } from "lucide-react";
 import { useRef } from "react";
@@ -26,6 +27,7 @@ export function MobileMenu({
   navigation: NavItem[];
   contact: HeaderContact;
 }) {
+  const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
 
@@ -67,17 +69,30 @@ export function MobileMenu({
 
           <nav aria-label="Main" className="container-site mt-6 flex-1">
             <ul className="grid">
-              {navigation.map((item) => (
-                <li key={item.href} className="border-t border-white/12">
-                  <Link
-                    href={item.href}
-                    onClick={onClose}
-                    className="t-h3 block py-5 font-light [font-stretch:80%] text-[clamp(1.5rem,1.1rem+2.4vw,2.25rem)]"
-                  >
-                    {withReg(item.label)}
-                  </Link>
-                </li>
-              ))}
+              {navigation.map((item) => {
+                const isContact = item.href === "/contact" || item.href === "/#contact";
+
+                return (
+                  <li key={item.href} className="border-t border-white/12">
+                    <Link
+                      href={isContact ? "/#contact" : item.href}
+                      onClick={(e) => {
+                        onClose();
+                        if (isContact && pathname === "/") {
+                          e.preventDefault();
+                          setTimeout(() => {
+                            document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                            window.history.pushState(null, "", "/#contact");
+                          }, 150);
+                        }
+                      }}
+                      className="t-h3 block py-5 font-light [font-stretch:80%] text-[clamp(1.5rem,1.1rem+2.4vw,2.25rem)]"
+                    >
+                      {withReg(item.label)}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
