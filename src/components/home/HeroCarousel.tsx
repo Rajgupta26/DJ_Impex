@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
-import { Reg, withReg } from "@/components/ui/Reg";
+import { withReg } from "@/components/ui/Reg";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
