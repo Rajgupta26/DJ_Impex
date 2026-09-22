@@ -10,6 +10,24 @@ status: confirmed client copy
 **Page title / H1:** About D J Impex & Co.
 **Strapline (client):** Empowering the textile industry with high-quality fabrics.
 
+## Welcome
+Client copy, lifted from the client's own prototype at djimpex.vercel.app ("About us"),
+on the agency's instruction 2026-09-22. It is their writing, and it carries no dates or
+figures, so none of the prototype claims listed in docs/05-open-questions.md apply to it.
+Two things to put to the client, recorded as questions 74-76: it names Cotton Shirting and
+Brocade, which are not in site.json fabricTypes, and it ended with two emoji, which the UI
+does not use -- the heart is set as the word "love".
+
+**Eyebrow:** About us
+**Heading:** Welcome to D J Impex & Co.
+**Lead:** Discover the epitome of luxury and comfort with Nabeen® by DJI, a brand synonymous with a Middle Eastern flair for luxury fabrics.
+**Collection lead:** Our exclusive collection of
+**Collection names:** Suiting, Cotton Shirting, Swiss Men Lace, Atiku, Voile, Brocade, Giza
+**Collection tail:** embodies the highest standards of quality, seamlessly blending rich traditions with contemporary appeal.
+**Craft:** Crafted by D J Impex & Co (DJI), a trusted name in fabric manufacturing and export, Nabeen® showcases a diverse range of meticulously curated textiles that speak of our unwavering commitment to excellence. With an emphasis on trust, quality, automation, and process-driven performance, our fabrics are an ode to fine craftsmanship.
+**Invitation:** Immerse yourself in a world of opulence, where each fabric is a masterpiece designed to elevate your style. Experience the luxury of Nabeen® by DJI, offering you an exquisite tapestry of comfort, quality, and culture.
+**Closing:** Crafted with love, from India.
+
 ## Our story
 Since its establishment in 1995, D J Impex & Co. (DJI) has forged strong synergies with clients, fostering mutual growth.
 

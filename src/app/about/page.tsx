@@ -1,7 +1,8 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 
-import { StoryScroll, type StoryChapter } from "@/components/about/StoryScroll";
+import { StoryChapters, type StoryChapter } from "@/components/about/StoryChapters";
+import { WelcomeSection } from "@/components/about/WelcomeSection";
 import { EnquiryBand } from "@/components/layout/EnquiryBand";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
@@ -71,9 +72,10 @@ export default function AboutPage() {
         alt="Spinning frames drawing cotton into yarn"
       />
 
-      {/* The story runs down a thread, the way cloth runs off the loom.
-          Chapter labels come from content/about.md; the copy itself is the
-          client's, split across the three chapters. */}
+      <WelcomeSection />
+
+      {/* The three chapters alternate down the page. Chapter labels come from
+          content/about.md; the copy itself is the client's, split across them. */}
       <section className="bg-white py-[var(--spacing-section)]">
         <Container>
           <div className="max-w-[46rem]">
@@ -86,7 +88,7 @@ export default function AboutPage() {
           </div>
 
           <div className="mt-16 lg:mt-24">
-            <StoryScroll chapters={buildChapters(chapters.items, story.paragraphs)} />
+            <StoryChapters chapters={buildChapters(chapters.items, story.paragraphs)} />
           </div>
         </Container>
       </section>
