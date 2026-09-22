@@ -15,7 +15,16 @@ Ask the client for **SVG** versions of both logos. PNGs are fine to start.
 Favicon: generate from `nabeen-logo-original-square.png` (use the "N" or full wordmark on navy) via `app/icon.png` + `app/apple-icon.png`.
 
 ## gallery/ (10 images, from brochure p.7)
-Real Nabeen fabric photographs. Square, 315-480px, so they are **low resolution**: fine for 3×4 grid tiles (~300px on screen), NOT for large use. Request originals.
+Real Nabeen fabric photographs, square.
+
+**Four are now high resolution** (1024px, supplied 2026-09-22) and are safe for large use:
+`03-white-jacquard`, `05-camel-check-jacquard`, `08-champagne-check`, `09-sky-circle-jacquard`.
+Those four carry the three journal covers and the archive frame on the home page.
+
+The remaining six are still brochure scans at 315-480px: fine for grid tiles
+(~300px on screen), NOT for large use. Still worth requesting: `01-aqua-jacquard`,
+`02-taupe-dobby`, `04-charcoal-herringbone`, `06-mint-dobby`, `07-blush-stripe`,
+`10-slate-rib`.
 01 aqua jacquard · 02 taupe dobby · 03 white jacquard · 04 charcoal herringbone · 05 camel check jacquard · 06 mint dobby · 07 blush stripe · 08 champagne check · 09 sky circle jacquard · 10 slate rib.
 Names describe what is visible, not official product names. Replace with product names when the client supplies them.
 

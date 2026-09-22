@@ -104,3 +104,9 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 63. **The recipients are named from the banner in the photographs**, not from any document the client sent: "Nassarawa Children's Home" and "Creative Helping Needy Foundation", recorded in `site.json` under `wear2care` with `status: tbc`. Confirm the spelling, and confirm they may be named on the site.
 64. **Still pending for this page: a portrait of Ali Nuhu himself**, and an approved quote. The donation photographs do not obviously show him, and I will not guess which person in a group photograph he is.
 
+## Gallery originals
+
+65. **Four high-resolution fabric photographs received** (2026-09-22), at 1024px against the 315-480px brochure scans they replace: white jacquard, camel check jacquard, champagne check and sky circle jacquard. They keep the same filenames, so every reference picked them up at once. Question 8 is now partly closed.
+66. **These four carry the large uses.** All three journal covers and the archive frame on the home page draw on them, and those were the blurriest images on the site: a 315px scan was being stretched across a 21:9 article cover.
+67. **Six brochure fabrics are still low resolution**: aqua jacquard, taupe dobby, charcoal herringbone, mint dobby, blush stripe, slate rib. They are only used as gallery tiles at about 300px, so they hold up there, but they cannot be used large. Worth asking for the rest of the set.
+

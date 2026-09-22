@@ -59,7 +59,7 @@ export default function TodoPage() {
 
   const pendingImages = [
     "Hero carousel photographs (3-4, landscape, high resolution)",
-    "High-resolution originals of the 10 brochure fabric photographs",
+    "High-resolution originals of the remaining six brochure fabrics (four supplied: white jacquard, camel check, champagne check, sky circle)",
     "Two more fabric photographs, to complete the 12-tile gallery",
     "A portrait of Ali Nuhu himself, and an approved quote (the donation photographs have arrived)",
     "Real factory and process photographs",
