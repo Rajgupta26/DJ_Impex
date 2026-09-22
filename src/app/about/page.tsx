@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 
 import { MakingSequence } from "@/components/about/MakingSequence";
 import { RecognitionSection } from "@/components/about/RecognitionSection";
-import { WelcomeSection } from "@/components/about/WelcomeSection";
-import { EnquiryBand } from "@/components/layout/EnquiryBand";
 import { PageHero } from "@/components/ui/PageHero";
 import { withReg } from "@/components/ui/Reg";
 import { getPage } from "@/lib/content";
@@ -21,20 +19,17 @@ export const metadata: Metadata = buildMetadata({
  * /about, read top to bottom:
  *
  *   hero            spinning frames, and the page's one h1
- *   welcome         the client's brand writing, and the seven cloths
  *   recognition     the award, and the four marks
  *   making          seven steps, numbered because they are a real sequence
- *   enquiry         the same closing band as every inner page
  *
- * Four sections and a closing band. The threaded story went on the agency's
- * instruction; with it went the only place the client's four "Our story"
- * paragraphs were rendered. That copy is still in about.md and is now unused --
- * see 05-open-questions.md 81.
+ * Three sections, all of them cut back to this on the agency's instruction over
+ * 2026-09-22. What that leaves out is worth knowing rather than discovering: the
+ * client's four "Our story" paragraphs and their prototype welcome copy are both
+ * still in about.md and neither is rendered anywhere on the site, and this is the
+ * only page with no closing enquiry band, so the sole route to contact from here
+ * is the floating buttons. See 05-open-questions.md 81-84.
  *
- * The grounds alternate -- photograph, mist, white, mist, navy -- so no two
- * sections of the same weight sit against each other. Removing the story cost
- * a white band, so Recognition and the making sequence swapped grounds to keep
- * that true.
+ * Grounds: photograph, white, mist. No two adjacent sections share one.
  */
 export default function AboutPage() {
   const head = section(getPage("about"), "about-d-j-impex-co-dji");
@@ -52,11 +47,8 @@ export default function AboutPage() {
         objectPosition="center 42%"
       />
 
-      <WelcomeSection />
       <RecognitionSection />
       <MakingSequence />
-
-      <EnquiryBand />
     </>
   );
 }
