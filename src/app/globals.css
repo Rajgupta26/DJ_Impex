@@ -251,22 +251,44 @@
     padding-bottom: 4rem;
   }
 
+  /* The runs overlap, so the next chapter is already rising while the last of
+     the one before it thins out. Without this there is a measured stretch of
+     roughly 700px of scrolling with nothing on it: the outgoing chapter has
+     dissolved and the incoming one has not yet reached the fold. Each chapter
+     paints its own white ground and comes later in the document, so the
+     incoming one covers what is left of the outgoing one rather than showing
+     through it. 60vh is as far as this can go: at 75vh two chapters are both
+     still legible at once and the incoming white ground cuts a hard edge across
+     the outgoing drawing. */
+  .story__run + .story__run {
+    margin-top: -60vh;
+  }
+
   .story__chapter {
     position: sticky;
     top: var(--story-pin);
     /* Fixed, not a floor: the chapter has to fit the screen while it is held, or
        the drawing runs off the bottom. The words take what they need and the
        drawing takes the rest. */
-    height: calc(100vh - var(--story-pin) - 3rem);
+    height: calc(100vh - var(--story-pin) - 2rem);
     /* Dissolving as it is held is what makes the hand-over read as one movement
        rather than as a stalled page. --chapter-fade is set per chapter. */
     opacity: calc(1 - var(--chapter-fade, 0));
+    /* It settles back as it goes, so the dissolve reads as the chapter
+       withdrawing rather than as the lights being switched off. Small on
+       purpose: a few pixels of lift and 3% of scale is enough to feel, and any
+       more turns a hand-over into a slideshow transition. */
+    transform: translate3d(0, calc(var(--chapter-fade, 0) * -1.75rem), 0)
+      scale(calc(1 - var(--chapter-fade, 0) * 0.035));
+    transform-origin: 50% 42%;
     /* One centred column, matching the reference: words, then the cloth drawn
        large beneath them. */
     grid-template-rows: auto 1fr;
     justify-items: center;
     align-content: center;
-    gap: 2.5rem;
+    /* Tight, because every pixel here is a pixel the drawing does not get: the
+       plate is the 1fr row and takes whatever the words leave. */
+    gap: 2rem;
     padding-left: calc(var(--story-rail) + 4rem);
     padding-right: calc(var(--story-rail) + 4rem);
   }
@@ -275,6 +297,7 @@
     position: static;
     height: auto;
     opacity: 1;
+    transform: none;
   }
 }
 

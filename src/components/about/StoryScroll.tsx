@@ -4,6 +4,9 @@ import { useEffect, useRef } from "react";
 
 const clamp = (value: number) => Math.min(1, Math.max(0, value));
 
+/** How much of the hold a chapter stays at full strength before it dissolves. */
+const HOLD = 0.34;
+
 import { StoryIllustration, type StoryDrawing } from "@/components/about/StoryIllustration";
 import { withReg } from "@/components/ui/Reg";
 
@@ -76,7 +79,14 @@ export function StoryScroll({ chapters }: { chapters: StoryChapter[] }) {
         }
         const held = clamp((pin - runRect.top) / hold);
         // Stay fully legible for the first third of the hold, then dissolve.
-        run.style.setProperty("--chapter-fade", clamp((held - 0.34) / 0.66).toFixed(4));
+        const t = clamp((held - HOLD) / (1 - HOLD));
+        // The reference's dissolve is not linear. Sampled off the recording at
+        // even intervals it runs 1 → 0.65 → 0.37 → 0.16 → 0.04 → 0, which is
+        // (1 - t) squared: it drops away quickly and then thins out, so the
+        // outgoing chapter is out of the reader's way early and only a trace of
+        // it is still there when the next one arrives. A straight ramp holds it
+        // legible for too long and the two chapters read as fighting.
+        run.style.setProperty("--chapter-fade", (1 - (1 - t) ** 2).toFixed(4));
       }
     };
 

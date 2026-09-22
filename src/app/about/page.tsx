@@ -33,8 +33,8 @@ const STEP_IMAGES = [
  * the founding, then the craft, then where the cloth goes today. No copy is
  * rewritten here; it is only grouped.
  */
-// One drawing per chapter: the yarn, the cloth on the roll, the cloth as it ships.
-const CHAPTER_DRAWINGS = ["spinning-frame", "rolled-bolt", "folded-stack"] as const;
+// One drawing per chapter: the yarn, the cloth on the roll, the cloth made up.
+const CHAPTER_DRAWINGS = ["spinning-frame", "rolled-bolt", "tailored-jacket"] as const;
 const CHAPTER_SPANS: Array<[number, number]> = [
   [0, 1],
   [1, 3],

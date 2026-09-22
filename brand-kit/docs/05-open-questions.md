@@ -110,3 +110,9 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 66. **These four carry the large uses.** All three journal covers and the archive frame on the home page draw on them, and those were the blurriest images on the site: a 315px scan was being stretched across a 21:9 article cover.
 67. **Six brochure fabrics are still low resolution**: aqua jacquard, taupe dobby, charcoal herringbone, mint dobby, blush stripe, slate rib. They are only used as gallery tiles at about 300px, so they hold up there, but they cannot be used large. Worth asking for the rest of the set.
 
+
+## Story illustrations
+
+68. **The three reference drawings the client sent are Siyaram's own artwork.** They were supplied on 2026-09-22 with the instruction to put them in the story section; two of them had already been sent once. They are not licensed to Nabeen, and publishing them on a commercial site is a real exposure for the client, so they are not in the repository and are not used. The drawings on `/about` are originals, drawn in the same register: fine navy line on white, three-quarter view, `src/components/about/StoryIllustration.tsx`. If the client wants exactly those pictures, the answer is to commission a artist, or to licence them.
+69. **Chapter three now ends on a tailored jacket rather than a folded stack**, taking the subject of the third reference drawing: it closes the story on what the cloth becomes rather than on how it ships. Confirm this is the intended ending.
+70. **The middle chapter's drawing is smaller than the other two** (339px tall against 528 and 639 at 1440x900), because it carries two paragraphs of the client's copy and the drawing takes whatever the words leave. Rebalancing the four story paragraphs across the three chapters would even it out, but it is the client's copy and the split is already proposed rather than confirmed. See `brand-kit/content/about.md`, "Story chapters".

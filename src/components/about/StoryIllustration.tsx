@@ -2,12 +2,12 @@
  * Line illustrations for the story chapters.
  *
  * Drawn here rather than sourced, so they belong to Nabeen: a spinning frame for
- * the founding, a rolled bolt for the craft, and a folded stack for the cloth as
- * it ships today. Fine navy line on white, in the register of a technical pencil
+ * the founding, a rolled bolt for the craft, and a finished jacket on the form for
+ * where the cloth ends up. Fine navy line on white, in the register of a technical pencil
  * drawing, and they scale to any size for about 2KB.
  */
 
-export type StoryDrawing = "spinning-frame" | "rolled-bolt" | "folded-stack";
+export type StoryDrawing = "spinning-frame" | "rolled-bolt" | "tailored-jacket";
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -30,7 +30,7 @@ export function StoryIllustration({
     >
       {drawing === "spinning-frame" ? <SpinningFrame /> : null}
       {drawing === "rolled-bolt" ? <RolledBolt /> : null}
-      {drawing === "folded-stack" ? <FoldedStack /> : null}
+      {drawing === "tailored-jacket" ? <TailoredJacket /> : null}
     </svg>
   );
 }
@@ -38,7 +38,8 @@ export function StoryIllustration({
 const LABELS: Record<StoryDrawing, string> = {
   "spinning-frame": "Line drawing of a spinning frame, bobbins feeding yarn onto rollers",
   "rolled-bolt": "Line drawing of a rolled bolt of cloth with a pinked edge",
-  "folded-stack": "Line drawing of folded lengths of cloth, stacked",
+  "tailored-jacket":
+    "Line drawing of a tailored jacket on a tailor's form, in a fitting room",
 };
 
 /* ---- The beginning: a spinning frame ------------------------------------- */
@@ -185,53 +186,92 @@ function RolledBolt() {
 }
 
 /* ---- Today: folded lengths, stacked --------------------------------------- */
-function FoldedStack() {
-  // Chunky enough to read as folded cloth rather than as boards.
-  const layers = [
-    { y: 492, w: 248, d: 104 },
-    { y: 384, w: 226, d: 96 },
-    { y: 284, w: 206, d: 88 },
-    { y: 192, w: 182, d: 78 },
-  ];
+function TailoredJacket() {
+  /* Where a length of Nabeen cloth ends up: cut, made and standing on the form.
+     Drawn as one half and mirrored, because a jacket is cut from a pattern that
+     is itself symmetrical. The pieces that are not — the tie, the buttons, the
+     square on the left breast — are drawn once, over the top.
+
+     The silhouette runs shoulder, down the outside of the sleeve, round the
+     cuff, then on down the body to the hem: above the cuff the body is behind
+     the sleeve and has no edge of its own. The sleeve's inseam and head are
+     drawn after, as seams rather than as outline, which is the difference
+     between a jacket and a coat with lines through it. */
+  const half = (
+    <g>
+      {/* Silhouette. */}
+      <path d="M447 154 C414 160 366 176 334 204" />
+      <path d="M334 204 C314 284 309 396 315 482" />
+      <path d="M315 482 C312 498 316 509 325 516 L376 524" />
+      <path d="M376 524 C374 538 371 548 368 558" />
+      <path d="M368 558 C396 568 424 572 450 573" />
+
+      {/* Peak lapel: the edge up to the peak, the notch, then the collar. */}
+      <path d="M444 352 L392 258 L416 238" />
+      <path d="M416 238 C424 214 434 194 447 172" />
+
+      {/* Seams and folds, lighter than the cut edges. */}
+      <g strokeWidth="0.9" opacity="0.6">
+        <path d="M376 524 C383 462 383 346 379 268" />
+        <path d="M334 204 C351 220 368 244 379 268" />
+        <path d="M443 352 C435 306 433 246 438 196" />
+      </g>
+
+      {/* Breast welt and hip flap. */}
+      <path d="M358 292 L408 302 L406 314 L356 304 Z" strokeWidth="0.9" />
+      <path d="M344 406 L404 416 L400 437 L340 427 Z" strokeWidth="0.9" />
+
+      {/* Cuff buttons. */}
+      <g strokeWidth="0.8" opacity="0.7">
+        <circle cx="329" cy="494" r="3.2" />
+        <circle cx="339" cy="499" r="3.2" />
+        <circle cx="349" cy="504" r="3.2" />
+      </g>
+    </g>
+  );
 
   return (
     <g stroke="currentColor" opacity="0.72">
-      {layers.map((layer, i) => {
-        const cx = 450 + (i % 2 === 0 ? -8 : 10);
-        const left = cx - layer.w;
-        const right = cx + layer.w;
-        return (
-          <g key={`l-${i}`}>
-            <g strokeWidth="1.5">
-              {/* The rounded fold at the left, the face, then the cut end at the
-                  right where the cloth was taken off the roll. */}
-              <path
-                d={`M${left + 10} ${layer.y} C${left - 40} ${layer.y - 6} ${left - 40} ${layer.y - layer.d + 6} ${left + 10} ${layer.y - layer.d} L${right - 18} ${layer.y - layer.d - 18}`}
-              />
-              <path d={`M${left + 10} ${layer.y} L${right - 6} ${layer.y - 18}`} />
-              <path
-                d={`M${right - 18} ${layer.y - layer.d - 18} C${right + 8} ${layer.y - layer.d - 10} ${right + 8} ${layer.y - 26} ${right - 6} ${layer.y - 18}`}
-              />
-            </g>
-            {/* Weave across the face */}
-            <g strokeWidth="0.55" opacity="0.5">
-              {Array.from({ length: 7 }, (_, k) => {
-                const t = (k + 1) / 8;
-                const y = lerp(layer.y - layer.d, layer.y, t);
-                return (
-                  <path key={`f-${i}-${k}`} d={`M${left + 4} ${y} L${right - 12} ${y - 18}`} />
-                );
-              })}
-            </g>
-          </g>
-        );
-      })}
-
-      {/* Counter line */}
-      <g strokeWidth="0.7" opacity="0.4">
-        <path d="M80 470 L820 440" />
-        <path d="M150 492 L700 466" />
+      {/* The room, barely there: shelves of folded cloth on one side, a rail on
+          the other, so the jacket reads as standing somewhere rather than
+          floating. */}
+      <g strokeWidth="0.7" opacity="0.3">
+        <path d="M40 500 L860 482" />
+        <path d="M118 58 L118 492 M258 74 L258 486" />
+        <path d="M112 268 L264 274 M112 356 L264 362" />
+        <path d="M138 240 L226 244 M138 250 L226 254 M138 260 L226 264" />
+        <path d="M138 330 L212 334 M138 340 L212 344 M138 350 L212 354" />
+        <path d="M700 60 L700 494 M866 76 L866 488 M700 140 L866 150" />
+        <path d="M782 150 L782 172 M762 172 C760 240 766 330 768 388 M802 172 C804 240 798 330 796 388" />
       </g>
+
+      <g strokeWidth="1.5">
+        {half}
+        {/* The same half, mirrored about the centre of the box. */}
+        <g transform="translate(900,0) scale(-1,1)">{half}</g>
+      </g>
+
+      {/* The form: a turned finial, the neck, and the post below the hem. */}
+      <g strokeWidth="1.5">
+        <ellipse cx="450" cy="70" rx="21" ry="15" />
+        <path d="M434 80 C428 108 431 132 441 154" />
+        <path d="M466 80 C472 108 469 132 459 154" />
+        <path d="M446 573 L446 612 M456 573 L456 612" />
+      </g>
+
+      {/* Shirt, tie, buttons, pocket square: drawn once, so the jacket is not
+          symmetrical where a real one is not. */}
+      <path d="M438 192 L450 224 L462 192" strokeWidth="0.9" opacity="0.7" />
+      <g strokeWidth="1.2">
+        <path d="M440 202 L460 202 L464 228 L436 228 Z" />
+        <path d="M439 228 C437 276 438 318 441 352" />
+        <path d="M461 228 C463 276 462 318 459 352" />
+      </g>
+      <g strokeWidth="1.1" opacity="0.8">
+        <circle cx="452" cy="360" r="7" />
+        <circle cx="452" cy="428" r="7" />
+      </g>
+      <path d="M368 291 L394 296 L380 282 Z" strokeWidth="0.9" />
     </g>
   );
 }
