@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { RecognitionSection } from "@/components/about/RecognitionSection";
+import { WelcomeSection } from "@/components/about/WelcomeSection";
 import { PageHero } from "@/components/ui/PageHero";
 import { withReg } from "@/components/ui/Reg";
 import { getPage } from "@/lib/content";
@@ -15,15 +16,19 @@ export const metadata: Metadata = buildMetadata({
 });
 
 /**
- * /about: a hero and the award.
+ * /about, read top to bottom:
  *
- * Cut to this over 2026-09-22 on the agency's instruction, one section at a
- * time. Four things that were here are now rendered nowhere on the site, and all
- * four are still sitting in about.md: the client's "Our story" paragraphs, their
- * prototype welcome copy and the seven-cloth list, and the seven-step "How our
- * fabric is made" sequence with its brochure photographs. The page also has no
- * closing enquiry band, unlike every other inner page. See
- * 05-open-questions.md 81-85.
+ *   hero            spinning frames, and the page's one h1
+ *   welcome         the client's revised welcome, and the fabric list
+ *   recognition     the award, and the four marks
+ *
+ * Grounds: photograph, mist, white. No two adjacent sections share one.
+ *
+ * Still rendered nowhere on the site, and still sitting in about.md: the
+ * client's "Our story" paragraphs and the seven-step "How our fabric is made"
+ * sequence, whose brochure photographs are also now unused assets. The page has
+ * no closing enquiry band, unlike every other inner page.
+ * See 05-open-questions.md 81, 84, 85.
  */
 export default function AboutPage() {
   const head = section(getPage("about"), "about-d-j-impex-co-dji");
@@ -41,6 +46,7 @@ export default function AboutPage() {
         objectPosition="center 42%"
       />
 
+      <WelcomeSection />
       <RecognitionSection />
     </>
   );
