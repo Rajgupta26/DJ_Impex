@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { MakingSequence } from "@/components/about/MakingSequence";
 import { RecognitionSection } from "@/components/about/RecognitionSection";
 import { PageHero } from "@/components/ui/PageHero";
 import { withReg } from "@/components/ui/Reg";
@@ -16,20 +15,15 @@ export const metadata: Metadata = buildMetadata({
 });
 
 /**
- * /about, read top to bottom:
+ * /about: a hero and the award.
  *
- *   hero            spinning frames, and the page's one h1
- *   recognition     the award, and the four marks
- *   making          seven steps, numbered because they are a real sequence
- *
- * Three sections, all of them cut back to this on the agency's instruction over
- * 2026-09-22. What that leaves out is worth knowing rather than discovering: the
- * client's four "Our story" paragraphs and their prototype welcome copy are both
- * still in about.md and neither is rendered anywhere on the site, and this is the
- * only page with no closing enquiry band, so the sole route to contact from here
- * is the floating buttons. See 05-open-questions.md 81-84.
- *
- * Grounds: photograph, white, mist. No two adjacent sections share one.
+ * Cut to this over 2026-09-22 on the agency's instruction, one section at a
+ * time. Four things that were here are now rendered nowhere on the site, and all
+ * four are still sitting in about.md: the client's "Our story" paragraphs, their
+ * prototype welcome copy and the seven-cloth list, and the seven-step "How our
+ * fabric is made" sequence with its brochure photographs. The page also has no
+ * closing enquiry band, unlike every other inner page. See
+ * 05-open-questions.md 81-85.
  */
 export default function AboutPage() {
   const head = section(getPage("about"), "about-d-j-impex-co-dji");
@@ -48,7 +42,6 @@ export default function AboutPage() {
       />
 
       <RecognitionSection />
-      <MakingSequence />
     </>
   );
 }
