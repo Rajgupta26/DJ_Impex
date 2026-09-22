@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { EnquiryBand } from "@/components/layout/EnquiryBand";
 import { PostCard } from "@/components/journal/PostCard";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
@@ -27,8 +26,13 @@ export default function JournalPage() {
 
       <section className="bg-white py-[var(--spacing-section)]">
         <Container>
-          {/* The newest post runs large, 7/5. The rest sit in a two-column list. */}
-          <PostCard post={lead} size="large" className="lg:max-w-[58%]" />
+          {/* The newest post runs horizontal: image on left, title and excerpt on right */}
+          <PostCard
+            post={lead}
+            size="large"
+            layout="horizontal"
+            leadText="Not all lace fabrics are created equal, and identifying true premium quality requires a trained eye and attention to detail. Beyond surface appearance, the essence of luxury lace lies in the harmony between material, craftsm..."
+          />
 
           {rest.length > 0 ? (
             <ul className="mt-20 grid gap-14 border-t border-line pt-14 md:grid-cols-2 md:gap-x-16">
@@ -41,8 +45,6 @@ export default function JournalPage() {
           ) : null}
         </Container>
       </section>
-
-      <EnquiryBand />
     </>
   );
 }

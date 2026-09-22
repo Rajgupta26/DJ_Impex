@@ -67,7 +67,7 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
         data-solid="true"
         className="site-header on-dark fixed inset-x-0 top-0 z-40 border-b border-transparent text-white transition-colors duration-[var(--duration-base)] data-[solid=true]:border-line data-[solid=true]:bg-white data-[solid=true]:text-navy"
       >
-        <div className="container-site flex h-[4.5rem] items-center justify-between gap-6 lg:h-[5.25rem]">
+        <div className="flex h-[4.5rem] w-full items-center justify-between gap-6 px-6 sm:px-8 lg:h-[5.25rem] lg:px-12 xl:px-16">
           <Link href="/" aria-label="Nabeen, luxury fabrics by DJI: home" className="relative block">
             <Image
               src="/images/logos/nabeen-logo-white.png"
