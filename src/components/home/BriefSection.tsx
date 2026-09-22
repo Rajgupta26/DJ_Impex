@@ -44,13 +44,18 @@ export function BriefSection() {
             <TrustMarks className="mt-auto pt-14" />
           </div>
 
-          <figure className="relative min-h-[22rem] overflow-hidden bg-mist">
+          {/* Below the two-column breakpoint this figure used to be a 352px strip
+              across the full width, and object-cover took that strip through the
+              softest, most out-of-focus part of the frame: the fabric read as a
+              blur. An editorial 4:3 shows the weave instead, and the crop is
+              biased a little below centre, where the diamonds are sharp. */}
+          <figure className="relative aspect-[4/3] overflow-hidden bg-mist lg:aspect-auto lg:min-h-[22rem]">
             <Image
               src="/images/gallery/05-camel-check-jacquard.jpg"
               alt="Camel check jacquard fabric from the Nabeen range"
               fill
               sizes="(max-width: 1024px) 100vw, 34vw"
-              className="object-cover"
+              className="object-cover object-[50%_58%]"
             />
             <figcaption className="t-small absolute inset-x-0 bottom-0 bg-[linear-gradient(transparent,rgb(13_23_51/0.8))] p-5 font-semibold text-white">
               Archive · camel check jacquard

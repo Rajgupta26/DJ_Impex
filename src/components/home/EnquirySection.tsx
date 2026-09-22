@@ -36,11 +36,12 @@ export function EnquirySection() {
       <WeaveArt pattern="ogee" scale={1.3} />
 
       <Container className="relative py-[var(--spacing-section)]">
-        <div className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:items-start lg:gap-20">
-          {/* The form is about twice the height of the words beside it, so the words
-              travel with it rather than sitting at the top of a tall navy void.
-              Sticky, not fixed: it releases at the end of the section. */}
-          <div className="on-dark lg:sticky lg:top-[7.5rem] lg:self-start lg:pr-6">
+        <div className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
+          {/* The form is about twice the height of the words beside it. Rather than
+              letting this column trail off, it stretches to the form's height and
+              the channels are pushed to its foot -- the same move BriefSection makes
+              with the trust marks. Nothing here moves under the scroll. */}
+          <div className="on-dark flex flex-col lg:pr-6">
             <p className="t-small font-semibold text-zari">{field(copy, "eyebrow")}</p>
             <h2 className="t-h2 mt-4 max-w-[15ch]">{withReg(field(copy, "heading"))}</h2>
             <p className="measure mt-6 text-white/75">{withReg(field(copy, "intro"))}</p>
@@ -58,7 +59,7 @@ export function EnquirySection() {
             {/* The two other ways through, for anyone who would rather not use
                 WhatsApp. Hairline rules rather than boxes: this is a list, not a
                 row of cards. */}
-            <dl className="mt-10 grid gap-6">
+            <dl className="mt-10 grid gap-6 lg:mt-auto lg:pt-14">
               <div className="flex gap-4 border-t border-white/20 pt-6">
                 <Phone
                   aria-hidden="true"
