@@ -2,12 +2,11 @@ import type { Metadata } from "next";
 
 import { ContactChannels } from "@/components/contact/ContactChannels";
 import { EnquiryForm } from "@/components/contact/EnquiryForm";
-import { MapEmbed } from "@/components/contact/MapEmbed";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import { withReg } from "@/components/ui/Reg";
 import { getPage, getSite } from "@/lib/content";
-import { addressOneLine, mapEmbedSrc, whatsappLink } from "@/lib/contact";
+import { whatsappLink } from "@/lib/contact";
 import { field, section } from "@/lib/markdown";
 import { buildMetadata, pageTitle } from "@/lib/seo";
 
@@ -54,13 +53,6 @@ export default function ContactPage() {
         </Container>
       </section>
 
-      <section className="bg-mist pb-[var(--spacing-section)]">
-        <Container>
-          <div className="relative aspect-[16/9] overflow-hidden bg-navy-deep md:aspect-[21/9]">
-            <MapEmbed src={mapEmbedSrc()} label={addressOneLine()} />
-          </div>
-        </Container>
-      </section>
     </>
   );
 }

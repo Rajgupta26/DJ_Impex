@@ -7,12 +7,11 @@ import { withReg } from "@/components/ui/Reg";
 import { TbcTag } from "@/components/ui/TbcTag";
 import type { Testimonial } from "@/lib/site";
 
-const INTERVAL = 9000;
+const INTERVAL = 2000;
 
 /**
  * One large light quote at a time, behind a thread-thin gold rule. Indicators are
- * lines, not dots. Autoplay is slow and stops the moment anyone hovers, focuses
- * or takes hold of it.
+ * lines, not dots. Slides automatically every 2 seconds.
  */
 export function TestimonialsCarousel({
   heading,
@@ -37,9 +36,9 @@ export function TestimonialsCarousel({
   useEffect(() => {
     if (!embla || paused || items.length < 2) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const timer = window.setInterval(() => embla.scrollNext(), INTERVAL);
-    return () => window.clearInterval(timer);
-  }, [embla, paused, items.length]);
+    const timer = window.setTimeout(() => embla.scrollNext(), INTERVAL);
+    return () => window.clearTimeout(timer);
+  }, [embla, paused, items.length, selected]);
 
   const goTo = useCallback((index: number) => embla?.scrollTo(index), [embla]);
 
@@ -48,8 +47,6 @@ export function TestimonialsCarousel({
       className="bg-white py-[var(--spacing-section)]"
       aria-roledescription="carousel"
       aria-label="What our trade partners say"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >

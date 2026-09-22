@@ -1,8 +1,7 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 
-import { StoryChapters, type StoryChapter } from "@/components/about/StoryChapters";
-import { WelcomeSection } from "@/components/about/WelcomeSection";
+import { StoryScroll, type StoryChapter } from "@/components/about/StoryScroll";
 import { EnquiryBand } from "@/components/layout/EnquiryBand";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
@@ -47,7 +46,7 @@ function buildChapters(
   paragraphs: string[],
 ): StoryChapter[] {
   return labels.map((label, index) => ({
-    title: label.lead ?? "",
+    title: (label.lead ?? "").replace(/\.$/, ""),
     kicker: label.text,
     body: paragraphs.slice(...(CHAPTER_SPANS[index] ?? [index, index + 1])),
     drawing: CHAPTER_DRAWINGS[index] ?? "rolled-bolt",
@@ -72,23 +71,26 @@ export default function AboutPage() {
         alt="Spinning frames drawing cotton into yarn"
       />
 
-      <WelcomeSection />
-
-      {/* The three chapters alternate down the page. Chapter labels come from
-          content/about.md; the copy itself is the client's, split across them. */}
+      {/* The story runs down a thread, matching the reference video timeline flow */}
       <section className="bg-white py-[var(--spacing-section)]">
         <Container>
-          <div className="max-w-[46rem]">
-            <h2 className="t-h2">Our threads, our story</h2>
-            <p className="t-lead mt-5">
-              {withReg(
-                `Since ${site.brand.founded.value}, from a counter in Mangaldas Market to ${site.brand.markets.value}.`,
-              )}
-            </p>
+          <div className="grid gap-6 md:grid-cols-[1.2fr_1fr] md:items-end md:gap-16 pb-10 sm:pb-14 border-b border-line/60">
+            <div>
+              <h2 className="text-[clamp(2.5rem,1.8rem+3vw,4.25rem)] font-serif font-medium text-navy leading-tight tracking-tight">
+                Our Threads.<br />Our Story.
+              </h2>
+            </div>
+            <div className="md:max-w-md md:ml-auto">
+              <p className="t-lead text-slate leading-relaxed">
+                {withReg(
+                  `Since ${site.brand.founded.value}, from a counter in Mangaldas Market to ${site.brand.markets.value}.`,
+                )}
+              </p>
+            </div>
           </div>
 
-          <div className="mt-16 lg:mt-24">
-            <StoryChapters chapters={buildChapters(chapters.items, story.paragraphs)} />
+          <div className="mt-12 lg:mt-16">
+            <StoryScroll chapters={buildChapters(chapters.items, story.paragraphs)} />
           </div>
         </Container>
       </section>

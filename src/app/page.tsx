@@ -1,10 +1,9 @@
 import { BriefSection } from "@/components/home/BriefSection";
-import { EnquirySection } from "@/components/home/EnquirySection";
+import { ContactSection } from "@/components/home/ContactSection";
 import { HeroCarousel, type HeroSlideView } from "@/components/home/HeroCarousel";
 import { JournalPreview } from "@/components/home/JournalPreview";
 import { NabeenGallery } from "@/components/home/NabeenGallery";
 import { TestimonialsCarousel } from "@/components/home/TestimonialsCarousel";
-import { Selvedge } from "@/components/layout/Selvedge";
 import { getBrandFilm, getHeroSlides, getPage, getSite } from "@/lib/content";
 import { whatsappLink } from "@/lib/contact";
 import { field, section } from "@/lib/markdown";
@@ -14,11 +13,6 @@ import { visible } from "@/lib/site";
  * The home page, in the client's order (content/home.md):
  * hero -> brief + trust marks -> journal -> testimonials -> gallery -> cause.
  * Do not reorder.
- *
- * One deviation, on the agency's instruction (2026-09-22): the cause block at the
- * foot has been replaced by the enquiry. Wear2Care itself is unchanged and still
- * has its own page, its menu entry and its hero slide. See
- * docs/05-open-questions.md 71-73.
  */
 
 /**
@@ -89,7 +83,6 @@ export default function HomePage() {
   return (
     <>
       <HeroCarousel slides={slides} whatsappHref={whatsappLink()} />
-      <Selvedge variant="hero" />
 
       <BriefSection />
       <JournalPreview />
@@ -100,7 +93,7 @@ export default function HomePage() {
       />
 
       <NabeenGallery />
-      <EnquirySection />
+      <ContactSection />
     </>
   );
 }

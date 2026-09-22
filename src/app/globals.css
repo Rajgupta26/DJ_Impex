@@ -13,6 +13,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   *,
   *::before,
   *::after {
@@ -157,6 +161,12 @@
 
 .skip-link:focus-visible {
   transform: translateY(0);
+}
+
+/* ---- The threaded story scroll (/about) ---------------------------------- */
+/* Smooth active state transitions and node marker styles */
+.story-active-node {
+  box-shadow: 0 4px 20px -2px rgba(150, 28, 30, 0.25);
 }
 
 /* ---- Dev-only TBC tag ---------------------------------------------------- */

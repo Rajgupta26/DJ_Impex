@@ -4,7 +4,7 @@ import { TbcTag } from "@/components/ui/TbcTag";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 import { getSite } from "@/lib/content";
-import { directionsLink, mailtoLink, telLink, whatsappLink } from "@/lib/contact";
+import { mailtoLink, telLink, whatsappLink } from "@/lib/contact";
 
 /** Every way to reach the team, WhatsApp first. */
 export function ContactChannels() {
@@ -72,15 +72,6 @@ export function ContactChannels() {
                   </span>
                 ))}
               </address>
-              <TrackedLink
-                href={directionsLink()}
-                event="directions_click"
-                location="contact_page"
-                className="mt-3 inline-block text-link"
-              >
-                Get directions
-              </TrackedLink>
-              <TbcTag status={contact.address.status} note={contact.address.note} />
             </dd>
           </div>
         </div>
