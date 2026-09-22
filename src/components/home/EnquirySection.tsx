@@ -37,11 +37,11 @@ export function EnquirySection() {
 
       <Container className="relative py-[var(--spacing-section)]">
         <div className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
-          {/* The form is about twice the height of the words beside it. Rather than
-              letting this column trail off, it stretches to the form's height and
-              the channels are pushed to its foot -- the same move BriefSection makes
-              with the trust marks. Nothing here moves under the scroll. */}
-          <div className="on-dark flex flex-col lg:pr-6">
+          {/* Both columns start at the top and read straight down. The form is set
+              two fields to a row so that it is close to the height of the words
+              beside it; pushing these to a far-off foot, or making them travel
+              with the scroll, were both worse answers to the same gap. */}
+          <div className="on-dark lg:pr-6">
             <p className="t-small font-semibold text-zari">{field(copy, "eyebrow")}</p>
             <h2 className="t-h2 mt-4 max-w-[15ch]">{withReg(field(copy, "heading"))}</h2>
             <p className="measure mt-6 text-white/75">{withReg(field(copy, "intro"))}</p>
@@ -59,7 +59,7 @@ export function EnquirySection() {
             {/* The two other ways through, for anyone who would rather not use
                 WhatsApp. Hairline rules rather than boxes: this is a list, not a
                 row of cards. */}
-            <dl className="mt-10 grid gap-6 lg:mt-auto lg:pt-14">
+            <dl className="mt-10 grid gap-6 lg:mt-14">
               <div className="flex gap-4 border-t border-white/20 pt-6">
                 <Phone
                   aria-hidden="true"
@@ -112,6 +112,7 @@ export function EnquirySection() {
             <h3 className="t-h3">{field(copy, "form-heading")}</h3>
             <EnquiryForm
               variant="full"
+              paired
               fabrics={site.fabricTypes.items.map(({ slug, name }) => ({ slug, name }))}
               whatsappHref={whatsappLink()}
               className="mt-8"

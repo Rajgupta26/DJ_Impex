@@ -13,18 +13,26 @@ export type FabricChoice = { slug: string; name: string };
  * One form, two shapes: the full version on /contact, and a short version
  * (name, WhatsApp number, market) inside the contact pop-up.
  *
+ * `paired` is a third dimension rather than a third shape: the same full form
+ * with its text fields set two to a row. It exists for the home page, where the
+ * form sits beside a column of words and a single file of fourteen fields towers
+ * over them. Same fields, same order of thought, about 200px shorter.
+ *
  * Four states: idle, submitting, success and error. An error always says what
  * failed and offers WhatsApp, because a lost enquiry is the one failure that costs
  * the client money.
  */
 export function EnquiryForm({
   variant = "full",
+  paired = false,
   fabrics = [],
   whatsappHref,
   onSuccess,
   className = "",
 }: {
   variant?: "full" | "short";
+  /** Set the text fields two to a row. Full variant only; ignored by the pop-up. */
+  paired?: boolean;
   fabrics?: FabricChoice[];
   whatsappHref: string;
   onSuccess?: () => void;
@@ -48,6 +56,84 @@ export function EnquiryForm({
   const fieldError = (name: string) =>
     state.status === "error" ? state.fieldErrors?.[name] : undefined;
 
+  // The full form set two fields to a row. The pop-up's short variant is already
+  // short and stays in a single file.
+  const twoUp = paired && variant === "full";
+
+  const fullName = (
+    <Field
+      key="fullName"
+      id={`${id}-fullName`}
+      name="fullName"
+      label="Full name"
+      required
+      autoComplete="name"
+      error={fieldError("fullName")}
+    />
+  );
+
+  const company =
+    variant === "full" ? (
+      <Field
+        key="company"
+        id={`${id}-company`}
+        name="company"
+        label="Company or shop name"
+        autoComplete="organization"
+        error={fieldError("company")}
+      />
+    ) : null;
+
+  const whatsappNumber = (
+    <Field
+      key="whatsappNumber"
+      id={`${id}-whatsappNumber`}
+      name="whatsappNumber"
+      label="WhatsApp number"
+      type="tel"
+      required
+      placeholder="+234"
+      autoComplete="tel"
+      error={fieldError("whatsappNumber")}
+    />
+  );
+
+  const email =
+    variant === "full" ? (
+      <Field
+        key="email"
+        id={`${id}-email`}
+        name="email"
+        label="Email"
+        type="email"
+        autoComplete="email"
+        error={fieldError("email")}
+      />
+    ) : null;
+
+  const market = (
+    <SelectField
+      key="market"
+      id={`${id}-market`}
+      name="market"
+      label="Country or market"
+      required
+      error={fieldError("market")}
+    />
+  );
+
+  const city =
+    variant === "full" ? (
+      <Field
+        key="city"
+        id={`${id}-city`}
+        name="city"
+        label="City"
+        autoComplete="address-level2"
+        error={fieldError("city")}
+      />
+    ) : null;
+
   if (state.status === "success") {
     return (
       <div className={`border-l border-zari pl-6 ${className}`.trim()} role="status">
@@ -67,66 +153,38 @@ export function EnquiryForm({
         <input id={`${id}-website`} name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <Field
-        id={`${id}-fullName`}
-        name="fullName"
-        label="Full name"
-        required
-        autoComplete="name"
-        error={fieldError("fullName")}
-      />
-
-      {variant === "full" ? (
-        <Field
-          id={`${id}-company`}
-          name="company"
-          label="Company or shop name"
-          autoComplete="organization"
-          error={fieldError("company")}
-        />
-      ) : null}
-
-      <Field
-        id={`${id}-whatsappNumber`}
-        name="whatsappNumber"
-        label="WhatsApp number"
-        type="tel"
-        required
-        placeholder="+234"
-        autoComplete="tel"
-        error={fieldError("whatsappNumber")}
-      />
-
-      <div className={variant === "full" ? "grid gap-5 sm:grid-cols-2" : "grid gap-5"}>
-        <SelectField
-          id={`${id}-market`}
-          name="market"
-          label="Country or market"
-          required
-          error={fieldError("market")}
-        />
-        {variant === "full" ? (
-          <Field
-            id={`${id}-city`}
-            name="city"
-            label="City"
-            autoComplete="address-level2"
-            error={fieldError("city")}
-          />
-        ) : null}
-      </div>
+      {twoUp ? (
+        /* Who you are, how to reach you, where you are: three rows instead of
+           six, and each row is still one thought. */
+        <>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {fullName}
+            {company}
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {whatsappNumber}
+            {email}
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {market}
+            {city}
+          </div>
+        </>
+      ) : (
+        <>
+          {fullName}
+          {company}
+          {whatsappNumber}
+          <div className={variant === "full" ? "grid gap-5 sm:grid-cols-2" : "grid gap-5"}>
+            {market}
+            {city}
+          </div>
+          {email}
+        </>
+      )}
 
       {variant === "full" ? (
         <>
-          <Field
-            id={`${id}-email`}
-            name="email"
-            label="Email"
-            type="email"
-            autoComplete="email"
-            error={fieldError("email")}
-          />
-
           {fabrics.length > 0 ? (
             <fieldset className="grid gap-3">
               <legend className="t-small font-semibold">Fabrics of interest</legend>
@@ -171,7 +229,7 @@ export function EnquiryForm({
             <textarea
               id={`${id}-message`}
               name="message"
-              rows={4}
+              rows={twoUp ? 3 : 4}
               className="w-full resize-y border border-line bg-white px-3.5 py-3 text-navy rounded-[var(--radius-control)]"
             />
           </div>
