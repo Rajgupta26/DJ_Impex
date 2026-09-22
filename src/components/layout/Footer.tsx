@@ -121,12 +121,13 @@ export function Footer() {
         <h2 className="visually-hidden">Fabrics</h2>
         <ul className="flex flex-wrap gap-x-6 gap-y-3">
           {site.fabricTypes.items.map((fabric) => (
-            /* Plain text, not links: these pointed at anchors on /nabeen, and
-               /nabeen was deleted on 2026-09-22. The names are kept because they
-               say what the house sells; give them a destination and they should
-               be links again. */
-            <li key={fabric.slug} className="t-small text-white/60">
-              {fabric.name}
+            <li key={fabric.slug}>
+              <Link
+                href={`/nabeen#${fabric.slug}`}
+                className="t-small text-white/60 transition-colors hover:text-white"
+              >
+                {fabric.name}
+              </Link>
             </li>
           ))}
           <li>

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
-import { withReg } from "@/components/ui/Reg";
+import { Reg, withReg } from "@/components/ui/Reg";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
@@ -165,15 +165,18 @@ export function HeroCarousel({
             <span>Enquire on WhatsApp</span>
           </TrackedLink>
 
-          {/* The secondary button shows only when the slide names a destination.
-              Its fallback was "Explore Nabeen" pointing at /nabeen, which was
-              deleted on 2026-09-22; rather than send the reader somewhere they
-              did not ask for, the hero now carries one call to action. */}
           {active.href ? (
             <Link href={active.href} className="btn btn-ghost">
               <span>Read the story</span>
             </Link>
-          ) : null}
+          ) : (
+            <Link href="/nabeen" className="btn btn-ghost">
+              <span>
+                Explore Nabeen
+                <Reg />
+              </span>
+            </Link>
+          )}
         </div>
       </div>
 

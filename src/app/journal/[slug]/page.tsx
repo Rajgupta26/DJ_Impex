@@ -89,7 +89,8 @@ export default async function JournalPostPage({ params }: Params) {
             <div className="measure mt-14 border-t border-line pt-8">
               <p className="text-slate">
                 Nabeen weaves the fabrics in this guide.{" "}
-                <TextLink href="/contact">Talk to our team</TextLink> about your market.
+                <TextLink href="/nabeen#swiss-lace">See our Swiss lace</TextLink>, or{" "}
+                <TextLink href="/contact">talk to our team</TextLink> about your market.
               </p>
             </div>
           </Container>
