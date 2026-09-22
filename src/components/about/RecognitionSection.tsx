@@ -2,16 +2,21 @@ import Image from "next/image";
 
 import { Container } from "@/components/ui/Container";
 import { withReg } from "@/components/ui/Reg";
+import { TrustMarks } from "@/components/ui/TrustMarks";
 import { getPage, getSite } from "@/lib/content";
 import { section } from "@/lib/markdown";
 
 /**
- * The Star Export House award, set as the one claim on the page that a
- * government made rather than the client.
+ * Everything the house can be checked on, in one place: the award, the sentence
+ * the client wrote about it, and the four marks.
  *
- * The award itself is lifted out of the client's sentence and set large, with
- * the sentence left underneath it in full. The house mark sits above, small: a
- * logo used at its own scale reads as a mark, and blown up reads as a sticker.
+ * The marks used to sit in a section of their own at the top of the page. They
+ * belong here -- Star Export House is one of them, so splitting them across two
+ * sections said the same thing twice.
+ *
+ * The award is lifted out of the client's sentence and set large, with the
+ * sentence left underneath it in full. The house mark sits above, small: a logo
+ * used at its own scale reads as a mark, and blown up reads as a sticker.
  */
 export function RecognitionSection() {
   const site = getSite();
@@ -20,8 +25,8 @@ export function RecognitionSection() {
   return (
     <section className="bg-mist py-[var(--spacing-section)]">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
-          <div>
+        <div className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:items-stretch lg:gap-20">
+          <div className="flex flex-col">
             <Image
               src="/images/logos/dji-logo-transparent.png"
               alt={site.brand.company.value}
@@ -30,6 +35,7 @@ export function RecognitionSection() {
               className="h-14 w-14"
             />
             <h2 className="t-h2 mt-8 max-w-[12ch]">Recognition</h2>
+            <TrustMarks className="mt-12 lg:mt-auto lg:pt-16" />
           </div>
 
           <div>

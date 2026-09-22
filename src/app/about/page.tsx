@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
-import { AboutOverture } from "@/components/about/AboutOverture";
 import { MakingSequence } from "@/components/about/MakingSequence";
-import { PromiseBand } from "@/components/about/PromiseBand";
 import { RecognitionSection } from "@/components/about/RecognitionSection";
 import { StoryChapters, type StoryChapter } from "@/components/about/StoryChapters";
 import { WelcomeSection } from "@/components/about/WelcomeSection";
@@ -50,18 +48,20 @@ function buildChapters(
  * /about, read top to bottom:
  *
  *   hero            a loom, and the page's one h1
- *   overture        the house in a sentence, with the four marks as numerals
  *   welcome         the client's brand writing, and the seven cloths
  *   story           three chapters, drawing and words trading sides
- *   promise         the brochure's sign-off on a wall of cloth
- *   recognition     the one claim a government made
+ *   recognition     the award, and the four marks
  *   making          seven steps, numbered because they are a real sequence
  *   enquiry         the same closing band as every inner page
  *
- * The grounds alternate all the way down -- photograph, white, deep navy, white,
- * photograph, mist, white, navy -- so no two sections of the same weight ever sit
- * against each other. That alternation is most of what makes a long page feel
- * composed rather than scrolled.
+ * Five sections and a closing band, down from eight. What came out was mine, not
+ * the client's: an overture that opened the page a third time after the hero and
+ * the welcome had both already opened it, and a promise band that was one line
+ * of brochure copy on a photograph -- a breather, not information. The four marks
+ * moved into Recognition, where Star Export House already was.
+ *
+ * The grounds still alternate -- photograph, deep navy, white, mist, white, navy
+ * -- so no two sections of the same weight sit against each other.
  */
 export default function AboutPage() {
   const site = getSite();
@@ -80,7 +80,6 @@ export default function AboutPage() {
         objectPosition="center 38%"
       />
 
-      <AboutOverture />
       <WelcomeSection />
 
       <section className="bg-white py-[var(--spacing-section)]">
@@ -100,7 +99,6 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <PromiseBand />
       <RecognitionSection />
       <MakingSequence />
 
