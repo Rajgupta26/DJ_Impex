@@ -97,3 +97,10 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 59. **The chapters now carry original line drawings** in `src/components/about/StoryIllustration.tsx`: a spinning frame for the founding, a rolled bolt for the craft, and folded lengths for the cloth as it ships. Drawn as SVG, about 2KB, sharp at any size, and Nabeen's own. The bolt's falling cloth is finished with the pinked edge from the gallery motif.
 60. **Each pinned chapter is now sized to the screen** rather than given a minimum height, so the drawing can never run off the bottom while the chapter is held. The words take the height they need and the drawing takes the rest, which is why the plate is larger on the short first chapter than on the longer second one.
 
+## Wear2Care photographs
+
+61. **Received, and in use.** Two photographs from the client's own Wear2Care x Ali Nuhu donation, supplied 2026-09-22 and stored in `brand-kit/assets/wear2care/`. They replace the placeholders on the home cause section and on the Nabeen x Ali Nuhu page, and one now carries that page's hero. Question 10 is closed: these are real campaign photographs, not stock, and no children appear in either frame.
+62. **They are 1024x767, which is small for a full-bleed hero.** They hold up at the sizes used, but ask for the originals at full camera resolution if there are any.
+63. **The recipients are named from the banner in the photographs**, not from any document the client sent: "Nassarawa Children's Home" and "Creative Helping Needy Foundation", recorded in `site.json` under `wear2care` with `status: tbc`. Confirm the spelling, and confirm they may be named on the site.
+64. **Still pending for this page: a portrait of Ali Nuhu himself**, and an approved quote. The donation photographs do not obviously show him, and I will not guess which person in a group photograph he is.
+

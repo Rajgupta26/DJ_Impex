@@ -71,6 +71,12 @@ export const siteSchema = z.object({
     file: z.string(),
     poster: z.string(),
   }),
+  wear2care: z.object({
+    _note: z.string().optional(),
+    status: statusSchema,
+    recipients: z.string(),
+    photos: z.array(z.object({ file: z.string(), alt: z.string() })),
+  }),
   social: z.array(
     z.object({
       name: z.string(),

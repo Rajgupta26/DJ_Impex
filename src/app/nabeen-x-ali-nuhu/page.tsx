@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 
 import { EnquiryBand } from "@/components/layout/EnquiryBand";
+import Image from "next/image";
+
 import { Container } from "@/components/ui/Container";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { PageHero } from "@/components/ui/PageHero";
 import { withReg } from "@/components/ui/Reg";
+import { TbcTag } from "@/components/ui/TbcTag";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WeaveArt } from "@/components/ui/WeaveArt";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
@@ -33,7 +35,9 @@ export default function AliNuhuPage() {
       <PageHero
         title={withReg(field(head, "h1"))}
         strapline={withReg(field(head, "strapline"))}
-        pending="Ali Nuhu campaign photograph"
+        image="/images/wear2care/handover.jpg"
+        alt={site.wear2care.photos[0].alt}
+        objectPosition="center 32%"
       />
 
       {/* An editorial long read: one column of prose against a tall portrait. */}
@@ -51,14 +55,29 @@ export default function AliNuhuPage() {
               </div>
             </div>
 
-            <div className="relative aspect-[4/5] overflow-hidden">
-              <ImagePlaceholder
-                pending="Portrait of Ali Nuhu for the campaign"
-                pattern="lace"
-                tone="navy"
-              />
-            </div>
+            <p className="t-lead self-end text-slate lg:pb-2">
+              {withReg(`Photographed at the handover to ${site.wear2care.recipients}.`)}
+              <TbcTag status={site.wear2care.status} note={site.wear2care._note} />
+            </p>
           </div>
+
+          {/* Both photographs at their own 4:3, side by side. A group of people
+              does not survive being cropped to a portrait frame. */}
+          <ul className="mt-16 grid gap-6 md:grid-cols-2 md:gap-8">
+            {site.wear2care.photos.map((photo) => (
+              <li key={photo.file}>
+                <figure className="relative aspect-[4/3] w-full overflow-hidden bg-mist">
+                  <Image
+                    src={`/images/wear2care/${photo.file}`}
+                    alt={photo.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 46vw"
+                    className="object-cover"
+                  />
+                </figure>
+              </li>
+            ))}
+          </ul>
         </Container>
       </section>
 
