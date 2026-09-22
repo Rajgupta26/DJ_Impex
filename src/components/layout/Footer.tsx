@@ -34,7 +34,7 @@ export function Footer() {
         </div>
 
         <nav aria-label="Footer">
-          <h2 className="t-small mb-4 font-semibold text-zari">Explore</h2>
+          <h2 className="t-small mb-4 font-semibold text-accent">Explore</h2>
           <ul className="grid gap-2.5 text-white/75">
             {site.navigation.map((item) => (
               <li key={item.href}>
@@ -48,7 +48,7 @@ export function Footer() {
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-1">
           <div>
-            <h2 className="t-small mb-4 font-semibold text-zari">Talk to us</h2>
+            <h2 className="t-small mb-4 font-semibold text-accent">Talk to us</h2>
             <ul className="grid gap-2.5 text-white/75">
               <li>
                 <TrackedLink
@@ -96,7 +96,7 @@ export function Footer() {
 
           {socials.length > 0 ? (
             <div>
-              <h2 className="t-small mb-4 font-semibold text-zari">Follow</h2>
+              <h2 className="t-small mb-4 font-semibold text-accent">Follow</h2>
               <ul className="grid gap-2.5 text-white/75">
                 {socials.map((social) => (
                   <li key={social.name}>

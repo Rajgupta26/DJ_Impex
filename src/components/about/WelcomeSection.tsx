@@ -95,7 +95,7 @@ export function WelcomeSection() {
             {/* The sign-off, kept as its own line with a thread of gold, because
                 that is what it is: a signature, not a sentence in a paragraph.
                 Gold as a rule, never as text: it fails AA on a light ground. */}
-            <p className="t-small mt-12 inline-block border-t border-zari pt-4 font-semibold tracking-[0.02em] text-navy">
+            <p className="t-small mt-12 inline-block border-t border-accent pt-4 font-semibold tracking-[0.02em] text-navy">
               {field(copy, "closing")}
             </p>
           </div>

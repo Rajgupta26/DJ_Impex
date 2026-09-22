@@ -216,7 +216,7 @@ export function HeroCarousel({
                 <span
                   aria-hidden="true"
                   className={`block h-px w-9 transition-colors duration-[var(--duration-base)] ${
-                    index === selected ? "bg-zari" : "bg-white/35 group-hover:bg-white/70"
+                    index === selected ? "bg-accent" : "bg-white/35 group-hover:bg-white/70"
                   }`}
                 />
               </button>

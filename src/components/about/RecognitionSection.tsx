@@ -42,7 +42,7 @@ export function RecognitionSection() {
             <p className="t-h2 max-w-[16ch] text-[clamp(1.5rem,1.1rem+1.6vw,2.4rem)] text-navy">
               {site.brand.starExportHouse.value}
             </p>
-            <span aria-hidden="true" className="mt-8 block h-px w-16 bg-zari" />
+            <span aria-hidden="true" className="mt-8 block h-px w-16 bg-accent" />
 
             {recognition.paragraphs.map((paragraph) => (
               <p key={paragraph} className="measure mt-8 text-slate">

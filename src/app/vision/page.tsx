@@ -37,7 +37,7 @@ export default function VisionPage() {
       <section className="relative overflow-hidden bg-navy-deep py-[clamp(4.5rem,3rem+6vw,8rem)]">
         <WeaveArt pattern="herringbone" scale={1.1} />
         <Container className="on-dark relative text-white">
-          <figure className="border-l border-zari pl-8 sm:pl-12">
+          <figure className="border-l border-accent pl-8 sm:pl-12">
             <blockquote>
               <p className="max-w-[20ch] text-[clamp(2rem,1.3rem+3.2vw,4rem)] font-light leading-[1.12] tracking-[-0.01em] [font-stretch:80%]">
                 {withReg(quoteText)}

@@ -136,7 +136,7 @@ export function EnquiryForm({
 
   if (state.status === "success") {
     return (
-      <div className={`border-l border-zari pl-6 ${className}`.trim()} role="status">
+      <div className={`border-l border-accent pl-6 ${className}`.trim()} role="status">
         <p className="t-h3">Enquiry sent</p>
         <p className="mt-3 max-w-[34rem] text-slate">{state.message}</p>
       </div>
