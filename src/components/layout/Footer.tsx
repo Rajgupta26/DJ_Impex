@@ -4,7 +4,7 @@ import Link from "next/link";
 import { withReg } from "@/components/ui/Reg";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { getSite } from "@/lib/content";
-import { mailtoLink, telLink } from "@/lib/contact";
+import { fabricPrefill, mailtoLink, telLink, whatsappLink } from "@/lib/contact";
 import { visible } from "@/lib/site";
 
 export function Footer() {
@@ -108,12 +108,14 @@ export function Footer() {
         <ul className="flex flex-wrap gap-x-6 gap-y-3">
           {site.fabricTypes.items.map((fabric) => (
             <li key={fabric.slug}>
-              <Link
-                href={`/nabeen#${fabric.slug}`}
+              <TrackedLink
+                href={whatsappLink(fabricPrefill(fabric.name))}
+                event="whatsapp_click"
+                location="footer"
                 className="t-small text-white/60 transition-colors hover:text-white"
               >
                 {fabric.name}
-              </Link>
+              </TrackedLink>
             </li>
           ))}
         </ul>

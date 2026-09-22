@@ -170,10 +170,9 @@ export function HeroCarousel({
               <span>Read the story</span>
             </Link>
           ) : (
-            <Link href="/nabeen" className="btn btn-ghost">
+            <Link href="/about" className="btn btn-ghost">
               <span>
-                Explore Nabeen
-                <Reg />
+                Read our story
               </span>
             </Link>
           )}
