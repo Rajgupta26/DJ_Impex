@@ -65,6 +65,18 @@ Nabeen® contributes a percentage (%) of its profits to support child education 
 Link: "About Wear2Care" → /nabeen-x-ali-nuhu
 Image: pending (real campaign photo only; never stock photos of children).
 
+## Enquiry
+PROPOSED, and an agency decision rather than a client one: this block replaces the social
+cause block at the foot of the home page (2026-09-22, see docs/05-open-questions.md 71-73).
+The social cause lives on at /nabeen-x-ali-nuhu, which the menu and the hero still link to.
+The copy below is taken from contact.md on purpose, so enquiries have one voice across the
+site. Change it here.
+
+**Eyebrow:** Enquiries
+**Heading:** Talk to the Nabeen team
+**Intro:** Tell us which fabrics you trade in, your market and the quantities you need. We will reply on WhatsApp or email.
+**Form heading:** Send an enquiry
+
 ## 8. Footer
 - Nabeen logo (white) + "Luxury Fabrics by DJI"
 - Menu links
