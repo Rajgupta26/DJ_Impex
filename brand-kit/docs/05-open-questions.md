@@ -241,3 +241,12 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 126. **/vision has no closing enquiry band.** It was cut on the agency's instruction (2026-09-23), so the page is now the banner, the five pillars and the footer. The band is still on the journal posts, which are the only other page that carried it, so `EnquiryBand.tsx` is not orphaned. The pillars section took the `page-end` class, since it is the last thing before the footer now and the reason for its old `pb-16 lg:pb-20` -- the band below opening with 104px of its own -- has gone with the band.
 
      Worth noting against it: /vision is now the only page with no call to action of its own. The footer's phone, email and directions and the floating WhatsApp button are all that remain on it, and /about is in the same position (question 81). Every other page closes on either the band or a form.
+
+127. **Akshay's "animation fix on home page" was merged except for the hero.** His retimed reveals on the brief, the stat boxes and the new `JournalAnimated`, and his smaller pillar icons, are all in. `HeroCarousel.tsx` was kept at our version on the agency's decision, because his change to that one file contained no animation work at all -- only two reversals:
+
+     - It removed the hero film's play/pause button, the state sync, and went back to `catch(() => {})` on the rejected `play()`. That is precisely the combination that produced the "video is paused" bug the agency reported on 2026-09-23 (question 98), and it removes the stop control that WCAG 2.2.2 requires for moving content.
+     - It recoloured the hero from `bg-navy-deep` to `bg-black`, with the veils changed from navy to neutral black and a comment saying "without any blue tint". CLAUDE.md has said the palette is blue only since 2026-09-22.
+
+     Git reported no conflict on this file, because nothing here had touched it since. That is worth remembering: a clean merge is not evidence that a merge is correct, and both of these would have gone in silently.
+
+128. **This is the second time in a day that a merge would have undone a reported fix.** The pattern is that work starts from a base that is a few commits old, so a change that was made deliberately looks like a change that was never made. Nothing here is anyone's fault, but the two of you are editing the same handful of files, and the only thing that has caught it both times is reading the diff before merging rather than after.

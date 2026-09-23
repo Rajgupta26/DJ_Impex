@@ -110,11 +110,11 @@ export function VisionPillars({
                 >
                   <span aria-hidden="true" className="flex flex-col items-center">
                     <motion.span
-                      className="relative flex h-14 w-14 shrink-0 items-center justify-center bg-mist text-navy sm:h-16 sm:w-16"
+                      className="relative flex h-12 w-12 shrink-0 items-center justify-center text-navy sm:h-14 sm:w-14"
                       variants={iconVariants}
                       custom={index}
                     >
-                      <IconComponent size={26} strokeWidth={1.5} className="text-navy" />
+                      <IconComponent size={28} strokeWidth={1.5} className="text-navy" />
                     </motion.span>
                     {/* The warp carrying on to the next pillar. The gap below the
                       text is the content's padding, not the row's, so the thread

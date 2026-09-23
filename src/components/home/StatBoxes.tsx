@@ -42,7 +42,7 @@ const STAT_ITEMS: StatItem[] = [
 
 export function StatBoxes({ className = "" }: { className?: string }) {
   const reduceMotion = useReducedMotion();
-  const ease = [0.22, 0.61, 0.36, 1] as const;
+  const ease = [0.22, 1, 0.36, 1] as const;
 
   // Dual-direction staggered animation configuration:
   // Boxes 0 and 1 slide in from the left, one after another.
@@ -57,19 +57,19 @@ export function StatBoxes({ className = "" }: { className?: string }) {
     }
 
     const isLeft = index < 2;
-    const initialX = isLeft ? -80 : 80;
+    const initialX = isLeft ? -60 : 60;
     // Stagger timing:
-    // Left pair: Box 0 (0.10s) -> Box 1 (0.28s)
-    // Right pair: Box 2 (0.28s) -> Box 3 (0.46s)
-    const delays = [0.1, 0.28, 0.28, 0.46];
+    // Left pair: Box 0 (0.15s) -> Box 1 (0.40s)
+    // Right pair: Box 2 (0.55s) -> Box 3 (0.80s)
+    const delays = [0.15, 0.4, 0.55, 0.8];
 
     return {
       initial: { opacity: 0, x: initialX },
       whileInView: { opacity: 1, x: 0 },
-      viewport: { once: true, amount: 0.05 },
+      viewport: { once: true, amount: 0.2, margin: "-40px 0px" },
       transition: {
-        duration: 0.45,
-        delay: delays[index] ?? 0.1,
+        duration: 1.2,
+        delay: delays[index] ?? 0.15,
         ease,
       },
     };
