@@ -78,7 +78,7 @@ export function MobileMenu({
                       href={item.href}
                       onClick={onClose}
                       aria-current={active ? "page" : undefined}
-                      className="t-h3 block py-5 font-light [font-stretch:80%] text-[clamp(1.5rem,1.1rem+2.4vw,2.25rem)]"
+                      className="t-h3 block py-5 font-light text-[clamp(1.5rem,1.1rem+2.4vw,2.25rem)]"
                     >
                       {withReg(item.label)}
                     </Link>

@@ -107,7 +107,7 @@ export function TestimonialsCarousel({
                 className="min-w-0 flex-[0_0_100%] border-l border-accent pl-8 sm:pl-10"
               >
                 <blockquote>
-                  <p className="max-w-[52rem] text-[clamp(1.35rem,1.05rem+1.4vw,2.2rem)] font-light leading-[1.3] text-white [font-stretch:87.5%]">
+                  <p className="max-w-[52rem] text-[clamp(1.35rem,1.05rem+1.4vw,2.2rem)] font-light leading-[1.3] text-white">
                     {withReg(item.quote)}
                   </p>
                 </blockquote>

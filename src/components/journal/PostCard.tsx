@@ -71,9 +71,9 @@ export function PostCard({
           </p>
 
           <h3
-            className={`mt-3 font-semibold leading-[1.22] [font-stretch:87.5%] ${
+            className={`mt-3 font-semibold leading-[1.25] ${
               large
-                ? "text-[clamp(1.75rem,1.3rem+1.6vw,2.5rem)] font-light [font-stretch:80%]"
+                ? "text-[clamp(1.75rem,1.3rem+1.6vw,2.5rem)] font-light"
                 : "t-h3"
             }`}
           >
@@ -85,10 +85,7 @@ export function PostCard({
           </h3>
 
           {leadText ? (
-            <p
-              className="measure mt-4 text-slate leading-relaxed font-normal"
-              style={{ fontFamily: 'var(--font-poppins), "Poppins", "Montserrat", sans-serif' }}
-            >
+            <p className="measure mt-4 text-slate leading-relaxed font-normal">
               {leadText}
             </p>
           ) : null}

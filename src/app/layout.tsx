@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Open_Sans, Poppins } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 import "./globals.css";
@@ -14,21 +14,9 @@ import { getSite } from "@/lib/content";
 import { directionsLink, mailtoLink, telLink, whatsappLink } from "@/lib/contact";
 import { jsonLdScript, organizationJsonLd, pageTitle, SITE_URL } from "@/lib/seo";
 
-/**
- * Open Sans as a variable font with the width axis, because the site's signature
- * typographic move is headlines at 75% width, weight 300.
- */
 const openSans = Open_Sans({
   subsets: ["latin"],
-  axes: ["wdth"],
   variable: "--font-open-sans",
-  display: "swap",
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-poppins",
   display: "swap",
 });
 
@@ -62,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     // The font variable must live on <html>: tokens.css resolves --font-sans at :root,
     // so --font-open-sans has to be defined there or the whole value is invalid.
-    <html lang="en" className={`${openSans.variable} ${poppins.variable}`}>
+    <html lang="en" className={openSans.variable}>
       <body className="font-sans">
         <SkipLink />
 

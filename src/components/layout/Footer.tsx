@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Mail, Phone } from "lucide-react";
 
 import { withReg } from "@/components/ui/Reg";
 import { TbcTag } from "@/components/ui/TbcTag";
@@ -108,6 +109,29 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+
+            <div className="mt-6 flex w-36 flex-col gap-3">
+              <TrackedLink
+                href={telLink()}
+                event="call_click"
+                location="footer_actions"
+                external={false}
+                className="btn btn-primary !h-11 !w-full !justify-center !px-4 !text-sm"
+              >
+                <Phone aria-hidden="true" size={14} strokeWidth={1.8} />
+                <span>Call us</span>
+              </TrackedLink>
+              <TrackedLink
+                href={mailtoLink("Fabric enquiry")}
+                event="email_click"
+                location="footer_actions"
+                external={false}
+                className="btn btn-outline !h-11 !w-full !justify-center !px-4 !text-sm !border-white/20 !text-white hover:!bg-white/10"
+              >
+                <Mail aria-hidden="true" size={14} strokeWidth={1.8} />
+                <span>Mail us</span>
+              </TrackedLink>
+            </div>
           </div>
         ) : null}
       </div>

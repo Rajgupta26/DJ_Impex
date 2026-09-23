@@ -138,19 +138,31 @@ export function FabricHoverShowcase({
             aria-label="Nabeen fabric collections"
             className="border-b border-line"
           >
-            {items.map((item) => {
+            {items.map((item, index) => {
               const isActive = activeItem.id === item.id;
               return (
-                <button
+                <motion.button
                   key={item.id}
                   type="button"
                   role="tab"
                   aria-selected={isActive}
                   tabIndex={0}
+                  initial={reduceMotion ? false : { opacity: 0, x: -42 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={
+                    reduceMotion
+                      ? { duration: 0.01 }
+                      : {
+                          duration: 0.68,
+                          delay: index * 0.12,
+                          ease: [0.22, 0.61, 0.36, 1],
+                        }
+                  }
                   onMouseEnter={() => handleSelect(item)}
                   onFocus={() => handleSelect(item)}
                   onClick={() => handleSelect(item)}
-                  className={`group relative flex min-h-20 w-full items-center gap-4 border-t border-line py-5 pl-4 text-left transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent sm:min-h-24 sm:py-6 ${
+                  className={`group relative flex min-h-[4.5rem] w-full items-center gap-4 border-t border-line py-2 pl-4 text-left transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent sm:min-h-20 sm:py-2 ${
                     isActive
                       ? "text-navy font-normal"
                       : "text-navy/65 hover:text-navy"
@@ -185,7 +197,7 @@ export function FabricHoverShowcase({
                   </span>
 
                   <span
-                    className={`t-h3 min-w-0 text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] font-light tracking-tight transition-colors duration-300 ${
+                    className={`t-h3 inline-block min-w-0 text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] font-light tracking-tight transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-focus:-translate-x-1 ${
                       isActive
                         ? "bg-clip-text text-transparent [text-shadow:0_1px_1px_rgb(13_23_51_/_0.2)]"
                         : "text-inherit"
@@ -215,7 +227,7 @@ export function FabricHoverShowcase({
                     <span className="hidden sm:inline">VIEW</span>
                     <span>→</span>
                   </span>
-                </button>
+                </motion.button>
               );
             })}
           </div>
@@ -223,7 +235,7 @@ export function FabricHoverShowcase({
 
         {/* Row 2, Col 2: One hero cutting overlaps five subtle fabric layers. */}
         <div className="mt-8 lg:mt-5 lg:col-start-2 lg:row-start-2 flex flex-col">
-          <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl border border-line/60 bg-mist sm:aspect-[16/11] lg:h-full lg:min-h-0 lg:aspect-auto flex flex-col">
+          <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl border border-line/60 bg-mist sm:aspect-[16/11] lg:h-[clamp(32rem,47vw,40rem)] lg:min-h-0 lg:aspect-auto flex flex-col">
             <div className="relative flex-1 w-full min-h-0 overflow-hidden bg-mist">
               {/* A full cloth base fills the rounded overlap gaps behind every layer. */}
               <AnimatePresence initial={false}>
@@ -305,14 +317,8 @@ export function FabricHoverShowcase({
                     priority
                   />
 
-                  {/* Gradient overlay for readability */}
-                  <div
-                    className="absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/20 to-transparent"
-                    aria-hidden="true"
-                  />
-
                   {/* Caption & Weave information */}
-                  <div className="absolute inset-x-0 bottom-0 p-6 sm:p-7 text-white">
+                  <div className="absolute inset-x-0 bottom-0 p-6 text-white [text-shadow:0_1px_8px_rgb(13_23_51_/_0.8)] sm:p-7">
                     <div className="flex items-center justify-between text-xs tracking-wider uppercase text-accent font-mono">
                       <span>{activeItem.weave}</span>
                       <span className="text-white/60">NABEEN® COLLECTION</span>
@@ -327,9 +333,6 @@ export function FabricHoverShowcase({
                 </motion.div>
               </AnimatePresence>
             </div>
-
-            {/* Selvedge Blue bottom hairline accent */}
-            <div className="h-[2px] w-full bg-accent" aria-hidden="true" />
           </div>
         </div>
 
