@@ -3,7 +3,7 @@ import { Section } from "@/components/ui/Section";
 
 export default function NotFound() {
   return (
-    <Section className="pt-[calc(var(--spacing-section)+4.5rem)]">
+    <Section className="page-end pt-[calc(var(--spacing-section)+4.5rem)]">
       <h1 className="t-h1 max-w-[14ch]">This page has moved, or never existed</h1>
       <p className="t-lead measure mt-6">
         The fabric is still here. Try the home page, or talk to our team directly.

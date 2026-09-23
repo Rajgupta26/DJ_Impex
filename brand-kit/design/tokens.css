@@ -62,6 +62,16 @@
   --selvedge-speed: 60s;      /* one full loop of the selvedge marquee */
 }
 
+/* ---- The last section on a page ------------------------------------------
+   The footer opens with 4-5rem of its own top space, so the final section
+   before it does not pay a full --spacing-section at the bottom as well: two
+   full pads stacked read as an empty band above the footer, not as rhythm.
+   Light grounds only. A dark closing band (the enquiry band) keeps its own
+   padding, because it meets the navy-deep footer with no visible seam.
+   This file is imported after Tailwind and is unlayered, so it wins over the
+   section's own py- utility without !important. */
+.page-end { padding-bottom: clamp(3.5rem, 2.5rem + 2vw, 4.5rem); }
+
 /* ---- Width axis helpers (Open Sans variable, wdth 75-100) ----------------- */
 .font-condensed { font-stretch: 75%; }
 .font-semicondensed { font-stretch: 87.5%; }

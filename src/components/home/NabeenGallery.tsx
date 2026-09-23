@@ -23,7 +23,7 @@ export function NabeenGallery() {
   const span = Math.max(1, CELLS - images.length);
 
   return (
-    <section className="bg-mist py-[var(--spacing-section)]">
+    <section className="page-end bg-mist py-[var(--spacing-section)]">
       <Container>
         <div className="max-w-[46rem]">
           <h2 className="t-h2">{withReg(field(gallery, "heading"))}</h2>

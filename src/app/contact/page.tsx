@@ -30,7 +30,7 @@ export default function ContactPage() {
         pattern="rib"
       />
 
-      <section className="bg-white py-[var(--spacing-section)]">
+      <section className="page-end bg-white py-[var(--spacing-section)]">
         <Container>
           <div className="grid gap-16 lg:grid-cols-[5fr_7fr] lg:gap-20 items-start">
             <div className="rounded-2xl bg-navy text-white on-dark p-8 lg:p-10 shadow-lg">
