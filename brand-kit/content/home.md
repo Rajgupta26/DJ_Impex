@@ -47,10 +47,12 @@ Today we export under our brand Nabeen® to discerning markets across Africa and
 Link: "Read our story" → /about
 
 ## 4. Our exclusive collection
-Heading (agency, 2026-09-23): Our exclusive collection of
-The heading is deliberately unfinished: it runs on into the fabric names below it
-as one sentence. Do not add a noun to it.
-Data: site.json → fabricTypes. Marked tbc, so it carries the dev-only TBC tag.
+The same hover showcase that runs on /about, placed here on 2026-09-23.
+Copy: about.md → "Collection lead", "Collection names", "Collection tail". It is
+one sentence and it is NOT duplicated into this file, so the two pages cannot
+drift apart. The showcase sets the lead as body text, so the section carries a
+hidden heading for the outline rather than printing the same line twice.
+Fabric photographs and descriptions are inside FabricHoverShowcase itself.
 
 (The Fabric Journal moved off the home page on 2026-09-23 and lives at /journal.
 Its own heading and strapline are on that page. Was: "The Fabric Journal" /

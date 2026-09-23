@@ -1,7 +1,7 @@
 import { BriefSection } from "@/components/home/BriefSection";
 import { ContactSection } from "@/components/home/ContactSection";
 import { HeroCarousel, type HeroSlideView } from "@/components/home/HeroCarousel";
-import { FabricCollection } from "@/components/home/FabricCollection";
+import { CollectionShowcase } from "@/components/home/CollectionShowcase";
 import { NabeenGallery } from "@/components/home/NabeenGallery";
 import { TestimonialsCarousel } from "@/components/home/TestimonialsCarousel";
 import { getBrandFilm, getHeroSlides, getPage, getSite } from "@/lib/content";
@@ -85,7 +85,7 @@ export default function HomePage() {
       <HeroCarousel slides={slides} whatsappHref={whatsappLink()} />
 
       <BriefSection />
-      <FabricCollection />
+      <CollectionShowcase />
 
       <TestimonialsCarousel
         heading={field(section(home, "5-testimonials"), "heading")}
