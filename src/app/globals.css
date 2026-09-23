@@ -216,3 +216,54 @@ html {
     scroll-behavior: auto;
   }
 }
+
+/* ==========================================================================
+   The loom, on /vision.
+   Threads running down the panel, cloth forming across it, and a warp thread
+   drawing itself through the five pillars as they scroll in.
+
+   Every animated layer here is decoration (aria-hidden). Nothing that carries
+   words is ever animated from transparent: text on this site is either on the
+   page at full strength or not on the page at all.
+
+   Each rule sets only its own hidden starting state, and only inside the query
+   that can finish the animation. A browser without scroll-driven animations, or
+   a viewer who asks for reduced motion, gets the finished artwork immediately.
+   ========================================================================== */
+
+@keyframes loom-warp {
+  from { opacity: 0; transform: translateY(-2rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes loom-cloth {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes thread-draw {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .loom-warp {
+    animation: loom-warp 1200ms var(--ease-weave) both;
+  }
+
+  /* The cloth forms after the threads are hung, as it does on a loom. */
+  .loom-cloth {
+    animation: loom-cloth 1100ms var(--ease-weave) 420ms both;
+  }
+
+  /* Scroll-driven, so the thread draws as the pillars arrive rather than on
+     load, where nobody would see it. No JavaScript and no observer. */
+  @supports (animation-timeline: view()) {
+    .thread-draw {
+      transform-origin: top;
+      animation: thread-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 28%;
+    }
+  }
+}

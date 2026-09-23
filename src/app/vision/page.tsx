@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 
 import { EnquiryBand } from "@/components/layout/EnquiryBand";
-import { Container } from "@/components/ui/Container";
-import { PageHero } from "@/components/ui/PageHero";
 import { withReg } from "@/components/ui/Reg";
-import { TextLink } from "@/components/ui/TextLink";
-import { WeaveArt } from "@/components/ui/WeaveArt";
+import { VisionOpening } from "@/components/vision/VisionOpening";
+import { VisionPillars } from "@/components/vision/VisionPillars";
 import { getPage } from "@/lib/content";
 import { field, section } from "@/lib/markdown";
 import { buildMetadata, pageTitle } from "@/lib/seo";
@@ -17,67 +15,32 @@ export const metadata: Metadata = buildMetadata({
   path: "/vision",
 });
 
+/**
+ * Our Vision.
+ *
+ * The page was three slabs of large type on flat grounds -- a hero, the Cerruti
+ * quote at 4rem, and the client's closing line at 2.5rem -- with the pillars
+ * between them. The agency asked for the slabs to go (2026-09-23). The opening
+ * is one composed panel now, the pillars carry the page, and the closing line is
+ * not rendered; its copy is still in content/vision.md. See 05-open-questions 108.
+ */
 export default function VisionPage() {
   const vision = getPage("vision");
   const head = section(vision, "our-vision");
   const pillars = section(vision, "the-five-pillars");
-  const closing = section(vision, "closing-line");
 
-  const quote = field(head, "opening-quote");
-  const [quoteText, attribution] = splitQuote(quote);
+  const [quoteText, attribution] = splitQuote(field(head, "opening-quote"));
 
   return (
     <>
-      <PageHero
+      <VisionOpening
         title={withReg(field(head, "h1"))}
-        pattern="dobby"
+        intro={withReg(field(head, "intro"))}
+        quote={withReg(quoteText)}
+        attribution={attribution}
       />
 
-      {/* The Nino Cerruti line opens the page, set very large. */}
-      <section className="relative overflow-hidden bg-navy-deep py-[clamp(4.5rem,3rem+6vw,8rem)]">
-        <WeaveArt pattern="herringbone" scale={1.1} />
-        <Container className="on-dark relative text-white">
-          <figure className="border-l border-accent pl-8 sm:pl-12">
-            <blockquote>
-              <p className="max-w-[20ch] text-[clamp(2rem,1.3rem+3.2vw,4rem)] font-light leading-[1.12] tracking-[-0.01em] [font-stretch:80%]">
-                {withReg(quoteText)}
-              </p>
-            </blockquote>
-            {attribution ? (
-              <figcaption className="t-small mt-8 text-white/60">{attribution}</figcaption>
-            ) : null}
-          </figure>
-        </Container>
-      </section>
-
-      <section className="bg-white py-[var(--spacing-section)]">
-        <Container>
-          <p className="t-lead measure">{withReg(field(head, "intro"))}</p>
-
-          {/* Five equal pillars, not a sequence: never numbered. */}
-          <ul className="mt-16 grid gap-x-16 gap-y-12 md:grid-cols-2">
-            {pillars.items.map((pillar) => (
-              <li key={pillar.lead} className="border-t border-line pt-7">
-                <h2 className="t-h3">{withReg(pillar.lead ?? "")}</h2>
-                <p className="mt-3 max-w-[34rem] text-slate">{withReg(pillar.text)}</p>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      <section className="bg-mist py-[clamp(4rem,2.5rem+5vw,7rem)]">
-        <Container>
-          {closing.paragraphs.map((paragraph) => (
-            <p
-              key={paragraph}
-              className="max-w-[24ch] text-[clamp(1.5rem,1.1rem+1.6vw,2.5rem)] font-light leading-[1.22] [font-stretch:80%]"
-            >
-              {withReg(paragraph)}
-            </p>
-          ))}
-        </Container>
-      </section>
+      <VisionPillars heading={pillars.heading} items={pillars.items} />
 
       <EnquiryBand />
     </>

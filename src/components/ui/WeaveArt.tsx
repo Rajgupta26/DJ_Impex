@@ -122,6 +122,7 @@ export function WeaveArt({
   tone = "navy",
   scale = 1,
   intensity,
+  bare = false,
   className = "",
 }: {
   pattern?: WeavePattern;
@@ -134,6 +135,12 @@ export function WeaveArt({
    * drawing of the cloth rather than a watermark.
    */
   intensity?: number;
+  /**
+   * Draw the threads only, with no ground and no raking light, for layering over
+   * a surface that is already painted. The vision page's loom stacks a woven
+   * cloth over loose warp threads this way.
+   */
+  bare?: boolean;
   className?: string;
 }) {
   const tile = TILES[pattern];
@@ -142,13 +149,15 @@ export function WeaveArt({
 
   return (
     <div aria-hidden="true" className={`absolute inset-0 overflow-hidden ${className}`.trim()}>
-      <div
-        className={
-          dark
-            ? "absolute inset-0 bg-[linear-gradient(135deg,var(--color-navy-deep),var(--color-navy)_58%,var(--color-navy-soft))]"
-            : "absolute inset-0 bg-[linear-gradient(135deg,var(--color-mist),#fff_60%,var(--color-mist))]"
-        }
-      />
+      {bare ? null : (
+        <div
+          className={
+            dark
+              ? "absolute inset-0 bg-[linear-gradient(135deg,var(--color-navy-deep),var(--color-navy)_58%,var(--color-navy-soft))]"
+              : "absolute inset-0 bg-[linear-gradient(135deg,var(--color-mist),#fff_60%,var(--color-mist))]"
+          }
+        />
+      )}
       <svg
         className={`absolute inset-0 h-full w-full ${dark ? "text-accent" : "text-navy"}`}
         style={{ opacity: intensity ?? (dark ? 0.26 : 0.14) }}
@@ -171,13 +180,15 @@ export function WeaveArt({
         <rect width="100%" height="100%" fill={`url(#${id})`} />
       </svg>
       {/* A raking-light falloff, so the panel has a direction like lit cloth. */}
-      <div
-        className={
-          dark
-            ? "absolute inset-0 bg-[radial-gradient(120%_90%_at_18%_12%,transparent,rgb(13_23_51/0.72))]"
-            : "absolute inset-0 bg-[radial-gradient(120%_90%_at_18%_12%,transparent,rgb(238_241_246/0.9))]"
-        }
-      />
+      {bare ? null : (
+        <div
+          className={
+            dark
+              ? "absolute inset-0 bg-[radial-gradient(120%_90%_at_18%_12%,transparent,rgb(13_23_51/0.72))]"
+              : "absolute inset-0 bg-[radial-gradient(120%_90%_at_18%_12%,transparent,rgb(238_241_246/0.9))]"
+          }
+        />
+      )}
     </div>
   );
 }
