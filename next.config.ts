@@ -14,6 +14,16 @@ const nextConfig: NextConfig = {
     qualities: [75, 88],
   },
   poweredByHeader: false,
+  async redirects() {
+    return [
+      // /contact was a real page until 2026-09-23, when the enquiry form moved
+      // onto the home page. Anyone holding the old link -- a bookmark, a shared
+      // URL, the client's own email signature -- lands on the form instead of a
+      // 404. Temporary, not permanent: this structure has changed twice today
+      // and a 308 is cached by the browser until the end of time.
+      { source: "/contact", destination: "/#contact", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

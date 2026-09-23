@@ -47,7 +47,10 @@ export function ContactPopup({ whatsappHref }: { whatsappHref: string }) {
   );
 
   useEffect(() => {
-    if (pathname === "/contact") return;
+    // The enquiry form moved from /contact onto the home page (2026-09-23),
+    // so this is the page that must not be nagged: the popup would otherwise
+    // open on top of the very form it is pointing at.
+    if (pathname === "/") return;
     if (readSession(SEEN_KEY) || readSession(SENT_KEY)) return;
 
     const timer = window.setTimeout(() => {

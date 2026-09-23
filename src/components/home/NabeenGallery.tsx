@@ -19,7 +19,8 @@ const CELLS = 12;
  *
  * The top padding is short because the testimonials band above ends in a
  * mist-coloured wave divider, which already lays its own height of ground over
- * this section's colour; `page-end` does the same job at the footer.
+ * this section's colour. It carried `page-end` while it was the last thing on
+ * the page; the contact section took that job back on 2026-09-23.
  */
 export function NabeenGallery() {
   const images = getGalleryImages();
@@ -27,7 +28,7 @@ export function NabeenGallery() {
   const span = Math.max(1, CELLS - images.length);
 
   return (
-    <section className="page-end bg-mist pt-10 lg:pt-14">
+    <section className="bg-mist pt-10 pb-16 lg:pt-14 lg:pb-20">
       <Container>
         <div className="max-w-[46rem]">
           <h2 className="t-h2">{withReg(field(gallery, "heading"))}</h2>
