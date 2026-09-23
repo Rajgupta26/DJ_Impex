@@ -2,11 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Mail, Phone } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-
-import { withReg } from "@/components/ui/Reg";
-import { TrackedLink } from "@/components/ui/TrackedLink";
 
 export interface FabricItem {
   id: string;
@@ -114,17 +110,21 @@ export function FabricHoverShowcase({
 }: FabricHoverShowcaseProps) {
   const items = names.map((name, idx) => resolveFabricItem(name, idx));
   const [activeItem, setActiveItem] = useState<FabricItem>(items[0] || FABRIC_COLLECTION[0]);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const reduceMotion = useReducedMotion();
+  const activeIndex = Math.max(0, items.findIndex((item) => item.id === activeItem.id));
+  const stackItems = Array.from(
+    { length: Math.min(5, Math.max(0, items.length - 1)) },
+    (_, index) => items[(activeIndex + index + 1) % items.length]
+  );
+  const baseFabric = stackItems[stackItems.length - 1] || activeItem;
 
   const handleSelect = (item: FabricItem) => {
-    setHasInteracted(true);
     setActiveItem(item);
   };
 
   return (
     <div className="mt-16 lg:mt-20">
-      <div className="grid gap-x-12 lg:grid-cols-[7fr_5fr] lg:gap-x-16 xl:gap-x-20">
+      <div className="grid gap-x-12 lg:grid-cols-[6.5fr_5.5fr] lg:gap-x-14 xl:gap-x-16">
         {/* Row 1: Collection Lead on Left, empty spacer on Right */}
         <div className="lg:col-start-1">
           <p className="text-slate">{collectionLead}</p>
@@ -150,10 +150,10 @@ export function FabricHoverShowcase({
                   onMouseEnter={() => handleSelect(item)}
                   onFocus={() => handleSelect(item)}
                   onClick={() => handleSelect(item)}
-                  className={`group relative flex w-full items-center justify-between border-t border-line py-5 text-left transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${
+                  className={`group relative flex min-h-20 w-full items-center gap-4 border-t border-line py-5 pl-4 text-left transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent sm:min-h-24 sm:py-6 ${
                     isActive
-                      ? "pl-4 text-navy font-normal"
-                      : "pl-0 text-navy/65 hover:pl-2.5 hover:text-navy"
+                      ? "text-navy font-normal"
+                      : "text-navy/65 hover:text-navy"
                   }`}
                 >
                   {/* Active indicator bar in Selvedge Blue */}
@@ -166,13 +166,46 @@ export function FabricHoverShowcase({
                     aria-hidden="true"
                   />
 
-                  <span className="t-h3 text-[clamp(1.15rem,0.95rem+0.75vw,1.55rem)] font-light tracking-tight">
+                  {/* Each ticket gets a real vertical cutting before its name. */}
+                  <span
+                    className={`relative h-14 w-12 shrink-0 overflow-hidden border transition-all duration-300 ease-out sm:h-16 sm:w-14 ${
+                      isActive
+                        ? "border-accent shadow-[0_0_0_2px_rgb(95_149_221_/_0.18)]"
+                        : "border-line group-hover:border-navy/45"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <Image
+                      src={item.image}
+                      alt=""
+                      fill
+                      sizes="56px"
+                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                    />
+                  </span>
+
+                  <span
+                    className={`t-h3 min-w-0 text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] font-light tracking-tight transition-colors duration-300 ${
+                      isActive
+                        ? "bg-clip-text text-transparent [text-shadow:0_1px_1px_rgb(13_23_51_/_0.2)]"
+                        : "text-inherit"
+                    }`}
+                    style={
+                      isActive
+                        ? {
+                            backgroundImage: `linear-gradient(rgb(13 23 51 / 0.18), rgb(13 23 51 / 0.18)), url(${item.image})`,
+                            backgroundPosition: "center",
+                            backgroundSize: "cover",
+                          }
+                        : undefined
+                    }
+                  >
                     {item.name}
                   </span>
 
                   {/* Micro visual cue: arrow that guides attention to the right-hand image */}
                   <span
-                    className={`flex items-center gap-1.5 text-xs font-mono tracking-wider transition-all duration-300 ${
+                    className={`ml-auto flex items-center gap-1.5 text-xs font-mono tracking-wider transition-all duration-300 ${
                       isActive
                         ? "text-accent translate-x-0 opacity-100"
                         : "text-slate/40 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-70"
@@ -188,18 +221,80 @@ export function FabricHoverShowcase({
           </div>
         </div>
 
-        {/* Row 2, Col 2: The Image Stage - Only animates on actual user interaction */}
+        {/* Row 2, Col 2: One hero cutting overlaps five subtle fabric layers. */}
         <div className="mt-8 lg:mt-5 lg:col-start-2 lg:row-start-2 flex flex-col">
-          <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] lg:aspect-auto lg:h-full lg:min-h-0 overflow-hidden bg-navy-deep border border-line/60 flex flex-col">
-            <div className="relative flex-1 w-full min-h-0 overflow-hidden bg-navy-deep">
-              <AnimatePresence initial={false} mode="wait">
+          <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl border border-line/60 bg-mist sm:aspect-[16/11] lg:h-full lg:min-h-0 lg:aspect-auto flex flex-col">
+            <div className="relative flex-1 w-full min-h-0 overflow-hidden bg-mist">
+              {/* A full cloth base fills the rounded overlap gaps behind every layer. */}
+              <AnimatePresence initial={false}>
+                <motion.div
+                  key={baseFabric.id}
+                  initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.02 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.99 }}
+                  transition={
+                    reduceMotion
+                      ? { duration: 0.01 }
+                      : { duration: 0.58, ease: [0.22, 0.61, 0.36, 1] }
+                  }
+                  className="absolute inset-0"
+                  aria-hidden="true"
+                >
+                  <Image
+                    src={baseFabric.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-white/10" />
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Five cuts sit beneath the active cloth, exposing only a 2% edge each. */}
+              {stackItems.map((item, index) => (
+                <AnimatePresence key={`fabric-layer-${index}`} initial={false}>
+                  <motion.div
+                    key={item.id}
+                    initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -5 }}
+                    transition={
+                      reduceMotion
+                        ? { duration: 0.01 }
+                        : { duration: 0.52, ease: [0.22, 0.61, 0.36, 1] }
+                    }
+                    className="absolute inset-y-0 hidden w-[calc(2%+7px)] overflow-hidden rounded-l-lg border-l border-white/40 bg-navy-deep lg:block"
+                    style={{
+                      right: `${(stackItems.length - index - 1) * 2}%`,
+                      zIndex: stackItems.length - index,
+                    }}
+                    aria-hidden="true"
+                  >
+                    <Image
+                      src={item.image}
+                      alt=""
+                      fill
+                      sizes="4vw"
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-navy-deep/15" />
+                  </motion.div>
+                </AnimatePresence>
+              ))}
+
+              <AnimatePresence initial={false}>
                 <motion.div
                   key={activeItem.id}
-                  initial={hasInteracted && !reduceMotion ? { opacity: 0, x: 36 } : false}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={hasInteracted && !reduceMotion ? { opacity: 0, x: -18 } : undefined}
-                  transition={{ duration: 0.38, ease: [0.22, 0.61, 0.36, 1] }}
-                  className="relative h-full w-full"
+                  initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 24, scale: 1.015 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -12, scale: 0.99 }}
+                  transition={
+                    reduceMotion
+                      ? { duration: 0.01 }
+                      : { duration: 0.62, ease: [0.22, 0.61, 0.36, 1] }
+                  }
+                  className="absolute inset-y-0 left-0 right-0 z-10 h-full overflow-hidden rounded-xl ring-1 ring-white/30 lg:right-[10%]"
                 >
                   <Image
                     src={activeItem.image}

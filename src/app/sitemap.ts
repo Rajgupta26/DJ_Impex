@@ -6,9 +6,14 @@ import { SITE_URL } from "@/lib/seo";
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  // Deduplicated: the navigation carries its own "Home" entry pointing at "/",
-  // so seeding the list with "/" listed the homepage twice.
-  const hrefs = [...new Set(["/", ...getSite().navigation.map((item) => item.href)])];
+  // Deduplicated and filtered: exclude hash anchors like /#journal from sitemap XML
+  const hrefs = [
+    ...new Set(
+      ["/", ...getSite().navigation.map((item) => item.href)].filter(
+        (href) => !href.startsWith("/#"),
+      ),
+    ),
+  ];
 
   const pages = hrefs.map((href) => ({
     url: href === "/" ? SITE_URL : `${SITE_URL}${href}`,

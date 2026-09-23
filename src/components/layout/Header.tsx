@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { withReg } from "@/components/ui/Reg";
@@ -36,6 +36,46 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
   // without an effect.
   const [openedAt, setOpenedAt] = useState<string | null>(null);
   const menuOpen = openedAt === pathname;
+  const [currentHash, setCurrentHash] = useState<string>("");
+
+  useEffect(() => {
+    const updateHash = () => {
+      if (typeof window !== "undefined") {
+        setCurrentHash(window.location.hash);
+      }
+    };
+
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+    window.addEventListener("popstate", updateHash);
+
+    if (pathname === "/") {
+      const journalEl = document.getElementById("journal");
+      if (journalEl) {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              setCurrentHash("#journal");
+            } else if (window.scrollY < journalEl.offsetTop - 200) {
+              setCurrentHash("");
+            }
+          },
+          { rootMargin: "-80px 0px -40% 0px", threshold: 0.1 }
+        );
+        observer.observe(journalEl);
+        return () => {
+          observer.disconnect();
+          window.removeEventListener("hashchange", updateHash);
+          window.removeEventListener("popstate", updateHash);
+        };
+      }
+    }
+
+    return () => {
+      window.removeEventListener("hashchange", updateHash);
+      window.removeEventListener("popstate", updateHash);
+    };
+  }, [pathname]);
 
   useLayoutEffect(() => {
     const header = headerRef.current;
@@ -90,15 +130,30 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
 
           <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
             {navigation.map((item) => {
-              const active = pathname === item.href;
+              const isJournal = item.href === "/#journal";
+              const isHome = item.href === "/";
+              const active = isJournal
+                ? pathname === "/" && currentHash === "#journal"
+                : isHome
+                ? pathname === "/" && currentHash !== "#journal"
+                : pathname === item.href;
 
               return (
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={() => {
+                    if (isJournal) {
+                      setCurrentHash("#journal");
+                    } else if (isHome) {
+                      setCurrentHash("");
+                    }
+                  }}
                   aria-current={active ? "page" : undefined}
-                  className={`text-[0.9375rem] font-medium transition-opacity duration-[var(--duration-quick)] ${
-                    active ? "border-b border-accent pb-0.5" : "opacity-85 hover:opacity-100"
+                  className={`border-b pb-0.5 text-[0.9375rem] font-medium transition-all duration-[var(--duration-quick)] ${
+                    active
+                      ? "border-accent opacity-100"
+                      : "border-transparent opacity-85 hover:border-accent hover:opacity-100"
                   }`}
                 >
                   {withReg(item.label)}

@@ -44,16 +44,59 @@ export function TestimonialsCarousel({
 
   return (
     <section
-      className="bg-white py-[var(--spacing-section)]"
+      className="on-dark relative overflow-hidden bg-navy py-14 text-white sm:py-16 lg:py-20"
       aria-roledescription="carousel"
       aria-label="What our trade partners say"
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      <div className="container-site">
-        <h2 className="t-h2 max-w-[22ch]">{withReg(heading)}</h2>
+      {/* Top S-Curve Wave Divider (matches the #eef1f6 section above) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 right-0 top-0 z-10 w-full overflow-hidden leading-none"
+      >
+        <svg
+          viewBox="0 0 1440 90"
+          fill="none"
+          preserveAspectRatio="none"
+          className="block h-8 w-full sm:h-10 lg:h-14"
+        >
+          <path
+            d="M 0,0 L 1440,0 L 1440,35 C 1120,85 760,10 380,65 C 200,90 70,75 0,45 Z"
+            fill="#eef1f6"
+          />
+        </svg>
+      </div>
 
-        <div ref={emblaRef} className="mt-14 overflow-hidden">
+      {/* Subtle luxury navy radial depth glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(120%_90%_at_50%_50%,rgb(36_56_106/0.5),transparent_75%)]"
+      />
+
+      {/* Bottom S-Curve Wave Divider (matches the #eef1f6 section below) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 w-full overflow-hidden leading-none"
+      >
+        <svg
+          viewBox="0 0 1440 90"
+          fill="none"
+          preserveAspectRatio="none"
+          className="block h-8 w-full sm:h-10 lg:h-14"
+        >
+          <path
+            d="M 0,90 L 1440,90 L 1440,55 C 1120,10 740,80 380,35 C 180,10 60,25 0,50 Z"
+            fill="#eef1f6"
+          />
+        </svg>
+      </div>
+
+      {/* High-Contrast Foreground Content */}
+      <div className="container-site relative z-10">
+        <h2 className="t-h2 max-w-[22ch] text-white">{withReg(heading)}</h2>
+
+        <div ref={emblaRef} className="mt-8 overflow-hidden sm:mt-10">
           <div className="flex">
             {items.map((item, index) => (
               <figure
@@ -64,13 +107,13 @@ export function TestimonialsCarousel({
                 className="min-w-0 flex-[0_0_100%] border-l border-accent pl-8 sm:pl-10"
               >
                 <blockquote>
-                  <p className="max-w-[52rem] text-[clamp(1.5rem,1.1rem+1.6vw,2.5rem)] font-light leading-[1.3] [font-stretch:87.5%]">
+                  <p className="max-w-[52rem] text-[clamp(1.35rem,1.05rem+1.4vw,2.2rem)] font-light leading-[1.3] text-white [font-stretch:87.5%]">
                     {withReg(item.quote)}
                   </p>
                 </blockquote>
-                <figcaption className="t-small mt-8 text-slate">
+                <figcaption className="t-small mt-6 text-white/70">
                   {item.name ?? item.role}
-                  {item.name ? <span className="text-slate"> · {item.role}</span> : null}
+                  {item.name ? <span className="text-white/60"> · {item.role}</span> : null}
                   <TbcTag status={item.status} note="Name and city not yet supplied by the client" />
                 </figcaption>
               </figure>
@@ -79,7 +122,7 @@ export function TestimonialsCarousel({
         </div>
 
         {items.length > 1 ? (
-          <div className="mt-10 flex items-center gap-2 pl-8 sm:pl-10">
+          <div className="mt-7 flex items-center gap-2 pl-8 sm:pl-10">
             {items.map((item, index) => (
               <button
                 key={item.quote}
@@ -94,7 +137,7 @@ export function TestimonialsCarousel({
                 <span
                   aria-hidden="true"
                   className={`block h-px w-9 transition-colors duration-[var(--duration-base)] ${
-                    index === selected ? "bg-navy" : "bg-line group-hover:bg-slate"
+                    index === selected ? "bg-accent" : "bg-white/30 group-hover:bg-white/60"
                   }`}
                 />
               </button>

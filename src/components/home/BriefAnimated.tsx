@@ -11,7 +11,7 @@ interface BriefAnimatedProps {
   title: string;
   paragraphs: string[];
   linkLabel: string;
-  trustMarksSlot: ReactNode;
+  trustMarksSlot?: ReactNode;
 }
 
 export function BriefAnimated({
@@ -37,10 +37,10 @@ export function BriefAnimated({
   };
 
   return (
-    <div className="grid gap-14 lg:grid-cols-[7fr_5fr] lg:items-stretch lg:gap-20">
+    <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto] lg:gap-16">
       {/* Left Column: Line by line / sentence by sentence animation from the left */}
       <motion.div
-        className="flex flex-col"
+        className="flex flex-col justify-center"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.25, margin: "0px 0px -40px 0px" }}
@@ -67,26 +67,28 @@ export function BriefAnimated({
         </div>
 
         <motion.p
-          className="mt-9"
+          className="mt-8"
           variants={leftVariants}
           custom={paragraphs.length + 1}
         >
           <TextLink href="/about">{linkLabel}</TextLink>
         </motion.p>
 
-        <motion.div
-          className="mt-auto pt-14"
-          variants={leftVariants}
-          custom={paragraphs.length + 2}
-        >
-          {trustMarksSlot}
-        </motion.div>
+        {trustMarksSlot ? (
+          <motion.div
+            className="mt-8"
+            variants={leftVariants}
+            custom={paragraphs.length + 2}
+          >
+            {trustMarksSlot}
+          </motion.div>
+        ) : null}
       </motion.div>
 
-      {/* Right Column: Archive Image smoothly entering from the right */}
+      {/* Right Column: Archive Image 30-35% smaller, smoothly entering from the right */}
       <motion.figure
-        className="relative aspect-[4/3] overflow-hidden bg-mist lg:aspect-auto lg:min-h-[22rem]"
-        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 48 }}
+        className="relative mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:w-[350px] lg:max-w-[350px] aspect-[4/5] overflow-hidden bg-mist shadow-sm lg:self-center"
+        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 40 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.25, margin: "0px 0px -40px 0px" }}
         transition={{
@@ -99,10 +101,10 @@ export function BriefAnimated({
           src="/images/gallery/05-camel-check-jacquard.jpg"
           alt="Camel check jacquard fabric from the Nabeen range"
           fill
-          sizes="(max-width: 1024px) 100vw, 34vw"
+          sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 350px"
           className="object-cover object-[50%_58%]"
         />
-        <figcaption className="t-small absolute inset-x-0 bottom-0 bg-[linear-gradient(transparent,rgb(13_23_51/0.8))] p-5 font-semibold text-white">
+        <figcaption className="t-small absolute inset-x-0 bottom-0 bg-[linear-gradient(transparent,rgb(13_23_51/0.82))] p-4 font-semibold text-white">
           Archive · camel check jacquard
         </figcaption>
       </motion.figure>

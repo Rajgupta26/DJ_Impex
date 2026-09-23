@@ -60,11 +60,6 @@ export default function VisionPage() {
               <li key={pillar.lead} className="border-t border-line pt-7">
                 <h2 className="t-h3">{withReg(pillar.lead ?? "")}</h2>
                 <p className="mt-3 max-w-[34rem] text-slate">{withReg(pillar.text)}</p>
-                {pillar.lead === "Empowering Minds" ? (
-                  <p className="mt-5">
-                    <TextLink href="/nabeen-x-ali-nuhu">About Wear2Care</TextLink>
-                  </p>
-                ) : null}
               </li>
             ))}
           </ul>
