@@ -46,10 +46,15 @@ Today we export under our brand Nabeen® to discerning markets across Africa and
 
 Link: "Read our story" → /about
 
-## 4. The Fabric Journal
-Heading: The Fabric Journal
-Intro (proposed): Guides to choosing, judging and wearing fine fabric.
-Show the 3 posts from content/journal. Link: "Read the journal" → /journal
+## 4. Our exclusive collection
+Heading (agency, 2026-09-23): Our exclusive collection of
+The heading is deliberately unfinished: it runs on into the fabric names below it
+as one sentence. Do not add a noun to it.
+Data: site.json → fabricTypes. Marked tbc, so it carries the dev-only TBC tag.
+
+(The Fabric Journal moved off the home page on 2026-09-23 and lives at /journal.
+Its own heading and strapline are on that page. Was: "The Fabric Journal" /
+"Guides to choosing, judging and wearing fine fabric.")
 
 ## 5. Testimonials
 Heading (client, brochure p.8): People love us, as much as we love serving them.

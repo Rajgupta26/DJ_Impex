@@ -256,3 +256,17 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
      This partly supersedes question 127, where the same change in Akshay's commit was flagged as off-palette. The difference: the section's own ground stays `bg-navy-deep`, where his went `bg-black`. A scrim over a photograph is not a brand colour; the ground behind it is. The hero film is the only place this applies.
 
 130. **The page heroes on /about still carry navy veils.** `PageHero` uses the same three-layer treatment in navy over its photograph. The two heroes now treat photography differently: the film is neutral, the page hero is blue. Worth deciding one way or the other, but changing it was not asked for and /about's photograph is the only one it affects.
+
+## The home page trades the journal for the range, 2026-09-23
+
+131. **"Our exclusive collection of" replaces The Fabric Journal on the home page.** The heading is deliberately unfinished, on the agency's word: it runs on into the fabric names below it as one sentence, which is why the names are set at heading weight and nothing punctuates the end of the heading. It is recorded that way in home.md so nobody "fixes" it later by adding a noun. The block lists the six `fabricTypes` from site.json with their one-line descriptions.
+
+132. **The Fabric Journal has its own page again.** It was deleted on 2026-09-22 when the journal became a home-page section; that section is now the collection, so the page is back at /journal and the nav, the post breadcrumbs and the breadcrumb JSON-LD all point there instead of /#journal. The sitemap picks it up automatically, since it filters hash hrefs and /journal is no longer one. The old version of the page repeated the lead post's opening paragraph as a hard-coded string truncated mid-word; `PostCard` takes the excerpt from the post's own front matter, so that is gone.
+
+     `JournalPreview.tsx` and Akshay's `JournalAnimated.tsx` are now referenced nowhere. They are kept rather than deleted, like the others in question 105.
+
+     `Header.tsx` still has its scroll-spy branches for `#journal`. They are harmless -- `getElementById("journal")` returns null now, so the branch never fires -- but they are dead and belong to whoever tidies next.
+
+133. **NOT FIXED, worth knowing: the TBC tag is disabled site-wide.** `TbcTag` returns `null` unconditionally, with the comment "TBC badge is permanently disabled across the site". CLAUDE.md's content rule says `tbc` content should be used *and* carry the dev-only tag, so that rule is currently not implemented anywhere. It matters here because `fabricTypes` is `tbc`: its structure and all six one-line descriptions are proposed microcopy that has never been approved, and nothing on the page says so. The call is left in `FabricCollection` so it lights up again if the tag is ever restored.
+
+134. **The collection block and the banner still disagree.** The home page now names six fabrics from site.json; the /vision banner names ten, three of which (Aesobi, Wax Print, Shirting) appear nowhere in `brand-kit/content`. Question 119 asked which is right; it now shows in two places on the site rather than one.
