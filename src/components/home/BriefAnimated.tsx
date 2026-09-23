@@ -29,8 +29,8 @@ export function BriefAnimated({
       opacity: 1,
       x: 0,
       transition: {
-        duration: reduceMotion ? 0.01 : 0.65,
-        delay: reduceMotion ? 0 : custom * 0.15,
+        duration: reduceMotion ? 0.01 : 0.45,
+        delay: reduceMotion ? 0 : custom * 0.07,
         ease,
       },
     }),
@@ -43,7 +43,7 @@ export function BriefAnimated({
         className="flex flex-col justify-center"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.25, margin: "0px 0px -40px 0px" }}
+        viewport={{ once: true, amount: 0.05, margin: "0px 0px 20% 0px" }}
       >
         <motion.h2
           className="t-h2 max-w-[15ch]"
@@ -90,10 +90,10 @@ export function BriefAnimated({
         className="relative mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:w-[350px] lg:max-w-[350px] aspect-[4/5] overflow-hidden bg-mist shadow-sm lg:self-center"
         initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 40 }}
         whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.25, margin: "0px 0px -40px 0px" }}
+        viewport={{ once: true, amount: 0.05, margin: "0px 0px 20% 0px" }}
         transition={{
-          duration: reduceMotion ? 0.01 : 0.75,
-          delay: reduceMotion ? 0 : 0.18,
+          duration: reduceMotion ? 0.01 : 0.5,
+          delay: reduceMotion ? 0 : 0.08,
           ease,
         }}
       >

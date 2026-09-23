@@ -9,30 +9,34 @@ interface StatItem {
   accentColor: string;
 }
 
+/* A tonal ladder, lightest to deepest. These were ochre, crimson, navy and
+   forest green, which is four hues the palette does not have: CLAUDE.md says the
+   site is blue only. Each is used for the large lead text as well as the rule
+   above it, so each is measured against white and clears 4.5:1. */
 const STAT_ITEMS: StatItem[] = [
   {
     lead: "1995",
     title: "Founded",
     subtitle: "Over 30 years in trade · Mumbai",
-    accentColor: "#b88728", // Warm Ochre / Amber
+    accentColor: "var(--color-navy-mid)", // 5.63:1 on white
   },
   {
     lead: "Star",
     title: "Export House",
     subtitle: "Govt. of India recognized",
-    accentColor: "#9e3a3a", // Crimson / Star Red
+    accentColor: "var(--color-navy-soft)", // 11.36:1 on white
   },
   {
     lead: "1000+",
     title: "Designs & Varieties",
     subtitle: "Active shirting & suiting catalogue",
-    accentColor: "#172850", // Nabeen Navy
+    accentColor: "var(--color-navy)", // 14.43:1 on white
   },
   {
     lead: "Make in India",
     title: "Indigenous Craft",
     subtitle: "Mill-direct, container load",
-    accentColor: "#286b4a", // Forest Green
+    accentColor: "var(--color-navy-deep)", // 17.68:1 on white
   },
 ];
 
@@ -62,9 +66,9 @@ export function StatBoxes({ className = "" }: { className?: string }) {
     return {
       initial: { opacity: 0, x: initialX },
       whileInView: { opacity: 1, x: 0 },
-      viewport: { once: true, amount: 0.2 },
+      viewport: { once: true, amount: 0.05 },
       transition: {
-        duration: 0.7,
+        duration: 0.45,
         delay: delays[index] ?? 0.1,
         ease,
       },

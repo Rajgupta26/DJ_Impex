@@ -9,6 +9,10 @@
   --color-navy: #172850;          /* Nabeen Navy. Brand primary (client spec). Also the main text colour on light backgrounds. */
   --color-navy-deep: #0d1733;     /* Midnight Loom. Footer, image overlays, pressed states. */
   --color-navy-soft: #24386a;     /* Hover state for navy fills. */
+  --color-navy-mid: #3268ae;      /* The lightest blue that still carries text on white (5.63:1).
+                                     Added 2026-09-23 so a tonal set of four can be built without
+                                     leaving the palette; Selvedge Blue is 3.07:1 and is a rule and
+                                     an indicator colour, never text on a light ground. */
   --color-white: #ffffff;         /* Brand secondary (client spec). */
   --color-mist: #eef1f6;          /* Giza Mist. Cool off-white for alternating sections. NOT cream. */
   --color-slate: #5a6680;         /* Thread Slate. Secondary text on white (5.6:1 contrast). */

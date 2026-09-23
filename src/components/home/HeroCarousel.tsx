@@ -1,6 +1,7 @@
 "use client";
 
 import useEmblaCarousel from "embla-carousel-react";
+import { Pause, Play } from "lucide-react";
 import Fade from "embla-carousel-fade";
 import Image from "next/image";
 import Link from "next/link";
@@ -238,34 +239,79 @@ function HeroVideo({
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
   const allowed = useCanStream();
+  // Mirrors the element rather than guessing: a browser can refuse autoplay, and
+  // the viewer can use the control below, so React must not assume either.
+  const [paused, setPaused] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !allowed) return;
+
+    const sync = () => setPaused(video.paused);
+    video.addEventListener("play", sync);
+    video.addEventListener("pause", sync);
+    sync();
+
+    // Under reduced motion the film does not start on its own. It used to stop
+    // there, which left a paused video and no way to start it -- the same dead
+    // end a browser that refuses autoplay produced, because the rejected promise
+    // was swallowed. Autoplay is still suppressed; the control below is how the
+    // viewer starts it.
     if (active && playing && !reduceMotion) {
-      void video.play().catch(() => {
-        /* A browser may refuse autoplay; the poster still carries the slide. */
-      });
+      void video.play().catch(() => setPaused(true));
     } else {
       video.pause();
     }
+
+    return () => {
+      video.removeEventListener("play", sync);
+      video.removeEventListener("pause", sync);
+    };
   }, [active, playing, reduceMotion, allowed]);
+
+  const toggle = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) void video.play().catch(() => setPaused(true));
+    else video.pause();
+  };
 
   return (
     <div className="absolute inset-0">
       {allowed ? (
-        <video
-          ref={videoRef}
-          className="h-full w-full object-cover"
-          poster={poster}
-          preload="none"
-          muted
-          loop
-          playsInline
-          aria-label={alt}
-        >
-          <source src={src} type="video/mp4" />
-        </video>
+        <>
+          <video
+            ref={videoRef}
+            className="h-full w-full object-cover"
+            poster={poster}
+            // "none" made the first play() slow and easy to lose. Metadata is a
+            // few kilobytes and the poster still carries the frame; the heavy
+            // guard against metered connections is useCanStream, above.
+            preload="metadata"
+            muted
+            loop
+            playsInline
+            aria-label={alt}
+          >
+            <source src={src} type="video/mp4" />
+          </video>
+
+          {/* Top right, clear of the header above it and of the floating contact
+              buttons at the bottom right. Moving content needs a way to stop it
+              (WCAG 2.2.2), and suppressed autoplay needs a way to start it. */}
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={paused ? "Play the film" : "Pause the film"}
+            className="absolute right-5 top-[6.5rem] z-10 flex h-11 w-11 items-center justify-center border border-white/50 bg-navy-deep/45 text-white backdrop-blur-sm transition-colors duration-[var(--duration-quick)] hover:bg-navy-deep/70 md:right-8"
+          >
+            {paused ? (
+              <Play aria-hidden="true" size={18} strokeWidth={1.6} className="ml-0.5" />
+            ) : (
+              <Pause aria-hidden="true" size={18} strokeWidth={1.6} />
+            )}
+          </button>
+        </>
       ) : (
         <Image src={poster} alt={alt} fill sizes="100vw" priority className="object-cover" />
       )}
