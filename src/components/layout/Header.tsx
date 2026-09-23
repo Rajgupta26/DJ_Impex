@@ -91,23 +91,11 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
           <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
             {navigation.map((item) => {
               const active = pathname === item.href;
-              const isContact = item.href === "/contact" || item.href === "/#contact";
 
               return (
                 <Link
                   key={item.href}
-                  href={isContact ? "/#contact" : item.href}
-                  onClick={
-                    isContact
-                      ? (e) => {
-                          if (pathname === "/") {
-                            e.preventDefault();
-                            document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                            window.history.pushState(null, "", "/#contact");
-                          }
-                        }
-                      : undefined
-                  }
+                  href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={`text-[0.9375rem] font-medium transition-opacity duration-[var(--duration-quick)] ${
                     active ? "border-b border-accent pb-0.5" : "opacity-85 hover:opacity-100"

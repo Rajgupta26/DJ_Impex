@@ -1,10 +1,13 @@
 import Image from "next/image";
+import { Mail, Phone } from "lucide-react";
 
 import { Container } from "@/components/ui/Container";
 import { withReg } from "@/components/ui/Reg";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { TrustMarks } from "@/components/ui/TrustMarks";
 import { getPage, getSite } from "@/lib/content";
-import { section } from "@/lib/markdown";
+import { mailtoLink, telLink } from "@/lib/contact";
+import { field, section } from "@/lib/markdown";
 
 /**
  * Everything the house can be checked on, in one place: the award, the sentence
@@ -21,6 +24,7 @@ import { section } from "@/lib/markdown";
 export function RecognitionSection() {
   const site = getSite();
   const recognition = section(getPage("about"), "recognition");
+  const welcome = section(getPage("about"), "welcome");
 
   return (
     <section className="bg-white py-[var(--spacing-section)]">
@@ -54,6 +58,39 @@ export function RecognitionSection() {
               {withReg(
                 `${site.brand.company.value} trades as ${site.brand.brand.value} across ${site.brand.markets.value}.`,
               )}
+            </p>
+
+            {/* Client craft story and invitation, positioned directly following the trade notice */}
+            <div className="mt-8 grid gap-6">
+              <p className="measure text-slate">{withReg(field(welcome, "craft"))}</p>
+              <p className="measure text-slate">{withReg(field(welcome, "invitation"))}</p>
+            </div>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+              <TrackedLink
+                href={telLink()}
+                event="call_click"
+                location="about_recognition"
+                external={false}
+                className="btn btn-primary"
+              >
+                <Phone aria-hidden="true" size={18} strokeWidth={1.6} />
+                <span>Call us</span>
+              </TrackedLink>
+              <TrackedLink
+                href={mailtoLink("Fabric enquiry")}
+                event="email_click"
+                location="about_recognition"
+                external={false}
+                className="btn btn-outline"
+              >
+                <Mail aria-hidden="true" size={18} strokeWidth={1.6} />
+                <span>Mail us</span>
+              </TrackedLink>
+            </div>
+
+            <p className="t-small mt-12 inline-block border-t border-accent pt-4 font-semibold tracking-[0.02em] text-navy">
+              {field(welcome, "closing")}
             </p>
           </div>
         </div>

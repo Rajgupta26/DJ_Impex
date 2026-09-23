@@ -1,12 +1,10 @@
-import { Mail, Phone } from "lucide-react";
-
 import { Container } from "@/components/ui/Container";
 import { withReg } from "@/components/ui/Reg";
-import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WeaveArt } from "@/components/ui/WeaveArt";
 import { getPage } from "@/lib/content";
 import { mailtoLink, telLink } from "@/lib/contact";
 import { field, section } from "@/lib/markdown";
+import { FabricHoverShowcase } from "@/components/about/FabricHoverShowcase";
 
 /**
  * The client's welcome, set rather than poured.
@@ -41,65 +39,11 @@ export function WelcomeSection() {
         <h2 className="t-h2">Welcome</h2>
         <p className="t-lead mt-6 max-w-[42rem]">{withReg(field(copy, "lead"))}</p>
 
-        <div className="mt-16 grid gap-14 lg:mt-20 lg:grid-cols-[5fr_7fr] lg:gap-20">
-          {/* The seven cloths, taken out of the sentence and given the room they
-              were always asking for. Hairlines rather than boxes. */}
-          <div>
-            <p className="text-slate">{field(copy, "collection-lead")}</p>
-            <ul className="mt-5">
-              {names.map((name) => (
-                <li
-                  key={name}
-                  className="t-h3 border-t border-line py-3.5 text-[clamp(1.1rem,0.95rem+0.7vw,1.5rem)] font-light text-navy"
-                >
-                  {name}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-6 border-t border-line pt-6 text-slate">
-              {field(copy, "collection-tail")}
-            </p>
-          </div>
-
-          <div className="lg:pt-1">
-            <div className="grid gap-6">
-              <p className="measure text-slate">{withReg(field(copy, "craft"))}</p>
-              <p className="measure text-slate">{withReg(field(copy, "invitation"))}</p>
-            </div>
-
-            {/* The prototype put Call us and Mail us right here, and they belong
-                here: this is the page's warmest moment. */}
-            <div className="mt-10 flex flex-wrap gap-4">
-              <TrackedLink
-                href={telLink()}
-                event="call_click"
-                location="about_welcome"
-                external={false}
-                className="btn btn-primary"
-              >
-                <Phone aria-hidden="true" size={18} strokeWidth={1.6} />
-                <span>Call us</span>
-              </TrackedLink>
-              <TrackedLink
-                href={mailtoLink("Fabric enquiry")}
-                event="email_click"
-                location="about_welcome"
-                external={false}
-                className="btn btn-outline"
-              >
-                <Mail aria-hidden="true" size={18} strokeWidth={1.6} />
-                <span>Mail us</span>
-              </TrackedLink>
-            </div>
-
-            {/* The sign-off, kept as its own line with a thread of gold, because
-                that is what it is: a signature, not a sentence in a paragraph.
-                Gold as a rule, never as text: it fails AA on a light ground. */}
-            <p className="t-small mt-12 inline-block border-t border-accent pt-4 font-semibold tracking-[0.02em] text-navy">
-              {field(copy, "closing")}
-            </p>
-          </div>
-        </div>
+        <FabricHoverShowcase
+          names={names}
+          collectionLead={field(copy, "collection-lead")}
+          collectionTail={field(copy, "collection-tail")}
+        />
       </Container>
     </section>
   );

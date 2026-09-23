@@ -32,11 +32,11 @@ export default function ContactPage() {
 
       <section className="bg-white py-[var(--spacing-section)]">
         <Container>
-          <div className="grid gap-16 lg:grid-cols-[5fr_7fr] lg:gap-20">
-            <div>
-              <h2 className="t-h3">Talk to us directly</h2>
+          <div className="grid gap-16 lg:grid-cols-[5fr_7fr] lg:gap-20 items-start">
+            <div className="rounded-2xl bg-navy text-white on-dark p-8 lg:p-10 shadow-lg">
+              <h2 className="t-h3 text-white">Talk to us directly</h2>
               <div className="mt-8">
-                <ContactChannels />
+                <ContactChannels onDark={true} />
               </div>
             </div>
 
