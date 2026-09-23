@@ -16,6 +16,10 @@ const CELLS = 12;
  * This is the only place that motif appears. Ten fabrics are in the kit, so the
  * remaining cells become one wide tile that opens WhatsApp; when the client sends
  * the last two, the grid fills itself and the tile narrows.
+ *
+ * The top padding is short because the testimonials band above ends in a
+ * mist-coloured wave divider, which already lays its own height of ground over
+ * this section's colour; `page-end` does the same job at the footer.
  */
 export function NabeenGallery() {
   const images = getGalleryImages();
@@ -23,7 +27,7 @@ export function NabeenGallery() {
   const span = Math.max(1, CELLS - images.length);
 
   return (
-    <section className="page-end bg-mist py-[var(--spacing-section)]">
+    <section className="page-end bg-mist pt-10 lg:pt-14">
       <Container>
         <div className="max-w-[46rem]">
           <h2 className="t-h2">{withReg(field(gallery, "heading"))}</h2>

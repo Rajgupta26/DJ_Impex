@@ -10,9 +10,13 @@ export function JournalPreview() {
   const [lead, ...rest] = getPosts().slice(0, 3);
 
   return (
+    /* The testimonials band below carries a mist-coloured wave divider on its
+       top edge, which adds its own height of ground under this section. A full
+       --spacing-section here on top of that reads as an empty band, so the
+       padding matches the section's own top instead. */
     <section
       id="journal"
-      className="scroll-mt-[4.5rem] bg-mist pb-[var(--spacing-section)] pt-10 lg:scroll-mt-[5.25rem] lg:pt-14"
+      className="scroll-mt-[4.5rem] bg-mist py-10 lg:scroll-mt-[5.25rem] lg:py-14"
     >
       <Container>
         <div className="max-w-[40rem]">
