@@ -21,16 +21,16 @@ export function BriefAnimated({
   trustMarksSlot,
 }: BriefAnimatedProps) {
   const reduceMotion = useReducedMotion();
-  const ease = [0.22, 0.61, 0.36, 1] as const;
+  const ease = [0.22, 1, 0.36, 1] as const;
 
   const leftVariants = {
-    hidden: { opacity: 0, x: reduceMotion ? 0 : -40 },
+    hidden: { opacity: 0, x: reduceMotion ? 0 : -50 },
     visible: (custom: number) => ({
       opacity: 1,
       x: 0,
       transition: {
-        duration: reduceMotion ? 0.01 : 0.45,
-        delay: reduceMotion ? 0 : custom * 0.07,
+        duration: reduceMotion ? 0.01 : 1.25,
+        delay: reduceMotion ? 0 : 0.15 + custom * 0.22,
         ease,
       },
     }),
@@ -43,7 +43,7 @@ export function BriefAnimated({
         className="flex flex-col justify-center"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.05, margin: "0px 0px 20% 0px" }}
+        viewport={{ once: true, amount: 0.25, margin: "-60px 0px" }}
       >
         <motion.h2
           className="t-h2 max-w-[15ch]"
@@ -88,12 +88,12 @@ export function BriefAnimated({
       {/* Right Column: Archive Image 30-35% smaller, smoothly entering from the right */}
       <motion.figure
         className="relative mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:w-[350px] lg:max-w-[350px] aspect-[4/5] overflow-hidden bg-mist shadow-sm lg:self-center"
-        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 40 }}
+        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 50 }}
         whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.05, margin: "0px 0px 20% 0px" }}
+        viewport={{ once: true, amount: 0.25, margin: "-60px 0px" }}
         transition={{
-          duration: reduceMotion ? 0.01 : 0.5,
-          delay: reduceMotion ? 0 : 0.08,
+          duration: reduceMotion ? 0.01 : 1.25,
+          delay: reduceMotion ? 0 : 0.35,
           ease,
         }}
       >

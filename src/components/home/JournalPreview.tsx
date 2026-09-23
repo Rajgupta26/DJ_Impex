@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { withReg } from "@/components/ui/Reg";
-import { PostCard } from "@/components/journal/PostCard";
+import { JournalAnimated } from "@/components/home/JournalAnimated";
 import { getPage, getPosts } from "@/lib/content";
 import { field, section } from "@/lib/markdown";
 
@@ -24,14 +24,7 @@ export function JournalPreview() {
           <p className="t-lead mt-4 lg:mt-5">{withReg(field(journal, "intro"))}</p>
         </div>
 
-        <div className="mt-10 grid gap-12 lg:mt-12 lg:grid-cols-[7fr_5fr] lg:gap-16">
-          <PostCard post={lead} size="large" />
-          <div className="grid content-start gap-12">
-            {rest.map((post) => (
-              <PostCard key={post.slug} post={post} />
-            ))}
-          </div>
-        </div>
+        <JournalAnimated lead={lead} rest={rest} />
       </Container>
     </section>
   );

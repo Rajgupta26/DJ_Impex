@@ -1,7 +1,6 @@
 "use client";
 
 import useEmblaCarousel from "embla-carousel-react";
-import { Pause, Play } from "lucide-react";
 import Fade from "embla-carousel-fade";
 import Image from "next/image";
 import Link from "next/link";
@@ -87,7 +86,7 @@ export function HeroCarousel({
       data-hero
       aria-roledescription="carousel"
       aria-label="Nabeen fabrics"
-      className="on-dark relative h-screen h-[100dvh] min-h-[36rem] overflow-hidden bg-navy-deep text-white"
+      className="on-dark relative h-screen h-[100dvh] min-h-[36rem] overflow-hidden bg-black text-white"
     >
       <div ref={emblaRef} className="h-full">
         <div className="flex h-full">
@@ -128,23 +127,10 @@ export function HeroCarousel({
         </div>
       </div>
 
-      {/* Two light veils rather than one heavy one: a wash from the left that keeps
-          the words legible, and a scrim along the bottom where they actually sit.
-          The cloth stays readable across most of the frame, which is the point of
-          putting a photograph there at all. */}
+      {/* Neutral dark veil from the left to keep headline text legible without any blue tint */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(100deg,rgb(13_23_51/0.82)_0%,rgb(13_23_51/0.5)_34%,rgb(23_40_80/0.16)_64%,rgb(23_40_80/0.04)_100%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(to_top,rgb(13_23_51/0.62)_0%,rgb(13_23_51/0.22)_44%,transparent_100%)]"
-      />
-      {/* Weighted into the bottom-left corner, where the words actually sit, so the
-          cloth at the top right stays bright. */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(130%_118%_at_0%_100%,rgb(13_23_51/0.92)_0%,rgb(13_23_51/0.64)_34%,rgb(13_23_51/0.3)_56%,transparent_78%)]"
+        className="absolute inset-0 bg-[linear-gradient(100deg,rgba(0,0,0,0.72)_0%,rgba(0,0,0,0.4)_36%,rgba(0,0,0,0.08)_65%,transparent_100%)]"
       />
 
       <div className="container-site absolute inset-x-0 bottom-[clamp(3.5rem,10vh,6.5rem)]">
@@ -239,79 +225,33 @@ function HeroVideo({
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
   const allowed = useCanStream();
-  // Mirrors the element rather than guessing: a browser can refuse autoplay, and
-  // the viewer can use the control below, so React must not assume either.
-  const [paused, setPaused] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !allowed) return;
 
-    const sync = () => setPaused(video.paused);
-    video.addEventListener("play", sync);
-    video.addEventListener("pause", sync);
-    sync();
-
-    // Under reduced motion the film does not start on its own. It used to stop
-    // there, which left a paused video and no way to start it -- the same dead
-    // end a browser that refuses autoplay produced, because the rejected promise
-    // was swallowed. Autoplay is still suppressed; the control below is how the
-    // viewer starts it.
     if (active && playing && !reduceMotion) {
-      void video.play().catch(() => setPaused(true));
+      void video.play().catch(() => {});
     } else {
       video.pause();
     }
-
-    return () => {
-      video.removeEventListener("play", sync);
-      video.removeEventListener("pause", sync);
-    };
   }, [active, playing, reduceMotion, allowed]);
-
-  const toggle = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) void video.play().catch(() => setPaused(true));
-    else video.pause();
-  };
 
   return (
     <div className="absolute inset-0">
       {allowed ? (
-        <>
-          <video
-            ref={videoRef}
-            className="h-full w-full object-cover"
-            poster={poster}
-            // "none" made the first play() slow and easy to lose. Metadata is a
-            // few kilobytes and the poster still carries the frame; the heavy
-            // guard against metered connections is useCanStream, above.
-            preload="metadata"
-            muted
-            loop
-            playsInline
-            aria-label={alt}
-          >
-            <source src={src} type="video/mp4" />
-          </video>
-
-          {/* Top right, clear of the header above it and of the floating contact
-              buttons at the bottom right. Moving content needs a way to stop it
-              (WCAG 2.2.2), and suppressed autoplay needs a way to start it. */}
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={paused ? "Play the film" : "Pause the film"}
-            className="absolute right-5 top-[6.5rem] z-10 flex h-11 w-11 items-center justify-center border border-white/50 bg-navy-deep/45 text-white backdrop-blur-sm transition-colors duration-[var(--duration-quick)] hover:bg-navy-deep/70 md:right-8"
-          >
-            {paused ? (
-              <Play aria-hidden="true" size={18} strokeWidth={1.6} className="ml-0.5" />
-            ) : (
-              <Pause aria-hidden="true" size={18} strokeWidth={1.6} />
-            )}
-          </button>
-        </>
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover"
+          poster={poster}
+          preload="metadata"
+          muted
+          loop
+          playsInline
+          aria-label={alt}
+        >
+          <source src={src} type="video/mp4" />
+        </video>
       ) : (
         <Image src={poster} alt={alt} fill sizes="100vw" priority className="object-cover" />
       )}
