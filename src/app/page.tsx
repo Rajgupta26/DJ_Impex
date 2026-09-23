@@ -1,5 +1,4 @@
 import { BriefSection } from "@/components/home/BriefSection";
-import { ContactSection } from "@/components/home/ContactSection";
 import { HeroCarousel, type HeroSlideView } from "@/components/home/HeroCarousel";
 import { JournalPreview } from "@/components/home/JournalPreview";
 import { NabeenGallery } from "@/components/home/NabeenGallery";
@@ -93,7 +92,6 @@ export default function HomePage() {
       />
 
       <NabeenGallery />
-      <ContactSection />
     </>
   );
 }
