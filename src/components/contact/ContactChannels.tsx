@@ -7,7 +7,7 @@ import { getSite } from "@/lib/content";
 import { mailtoLink, telLink, whatsappLink } from "@/lib/contact";
 
 /** Every way to reach the team, WhatsApp first. */
-export function ContactChannels() {
+export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
   const { contact } = getSite();
 
   return (
@@ -16,24 +16,29 @@ export function ContactChannels() {
         href={whatsappLink()}
         event="whatsapp_click"
         location="contact_page"
-        className="btn btn-primary w-fit"
+        className={onDark ? "btn btn-on-dark w-fit" : "btn btn-primary w-fit"}
       >
         <WhatsAppGlyph size={20} />
         <span>Enquire on WhatsApp</span>
       </TrackedLink>
 
       <dl className="grid gap-7">
-        <div className="flex gap-4 border-t border-line pt-7">
-          <Phone aria-hidden="true" size={18} strokeWidth={1.5} className="mt-1 shrink-0 text-slate" />
+        <div className={`flex gap-4 border-t pt-7 ${onDark ? "border-white/15" : "border-line"}`}>
+          <Phone
+            aria-hidden="true"
+            size={18}
+            strokeWidth={1.5}
+            className={`mt-1 shrink-0 ${onDark ? "text-accent" : "text-slate"}`}
+          />
           <div>
-            <dt className="t-small font-semibold">Phone</dt>
+            <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Phone</dt>
             <dd className="mt-1">
               <TrackedLink
                 href={telLink()}
                 event="call_click"
                 location="contact_page"
                 external={false}
-                className="text-link"
+                className={`text-link ${onDark ? "text-link-on-dark" : ""}`}
               >
                 {contact.phonePrimary.display}
               </TrackedLink>
@@ -42,17 +47,22 @@ export function ContactChannels() {
           </div>
         </div>
 
-        <div className="flex gap-4 border-t border-line pt-7">
-          <Mail aria-hidden="true" size={18} strokeWidth={1.5} className="mt-1 shrink-0 text-slate" />
+        <div className={`flex gap-4 border-t pt-7 ${onDark ? "border-white/15" : "border-line"}`}>
+          <Mail
+            aria-hidden="true"
+            size={18}
+            strokeWidth={1.5}
+            className={`mt-1 shrink-0 ${onDark ? "text-accent" : "text-slate"}`}
+          />
           <div>
-            <dt className="t-small font-semibold">Email</dt>
+            <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Email</dt>
             <dd className="mt-1">
               <TrackedLink
                 href={mailtoLink("Fabric enquiry")}
                 event="email_click"
                 location="contact_page"
                 external={false}
-                className="text-link"
+                className={`text-link ${onDark ? "text-link-on-dark" : ""}`}
               >
                 {contact.emailPrimary.value}
               </TrackedLink>
@@ -60,12 +70,17 @@ export function ContactChannels() {
           </div>
         </div>
 
-        <div className="flex gap-4 border-t border-line pt-7">
-          <MapPin aria-hidden="true" size={18} strokeWidth={1.5} className="mt-1 shrink-0 text-slate" />
+        <div className={`flex gap-4 border-t pt-7 ${onDark ? "border-white/15" : "border-line"}`}>
+          <MapPin
+            aria-hidden="true"
+            size={18}
+            strokeWidth={1.5}
+            className={`mt-1 shrink-0 ${onDark ? "text-accent" : "text-slate"}`}
+          />
           <div>
-            <dt className="t-small font-semibold">Visit</dt>
+            <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Visit</dt>
             <dd className="mt-1">
-              <address className="not-italic text-slate">
+              <address className={`not-italic ${onDark ? "text-white/75" : "text-slate"}`}>
                 {contact.address.lines.map((line) => (
                   <span key={line} className="block">
                     {line}
