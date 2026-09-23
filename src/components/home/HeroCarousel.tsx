@@ -131,20 +131,28 @@ export function HeroCarousel({
       {/* Two light veils rather than one heavy one: a wash from the left that keeps
           the words legible, and a scrim along the bottom where they actually sit.
           The cloth stays readable across most of the frame, which is the point of
-          putting a photograph there at all. */}
+          putting a photograph there at all.
+
+          Neutral, not navy (2026-09-23, agency instruction): the veils were
+          mixed from navy-deep and navy, which put a blue cast over the client's
+          film. Black carries the same job without tinting the cloth. The alphas
+          came down about 6% with the change, because black is darker than
+          navy-deep at the same alpha and the point was to take the hue out, not
+          to make the frame darker. The section's own ground stays navy -- it is
+          brand, and it sits behind the media rather than over it. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(100deg,rgb(13_23_51/0.82)_0%,rgb(13_23_51/0.5)_34%,rgb(23_40_80/0.16)_64%,rgb(23_40_80/0.04)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(100deg,rgb(0_0_0/0.77)_0%,rgb(0_0_0/0.47)_34%,rgb(0_0_0/0.15)_64%,rgb(0_0_0/0.04)_100%)]"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(to_top,rgb(13_23_51/0.62)_0%,rgb(13_23_51/0.22)_44%,transparent_100%)]"
+        className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(to_top,rgb(0_0_0/0.58)_0%,rgb(0_0_0/0.21)_44%,transparent_100%)]"
       />
       {/* Weighted into the bottom-left corner, where the words actually sit, so the
           cloth at the top right stays bright. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(130%_118%_at_0%_100%,rgb(13_23_51/0.92)_0%,rgb(13_23_51/0.64)_34%,rgb(13_23_51/0.3)_56%,transparent_78%)]"
+        className="absolute inset-0 bg-[radial-gradient(130%_118%_at_0%_100%,rgb(0_0_0/0.86)_0%,rgb(0_0_0/0.6)_34%,rgb(0_0_0/0.28)_56%,transparent_78%)]"
       />
 
       <div className="container-site absolute inset-x-0 bottom-[clamp(3.5rem,10vh,6.5rem)]">
