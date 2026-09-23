@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 
+import type { ReactNode } from "react";
+
 import type { ListItem } from "@/lib/markdown";
 
 import { Container } from "@/components/ui/Container";
@@ -84,7 +86,16 @@ const BOLT = {
 const STEP = 0.5; // seconds between one pillar and the next
 const EASE = [0.22, 0.61, 0.36, 1] as const;
 
-export function VisionPillars({ heading, items }: { heading: string; items: ListItem[] }) {
+export function VisionPillars({
+  heading,
+  intro,
+  items,
+}: {
+  heading: string;
+  /** The client's own opening line, which used to sit in the panel above. */
+  intro?: ReactNode;
+  items: ListItem[];
+}) {
   const reduceMotion = useReducedMotion();
 
   /** Reduced motion keeps the staging but takes out the movement and the wait. */
@@ -150,6 +161,7 @@ export function VisionPillars({ heading, items }: { heading: string; items: List
     <section className="bg-white pt-12 pb-16 lg:pt-16 lg:pb-20">
       <Container>
         <h2 className="t-h2 max-w-[18ch]">{withReg(heading)}</h2>
+        {intro ? <p className="t-lead measure mt-6">{intro}</p> : null}
 
         <motion.div
           className="mt-14 min-[1152px]:grid min-[1152px]:grid-cols-[minmax(0,1fr)_clamp(9rem,15vw,17rem)] min-[1152px]:gap-x-10 lg:mt-16 xl:gap-x-14"

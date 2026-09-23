@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { EnquiryBand } from "@/components/layout/EnquiryBand";
 import { withReg } from "@/components/ui/Reg";
-import { VisionOpening } from "@/components/vision/VisionOpening";
+import { VisionBanner } from "@/components/vision/VisionBanner";
 import { VisionPillars } from "@/components/vision/VisionPillars";
 import { getPage } from "@/lib/content";
 import { field, section } from "@/lib/markdown";
@@ -18,38 +18,24 @@ export const metadata: Metadata = buildMetadata({
 /**
  * Our Vision.
  *
- * The page was three slabs of large type on flat grounds -- a hero, the Cerruti
- * quote at 4rem, and the client's closing line at 2.5rem -- with the pillars
- * between them. The agency asked for the slabs to go (2026-09-23). The opening
- * is one composed panel now, the pillars carry the page, and the closing line is
- * not rendered; its copy is still in content/vision.md. See 05-open-questions 108.
+ * The page opened with three slabs of large type, then with a drawn loom panel.
+ * The agency supplied its own banner on 2026-09-23 and asked for it to stand in
+ * the opening's place, so the H1, the Cerruti epigraph and the drawn loom have
+ * all come off the page. The client's intro line moved down to the pillars
+ * rather than going with them. See 05-open-questions 117-119.
  */
 export default function VisionPage() {
   const vision = getPage("vision");
   const head = section(vision, "our-vision");
   const pillars = section(vision, "the-five-pillars");
 
-  const [quoteText, attribution] = splitQuote(field(head, "opening-quote"));
-
   return (
     <>
-      <VisionOpening
-        title={withReg(field(head, "h1"))}
-        intro={withReg(field(head, "intro"))}
-        quote={withReg(quoteText)}
-        attribution={attribution}
-      />
+      <VisionBanner />
 
-      <VisionPillars heading={pillars.heading} items={pillars.items} />
+      <VisionPillars heading={pillars.heading} intro={withReg(field(head, "intro"))} items={pillars.items} />
 
       <EnquiryBand />
     </>
   );
-}
-
-/** '"Only an excellent fabric…" (Nino Cerruti)' -> [quote, "Nino Cerruti"] */
-function splitQuote(raw: string): [string, string | null] {
-  const match = /^"?(.+?)"?\s*\(([^)]+)\)\s*$/.exec(raw.trim());
-  if (!match) return [raw.replace(/^"|"$/g, ""), null];
-  return [match[1].replace(/^"|"$/g, ""), match[2]];
 }
