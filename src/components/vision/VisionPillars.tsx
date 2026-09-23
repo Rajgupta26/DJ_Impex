@@ -1,12 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 
 import type { ListItem } from "@/lib/markdown";
 
 import { Container } from "@/components/ui/Container";
 import { withReg } from "@/components/ui/Reg";
-import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
 
 /**
  * The five pillars, hung on a warp thread and woven in as the reader arrives.
@@ -15,20 +15,25 @@ import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
  * they are never numbered. The thread and the swatches do the work a number
  * would have done: they mark each pillar and tie the five together as one cloth.
  *
- * The swatch is decoration, not a claim. Each pillar draws a different weave
- * simply so no two marks are alike, and the order only avoids putting two
- * similar motifs side by side; none of them says anything about what the pillar
- * means.
+ * The marks were drawn weaves on a navy chip and read as five dark squares at
+ * that size. They are cut from the real cloth now -- the house's own gallery
+ * photographs, the same files the swatch grid on the home page uses.
  *
- * Tile sizes differ per pattern (44px to 120px), so each carries its own scale,
- * chosen to seat one legible motif inside a 44px swatch.
+ * The swatch is decoration, not a claim: the cloth beside a pillar says nothing
+ * about what that pillar means. The five were chosen for tone, so the run steps
+ * dark, pale, mid, light down the page, and they are all blues, greys and
+ * whites -- the camel, blush and champagne pieces would have brought a second
+ * hue onto a page that is meant to be blue.
+ *
+ * The rail is aria-hidden, so these carry an empty alt: they are ornament, and
+ * announcing five fabric names inside a list of values would only be noise.
  */
-const MARKS: { pattern: WeavePattern; scale: number }[] = [
-  { pattern: "herringbone", scale: 0.82 },
-  { pattern: "check", scale: 0.55 },
-  { pattern: "lace", scale: 0.42 },
-  { pattern: "ogee", scale: 0.36 },
-  { pattern: "dobby", scale: 0.9 },
+const SWATCHES = [
+  "/images/gallery/04-charcoal-herringbone.jpg",
+  "/images/gallery/09-sky-circle-jacquard.jpg",
+  "/images/gallery/01-aqua-jacquard.jpg",
+  "/images/gallery/10-slate-rib.jpg",
+  "/images/gallery/03-white-jacquard.jpg",
 ];
 
 /**
@@ -107,7 +112,12 @@ export function VisionPillars({
   };
 
   return (
-    <section className="bg-white py-[var(--spacing-section)]">
+        /* The opening panel is full bleed and ends on a hard edge, so this section
+       does not also need a full --spacing-section above its heading: the two
+       together left a band of empty white between the panel and the pillars.
+       The foot is trimmed for the same reason -- the enquiry band below opens
+       with 104px of its own. */
+    <section className="bg-white pb-16 pt-12 lg:pb-20 lg:pt-16">
       <Container>
         <h2 className="t-h2 max-w-[18ch]">{withReg(heading)}</h2>
 
@@ -118,20 +128,26 @@ export function VisionPillars({
           viewport={{ once: true, amount: 0.25 }}
         >
           {items.map((pillar, index) => {
-            const mark = MARKS[index % MARKS.length];
+            const swatch = SWATCHES[index % SWATCHES.length];
             const last = index === items.length - 1;
             return (
               <li
                 key={pillar.lead ?? pillar.text}
-                className="grid grid-cols-[2.75rem_1fr] gap-x-5 sm:grid-cols-[3.25rem_1fr] sm:gap-x-8"
+                className="grid grid-cols-[3.5rem_1fr] gap-x-5 sm:grid-cols-[4rem_1fr] sm:gap-x-8"
               >
                 <span aria-hidden="true" className="flex flex-col items-center">
                   <motion.span
-                    className="relative h-11 w-11 shrink-0 overflow-hidden bg-navy"
+                    className="relative block h-14 w-14 shrink-0 overflow-hidden border border-line bg-mist sm:h-16 sm:w-16"
                     variants={swatchVariants}
                     custom={index}
                   >
-                    <WeaveArt bare pattern={mark.pattern} scale={mark.scale} intensity={0.62} />
+                    <Image
+                      src={swatch}
+                      alt=""
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
                   </motion.span>
                   {/* The warp carrying on to the next pillar. The gap below the
                       text is the content's padding, not the row's, so the thread
