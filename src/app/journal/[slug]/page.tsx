@@ -90,7 +90,7 @@ export default async function JournalPostPage({ params }: Params) {
               <p className="text-slate">
                 Nabeen weaves the fabrics in this guide.{" "}
                 <TextLink href="/about">Read our story</TextLink>, or{" "}
-                <TextLink href="/contact">talk to our team</TextLink> about your market.
+                <TextLink href="/#contact">talk to our team</TextLink> about your market.
               </p>
             </div>
           </Container>

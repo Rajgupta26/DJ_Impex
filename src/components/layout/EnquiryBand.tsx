@@ -33,7 +33,7 @@ export function EnquiryBand({ prefill }: { prefill?: string }) {
             <WhatsAppGlyph size={20} />
             <span>Enquire on WhatsApp</span>
           </TrackedLink>
-          <ButtonLink href="/contact" variant="ghost">
+          <ButtonLink href="/#contact" variant="ghost">
             Contact us
           </ButtonLink>
         </div>

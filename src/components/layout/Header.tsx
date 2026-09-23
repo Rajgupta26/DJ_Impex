@@ -51,24 +51,39 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
 
     if (pathname === "/") {
       const journalEl = document.getElementById("journal");
-      if (journalEl) {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              setCurrentHash("#journal");
-            } else if (window.scrollY < journalEl.offsetTop - 200) {
-              setCurrentHash("");
-            }
-          },
-          { rootMargin: "-80px 0px -40% 0px", threshold: 0.1 }
-        );
-        observer.observe(journalEl);
-        return () => {
-          observer.disconnect();
-          window.removeEventListener("hashchange", updateHash);
-          window.removeEventListener("popstate", updateHash);
-        };
-      }
+      const contactEl = document.getElementById("contact");
+
+      const handleIntersection = () => {
+        const scrollY = window.scrollY;
+        const contactTop = contactEl ? contactEl.offsetTop - 300 : Infinity;
+        const journalTop = journalEl ? journalEl.offsetTop - 200 : Infinity;
+
+        if (contactEl && scrollY >= contactTop) {
+          setCurrentHash("#contact");
+        } else if (journalEl && scrollY >= journalTop) {
+          setCurrentHash("#journal");
+        } else {
+          setCurrentHash("");
+        }
+      };
+
+      const observer = new IntersectionObserver(
+        () => {
+          handleIntersection();
+        },
+        { rootMargin: "-80px 0px -40% 0px", threshold: [0, 0.1, 0.5] }
+      );
+
+      if (journalEl) observer.observe(journalEl);
+      if (contactEl) observer.observe(contactEl);
+      window.addEventListener("scroll", handleIntersection, { passive: true });
+
+      return () => {
+        observer.disconnect();
+        window.removeEventListener("scroll", handleIntersection);
+        window.removeEventListener("hashchange", updateHash);
+        window.removeEventListener("popstate", updateHash);
+      };
     }
 
     return () => {
@@ -131,11 +146,14 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
           <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
             {navigation.map((item) => {
               const isJournal = item.href === "/#journal";
+              const isContact = item.href === "/#contact";
               const isHome = item.href === "/";
               const active = isJournal
                 ? pathname === "/" && currentHash === "#journal"
+                : isContact
+                ? pathname === "/" && currentHash === "#contact"
                 : isHome
-                ? pathname === "/" && currentHash !== "#journal"
+                ? pathname === "/" && currentHash !== "#journal" && currentHash !== "#contact"
                 : pathname === item.href;
 
               return (
@@ -145,6 +163,8 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
                   onClick={() => {
                     if (isJournal) {
                       setCurrentHash("#journal");
+                    } else if (isContact) {
+                      setCurrentHash("#contact");
                     } else if (isHome) {
                       setCurrentHash("");
                     }
