@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Selvedge } from "@/components/layout/Selvedge";
 import { withReg } from "@/components/ui/Reg";
 import { TbcTag } from "@/components/ui/TbcTag";
 import { TrackedLink } from "@/components/ui/TrackedLink";
@@ -17,9 +16,7 @@ export function Footer() {
 
   return (
     <footer className="on-dark bg-navy-deep text-white">
-      <Selvedge variant="footer" />
-
-      <div className="container-site grid gap-12 pb-14 pt-16 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1.2fr] lg:gap-16 lg:pt-20">
+      <div className="container-site grid gap-12 pb-14 pt-16 md:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1.3fr_0.9fr] lg:gap-14 lg:pt-20">
         <div>
           <Image
             src="/images/logos/nabeen-logo-white.png"
@@ -46,8 +43,7 @@ export function Footer() {
           </ul>
         </nav>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-1">
-          <div>
+        <div>
             <h2 className="t-small mb-4 font-semibold text-accent">Talk to us</h2>
             <ul className="grid gap-2.5 text-white/75">
               <li>
@@ -94,27 +90,26 @@ export function Footer() {
             </ul>
           </div>
 
-          {socials.length > 0 ? (
-            <div>
-              <h2 className="t-small mb-4 font-semibold text-accent">Follow</h2>
-              <ul className="grid gap-2.5 text-white/75">
-                {socials.map((social) => (
-                  <li key={social.name}>
-                    <a
-                      href={social.url ?? "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="transition-colors hover:text-white"
-                    >
-                      {social.name}
-                      {social.handle ? <span className="text-white/45"> {social.handle}</span> : null}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-        </div>
+        {socials.length > 0 ? (
+          <div>
+            <h2 className="t-small mb-4 font-semibold text-accent">Follow</h2>
+            <ul className="grid gap-2.5 text-white/75">
+              {socials.map((social) => (
+                <li key={social.name}>
+                  <a
+                    href={social.url ?? "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-white"
+                  >
+                    {social.name}
+                    {social.handle ? <span className="text-white/45"> {social.handle}</span> : null}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
 
       <div className="container-site border-t border-white/12 py-8">

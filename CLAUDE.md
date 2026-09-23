@@ -31,7 +31,10 @@ A premium, mobile-first **portfolio** website for Nabeen®, the luxury fabric br
   Selvedge Blue sits at the logo's own hue and is measured against every ground it lands on.
   Do not reintroduce gold, or any other hue, without the client saying so.
 - Font: Open Sans variable only. Headlines at `font-stretch: 75%`, weight 300. Body at 100% width.
-- Signature: the **selvedge band**, only at the hero's bottom edge and the footer's top edge. Pinked edges only in the gallery.
+- **The selvedge band has been removed** (2026-09-23, agency instruction). It ran at the hero's
+  bottom edge and the footer's top edge and was the house signature; the site now has neither.
+  `Selvedge.tsx` and the `.selvedge` rules in tokens.css are kept but referenced nowhere. Do not
+  re-add the band without asking, and do not treat its absence as a bug. Pinked edges only in the gallery.
 - Left-aligned, editorial, generous whitespace. No uppercase eyebrows, no fade-up on every section, no rows of identical shadowed cards, no arrows appended to button text.
 - Wrap ® as `<sup class="reg">®</sup>`.
 
