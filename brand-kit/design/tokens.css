@@ -62,6 +62,22 @@
   --selvedge-speed: 60s;      /* one full loop of the selvedge marquee */
 }
 
+/* ---- WhatsApp -------------------------------------------------------------
+   WhatsApp's own green, on the agency's instruction (2026-09-23). It is not a
+   brand colour and it is not an exception to "the palette is blue only": it is
+   a third-party channel's mark, and it belongs only on controls that open
+   WhatsApp. Nothing else on the site may use it.
+
+   Measured: white on #25D366 is 1.98:1, which fails both the 4.5:1 for text and
+   the 3:1 for a control's own graphics. The agency asked for the authentic
+   green and has been told. #0F7A43 is the nearest green that carries white at
+   5.4:1 if that is ever preferred.
+   -------------------------------------------------------------------------- */
+:root {
+  --color-whatsapp: #25d366;
+  --color-whatsapp-ink: #ffffff;
+}
+
 /* ---- The last section on a page ------------------------------------------
    The footer opens with 4-5rem of its own top space, so the final section
    before it does not pay a full --spacing-section at the bottom as well: two

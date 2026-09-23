@@ -303,3 +303,20 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
      It is still 1280x720, so the panel still upscales it: 1.125x at 1440 wide, 1.5x at 1920. That is now the only softness left, and it is the panel's doing rather than the file's. A 1920-wide export would remove it below 1920 entirely and a 2560-wide one at any width the site is likely to meet. Worth asking for, since the artwork is clearly being generated rather than filmed.
 
      Alternatively the panel could stop being full bleed and cap at the footage's own width, which would be pixel-exact at every size but would put white margins down both sides of the banner on a large monitor. That is a design decision and was not taken here.
+
+## The welcome pop-up and the WhatsApp green, 2026-09-23
+
+142. **The pop-up is the agency's mock now, and it has no form.** The mark, a rule, the line, a rule, one WhatsApp button. The short enquiry form that used to sit in it is gone, because the mock has none. It opens six seconds after the first page load rather than five, once per session, and never once someone has already sent an enquiry.
+
+     It no longer skips the home page. The instruction is that it appears when a visitor arrives, and the home page is where they arrive; question 123 had it skipping "/" so it would not open on top of the enquiry form, and that form is at the foot of the page, which nobody has reached six seconds in.
+
+     The line is in `site.json` under `popup`, marked `tbc`. It is Title Case as supplied -- "Wrap Yourself in Opulence with the Finest African-Inspired Luxury Fabrics by Nabeen®" -- where the house rule is sentence case, and it appears nowhere else in `brand-kit/content`, so it wants confirming with the client. The delay is a number in that file, not a constant in the component.
+
+143. **NOT FIXED, needs a decision: the WhatsApp green fails contrast with white on it.** Measured: white on #25D366 is **1.98:1**. Text needs 4.5:1 and a control's own graphics need 3:1, so both the "WhatsApp us" label in the pop-up and the glyph in the floating button are below the floor -- and the green button on a white panel is itself 1.98:1 against the page, so its edge is hard to find.
+
+     The agency asked for WhatsApp's authentic green and it is authentic; this is recorded rather than quietly substituted. Two ways out, both measured:
+
+     - Keep #25D366 and set the label and glyph in navy: **7.27:1**. Still unmistakably the WhatsApp green.
+     - Keep white and darken the green to #0F7A43: **5.41:1**. Still reads as WhatsApp, slightly deeper.
+
+     `--color-whatsapp` is scoped in tokens.css to controls that open WhatsApp, and the file says so. It is not a new brand colour and it is not an exception to "the palette is blue only" -- it is a third-party channel's mark.

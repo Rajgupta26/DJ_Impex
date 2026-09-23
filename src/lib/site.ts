@@ -130,6 +130,13 @@ export const siteSchema = z.object({
     fourLines: z.array(z.object({ name: z.string(), products: z.array(z.string()) })),
     brochurePairs2023: z.array(z.string()),
   }),
+  popup: z.object({
+    _note: z.string().optional(),
+    status: statusSchema,
+    line: z.string(),
+    cta: z.string(),
+    delaySeconds: z.number(),
+  }),
   values: z.array(z.string()),
   socialCause: z.object({
     headline: z.string(),

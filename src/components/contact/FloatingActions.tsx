@@ -29,7 +29,7 @@ export function FloatingActions({
       <FloatingAction
         href={whatsappHref}
         label="Enquire on WhatsApp"
-        tone="navy"
+        tone="whatsapp"
         onClick={() => track("whatsapp_click", { location: "floating" })}
         disabled={overlayOpen}
       >
@@ -49,7 +49,7 @@ function FloatingAction({
 }: {
   href: string;
   label: string;
-  tone: "navy" | "white";
+  tone: "whatsapp" | "navy" | "white";
   onClick: () => void;
   disabled: boolean;
   children: React.ReactNode;
@@ -63,7 +63,11 @@ function FloatingAction({
       onClick={onClick}
       tabIndex={disabled ? -1 : undefined}
       className={`group relative flex h-14 w-14 items-center justify-center rounded-[var(--radius-pill)] shadow-[var(--shadow-float)] transition-transform duration-[var(--duration-quick)] hover:-translate-y-0.5 ${
-        tone === "navy" ? "bg-navy text-white" : "border border-line bg-white text-navy"
+        tone === "whatsapp"
+          ? "bg-[var(--color-whatsapp)] text-[var(--color-whatsapp-ink)]"
+          : tone === "navy"
+            ? "bg-navy text-white"
+            : "border border-line bg-white text-navy"
       }`}
     >
       {children}
