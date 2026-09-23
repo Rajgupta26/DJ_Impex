@@ -2,18 +2,17 @@ import { Container } from "@/components/ui/Container";
 import { withReg } from "@/components/ui/Reg";
 import { WeaveArt } from "@/components/ui/WeaveArt";
 import { getPage } from "@/lib/content";
-import { mailtoLink, telLink } from "@/lib/contact";
 import { field, section } from "@/lib/markdown";
-import { FabricHoverShowcase } from "@/components/about/FabricHoverShowcase";
 
 /**
- * The client's welcome, set rather than poured.
+ * The client's welcome.
  *
- * It arrived as one 200-word block, which is how the prototype ran it and which
- * nobody reads. The sentence that carries the most is the list of seven cloths,
- * so that sentence is broken open: the lead-in, then the names set large down a
- * ruled column, then the tail. Everything else stays in the client's order and
- * the client's words.
+ * The collection sentence used to be broken open here into the hover showcase --
+ * the lead-in, the names down a ruled column, the tail. That showcase moved to
+ * the home page on 2026-09-23 and was cut from this page the same day, so the
+ * two would not carry the same block. The copy for it is still in about.md, and
+ * the home page reads it from there; `Craft` in that file has never been
+ * rendered anywhere. See 05-open-questions 137.
  *
  * Light, not dark. It was on the deepest navy, directly under a hero that is
  * itself navy behind its photograph, and the two ran together into one dark mass
@@ -26,10 +25,6 @@ import { FabricHoverShowcase } from "@/components/about/FabricHoverShowcase";
  */
 export function WelcomeSection() {
   const copy = section(getPage("about"), "welcome");
-  const names = field(copy, "collection-names")
-    .split(",")
-    .map((name) => name.trim())
-    .filter(Boolean);
 
   return (
     <section className="relative isolate bg-mist">
@@ -38,12 +33,6 @@ export function WelcomeSection() {
       <Container className="relative py-[var(--spacing-section)]">
         <h2 className="t-h2">Welcome</h2>
         <p className="t-lead mt-6 max-w-[42rem]">{withReg(field(copy, "lead"))}</p>
-
-        <FabricHoverShowcase
-          names={names}
-          collectionLead={field(copy, "collection-lead")}
-          collectionTail={field(copy, "collection-tail")}
-        />
       </Container>
     </section>
   );
