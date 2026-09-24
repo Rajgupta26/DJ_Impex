@@ -46,10 +46,17 @@ Today we export under our brand Nabeen® to discerning markets across Africa and
 
 Link: "Read our story" → /about
 
-## 4. The Fabric Journal
-Heading: The Fabric Journal
-Intro (proposed): Guides to choosing, judging and wearing fine fabric.
-Show the 3 posts from content/journal. Link: "Read the journal" → /journal
+## 4. Our exclusive collection
+The same hover showcase that runs on /about, placed here on 2026-09-23.
+Copy: about.md → "Collection lead", "Collection names", "Collection tail". It is
+one sentence and it is NOT duplicated into this file, so the two pages cannot
+drift apart. The showcase sets the lead as body text, so the section carries a
+hidden heading for the outline rather than printing the same line twice.
+Fabric photographs and descriptions are inside FabricHoverShowcase itself.
+
+(The Fabric Journal moved off the home page on 2026-09-23 and lives at /journal.
+Its own heading and strapline are on that page. Was: "The Fabric Journal" /
+"Guides to choosing, judging and wearing fine fabric.")
 
 ## 5. Testimonials
 Heading (client, brochure p.8): People love us, as much as we love serving them.

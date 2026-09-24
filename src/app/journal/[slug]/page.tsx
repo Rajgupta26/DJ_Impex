@@ -49,7 +49,7 @@ export default async function JournalPostPage({ params }: Params) {
         <header className="bg-white pb-14 pt-[calc(4.5rem+var(--spacing-section)/2)] lg:pt-[calc(5.25rem+var(--spacing-section)/2)]">
           <Container>
             <p className="t-small flex flex-wrap items-center gap-x-3 text-slate">
-              <Link href="/#journal" className="text-link">
+              <Link href="/journal" className="text-link">
                 The Fabric Journal
               </Link>
               <span aria-hidden="true">·</span>
@@ -169,7 +169,7 @@ function breadcrumbJsonLd(post: Post) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "The Fabric Journal", item: `${SITE_URL}/#journal` },
+      { "@type": "ListItem", position: 2, name: "The Fabric Journal", item: `${SITE_URL}/journal` },
       {
         "@type": "ListItem",
         position: 3,

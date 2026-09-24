@@ -156,7 +156,7 @@
     },
     {
       "label": "The Fabric Journal",
-      "href": "/#journal"
+      "href": "/journal"
     },
     {
       "label": "Contact Us",
@@ -344,5 +344,12 @@
       "note": "Client material says 'a percentage (%)'. Never invent a number."
     },
     "status": "confirmed"
+  },
+  "popup": {
+    "_note": "Supplied by the agency as a screen mock on 2026-09-23. Title Case as given; the house rule elsewhere is sentence case. Confirm the wording with the client.",
+    "status": "tbc",
+    "line": "Wrap Yourself in Opulence with the Finest African-Inspired Luxury Fabrics by Nabeen®",
+    "cta": "WhatsApp us",
+    "delaySeconds": 6
   }
 }

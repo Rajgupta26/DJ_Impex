@@ -88,7 +88,7 @@ export function VisionPillars({
   };
 
   return (
-    <section className="bg-white pt-12 pb-16 lg:pt-16 lg:pb-20">
+    <section className="page-end bg-white pt-12 lg:pt-16">
       <Container>
         <h2 className="t-h2 max-w-[18ch]">{withReg(heading)}</h2>
         {intro ? <p className="t-lead measure mt-6">{intro}</p> : null}

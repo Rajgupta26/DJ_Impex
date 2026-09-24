@@ -1,36 +1,101 @@
-import Image from "next/image";
+"use client";
+
+import { Pause, Play } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "motion/react";
 
 /**
- * The opening of /vision: the agency's own banner, supplied 2026-09-23 as
- * finished artwork to replace the drawn loom panel that stood here.
+ * The opening of /vision: the agency's banner, supplied as a still on
+ * 2026-09-23 and replaced the same day by the animated version of the same
+ * artwork -- the words hold still while the silk moves behind them.
  *
- * The words are baked into the artwork, so the image sits inside the H1 and its
- * alt carries them. That keeps the page's heading real for a search engine and a
- * screen reader even though nothing on screen is live text.
+ * The words are in the footage, so the H1 carries them as text of its own and
+ * the video is decoration. A video has no alt attribute; without this the page
+ * would have no heading at all for a search engine or a screen reader.
  *
- * The header is fixed and overlays the page, and it starts solid white here
- * because this page carries no `data-hero`. The top padding is the header's own
- * height, so the artwork begins below it rather than under it -- on a phone the
- * banner is only about 175px tall and the tagline would otherwise sit behind the
- * navigation.
+ * It loops, which makes it moving content, so WCAG 2.2.2 needs a way to stop it
+ * and the button is that. The button also reflects the element's real state
+ * rather than what the code assumed: a browser can refuse autoplay, and the
+ * rejected promise used to be swallowed on the home hero, which is what left a
+ * dead paused film there (question 98).
  *
- * Width and height are the file's own, with `h-auto w-full`, so the whole banner
- * is shown at its aspect at every width and nothing is ever cropped.
+ * Under reduced motion it does not start, and the poster -- a frame of the
+ * footage, so the composition is identical -- carries the panel instead.
+ *
+ * 16:9 footage in a panel capped at 80vh: `object-cover` takes the difference
+ * out of the silk at the top and bottom, never out of the type, which sits
+ * across the middle third.
  */
+const BANNER_WORDS =
+  "Luxury in every thread. House of textiles: Giza Cotton, Wool, Atiku, Aesobi, Wax Print, Shirting, Swiss Lace, Suiting, Jacquard and Voile.";
+
 export function VisionBanner() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const reduceMotion = useReducedMotion();
+  const [paused, setPaused] = useState(true);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const sync = () => setPaused(video.paused);
+    video.addEventListener("play", sync);
+    video.addEventListener("pause", sync);
+    sync();
+
+    if (reduceMotion) {
+      video.pause();
+    } else {
+      void video.play().catch(() => setPaused(true));
+    }
+
+    return () => {
+      video.removeEventListener("play", sync);
+      video.removeEventListener("pause", sync);
+    };
+  }, [reduceMotion]);
+
+  const toggle = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) void video.play().catch(() => setPaused(true));
+    else video.pause();
+  };
+
   return (
     <section className="bg-white pt-[4.5rem] lg:pt-[5.25rem]">
-      <h1>
-        <Image
-          src="/images/vision/luxury-in-every-thread.png"
-          alt="Luxury in every thread. House of textiles: Giza Cotton, Wool, Atiku, Aesobi, Wax Print, Shirting, Swiss Lace, Suiting, Jacquard and Voile."
-          width={1128}
-          height={495}
-          priority
-          sizes="100vw"
-          className="h-auto w-full"
-        />
-      </h1>
+      <h1 className="visually-hidden">{BANNER_WORDS}</h1>
+
+      <div className="relative aspect-video max-h-[80vh] w-full overflow-hidden">
+        <video
+          ref={videoRef}
+          aria-hidden="true"
+          tabIndex={-1}
+          className="h-full w-full object-cover"
+          poster="/video/luxury-in-every-thread.jpg"
+          // Metadata, not none: "none" made the first play() slow and easy to
+          // lose on the home hero, and the poster still carries the frame.
+          preload="metadata"
+          muted
+          loop
+          playsInline
+        >
+          <source src="/video/luxury-in-every-thread.mp4" type="video/mp4" />
+        </video>
+
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label={paused ? "Play the banner animation" : "Pause the banner animation"}
+          className="absolute right-5 top-5 z-10 flex h-11 w-11 items-center justify-center border border-white/30 bg-navy-deep/85 text-white backdrop-blur-sm transition-colors duration-[var(--duration-quick)] hover:bg-navy-deep md:right-8"
+        >
+          {paused ? (
+            <Play aria-hidden="true" size={18} strokeWidth={1.6} className="ml-0.5" />
+          ) : (
+            <Pause aria-hidden="true" size={18} strokeWidth={1.6} />
+          )}
+        </button>
+      </div>
     </section>
   );
 }

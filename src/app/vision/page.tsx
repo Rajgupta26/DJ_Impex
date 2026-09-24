@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { EnquiryBand } from "@/components/layout/EnquiryBand";
 import { withReg } from "@/components/ui/Reg";
 import { VisionBanner } from "@/components/vision/VisionBanner";
 import { VisionPillars } from "@/components/vision/VisionPillars";
@@ -22,7 +21,9 @@ export const metadata: Metadata = buildMetadata({
  * The agency supplied its own banner on 2026-09-23 and asked for it to stand in
  * the opening's place, so the H1, the Cerruti epigraph and the drawn loom have
  * all come off the page. The client's intro line moved down to the pillars
- * rather than going with them. See 05-open-questions 117-119.
+ * rather than going with them. The closing enquiry band came off on 2026-09-23
+ * too, so the pillars are the last thing before the footer.
+ * See 05-open-questions 117-119 and 126.
  */
 export default function VisionPage() {
   const vision = getPage("vision");
@@ -34,8 +35,6 @@ export default function VisionPage() {
       <VisionBanner />
 
       <VisionPillars heading={pillars.heading} intro={withReg(field(head, "intro"))} items={pillars.items} />
-
-      <EnquiryBand />
     </>
   );
 }

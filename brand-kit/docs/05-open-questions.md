@@ -237,3 +237,86 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 124. **The five pillars carry lucide icons now, not cloth.** Sparkles, Globe, TrendingUp, ShieldCheck and GraduationCap, one per pillar, replacing the fabric swatches from question 113 and the bolt from question 115. The agency chose this when the two were put side by side. Two things worth recording against it: the icons assign a meaning to each pillar that no content file supports -- a graduation cap for "Empowering Minds" reads as a claim about education -- where the cloth was explicitly ornament; and with the bolt gone, the 304px of empty container measured in question 115 is back at widths above about 1150. The `min-[1152px]` grid that held the bolt went with it.
 
 125. **`tsconfig.tsbuildinfo` is untracked and gitignored.** It is a TypeScript build cache, it changes on every build, and it was the only genuine conflict in this merge. It had been offered for gitignoring twice before.
+
+126. **/vision has no closing enquiry band.** It was cut on the agency's instruction (2026-09-23), so the page is now the banner, the five pillars and the footer. The band is still on the journal posts, which are the only other page that carried it, so `EnquiryBand.tsx` is not orphaned. The pillars section took the `page-end` class, since it is the last thing before the footer now and the reason for its old `pb-16 lg:pb-20` -- the band below opening with 104px of its own -- has gone with the band.
+
+     Worth noting against it: /vision is now the only page with no call to action of its own. The footer's phone, email and directions and the floating WhatsApp button are all that remain on it, and /about is in the same position (question 81). Every other page closes on either the band or a form.
+
+127. **Akshay's "animation fix on home page" was merged except for the hero.** His retimed reveals on the brief, the stat boxes and the new `JournalAnimated`, and his smaller pillar icons, are all in. `HeroCarousel.tsx` was kept at our version on the agency's decision, because his change to that one file contained no animation work at all -- only two reversals:
+
+     - It removed the hero film's play/pause button, the state sync, and went back to `catch(() => {})` on the rejected `play()`. That is precisely the combination that produced the "video is paused" bug the agency reported on 2026-09-23 (question 98), and it removes the stop control that WCAG 2.2.2 requires for moving content.
+     - It recoloured the hero from `bg-navy-deep` to `bg-black`, with the veils changed from navy to neutral black and a comment saying "without any blue tint". CLAUDE.md has said the palette is blue only since 2026-09-22.
+
+     Git reported no conflict on this file, because nothing here had touched it since. That is worth remembering: a clean merge is not evidence that a merge is correct, and both of these would have gone in silently.
+
+128. **This is the second time in a day that a merge would have undone a reported fix.** The pattern is that work starts from a base that is a few commits old, so a change that was made deliberately looks like a change that was never made. Nothing here is anyone's fault, but the two of you are editing the same handful of files, and the only thing that has caught it both times is reading the diff before merging rather than after.
+
+129. **The home hero's veils are neutral now, not navy.** The three layers over the film were mixed from navy-deep and navy, which put a blue cast over the client's own footage; the agency asked for it off (2026-09-23). They are black at the same positions, with the alphas down about 6 per cent -- black is darker than navy-deep at the same alpha, and the instruction was to take the hue out, not to make the frame darker. The headline sits in the bottom-left corner where all three layers stack and roughly 1.6% of the image comes through, so it is effectively white on black: contrast was never the constraint here and is unchanged.
+
+     This partly supersedes question 127, where the same change in Akshay's commit was flagged as off-palette. The difference: the section's own ground stays `bg-navy-deep`, where his went `bg-black`. A scrim over a photograph is not a brand colour; the ground behind it is. The hero film is the only place this applies.
+
+130. **The page heroes on /about still carry navy veils.** `PageHero` uses the same three-layer treatment in navy over its photograph. The two heroes now treat photography differently: the film is neutral, the page hero is blue. Worth deciding one way or the other, but changing it was not asked for and /about's photograph is the only one it affects.
+
+## The home page trades the journal for the range, 2026-09-23
+
+131. **"Our exclusive collection of" replaces The Fabric Journal on the home page.** The heading is deliberately unfinished, on the agency's word: it runs on into the fabric names below it as one sentence, which is why the names are set at heading weight and nothing punctuates the end of the heading. It is recorded that way in home.md so nobody "fixes" it later by adding a noun. The block lists the six `fabricTypes` from site.json with their one-line descriptions.
+
+132. **The Fabric Journal has its own page again.** It was deleted on 2026-09-22 when the journal became a home-page section; that section is now the collection, so the page is back at /journal and the nav, the post breadcrumbs and the breadcrumb JSON-LD all point there instead of /#journal. The sitemap picks it up automatically, since it filters hash hrefs and /journal is no longer one. The old version of the page repeated the lead post's opening paragraph as a hard-coded string truncated mid-word; `PostCard` takes the excerpt from the post's own front matter, so that is gone.
+
+     `JournalPreview.tsx` and Akshay's `JournalAnimated.tsx` are now referenced nowhere. They are kept rather than deleted, like the others in question 105.
+
+     `Header.tsx` still has its scroll-spy branches for `#journal`. They are harmless -- `getElementById("journal")` returns null now, so the branch never fires -- but they are dead and belong to whoever tidies next.
+
+133. **NOT FIXED, worth knowing: the TBC tag is disabled site-wide.** `TbcTag` returns `null` unconditionally, with the comment "TBC badge is permanently disabled across the site". CLAUDE.md's content rule says `tbc` content should be used *and* carry the dev-only tag, so that rule is currently not implemented anywhere. It matters here because `fabricTypes` is `tbc`: its structure and all six one-line descriptions are proposed microcopy that has never been approved, and nothing on the page says so. The call is left in `FabricCollection` so it lights up again if the tag is ever restored.
+
+134. **The collection block and the banner still disagree.** The home page now names six fabrics from site.json; the /vision banner names ten, three of which (Aesobi, Wax Print, Shirting) appear nowhere in `brand-kit/content`. Question 119 asked which is right; it now shows in two places on the site rather than one.
+
+135. **The home page runs the /about hover showcase.** On the agency's instruction (2026-09-23) the six-item block from question 131 was replaced by the same `FabricHoverShowcase` that runs on /about: eight cloths down the left, a large photograph on the right that changes as you move between them. It stays on /about as well -- the agency asked for it on the home page and did not ask for it off /about -- so the same interactive block now appears twice on the site.
+
+     It reads the same three fields from `about.md` that /about reads rather than taking a copy into home.md, so the two pages cannot drift apart. The showcase sets its lead as body text because "Welcome" is the heading above it on /about; on the home page there is nothing above it, so the section carries a hidden `h2` for the outline. Printing "Our exclusive collection of" as a heading and again as the showcase's first line would have read as a mistake. Verified: the outline is sound, the panel changes on hover and on click, and the eight rows render at 400px with no overflow.
+
+     `FabricCollection.tsx` lasted about twenty minutes and is deleted rather than orphaned; it is in git at cd19df2.
+
+136. **NOT FIXED, and now visible on one page: there are four fabric lists.** The home page shows eight cloths in the showcase (Suiting, Cotton Shirting, Swiss Voile, Lace, Atiku, Voile, Brocade, Giza), ten photographs in World of Nabeen, and the footer strip's six from `site.json.fabricTypes` -- three different answers on the same screen, and the /vision banner gives a fourth of ten names. Only the `site.json` six are in the content layer at all, and they are marked `tbc`. The showcase's eight names live in `about.md`; its photographs and descriptions are hard-coded inside `FabricHoverShowcase.tsx`. This wants one list, agreed with the client, in `site.json`, with everything reading from it.
+
+137. **The hover showcase is off /about; it runs on the home page only.** The agency asked for it removed there (2026-09-23) rather than carried on two pages. `FabricHoverShowcase.tsx` is not orphaned -- the home page's `CollectionShowcase` renders it -- and two unused imports in `WelcomeSection` went at the same time, which takes the lint warnings from three to one.
+
+     Two consequences worth a decision:
+
+     - **/about's Welcome is now a heading and one sentence.** The client's welcome copy in about.md is three parts: `Lead`, the collection sentence (`Collection lead` + `Collection names` + `Collection tail`), and `Craft`. The page renders only `Lead`. The collection sentence has moved to the home page, and **`Craft` has never been rendered anywhere** -- "Crafted by D J Impex & Co (DJI), a trusted name in fabric manufacturing and export ... an ode to fine craftsmanship." Setting `Craft` under the lead would put the client's own words back on the page it was written for and is a one-line change; it was not done because it was not asked for.
+     - **The collection copy still lives in about.md while only the home page renders it.** Content files mirror pages, so those three fields arguably belong in home.md now. They were left where they are because moving client copy between page briefs changes the record of what the client wrote for which page, and that is the client's call rather than ours.
+
+138. **/vision opens on the animated banner.** The agency supplied a 10-second MP4 of the same artwork on 2026-09-23 -- the words hold still while the silk moves behind them -- and it replaces the still from question 117. 1280x720, 2.4MB, H.264. The still PNG is deleted; it is in git at dfd260f.
+
+     - The words are in the footage and a video has no alt attribute, so the H1 carries them as hidden text of its own and the video is `aria-hidden`. Without that the page would have no heading at all.
+     - It loops, which makes it moving content, so it carries a 44x44 play/pause control for WCAG 2.2.2. The control reflects the element's real state and catches the rejected `play()`, rather than assuming autoplay succeeded -- the mistake that left the home hero dead (question 98). Verified: pausing flips the label to "Play the banner animation" and back.
+     - Under reduced motion it does not start and the poster, a frame of the footage, holds the panel.
+     - 16:9 footage in a panel capped at 80vh, so `object-cover` takes the difference out of the silk above and below the type, never out of the type itself. 1440x720 measured at 1440 wide.
+     - The poster was cut with `qlmanage`; there is no ffmpeg on this machine.
+
+139. **Question 118 survives the change: the banner's small type is still unreadable on a phone.** The footage is 1280 wide and the panel is full bleed, so at 400px it renders at 0.31 and the two lower lines land near 6px. Moving from a still to a video has not changed that, and it cannot be cropped away. Setting those two lines as live text under the tagline below about 710px is still the only real fix, and it still runs into question 119, because the ten fabric names in the artwork are not in any content file.
+
+140. **`public/video` is now 6.8MB of the repository.** The new banner is 2.4MB and the home hero film is 4.5MB, both committed directly. That is on top of the 34MB of binaries already in history (a zip and a WhatsApp video committed on 2026-09-22, since deleted from the tree but not from history). Git stores every version of a binary for ever. If the films are going to be iterated on, they belong in Vercel Blob or on a CDN rather than in git, and the history is worth rewriting once before the repository grows further.
+
+141. **The banner animation was regenerated and is measurably sharper.** The agency replaced the 2026-09-23 file the same day, saying the type was blurry. It is: measured on the tagline band of both files at native resolution, variance of the Laplacian went from 169.9 to 1550.2 -- **9.1 times** the edge energy. This was a genuinely better render, not a re-export.
+
+     It is still 1280x720, so the panel still upscales it: 1.125x at 1440 wide, 1.5x at 1920. That is now the only softness left, and it is the panel's doing rather than the file's. A 1920-wide export would remove it below 1920 entirely and a 2560-wide one at any width the site is likely to meet. Worth asking for, since the artwork is clearly being generated rather than filmed.
+
+     Alternatively the panel could stop being full bleed and cap at the footage's own width, which would be pixel-exact at every size but would put white margins down both sides of the banner on a large monitor. That is a design decision and was not taken here.
+
+## The welcome pop-up and the WhatsApp green, 2026-09-23
+
+142. **The pop-up is the agency's mock now, and it has no form.** The mark, a rule, the line, a rule, one WhatsApp button. The short enquiry form that used to sit in it is gone, because the mock has none. It opens six seconds after the first page load rather than five, once per session, and never once someone has already sent an enquiry.
+
+     It no longer skips the home page. The instruction is that it appears when a visitor arrives, and the home page is where they arrive; question 123 had it skipping "/" so it would not open on top of the enquiry form, and that form is at the foot of the page, which nobody has reached six seconds in.
+
+     The line is in `site.json` under `popup`, marked `tbc`. It is Title Case as supplied -- "Wrap Yourself in Opulence with the Finest African-Inspired Luxury Fabrics by Nabeen®" -- where the house rule is sentence case, and it appears nowhere else in `brand-kit/content`, so it wants confirming with the client. The delay is a number in that file, not a constant in the component.
+
+143. **NOT FIXED, needs a decision: the WhatsApp green fails contrast with white on it.** Measured: white on #25D366 is **1.98:1**. Text needs 4.5:1 and a control's own graphics need 3:1, so both the "WhatsApp us" label in the pop-up and the glyph in the floating button are below the floor -- and the green button on a white panel is itself 1.98:1 against the page, so its edge is hard to find.
+
+     The agency asked for WhatsApp's authentic green and it is authentic; this is recorded rather than quietly substituted. Two ways out, both measured:
+
+     - Keep #25D366 and set the label and glyph in navy: **7.27:1**. Still unmistakably the WhatsApp green.
+     - Keep white and darken the green to #0F7A43: **5.41:1**. Still reads as WhatsApp, slightly deeper.
+
+     `--color-whatsapp` is scoped in tokens.css to controls that open WhatsApp, and the file says so. It is not a new brand colour and it is not an exception to "the palette is blue only" -- it is a third-party channel's mark.

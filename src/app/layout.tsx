@@ -71,7 +71,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
 
           <FloatingActions whatsappHref={whatsapp} directionsHref={directionsLink()} />
-          <ContactPopup whatsappHref={whatsapp} />
+          <ContactPopup
+            whatsappHref={whatsapp}
+            line={site.popup.line}
+            cta={site.popup.cta}
+            delaySeconds={site.popup.delaySeconds}
+          />
         </OverlayProvider>
 
         <script
