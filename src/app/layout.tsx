@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 import { ContactPopup } from "@/components/contact/ContactPopup";
+import { Preloader } from "@/components/layout/Preloader";
 import { FloatingActions } from "@/components/contact/FloatingActions";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -71,6 +72,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
 
           <FloatingActions whatsappHref={whatsapp} directionsHref={directionsLink()} />
+          <Preloader />
+
           <ContactPopup
             whatsappHref={whatsapp}
             line={site.popup.line}

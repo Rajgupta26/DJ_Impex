@@ -320,3 +320,13 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
      - Keep white and darken the green to #0F7A43: **5.41:1**. Still reads as WhatsApp, slightly deeper.
 
      `--color-whatsapp` is scoped in tokens.css to controls that open WhatsApp, and the file says so. It is not a new brand colour and it is not an exception to "the palette is blue only" -- it is a third-party channel's mark.
+
+144. **A preloader now sits over the first paint.** A 220px disc of film (180px on a phone) over the page, which stays visible through an 8px backdrop blur and a light navy wash, to the agency's spec (2026-09-24). The video autoplays, loops, is muted and plays inline, and is cropped to the circle.
+
+     It leaves on `window.onload`, with a 3.5s timeout behind it so a slow or failed asset can never strand anyone behind it. Both paths run and the first one wins.
+
+     It also holds for a minimum of 900ms, which was not in the spec. By the time React hydrates, Next has usually already fired `load`, so without a floor the preloader appeared and vanished inside about 200ms, which reads as a glitch rather than a loading state. Measured on a warm local load: present at 296ms after navigation, gone at 1590ms. Remove `MIN_MS` if the flash is preferred.
+
+     The earlier version of this component locked `document.body` itself. `useOverlay` already does that through OverlayContext, and with two locks the restores unwound in the wrong order and left `overflow: hidden` on the body after the preloader had gone. Only OverlayContext locks it now.
+
+     `public/video` is 9.5MB of the repository with this file in it. Question 140 stands and is getting worse.
