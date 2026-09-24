@@ -321,15 +321,12 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 
      `--color-whatsapp` is scoped in tokens.css to controls that open WhatsApp, and the file says so. It is not a new brand colour and it is not an exception to "the palette is blue only" -- it is a third-party channel's mark.
 
-144. **A preloader now sits over the first paint.** A 220px disc of film (180px on a phone) over the page, which stays visible through an 8px backdrop blur and a light navy wash, to the agency's spec (2026-09-24). The video autoplays, loops, is muted and plays inline, and is cropped to the circle.
+144. **The Silk Reveal stands over the first paint.** The film fills the viewport under the mark, and when the page is ready the cloth parts down the middle and the halves draw off to the sides over 0.8s. To the agency's brief (2026-09-24), which replaced the compact 220px disc written earlier the same day.
 
-     It leaves on `window.onload`, with a 3.5s timeout behind it so a slow or failed asset can never strand anyone behind it. Both paths run and the first one wins.
-
-     It also holds for a minimum of 900ms, which was not in the spec. By the time React hydrates, Next has usually already fired `load`, so without a floor the preloader appeared and vanished inside about 200ms, which reads as a glitch rather than a loading state. Measured on a warm local load: present at 296ms after navigation, gone at 1590ms. Remove `MIN_MS` if the flash is preferred.
-
-     The earlier version of this component locked `document.body` itself. `useOverlay` already does that through OverlayContext, and with two locks the restores unwound in the wrong order and left `overflow: hidden` on the body after the preloader had gone. Only OverlayContext locks it now.
-
-     `public/video` is 9.5MB of the repository with this file in it. Question 140 stands and is getting worse.
+     - The curtain is two panels, each holding its own copy of the film at full viewport width, one anchored left and one anchored right, so they read as one picture until they separate. A single element cannot part outwards from its own centre: `clip-path: inset()` closes towards the middle, which is the opposite gesture. The cost is two decoders of the same 2.5MB file for a second or two.
+     - **The mark needed a scrim the brief did not ask for.** The film is white silk: measured over the middle band it averages 144 of 255 and its highlights reach pure white, so the white mark asked for ran from 3.2:1 down to invisible. It now sits on a radial pool of navy, 0.86 at the centre, which puts white at about 5.2:1 over even the brightest silk and is gone by three quarters of the way out, so the cloth still carries the frame.
+     - It leaves on `window.onload` with a 3.5s timeout behind it, and holds a 900ms floor because Next usually fires `load` before React hydrates -- without it the whole thing is over inside about 200ms and reads as a flicker. Measured: present at 308ms after navigation, curtain starts at 1134ms, unmounted at 1958ms, nothing left at z-9999, body `overflow` restored.
+     - The subtitle is Title Case as supplied. The same phrase is the home page's H1 in sentence case, and the house rule is sentence case, so the site now carries it both ways. One word to change if that is wrong.
 
 145. **NOT FIXED, and it is live: a gmail address is now published on the site.** Akshay's `fd6e986` flipped `contact.emailSecondary` -- `djimpex479@gmail.com` -- from `hold` to `confirmed` and deleted its note, which read "Brochure only. Ask whether to show a gmail address publicly." `ContactChannels` now prints all three addresses, so the home page's contact section reads ceo@djimpex.in, admin@djimpex.in and djimpex479@gmail.com together.
 
