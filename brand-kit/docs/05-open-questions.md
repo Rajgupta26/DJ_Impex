@@ -321,13 +321,17 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 
      `--color-whatsapp` is scoped in tokens.css to controls that open WhatsApp, and the file says so. It is not a new brand colour and it is not an exception to "the palette is blue only" -- it is a third-party channel's mark.
 
-144. **The preloader: cloth turning in a dark room, pulling back to leave the page.** Seventh version in two days. Two notes from the agency on 2026-09-24 shaped this one: a blue cast round the edges, and a wish for the cloth to zoom out as it turns so the site appears rather than being cut to.
+144. **The preloader: cloth turning, opening out through the viewer to leave the page.** Eighth version in two days, and the one the brief of 2026-09-24 asked for in detail.
 
-     **The blue is gone, and its brightness is not.** The ground had been `--color-navy-deep`, which was the right answer to the previous complaint -- matching the hero meant the handoff had no colour cut -- but it put navy around every edge, and the raking wash and the selvedge-blue thread added more. The ground is `#1e1e1e` now, chosen by measurement rather than eye: its relative luminance is 0.0122 against navy-deep's 0.0126, so it is the neutral that sits at the same brightness as the hero it hands to. The hue goes, the brightness match that made the handoff work stays. The wash is neutral and the thread is silver.
+     **The turn is real now.** Earlier versions had no rotation of their own -- the swirl was inside the footage -- so the brief's "maintain the continuous rotation" was maintaining something that did not exist. The film carries `animation: preloader-turn 30s linear infinite`. Measured turning, 6.99 degrees to 18.20 over 900ms, and still turning at 23.0 degrees in the middle of the outro, because the rotation is the film's own CSS animation and owes nothing to the transform the outro uses.
 
-     **The exit is a pull-back rather than a fade.** The scene scales down and keeps turning while the ground dissolves. Measured: scale falls to 0.740 and rotation reaches 14.0 degrees, both landing exactly on target; the handoff runs 1033ms, from 1326ms to an unmount at 2359ms; nothing left at z-9999 and body `overflow` restored.
+     **The film is oversized 1.45, which is not decorative.** A full-viewport element that rotates sweeps its corners out of the viewport and leaves the corners of the screen bare. 1.45 is a shade over the root of two, which is what it takes to cover a rectangle through any angle.
 
-     One thing tidied on the way: the overlay inherited the body's navy as its text colour. Nothing rendered in it, because every line inside sets its own, but it was a trap for whoever adds the next line. The overlay is `text-white` now.
+     **The outro opens out through the viewer rather than shrinking away**, which leaves the page behind the cloth instead of revealed around a shrinking object in the middle of it. Measured mid-flight: scene at scale 2.196, overlay opacity 0, `pointer-events: none`, film still at 23 degrees. `cubic-bezier(0.16, 1, 0.3, 1)` over 1s.
+
+     `display: none` is not used and is not needed: AnimatePresence takes the element out of the DOM entirely, which is stronger. Verified at 2317ms -- nothing left at z-9999, the centre of the screen belongs to the page, body `overflow` restored and the page scrolls.
+
+     `scale` and `rotate` are set as their own CSS properties rather than as transforms, so the constant oversize and the animated angle compose without fighting, and `transform` stays free for the outro.
 
 145. **NOT FIXED, and it is live: a gmail address is now published on the site.** Akshay's `fd6e986` flipped `contact.emailSecondary` -- `djimpex479@gmail.com` -- from `hold` to `confirmed` and deleted its note, which read "Brochure only. Ask whether to show a gmail address publicly." `ContactChannels` now prints all three addresses, so the home page's contact section reads ceo@djimpex.in, admin@djimpex.in and djimpex479@gmail.com together.
 

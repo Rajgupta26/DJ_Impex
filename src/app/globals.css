@@ -222,25 +222,47 @@ html {
 
    The footage is white cloth on a mid-grey ground, rgb(168) in the corners
    rising to rgb(230) in the middle. Laid on as-is it is a grey rectangle.
+   `screen` fixes that: the grey ground lifts the near-black only slightly while
+   the white cloth comes through bright, and the radial mask takes the frame's
+   own edges away, so there is no rectangle at any point.
 
-   `screen` solves that: the grey ground lifts the near-black only slightly
-   while the white cloth comes through bright, so the film reads as cloth
-   catching light in a dark room rather than as a video playing. The radial mask
-   then takes the frame's own edges away, so there is no rectangle at any point.
+   The turn is a real rotation of the element, not the swirl inside the footage.
+   `scale` and `rotate` are used as their own properties rather than as
+   transforms, so the constant oversize and the animated angle compose without
+   fighting each other, and the parent is still free to use `transform` for the
+   outro.
+
+   The 1.45 oversize is not decorative. A full-viewport element that rotates
+   sweeps its corners out of the viewport and leaves the corners of the screen
+   uncovered; 1.45 is a shade over the root of two needed to cover a rectangle
+   through any angle.
    ========================================================================== */
+
+@keyframes preloader-turn {
+  to {
+    rotate: 360deg;
+  }
+}
 
 .preloader-film {
   mix-blend-mode: screen;
+  scale: 1.45;
   -webkit-mask-image: radial-gradient(
-    ellipse 74% 66% at 50% 48%,
+    ellipse 52% 46% at 50% 50%,
     #000 0%,
     rgb(0 0 0 / 0.7) 46%,
-    transparent 82%
+    transparent 78%
   );
   mask-image: radial-gradient(
-    ellipse 74% 66% at 50% 48%,
+    ellipse 52% 46% at 50% 50%,
     #000 0%,
     rgb(0 0 0 / 0.7) 46%,
-    transparent 82%
+    transparent 78%
   );
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .preloader-film {
+    animation: preloader-turn 30s linear infinite;
+  }
 }

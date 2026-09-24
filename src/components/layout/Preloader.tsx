@@ -20,9 +20,11 @@ import { useOverlay } from "@/components/layout/OverlayContext";
  * brightness as the hero it hands over to. The hue goes; the brightness match
  * that made the handoff work stays.
  *
- * The exit is a pull-back, not a fade. The scene scales down and turns a little
- * further as it goes, so the cloth is still rotating while it recedes, and the
- * ground dissolves at the same time -- the page is revealed rather than cut to.
+ * The exit opens out through the viewer rather than shrinking away: the scene
+ * scales to 2.2 while the ground dissolves, so the page is left behind the
+ * cloth rather than revealed around a shrinking object. The film keeps turning
+ * throughout, because its rotation is its own CSS animation and owes nothing to
+ * the transform the outro is using.
  *
  * It leaves on `window.onload` with a 3.5s timeout behind it. MIN_MS is not in
  * any brief; without it Next has usually fired `load` before React hydrates and
@@ -65,7 +67,14 @@ export function Preloader() {
           className="fixed left-0 top-0 z-[9999] h-screen w-screen overflow-hidden text-white"
           style={{ backgroundColor: GROUND }}
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.85, ease: [0.4, 0, 0.2, 1] } }}
+          exit={{
+            opacity: 0,
+            // Nothing in here is clickable, but the overlay is over the page
+            // while it is showing, so it only stops taking the pointer once it
+            // has started to go.
+            pointerEvents: "none",
+            transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
+          }}
         >
           {/* The scene pulls back as it goes: still turning, getting smaller,
               and the page comes up behind it. */}
@@ -77,9 +86,12 @@ export function Preloader() {
               reduceMotion
                 ? {}
                 : {
-                    scale: 0.74,
-                    rotate: 14,
-                    transition: { duration: 1.05, ease: [0.32, 0, 0.24, 1] },
+                    // Past the viewer rather than away from them: the cloth
+                    // opens out and through the camera, which leaves the page
+                    // behind it rather than a shrinking object in the middle of
+                    // it. The turn underneath carries on through all of it.
+                    scale: 2.2,
+                    transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
                   }
             }
             transition={{
