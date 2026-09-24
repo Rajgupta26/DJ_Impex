@@ -31,7 +31,15 @@ import { useOverlay } from "@/components/layout/OverlayContext";
  * the whole thing is over in about 200ms.
  */
 const GROUND = "#1e1e1e";
-const MIN_MS = 1100;
+/**
+ * Hold, then outro: 850ms between them. The brief is 1.1s for the whole thing,
+ * measured from navigation, and React is not mounted for roughly the first 250
+ * of those -- so the budget this component actually controls is what is left.
+ * It cannot leave before it exists, so on a slow device the total will run over
+ * no matter what these say.
+ */
+const MIN_MS = 250;
+const OUTRO_S = 0.6;
 const FALLBACK_MS = 3500;
 
 export function Preloader() {
@@ -43,7 +51,25 @@ export function Preloader() {
   useEffect(() => {
     const mountedAt = Date.now();
 
+    // A refresh otherwise lands you back where you were reading, which the
+    // preloader hides until it lifts -- so the page appears to have ignored the
+    // refresh. Taking scroll restoration off the browser and going to the top
+    // while the panel still covers the screen means the jump is never seen.
+    //
+    // This is a full-load concern only. Moving inside the app is client-side
+    // and Next restores scroll itself on back and forward, which this does not
+    // touch.
+    const previousRestoration = history.scrollRestoration;
+    try {
+      history.scrollRestoration = "manual";
+    } catch {
+      /* Not supported: the refresh simply keeps its old position. */
+    }
+    window.scrollTo(0, 0);
+
     const leave = () => {
+      // Again on load: a browser can restore its position after hydration.
+      window.scrollTo(0, 0);
       const remaining = Math.max(0, MIN_MS - (Date.now() - mountedAt));
       window.setTimeout(() => setShow(false), remaining);
     };
@@ -56,6 +82,11 @@ export function Preloader() {
     return () => {
       window.removeEventListener("load", leave);
       window.clearTimeout(fallback);
+      try {
+        history.scrollRestoration = previousRestoration;
+      } catch {
+        /* As above. */
+      }
     };
   }, []);
 
@@ -73,7 +104,7 @@ export function Preloader() {
             // while it is showing, so it only stops taking the pointer once it
             // has started to go.
             pointerEvents: "none",
-            transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
+            transition: { duration: OUTRO_S, ease: [0.16, 1, 0.3, 1] },
           }}
         >
           {/* The scene pulls back as it goes: still turning, getting smaller,
@@ -91,7 +122,7 @@ export function Preloader() {
                     // behind it rather than a shrinking object in the middle of
                     // it. The turn underneath carries on through all of it.
                     scale: 2.2,
-                    transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
+                    transition: { duration: OUTRO_S, ease: [0.16, 1, 0.3, 1] },
                   }
             }
             transition={{

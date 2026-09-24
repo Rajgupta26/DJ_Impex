@@ -333,6 +333,12 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 
      `scale` and `rotate` are set as their own CSS properties rather than as transforms, so the constant oversize and the animated angle compose without fighting, and `transform` stays free for the outro.
 
+     **Timing, 2026-09-24:** the brief is 1.1s for the whole thing. It is 250ms of hold and a 600ms outro, and measures 1186ms from navigation in dev. The gap is hydration: React is not mounted for roughly the first 250ms, and the preloader cannot leave before it exists, so on a slow device it will run over whatever these numbers say. Production has less of that overhead than the dev server does.
+
+     **A refresh lands at the top of the page now.** The browser restores the old scroll position on a reload, which happened underneath the panel -- so the reader refreshed, watched the preloader, and was put back exactly where they had been, as though the refresh had been ignored. The component takes `history.scrollRestoration` off the browser while it is mounted, goes to the top on mount and again on `load`, and hands the setting back on unmount. Verified from 1800px: after a refresh, scrollY is 0.
+
+     This is a full-load concern only. Moving inside the app is client-side and Next restores scroll itself on back and forward, which this does not touch.
+
 145. **NOT FIXED, and it is live: a gmail address is now published on the site.** Akshay's `fd6e986` flipped `contact.emailSecondary` -- `djimpex479@gmail.com` -- from `hold` to `confirmed` and deleted its note, which read "Brochure only. Ask whether to show a gmail address publicly." `ContactChannels` now prints all three addresses, so the home page's contact section reads ceo@djimpex.in, admin@djimpex.in and djimpex479@gmail.com together.
 
      Two things about that. `hold` means never render, and that status was the record of an unanswered question; changing the status is the same as answering it, and the answer does not appear to have come from the client. And a gmail.com address sitting beside two addresses on the company's own domain is the sort of detail a luxury buyer reads as a downgrade. `emailAdmin` (admin@djimpex.in) was added in the same commit and is fine.
