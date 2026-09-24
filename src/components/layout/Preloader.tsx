@@ -1,32 +1,34 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { useOverlay } from "@/components/layout/OverlayContext";
 
 /**
- * The preloader: a glass disc with a silver arc travelling round it, over a
- * dark, blurred page. Drawn in CSS -- no film, no image beyond the mark itself.
+ * The preloader: the fabric film, centred, on a ground matched to its own.
  *
- * It leaves on `window.onload` with a 3s timeout behind it, so a slow or failed
- * asset can never strand anyone. Both paths run and the first wins.
- * AnimatePresence takes it out of the DOM once the fade has finished, so
- * nothing is left over the page to swallow clicks.
+ * `FILM_GROUND` is measured, not guessed: the corners of the footage read
+ * rgb(167-168, 169-170, 171-172) at every timestamp sampled.
+ *
+ * The ground is not flat, though. Across one frame it climbs from 168 in the
+ * corners to 230 near the middle -- a vignette of some sixty levels -- so no
+ * single overlay colour can hide the edge of the video, and matching the
+ * corners alone left the lighter top and bottom edges reading as a bright
+ * rectangle on a darker field. The film's outer tenth is faded out instead:
+ * see `.preloader-film` in globals.css. Re-sample both if it is re-rendered.
+ *
+ * It leaves on `window.onload` with a 3.5s timeout behind it, so a slow or
+ * failed asset can never strand anyone. Both paths run and the first wins.
+ * AnimatePresence takes it out of the DOM once the fade finishes.
  *
  * MIN_MS is not in the brief. Next has usually fired `load` before React
  * hydrates, so without a floor the whole thing is over inside about 200ms and
  * reads as a flicker rather than an entrance.
- *
- * The tagline sits below the disc rather than inside it. Inside a 220px circle,
- * under a mark that is itself two lines, it would have had to set at about 10px
- * to fit, which is smaller than anything else on the site.
- *
- * The ring is in globals.css; the reduced-motion handling lives with it.
  */
+const FILM_GROUND = "#a7a9ab";
 const MIN_MS = 900;
-const FALLBACK_MS = 3000;
+const FALLBACK_MS = 3500;
 
 export function Preloader() {
   const reduceMotion = useReducedMotion();
@@ -58,35 +60,23 @@ export function Preloader() {
       {show ? (
         <motion.div
           aria-hidden="true"
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[rgb(15_15_15/0.85)] backdrop-blur-[12px]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{
-            opacity: 0,
-            // A soft defocus rather than a move: it grows very slightly as it goes.
-            scale: reduceMotion ? 1 : 1.03,
-            transition: { duration: 0.6, ease: "easeOut" },
-          }}
-          transition={{ duration: reduceMotion ? 0.01 : 0.35 }}
+          className="fixed left-0 top-0 z-[9999] flex h-screen w-screen items-center justify-center"
+          style={{ backgroundColor: FILM_GROUND }}
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeOut" } }}
+          transition={{ duration: reduceMotion ? 0.01 : 0.3 }}
         >
-          <div className="relative h-[220px] w-[220px]">
-            <div className="preloader-ring pointer-events-none absolute -inset-[6px] rounded-full" />
-
-            <div className="absolute inset-0 flex items-center justify-center rounded-full border border-white/15 bg-white/5">
-              <Image
-                src="/images/logos/nabeen-logo-white.png"
-                alt=""
-                width={1088}
-                height={345}
-                priority
-                className="h-auto w-[132px]"
-              />
-            </div>
-          </div>
-
-          <p className="t-small mt-8 tracking-[0.16em] text-white/70">
-            House of Luxury Men&rsquo;s Fabrics
-          </p>
+          {/* Contained, not cropped: the film is a figure on its own ground, and
+              the ground is the overlay, so nothing needs to reach the edges. */}
+          <video
+            className="preloader-film h-auto max-h-[92vh] w-[min(92vw,820px)] object-contain"
+            src="/video/preloader.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+          />
         </motion.div>
       ) : null}
     </AnimatePresence>
