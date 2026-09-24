@@ -16,35 +16,55 @@ type ReviewItem = Testimonial & {
 
 const INTERVAL = 2000;
 
-function GoogleMark() {
+function GoogleReviewsBrand() {
   return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6" aria-label="Google">
-      <path
-        fill="#4285F4"
-        d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-      />
-    </svg>
+    <div className="flex items-center">
+      <span className="text-lg font-semibold tracking-tight sm:text-xl md:text-2xl">
+        <span style={{ color: "#4285F4" }}>G</span>
+        <span style={{ color: "#EA4335" }}>o</span>
+        <span style={{ color: "#FBBC05" }}>o</span>
+        <span style={{ color: "#4285F4" }}>g</span>
+        <span style={{ color: "#34A853" }}>l</span>
+        <span style={{ color: "#EA4335" }}>e</span>
+        <span className="ml-2 font-medium text-white">Reviews</span>
+      </span>
+    </div>
   );
 }
 
-function ReviewerAvatar({ name }: { name?: string | null }) {
+const AVATAR_COLORS = [
+  "#1a73e8", // Blue
+  "#e37400", // Orange
+  "#188038", // Green
+  "#8e24aa", // Purple
+  "#d93025", // Red
+  "#00838f", // Teal
+  "#e52592", // Pink
+  "#f29900", // Amber
+  "#3949ab", // Indigo
+  "#00897b", // Teal Green
+];
+
+function getAvatarBg(name?: string | null, index?: number): string {
+  if (!name || !name.trim()) {
+    return AVATAR_COLORS[(index ?? 0) % AVATAR_COLORS.length];
+  }
+  let hash = 0;
+  for (let i = 0; i < name.length; i += 1) {
+    hash = (hash * 31 + name.charCodeAt(i)) | 0;
+  }
+  const colorIndex = Math.abs(hash) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[colorIndex];
+}
+
+function ReviewerAvatar({ name, index }: { name?: string | null; index?: number }) {
   const initial = name?.trim().charAt(0).toUpperCase() || "G";
+  const bg = getAvatarBg(name, index);
 
   return (
     <span
-      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4285F4] text-sm font-semibold text-white"
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-base font-semibold text-white shadow-sm"
+      style={{ backgroundColor: bg }}
       aria-hidden="true"
     >
       {initial}
@@ -133,7 +153,7 @@ export function TestimonialsCarousel({
 
       {/* High-Contrast Foreground Content */}
       <div className="container-site relative z-10">
-        <h2 className="t-h2 max-w-[22ch] text-white">{withReg(heading)}</h2>
+        <h2 className="t-h2 max-w-[33ch] text-white -translate-x-1 sm:-translate-x-2">{withReg(heading)}</h2>
 
         <div ref={emblaRef} className="mt-7 overflow-hidden sm:mt-8">
           <div className="flex">
@@ -146,13 +166,12 @@ export function TestimonialsCarousel({
                 className="min-w-0 flex-[0_0_100%]"
               >
                 <div className="max-w-[54rem] py-2 sm:py-3">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-4">
                     <Quote
-                      className="h-9 w-9 text-white/90 sm:h-11 sm:w-11"
-                      strokeWidth={1.35}
+                      className="h-9 w-9 fill-white text-white sm:h-11 sm:w-11"
                       aria-hidden="true"
                     />
-                    {isGoogleReviews ? <GoogleMark /> : null}
+                    {isGoogleReviews ? <GoogleReviewsBrand /> : null}
                   </div>
 
                   <div
@@ -176,7 +195,7 @@ export function TestimonialsCarousel({
                   </blockquote>
 
                   <figcaption className="mt-6 flex items-center gap-3 pt-2">
-                    <ReviewerAvatar name={item.name} />
+                    <ReviewerAvatar name={item.name} index={index} />
                     <div className="min-w-0">
                       {item.name ? (
                         item.authorHref ? (
@@ -194,20 +213,12 @@ export function TestimonialsCarousel({
                       ) : (
                         <p className="font-medium text-white">{item.role}</p>
                       )}
-                      <div className="t-small mt-0.5 flex flex-wrap items-center gap-x-2 text-white/65">
-                        {item.name ? <span>{item.role}</span> : null}
-                        <TbcTag status={item.status} note="Name and city not yet supplied by the client" />
-                        {item.sourceHref ? (
-                          <a
-                            href={item.sourceHref}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-white/80 underline underline-offset-4 hover:text-white"
-                          >
-                            Google review
-                          </a>
-                        ) : null}
-                      </div>
+                      {!isGoogleReviews && (item.role || item.status === "tbc") ? (
+                        <div className="t-small mt-0.5 flex flex-wrap items-center gap-x-2 text-white/65">
+                          {item.name && item.role ? <span>{item.role}</span> : null}
+                          <TbcTag status={item.status} note="Name and city not yet supplied by the client" />
+                        </div>
+                      ) : null}
                     </div>
                   </figcaption>
                 </div>

@@ -23,7 +23,7 @@ function matches(candidate: string, expected: string): boolean {
   return diff === 0;
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const expected = process.env.ADMIN_PASSWORD;
   if (!expected) return NextResponse.next();
   if (!PROTECTED.some((pattern) => pattern.test(request.nextUrl.pathname))) {
