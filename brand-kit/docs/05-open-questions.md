@@ -321,17 +321,13 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 
      `--color-whatsapp` is scoped in tokens.css to controls that open WhatsApp, and the file says so. It is not a new brand colour and it is not an exception to "the palette is blue only" -- it is a third-party channel's mark.
 
-144. **The preloader stands on the hero's own ground.** The agency's note was that it "looks like a video playing on the screen" and does not belong to the site. It was right, and the cause was measurable: the overlay was `#a7a9ab`, sampled from the footage, which is a colour that appears in no part of this palette. So the preloader was off-brand for its whole life and then cut hard to a navy hero. The cut was what made it read as a bolted-on part.
+144. **The preloader: cloth turning in a dark room, pulling back to leave the page.** Seventh version in two days. Two notes from the agency on 2026-09-24 shaped this one: a blue cast round the edges, and a wish for the cloth to zoom out as it turns so the site appears rather than being cut to.
 
-     It is now `--color-navy-deep`, which is exactly what the hero is. Verified: the overlay and the hero section both compute to `rgb(13, 23, 51)`, so nothing changes colour when it leaves -- the mark lifts away and the hero is already there on the same ground.
+     **The blue is gone, and its brightness is not.** The ground had been `--color-navy-deep`, which was the right answer to the previous complaint -- matching the hero meant the handoff had no colour cut -- but it put navy around every edge, and the raking wash and the selvedge-blue thread added more. The ground is `#1e1e1e` now, chosen by measurement rather than eye: its relative luminance is 0.0122 against navy-deep's 0.0126, so it is the neutral that sits at the same brightness as the hero it hands to. The hue goes, the brightness match that made the handoff work stays. The wash is neutral and the thread is silver.
 
-     The client's footage is kept, but as atmosphere rather than as a video: `mix-blend-mode: screen` lets the white cloth come through bright while the grey ground barely lifts the navy, and a radial mask removes the frame's edges, so there is no rectangle at any point. The raking fall from the lower left is the same treatment the hero and the vision panel use, so the light behaves as it does elsewhere.
+     **The exit is a pull-back rather than a fade.** The scene scales down and keeps turning while the ground dissolves. Measured: scale falls to 0.740 and rotation reaches 14.0 degrees, both landing exactly on target; the handoff runs 1033ms, from 1326ms to an unmount at 2359ms; nothing left at z-9999 and body `overflow` restored.
 
-     Beneath the mark is a selvedge-blue thread that draws while the page loads -- the same warp idea as the pillars on /vision, and the one piece of colour. Measured: it runs from scaleX 0.045 at 351ms to 0.9999 at 2079ms, finishing as the overlay goes at 2139ms. Nothing left at z-9999, body `overflow` restored.
-
-     The floor is 1100ms now rather than 900, because the thread needs long enough to read as drawing rather than flicking.
-
-     This is the sixth preloader in two days. If it is still not right, the thing to change is probably the brief rather than the build: each version so far has been specified in isolation from the page it opens, and what finally fixed it was matching the page.
+     One thing tidied on the way: the overlay inherited the body's navy as its text colour. Nothing rendered in it, because every line inside sets its own, but it was a trap for whoever adds the next line. The overlay is `text-white` now.
 
 145. **NOT FIXED, and it is live: a gmail address is now published on the site.** Akshay's `fd6e986` flipped `contact.emailSecondary` -- `djimpex479@gmail.com` -- from `hold` to `confirmed` and deleted its note, which read "Brochure only. Ask whether to show a gmail address publicly." `ContactChannels` now prints all three addresses, so the home page's contact section reads ceo@djimpex.in, admin@djimpex.in and djimpex479@gmail.com together.
 

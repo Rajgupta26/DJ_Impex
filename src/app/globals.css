@@ -221,27 +221,26 @@ html {
    The preloader film.
 
    The footage is white cloth on a mid-grey ground, rgb(168) in the corners
-   rising to rgb(230) in the middle. Laid on the page as-is it is a grey
-   rectangle -- a colour that is in no part of this palette -- sitting on navy.
+   rising to rgb(230) in the middle. Laid on as-is it is a grey rectangle.
 
-   `screen` solves that: the grey ground lifts the navy only slightly while the
-   white cloth comes through bright, so the film reads as cloth catching light
-   in a dark room rather than as a video playing. The radial mask then takes the
-   frame's own edges away entirely, so there is no rectangle at any point.
+   `screen` solves that: the grey ground lifts the near-black only slightly
+   while the white cloth comes through bright, so the film reads as cloth
+   catching light in a dark room rather than as a video playing. The radial mask
+   then takes the frame's own edges away, so there is no rectangle at any point.
    ========================================================================== */
 
 .preloader-film {
   mix-blend-mode: screen;
   -webkit-mask-image: radial-gradient(
-    ellipse 70% 62% at 50% 46%,
+    ellipse 74% 66% at 50% 48%,
     #000 0%,
-    rgb(0 0 0 / 0.65) 42%,
-    transparent 78%
+    rgb(0 0 0 / 0.7) 46%,
+    transparent 82%
   );
   mask-image: radial-gradient(
-    ellipse 70% 62% at 50% 46%,
+    ellipse 74% 66% at 50% 48%,
     #000 0%,
-    rgb(0 0 0 / 0.65) 42%,
-    transparent 78%
+    rgb(0 0 0 / 0.7) 46%,
+    transparent 82%
   );
 }
