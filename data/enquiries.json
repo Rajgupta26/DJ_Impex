@@ -1,0 +1,29 @@
+[
+  {
+    "id": "enq-sample-1",
+    "name": "Sample enquiry, Lagos",
+    "email": "sample.lagos@example.com",
+    "subject": "Swiss lace, wholesale quantities",
+    "message": "Sample row. Please send your current Swiss lace range with minimum order quantities for Lagos.",
+    "date": "2026-09-22T11:20:00.000Z",
+    "status": "unread"
+  },
+  {
+    "id": "enq-sample-2",
+    "name": "Sample enquiry, Dubai",
+    "email": "sample.dubai@example.com",
+    "subject": "Jacquard shirting, retail",
+    "message": "Sample row. Interested in jacquard shirting for a retail store. What is available?",
+    "date": "2026-09-20T07:05:00.000Z",
+    "status": "read"
+  },
+  {
+    "id": "enq-sample-3",
+    "name": "Sample enquiry, Mumbai",
+    "email": "sample.mumbai@example.com",
+    "subject": "Visit to the Mangaldas Market office",
+    "message": "Sample row. Would like to visit the office this week to see swatches in person.",
+    "date": "2026-09-18T15:40:00.000Z",
+    "status": "replied"
+  }
+]

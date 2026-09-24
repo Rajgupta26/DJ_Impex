@@ -7,8 +7,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // The TBC checklist is for the team, not for search engines.
-      disallow: ["/_todo"],
+      // The TBC checklist and the admin panel are for the team, not for search
+      // engines. /admin also sends a noindex header of its own.
+      disallow: ["/_todo", "/admin", "/api/admin"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import nodemailer from "nodemailer";
 
+import { recordEnquiry } from "@/lib/admin/inbox";
 import { enquirySchema, formDataToEnquiry, type Enquiry, type EnquiryState } from "@/lib/enquiry";
 
 const WINDOW_MS = 10 * 60 * 1000;
@@ -246,6 +247,11 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
       message: "That is a lot of enquiries from one place. Please message us on WhatsApp instead.",
     };
   }
+
+  // Keep a copy in data/enquiries.json for the admin panel. This runs before
+  // the send so a mail failure still leaves the lead somewhere a person looks,
+  // and it never throws: delivery is email's job, not this file's.
+  await recordEnquiry(enquiry);
 
   const rawUser = process.env.EMAIL_USER || process.env.SMTP_USER;
   const rawPass = process.env.EMAIL_PASS || process.env.SMTP_PASS;

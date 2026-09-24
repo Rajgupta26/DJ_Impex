@@ -1,0 +1,46 @@
+[
+  {
+    "id": "img-aqua-jacquard",
+    "src": "/images/gallery/01-aqua-jacquard.jpg",
+    "title": "Aqua jacquard",
+    "alt": "Aqua jacquard fabric with a raised woven pattern, photographed flat",
+    "category": "Jacquard",
+    "caption": "Gallery swatch, aqua jacquard.",
+    "fileName": null,
+    "sizeBytes": null,
+    "uploadedAt": "2026-09-24T09:00:00.000Z"
+  },
+  {
+    "id": "img-white-jacquard",
+    "src": "/images/gallery/03-white-jacquard.jpg",
+    "title": "White jacquard",
+    "alt": "White jacquard fabric showing a tonal woven motif",
+    "category": "Jacquard",
+    "caption": "Gallery swatch, white jacquard.",
+    "fileName": null,
+    "sizeBytes": null,
+    "uploadedAt": "2026-09-24T09:00:00.000Z"
+  },
+  {
+    "id": "img-charcoal-herringbone",
+    "src": "/images/gallery/04-charcoal-herringbone.jpg",
+    "title": "Charcoal herringbone",
+    "alt": "Charcoal herringbone fabric with a fine diagonal weave",
+    "category": "Herringbone",
+    "caption": "Gallery swatch, charcoal herringbone.",
+    "fileName": null,
+    "sizeBytes": null,
+    "uploadedAt": "2026-09-24T09:00:00.000Z"
+  },
+  {
+    "id": "img-weaving-loom",
+    "src": "/images/brand-imagery/weaving-loom.jpg",
+    "title": "Weaving loom",
+    "alt": "A weaving loom in operation, warp threads under tension",
+    "category": "Manufacturing",
+    "caption": "On the loom.",
+    "fileName": null,
+    "sizeBytes": null,
+    "uploadedAt": "2026-09-24T09:00:00.000Z"
+  }
+]

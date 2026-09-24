@@ -12,6 +12,14 @@
   --breakpoint-xs: 26.25rem; /* 420px: the phone breakpoint we design to first */
 }
 
+/* Class-based dark mode, scoped to the admin panel.
+   Tailwind v4's default `dark:` variant follows prefers-color-scheme, which
+   would flip the panel with the operating system and give the visitor-facing
+   site no say. The panel carries `.admin-dark` on its own root instead, so the
+   toggle is explicit and the marketing pages (which use no `dark:` utilities)
+   are untouched. */
+@custom-variant dark (&:where(.admin-dark, .admin-dark *));
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -124,7 +132,9 @@
 
 /* ---- Focus ring on dark grounds ------------------------------------------ */
 .on-dark :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-  box-shadow: 0 0 0 2px var(--color-navy-deep), 0 0 0 4px var(--color-accent);
+  box-shadow:
+    0 0 0 2px var(--color-navy-deep),
+    0 0 0 4px var(--color-accent);
 }
 
 /* ---- Header logo swap ----------------------------------------------------- */
@@ -253,12 +263,7 @@ html {
     rgb(0 0 0 / 0.7) 46%,
     transparent 78%
   );
-  mask-image: radial-gradient(
-    ellipse 52% 46% at 50% 50%,
-    #000 0%,
-    rgb(0 0 0 / 0.7) 46%,
-    transparent 78%
-  );
+  mask-image: radial-gradient(ellipse 52% 46% at 50% 50%, #000 0%, rgb(0 0 0 / 0.7) 46%, transparent 78%);
 }
 
 @media (prefers-reduced-motion: no-preference) {
