@@ -1,4 +1,5 @@
 import { fail, handleError, ok } from "@/lib/admin/api";
+import { revalidateGallery } from "@/lib/admin/revalidate";
 import { imageSchema, type AdminImage } from "@/lib/admin/schemas";
 import {
   deleteUpload,
@@ -99,6 +100,7 @@ export async function POST(request: Request) {
       await deleteUpload(fileName);
       throw error;
     }
+    revalidateGallery();
     return ok({ image }, 201);
   } catch (error) {
     return handleError("images:upload", error);

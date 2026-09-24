@@ -3,7 +3,8 @@ import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { withReg } from "@/components/ui/Reg";
 import { TrackedLink } from "@/components/ui/TrackedLink";
-import { getGalleryImages, getPage } from "@/lib/content";
+import { getPage } from "@/lib/content";
+import { getGalleryTiles } from "@/lib/gallery";
 import { whatsappLink } from "@/lib/contact";
 import { field, section } from "@/lib/markdown";
 
@@ -22,8 +23,8 @@ const CELLS = 12;
  * this section's colour. It carried `page-end` while it was the last thing on
  * the page; the contact section took that job back on 2026-09-23.
  */
-export function NabeenGallery() {
-  const images = getGalleryImages();
+export async function NabeenGallery() {
+  const images = await getGalleryTiles();
   const gallery = section(getPage("home"), "6-gallery-world-of-nabeen");
   const span = Math.max(1, CELLS - images.length);
 
@@ -37,7 +38,10 @@ export function NabeenGallery() {
 
         <ul className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-5">
           {images.map((image, index) => (
-            <li key={image.src} className="swatch-pinked group relative aspect-square overflow-hidden bg-white">
+            <li
+              key={image.src}
+              className="swatch-pinked group relative aspect-square overflow-hidden bg-white"
+            >
               <Image
                 src={image.src}
                 alt={image.alt}
@@ -46,21 +50,18 @@ export function NabeenGallery() {
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover transition-transform duration-[var(--duration-base)] ease-[var(--ease-weave)] group-hover:scale-[1.04]"
               />
-              <span className="t-small absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] truncate rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-navy shadow-[0_2px_8px_rgba(0,0,0,0.15)] backdrop-blur-sm opacity-0 transition-opacity duration-[var(--duration-base)] group-hover:opacity-100">
+              <span className="t-small text-navy absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] truncate rounded-full bg-white/95 px-3 py-1 text-xs font-semibold opacity-0 shadow-[0_2px_8px_rgba(0,0,0,0.15)] backdrop-blur-sm transition-opacity duration-[var(--duration-base)] group-hover:opacity-100">
                 {image.name}
               </span>
             </li>
           ))}
 
-          <li
-            className="swatch-pinked relative"
-            style={{ gridColumn: `span ${Math.min(span, 2)}` }}
-          >
+          <li className="swatch-pinked relative" style={{ gridColumn: `span ${Math.min(span, 2)}` }}>
             <TrackedLink
               href={whatsappLink("Hello Nabeen team, please send me the full swatch range.")}
               event="whatsapp_click"
               location="gallery"
-              className="on-dark flex h-full min-h-[10rem] flex-col justify-center gap-2 bg-navy p-7 text-white transition-colors duration-[var(--duration-quick)] hover:bg-navy-soft lg:p-9"
+              className="on-dark bg-navy hover:bg-navy-soft flex h-full min-h-[10rem] flex-col justify-center gap-2 p-7 text-white transition-colors duration-[var(--duration-quick)] lg:p-9"
             >
               <span className="t-h3">See the full range</span>
               <span className="t-small text-white/70">Ask our team for swatches on WhatsApp</span>

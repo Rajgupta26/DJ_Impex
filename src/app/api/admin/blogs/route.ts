@@ -1,5 +1,6 @@
 import { fail, handleError, ok, parseBody } from "@/lib/admin/api";
 import { blogInputSchema, type AdminBlog } from "@/lib/admin/schemas";
+import { revalidateJournal } from "@/lib/admin/revalidate";
 import { mutate, newId, nowIso, readCollection } from "@/lib/admin/store";
 
 export const dynamic = "force-dynamic";
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
         slug: "This slug is already in use.",
       });
     }
+    revalidateJournal([created.slug]);
     return ok({ blog: created }, 201);
   } catch (error) {
     return handleError("blogs:create", error);

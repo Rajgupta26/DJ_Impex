@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { PostCard } from "@/components/journal/PostCard";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
-import { getPosts } from "@/lib/content";
+import { getJournalPosts } from "@/lib/journal";
 import { buildMetadata, pageTitle } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -26,8 +26,14 @@ export const metadata: Metadata = buildMetadata({
  * a hard-coded string, truncated mid-word with an ellipsis. `PostCard` already
  * takes the excerpt from the post's own front matter, so that is gone.
  */
-export default function JournalPage() {
-  const [lead, ...rest] = getPosts();
+/**
+ * Rebuilt on demand when the panel changes a post (the blogs API calls
+ * revalidatePath), and at most an hour after any change that misses that.
+ */
+export const revalidate = 3600;
+
+export default async function JournalPage() {
+  const [lead, ...rest] = await getJournalPosts();
 
   return (
     <>
@@ -42,7 +48,7 @@ export default function JournalPage() {
           <PostCard post={lead} size="large" layout="horizontal" />
 
           {rest.length > 0 ? (
-            <ul className="mt-20 grid gap-14 border-t border-line pt-14 md:grid-cols-2 md:gap-x-16">
+            <ul className="border-line mt-20 grid gap-14 border-t pt-14 md:grid-cols-2 md:gap-x-16">
               {rest.map((post) => (
                 <li key={post.slug}>
                   <PostCard post={post} />

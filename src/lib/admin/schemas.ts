@@ -34,6 +34,8 @@ export const blogSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Lower case letters, numbers and hyphens only."),
   title: z.string().trim().min(1, "Please add a title.").max(160),
   excerpt: z.string().trim().max(400).default(""),
+  /** Shown above the title on the published post, beside the reading time. */
+  category: z.string().trim().max(60).default(""),
   content: z.string().default(""),
   coverImage: z.string().trim().default(""),
   author: z.string().trim().max(80).default(""),

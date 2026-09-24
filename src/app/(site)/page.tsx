@@ -54,6 +54,15 @@ const HERO_MEDIA: HeroSlideView["media"][] = [
   },
 ];
 
+/**
+ * Static, rebuilt when the admin panel adds or removes a gallery image (the
+ * images API calls revalidatePath) and hourly as a safety net.
+ *
+ * The page is async for the Google reviews fetch; the gallery read it now also
+ * does is awaited inside NabeenGallery.
+ */
+export const revalidate = 3600;
+
 export default async function HomePage() {
   const site = getSite();
   const home = getPage("home");

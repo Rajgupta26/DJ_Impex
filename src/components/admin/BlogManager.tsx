@@ -6,7 +6,7 @@ import { Eye, FilePlus2, Pencil, Search, Trash2 } from "lucide-react";
 
 import { blogInputSchema, type AdminBlog, type BlogStatus } from "@/lib/admin/schemas";
 
-import { MarkdownPreview } from "./MarkdownPreview";
+import { Markdown, adminTheme } from "@/components/markdown/Markdown";
 import { request } from "./request";
 import {
   Badge,
@@ -38,6 +38,7 @@ function emptyDraft(): Draft {
     slug: "",
     title: "",
     excerpt: "",
+    category: "",
     content: "",
     coverImage: "",
     author: "Nabeen editorial",
@@ -115,6 +116,7 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
       slug: blog.slug,
       title: blog.title,
       excerpt: blog.excerpt,
+      category: blog.category,
       content: blog.content,
       coverImage: blog.coverImage,
       author: blog.author,
@@ -385,6 +387,21 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
           </div>
 
           <Field
+            label="Category"
+            error={errors.category}
+            hint="Shown above the title on the published post, for example Guide or Market guide."
+          >
+            {(props) => (
+              <input
+                {...props}
+                className={inputClass}
+                value={draft.category}
+                onChange={(event) => edit("category", event.target.value)}
+              />
+            )}
+          </Field>
+
+          <Field
             label="Cover image"
             error={errors.coverImage}
             hint="A path under /public, for example /images/gallery/03-white-jacquard.jpg"
@@ -428,7 +445,11 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
                 Preview
               </p>
               <div className={`${card} max-h-[18rem] overflow-y-auto p-4`} aria-live="off">
-                <MarkdownPreview source={draft.content} />
+                <Markdown
+                  source={draft.content}
+                  theme={adminTheme}
+                  emptyMessage="Nothing to preview yet. Start typing in the content box."
+                />
               </div>
             </div>
           </div>

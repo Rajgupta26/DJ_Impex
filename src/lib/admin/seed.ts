@@ -67,6 +67,7 @@ export function blogSeed(): AdminBlog[] {
     {
       id: "blog-identify-lace",
       slug: "how-to-identify-high-quality-lace-fabric",
+      category: "Guide",
       title: "How to identify high-quality lace fabric",
       excerpt:
         "Not all lace is created equal. Here is what to check in the base, the embroidery and the weight before you buy.",
@@ -81,6 +82,7 @@ export function blogSeed(): AdminBlog[] {
     {
       id: "blog-swiss-lace-guide",
       slug: "swiss-lace-complete-guide-for-african-fashion",
+      category: "Reference",
       title: "Swiss lace: a complete guide for African fashion",
       excerpt:
         "Why Swiss lace is prized for senator wear, agbada and kaftans, and what separates a fine piece from an ordinary one.",
@@ -95,6 +97,7 @@ export function blogSeed(): AdminBlog[] {
     {
       id: "blog-nigeria-lace-2026",
       slug: "best-mens-lace-fabrics-in-nigeria-2026",
+      category: "Market guide",
       title: "Best men's lace fabrics in Nigeria (2026 guide)",
       excerpt:
         "Austrian, Swiss and cotton-based embroidered lace: what sets each apart, and what to look for when you choose.",

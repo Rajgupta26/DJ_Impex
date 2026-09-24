@@ -1,5 +1,6 @@
 import { fail, handleError, ok, parseBody } from "@/lib/admin/api";
 import { imagePatchSchema } from "@/lib/admin/schemas";
+import { revalidateGallery } from "@/lib/admin/revalidate";
 import { deleteUpload, mutate } from "@/lib/admin/store";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +22,7 @@ export async function PATCH(request: Request, { params }: Context) {
     });
 
     if (!image) return fail("That image is no longer in images.json.", 404);
+    revalidateGallery();
     return ok({ image });
   } catch (error) {
     return handleError("images:update", error);
@@ -42,6 +44,7 @@ export async function DELETE(_request: Request, { params }: Context) {
 
     if (!removed) return fail("That image is no longer in images.json.", 404);
     await deleteUpload(removed.fileName);
+    revalidateGallery();
     return ok({ id });
   } catch (error) {
     return handleError("images:delete", error);

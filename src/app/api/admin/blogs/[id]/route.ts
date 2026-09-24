@@ -1,5 +1,6 @@
 import { fail, handleError, ok, parseBody } from "@/lib/admin/api";
 import { blogPatchSchema, type AdminBlog } from "@/lib/admin/schemas";
+import { revalidateJournal } from "@/lib/admin/revalidate";
 import { mutate, nowIso, readCollection } from "@/lib/admin/store";
 
 export const dynamic = "force-dynamic";
@@ -25,7 +26,8 @@ export async function PATCH(request: Request, { params }: Context) {
 
     // Spelled out because the callback has three exits and inference would
     // otherwise settle on whichever branch it read first.
-    type Outcome = { kind: "missing" } | { kind: "duplicate" } | { kind: "ok"; blog: AdminBlog };
+    type Outcome =
+      { kind: "missing" } | { kind: "duplicate" } | { kind: "ok"; blog: AdminBlog; previousSlug: string };
 
     const outcome = await mutate<"blogs", Outcome>("blogs", (rows) => {
       const index = rows.findIndex((row) => row.id === id);
@@ -36,7 +38,10 @@ export async function PATCH(request: Request, { params }: Context) {
       }
       const next = [...rows];
       next[index] = { ...next[index], ...parsed.data, updatedAt: nowIso() };
-      return { rows: next, result: { kind: "ok", blog: next[index] } };
+      return {
+        rows: next,
+        result: { kind: "ok", blog: next[index], previousSlug: rows[index].slug },
+      };
     });
 
     if (outcome.kind === "missing") return fail("That post is no longer in blogs.json.", 404);
@@ -45,6 +50,8 @@ export async function PATCH(request: Request, { params }: Context) {
         slug: "This slug is already in use.",
       });
     }
+    // Both slugs: the new page, and the old one if the slug changed.
+    revalidateJournal([outcome.blog.slug, outcome.previousSlug]);
     return ok({ blog: outcome.blog });
   } catch (error) {
     return handleError("blogs:update", error);
@@ -60,6 +67,7 @@ export async function DELETE(_request: Request, { params }: Context) {
       return { rows: rows.filter((row) => row.id !== id), result: match };
     });
     if (!removed) return fail("That post is no longer in blogs.json.", 404);
+    revalidateJournal([removed.slug]);
     return ok({ id });
   } catch (error) {
     return handleError("blogs:delete", error);
