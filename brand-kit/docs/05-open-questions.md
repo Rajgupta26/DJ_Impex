@@ -330,3 +330,9 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
      The earlier version of this component locked `document.body` itself. `useOverlay` already does that through OverlayContext, and with two locks the restores unwound in the wrong order and left `overflow: hidden` on the body after the preloader had gone. Only OverlayContext locks it now.
 
      `public/video` is 9.5MB of the repository with this file in it. Question 140 stands and is getting worse.
+
+145. **NOT FIXED, and it is live: a gmail address is now published on the site.** Akshay's `fd6e986` flipped `contact.emailSecondary` -- `djimpex479@gmail.com` -- from `hold` to `confirmed` and deleted its note, which read "Brochure only. Ask whether to show a gmail address publicly." `ContactChannels` now prints all three addresses, so the home page's contact section reads ceo@djimpex.in, admin@djimpex.in and djimpex479@gmail.com together.
+
+     Two things about that. `hold` means never render, and that status was the record of an unanswered question; changing the status is the same as answering it, and the answer does not appear to have come from the client. And a gmail.com address sitting beside two addresses on the company's own domain is the sort of detail a luxury buyer reads as a downgrade. `emailAdmin` (admin@djimpex.in) was added in the same commit and is fine.
+
+     Worth confirming with the client before the next deploy reaches them. Putting the status back to `hold` is a one-line change, but `ContactChannels` prints the value without checking status, so it would need the guard too.
