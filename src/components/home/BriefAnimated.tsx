@@ -47,6 +47,11 @@ export function BriefAnimated({
       >
         <motion.h2
           className="t-h2 max-w-[15ch]"
+          /* One step up from the house weight of 300, on the agency's note that
+             this heading read too light. Inline rather than a utility class:
+             `.t-h2` is unlayered in tokens.css, so it wins over any Tailwind
+             font-weight utility, and only an inline style beats it cleanly. */
+          style={{ fontWeight: 400 }}
           variants={leftVariants}
           custom={0}
         >

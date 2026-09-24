@@ -338,3 +338,9 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
      Two things about that. `hold` means never render, and that status was the record of an unanswered question; changing the status is the same as answering it, and the answer does not appear to have come from the client. And a gmail.com address sitting beside two addresses on the company's own domain is the sort of detail a luxury buyer reads as a downgrade. `emailAdmin` (admin@djimpex.in) was added in the same commit and is fine.
 
      Worth confirming with the client before the next deploy reaches them. Putting the status back to `hold` is a one-line change, but `ContactChannels` prints the value without checking status, so it would need the guard too.
+
+146. **"A house of cloth since 1995" is set one weight heavier than the rest.** The agency asked for it firmer (2026-09-24), so it is 400 where `t-h2` is 300. Two things follow from that.
+
+     It had to be an inline style, not a utility class. `.t-h2` lives in tokens.css, which is imported after Tailwind and is unlayered, so it beats any layered `font-*` utility; only an inline style overrides it cleanly. Anyone adding `font-normal` to a `t-*` element and finding nothing happens is hitting the same thing.
+
+     And it is now the only display heading on the site at 400. "People love us, as much as we love serving them." and "World of Nabeen®" are still 300, and 02-design-system.md and CLAUDE.md both say headlines are weight 300. Either this one is a deliberate exception, or the token should move and the docs with it. Worth deciding rather than letting the two drift.
