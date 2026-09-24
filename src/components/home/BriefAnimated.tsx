@@ -90,9 +90,9 @@ export function BriefAnimated({
         ) : null}
       </motion.div>
 
-      {/* Right Column: Archive Image 30-35% smaller, smoothly entering from the right */}
+      {/* Right Column: Archive Image, cleanly displayed without dark gradient overlay */}
       <motion.figure
-        className="relative mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:w-[350px] lg:max-w-[350px] aspect-[4/5] overflow-hidden bg-mist shadow-sm lg:self-center"
+        className="relative mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:w-[350px] lg:max-w-[350px] lg:self-center"
         initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 50 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.25, margin: "-60px 0px" }}
@@ -102,14 +102,16 @@ export function BriefAnimated({
           ease,
         }}
       >
-        <Image
-          src="/images/gallery/05-camel-check-jacquard.jpg"
-          alt="Camel check jacquard fabric from the Nabeen range"
-          fill
-          sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 350px"
-          className="object-cover object-[50%_58%]"
-        />
-        <figcaption className="t-small absolute inset-x-0 bottom-0 bg-[linear-gradient(transparent,rgb(13_23_51/0.82))] p-4 font-semibold text-white">
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-mist shadow-sm">
+          <Image
+            src="/images/gallery/05-camel-check-jacquard.jpg"
+            alt="Camel check jacquard fabric from the Nabeen range"
+            fill
+            sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 350px"
+            className="object-cover object-[50%_58%]"
+          />
+        </div>
+        <figcaption className="t-small mt-2.5 text-center font-medium text-slate">
           Archive · camel check jacquard
         </figcaption>
       </motion.figure>

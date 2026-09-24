@@ -46,7 +46,7 @@ export function NabeenGallery() {
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover transition-transform duration-[var(--duration-base)] ease-[var(--ease-weave)] group-hover:scale-[1.04]"
               />
-              <span className="t-small absolute inset-x-0 bottom-0 bg-[linear-gradient(transparent,rgb(13_23_51/0.78))] px-4 pb-4 pt-8 font-semibold text-white opacity-0 transition-opacity duration-[var(--duration-base)] group-hover:opacity-100">
+              <span className="t-small absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] truncate rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-navy shadow-[0_2px_8px_rgba(0,0,0,0.15)] backdrop-blur-sm opacity-0 transition-opacity duration-[var(--duration-base)] group-hover:opacity-100">
                 {image.name}
               </span>
             </li>

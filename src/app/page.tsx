@@ -3,6 +3,7 @@ import { ContactSection } from "@/components/home/ContactSection";
 import { HeroCarousel, type HeroSlideView } from "@/components/home/HeroCarousel";
 import { CollectionShowcase } from "@/components/home/CollectionShowcase";
 import { NabeenGallery } from "@/components/home/NabeenGallery";
+import { SocialProofBanner } from "@/components/home/SocialProofBanner";
 import { TestimonialsCarousel } from "@/components/home/TestimonialsCarousel";
 import { getBrandFilm, getHeroSlides, getPage, getSite } from "@/lib/content";
 import { whatsappLink } from "@/lib/contact";
@@ -94,6 +95,7 @@ export default function HomePage() {
 
       <NabeenGallery />
       <ContactSection />
+      <SocialProofBanner />
     </>
   );
 }
