@@ -1,6 +1,14 @@
 import { fail, handleError, ok } from "@/lib/admin/api";
 import { imageSchema, type AdminImage } from "@/lib/admin/schemas";
-import { mutate, newId, nowIso, readCollection, saveUpload, UPLOAD_URL_BASE } from "@/lib/admin/store";
+import {
+  deleteUpload,
+  mutate,
+  newId,
+  nowIso,
+  readCollection,
+  saveUpload,
+  UPLOAD_URL_BASE,
+} from "@/lib/admin/store";
 
 export const dynamic = "force-dynamic";
 
@@ -74,7 +82,7 @@ export async function POST(request: Request) {
 
     const bytes = Buffer.from(await file.arrayBuffer());
     const stem = file.name.replace(/\.[^.]*$/, "");
-    const fileName = await saveUpload(`${stem}${extension}`, bytes);
+    const fileName = await saveUpload(`${stem}${extension}`, bytes, file.type);
 
     const image: AdminImage = {
       ...candidate,
@@ -82,7 +90,15 @@ export async function POST(request: Request) {
       src: `${UPLOAD_URL_BASE}/${fileName}`,
     };
 
-    await mutate("images", (rows) => ({ rows: [image, ...rows], result: null }));
+    try {
+      await mutate("images", (rows) => ({ rows: [image, ...rows], result: null }));
+    } catch (error) {
+      // The bytes are already stored. If the row cannot be written the upload
+      // has not happened as far as anyone can see, so take the file back out
+      // rather than leave it paying for storage with nothing pointing at it.
+      await deleteUpload(fileName);
+      throw error;
+    }
     return ok({ image }, 201);
   } catch (error) {
     return handleError("images:upload", error);

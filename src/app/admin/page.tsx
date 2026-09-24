@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Images, Mail, Newspaper } from "lucide-react";
 
 import { loadCollection } from "@/lib/admin/load";
+import { storageLabel } from "@/lib/admin/store";
 
 export const dynamic = "force-dynamic";
 
@@ -60,6 +61,7 @@ async function counts(): Promise<{ tiles: Tile[]; problems: string[] }> {
 
 export default async function AdminDashboard() {
   const { tiles, problems } = await counts();
+  const where = storageLabel();
 
   return (
     <div className="space-y-6">
@@ -104,24 +106,29 @@ export default async function AdminDashboard() {
 
       <div className="rounded-lg border border-slate-200 bg-white p-5 text-sm dark:border-slate-800 dark:bg-slate-900">
         <h2 className="font-semibold">Where things are stored</h2>
+        <p className="mt-2 text-slate-600 dark:text-slate-300">
+          This panel is reading and writing <strong>{where}</strong>.
+        </p>
         <ul className="mt-3 space-y-1.5 text-slate-600 dark:text-slate-300">
           <li>
-            <code className="font-mono text-xs">data/images.json</code> — gallery metadata; the files
-            themselves live in <code className="font-mono text-xs">public/uploads</code>.
+            <code className="font-mono text-xs">images.json</code> — gallery metadata. Uploaded files are
+            served from <code className="font-mono text-xs">/media</code>.
           </li>
           <li>
-            <code className="font-mono text-xs">data/blogs.json</code> — posts written in this panel. The
-            public journal is still built from the MDX in{" "}
-            <code className="font-mono text-xs">brand-kit/content/journal</code>.
+            <code className="font-mono text-xs">blogs.json</code> — posts written in this panel. The public
+            journal is still built from the MDX in{" "}
+            <code className="font-mono text-xs">brand-kit/content/journal</code>, so a post created here does
+            not yet appear on the website.
           </li>
           <li>
-            <code className="font-mono text-xs">data/enquiries.json</code> — a copy of each website enquiry,
+            <code className="font-mono text-xs">enquiries.json</code> — a copy of each website enquiry,
             written when the form is submitted. Email remains the primary delivery.
           </li>
         </ul>
         <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
-          On a host with a read-only or ephemeral file system, such as Vercel, writes from this panel fail or
-          do not survive a deploy. It is built for a server with a real disk.
+          On Vercel these live in a private Blob store and survive a deploy. In a local checkout they are real
+          files in <code className="font-mono text-[11px]">data/</code> and{" "}
+          <code className="font-mono text-[11px]">public/uploads</code>, which you can read, diff and commit.
         </p>
       </div>
     </div>
