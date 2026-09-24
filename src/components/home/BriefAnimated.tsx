@@ -37,7 +37,7 @@ export function BriefAnimated({
   };
 
   return (
-    <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto] lg:gap-16">
+    <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-16">
       {/* Left Column: Line by line / sentence by sentence animation from the left */}
       <motion.div
         className="flex flex-col justify-center"
