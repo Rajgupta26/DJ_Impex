@@ -11,7 +11,7 @@ export function ContactSection() {
   const site = getSite();
 
   return (
-    <section id="contact" className="page-end scroll-mt-20 lg:scroll-mt-24 border-t border-line bg-white py-[var(--spacing-section)]">
+    <section id="contact" className="scroll-mt-20 lg:scroll-mt-24 border-t border-line bg-white pt-[var(--spacing-section)] pb-8 sm:pb-12">
       <Container>
         <div className="grid gap-16 lg:grid-cols-[5fr_7fr] lg:gap-20 items-start">
           <div className="rounded-2xl bg-navy text-white on-dark p-8 lg:p-10 shadow-lg">

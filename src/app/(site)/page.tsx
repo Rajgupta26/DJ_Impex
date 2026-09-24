@@ -7,6 +7,7 @@ import { SocialProofBanner } from "@/components/home/SocialProofBanner";
 import { TestimonialsCarousel } from "@/components/home/TestimonialsCarousel";
 import { getBrandFilm, getHeroSlides, getPage, getSite } from "@/lib/content";
 import { whatsappLink } from "@/lib/contact";
+import { getPositiveGoogleReviews } from "@/lib/google-reviews";
 import { field, section } from "@/lib/markdown";
 import { visible } from "@/lib/site";
 
@@ -26,8 +27,7 @@ import { visible } from "@/lib/site";
  * photograph into a full-bleed landscape is what made the hero look soft.
  */
 const MARCONI_POSTER = "/images/hero/marconi-white.jpg";
-const MARCONI_ALT =
-  "Marconi by Nabeen: white jacquard shirting in raking light";
+const MARCONI_ALT = "Marconi by Nabeen: white jacquard shirting in raking light";
 
 const HERO_MEDIA: HeroSlideView["media"][] = [
   {
@@ -54,10 +54,13 @@ const HERO_MEDIA: HeroSlideView["media"][] = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
   const site = getSite();
   const home = getPage("home");
-  const testimonials = visible(site.testimonials.items);
+  const fallbackTestimonials = visible(site.testimonials.items);
+  const googleReviews = await getPositiveGoogleReviews();
+  const hasGoogleReviews = (googleReviews?.length ?? 0) > 0;
+  const testimonials = googleReviews && googleReviews.length > 0 ? googleReviews : fallbackTestimonials;
 
   // The client's film opens the hero. Until the source MP4 lands, its own poster
   // frame carries the slide, so the composition is already right.
@@ -91,6 +94,7 @@ export default function HomePage() {
       <TestimonialsCarousel
         heading={field(section(home, "5-testimonials"), "heading")}
         items={testimonials}
+        isGoogleReviews={hasGoogleReviews}
       />
 
       <NabeenGallery />

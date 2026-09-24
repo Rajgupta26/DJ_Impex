@@ -79,7 +79,7 @@ export function EnquiryForm({
       <label htmlFor={`${id}-whatsappNumber`} className="t-small font-semibold">
         WhatsApp number<span className="visually-hidden"> (required)</span>
       </label>
-      <div className="grid gap-3 sm:grid-cols-[12rem_1fr]">
+      <div className="grid gap-3 sm:grid-cols-[14rem_1fr]">
         <select
           id={`${id}-countryCode`}
           name="countryCode"
@@ -90,8 +90,8 @@ export function EnquiryForm({
           aria-describedby={fieldError("countryCode") ? `${id}-countryCode-error` : undefined}
           className={`${CONTROL} ${fieldError("countryCode") ? "border-[var(--color-error)]" : ""}`.trim()}
         >
-          {COUNTRY_CODES.map((country) => (
-            <option key={country.value} value={country.value}>
+          {COUNTRY_CODES.map((country, index) => (
+            <option key={`${country.label}-${index}`} value={country.value}>
               {country.label}
             </option>
           ))}
