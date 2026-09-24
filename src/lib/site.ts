@@ -52,6 +52,7 @@ export const siteSchema = z.object({
       note: z.string().optional(),
     }),
     emailPrimary: fact(z.string()),
+    emailAdmin: fact(z.string()),
     emailSecondary: fact(z.string()),
     address: z.object({
       lines: z.array(z.string()),

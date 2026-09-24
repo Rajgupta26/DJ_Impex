@@ -5,13 +5,15 @@ import { useActionState, useEffect, useId, useState } from "react";
 import { submitEnquiry } from "@/app/actions/enquiry";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 import { track } from "@/lib/analytics";
-import { IDLE, MARKETS, type EnquiryState } from "@/lib/enquiry";
+import { COUNTRY_CODES, IDLE, type EnquiryState } from "@/lib/enquiry";
 
 export type FabricChoice = { slug: string; name: string };
 
+const USAGE_OPTIONS = ["Wholesale", "Retail", "Personal use"] as const;
+
 /**
  * One form, two shapes: the full version on /contact, and a short version
- * (name, WhatsApp number, market) inside the contact pop-up.
+ * (name and WhatsApp number) inside the contact pop-up.
  *
  * `paired` is a third dimension rather than a third shape: the same full form
  * with its text fields set two to a row. It exists for the home page, where the
@@ -41,6 +43,7 @@ export function EnquiryForm({
   const [state, action, pending] = useActionState<EnquiryState, FormData>(submitEnquiry, IDLE);
   const id = useId();
   const [selected, setSelected] = useState<string[]>([]);
+  const [selectedUsage, setSelectedUsage] = useState<string[]>([]);
 
   useEffect(() => {
     if (state.status !== "success") return;
@@ -53,8 +56,7 @@ export function EnquiryForm({
     onSuccess?.();
   }, [state, variant, onSuccess]);
 
-  const fieldError = (name: string) =>
-    state.status === "error" ? state.fieldErrors?.[name] : undefined;
+  const fieldError = (name: string) => (state.status === "error" ? state.fieldErrors?.[name] : undefined);
 
   // The full form set two fields to a row. The pop-up's short variant is already
   // short and stays in a single file.
@@ -72,30 +74,51 @@ export function EnquiryForm({
     />
   );
 
-  const company =
-    variant === "full" ? (
-      <Field
-        key="company"
-        id={`${id}-company`}
-        name="company"
-        label="Company or shop name"
-        autoComplete="organization"
-        error={fieldError("company")}
-      />
-    ) : null;
-
   const whatsappNumber = (
-    <Field
-      key="whatsappNumber"
-      id={`${id}-whatsappNumber`}
-      name="whatsappNumber"
-      label="WhatsApp number"
-      type="tel"
-      required
-      placeholder="+234"
-      autoComplete="tel"
-      error={fieldError("whatsappNumber")}
-    />
+    <div className="grid gap-2">
+      <label htmlFor={`${id}-whatsappNumber`} className="t-small font-semibold">
+        WhatsApp number<span className="visually-hidden"> (required)</span>
+      </label>
+      <div className="grid gap-3 sm:grid-cols-[12rem_1fr]">
+        <select
+          id={`${id}-countryCode`}
+          name="countryCode"
+          required
+          defaultValue="+91"
+          aria-label="Country code"
+          aria-invalid={fieldError("countryCode") ? true : undefined}
+          aria-describedby={fieldError("countryCode") ? `${id}-countryCode-error` : undefined}
+          className={`${CONTROL} ${fieldError("countryCode") ? "border-[var(--color-error)]" : ""}`.trim()}
+        >
+          {COUNTRY_CODES.map((country) => (
+            <option key={country.value} value={country.value}>
+              {country.label}
+            </option>
+          ))}
+        </select>
+        <input
+          id={`${id}-whatsappNumber`}
+          name="whatsappNumber"
+          type="tel"
+          required
+          placeholder="WhatsApp number"
+          autoComplete="tel-national"
+          aria-invalid={fieldError("whatsappNumber") ? true : undefined}
+          aria-describedby={fieldError("whatsappNumber") ? `${id}-whatsappNumber-error` : undefined}
+          className={`${CONTROL} ${fieldError("whatsappNumber") ? "border-[var(--color-error)]" : ""}`.trim()}
+        />
+      </div>
+      {fieldError("countryCode") ? (
+        <p id={`${id}-countryCode-error`} className="t-small text-[var(--color-error)]">
+          {fieldError("countryCode")}
+        </p>
+      ) : null}
+      {fieldError("whatsappNumber") ? (
+        <p id={`${id}-whatsappNumber-error`} className="t-small text-[var(--color-error)]">
+          {fieldError("whatsappNumber")}
+        </p>
+      ) : null}
+    </div>
   );
 
   const email =
@@ -104,51 +127,24 @@ export function EnquiryForm({
         key="email"
         id={`${id}-email`}
         name="email"
-        label="Email"
+        label="Email (optional)"
         type="email"
         autoComplete="email"
         error={fieldError("email")}
       />
     ) : null;
 
-  const market = (
-    <SelectField
-      key="market"
-      id={`${id}-market`}
-      name="market"
-      label="Country or market"
-      required
-      error={fieldError("market")}
-    />
-  );
-
-  const city =
-    variant === "full" ? (
-      <Field
-        key="city"
-        id={`${id}-city`}
-        name="city"
-        label="City"
-        autoComplete="address-level2"
-        error={fieldError("city")}
-      />
-    ) : null;
-
   if (state.status === "success") {
     return (
-      <div className={`border-l border-accent pl-6 ${className}`.trim()} role="status">
+      <div className={`border-accent border-l pl-6 ${className}`.trim()} role="status">
         <p className="t-h3">Enquiry sent</p>
-        <p className="mt-3 max-w-[34rem] text-slate">{state.message}</p>
+        <p className="text-slate mt-3 max-w-[34rem]">{state.message}</p>
       </div>
     );
   }
 
   return (
-    <form
-      action={action}
-      className={`grid ${twoUp ? "gap-4" : "gap-5"} ${className}`.trim()}
-      noValidate
-    >
+    <form action={action} className={`grid ${twoUp ? "gap-4" : "gap-5"} ${className}`.trim()} noValidate>
       <input type="hidden" name="variant" value={variant} />
 
       {/* Honeypot: hidden from people, irresistible to bots. */}
@@ -161,28 +157,16 @@ export function EnquiryForm({
         /* Who you are, how to reach you, where you are: three rows instead of
            six, and each row is still one thought. */
         <>
-          <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
-            {fullName}
-            {company}
-          </div>
+          {fullName}
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
             {whatsappNumber}
             {email}
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
-            {market}
-            {city}
           </div>
         </>
       ) : (
         <>
           {fullName}
-          {company}
           {whatsappNumber}
-          <div className={variant === "full" ? "grid gap-5 sm:grid-cols-2" : "grid gap-5"}>
-            {market}
-            {city}
-          </div>
           {email}
         </>
       )}
@@ -226,6 +210,41 @@ export function EnquiryForm({
             </fieldset>
           ) : null}
 
+          <fieldset className="grid gap-3">
+            <legend className="t-small font-semibold">Usage</legend>
+            <div className="flex flex-wrap gap-2">
+              {USAGE_OPTIONS.map((option) => {
+                const checked = selectedUsage.includes(option);
+                return (
+                  <label
+                    key={option}
+                    className={`t-small cursor-pointer border px-4 py-2 transition-colors duration-[var(--duration-quick)] ${
+                      checked
+                        ? "border-navy bg-navy text-white"
+                        : "border-line text-slate hover:border-navy hover:text-navy"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      name="usage"
+                      value={option}
+                      checked={checked}
+                      onChange={(event) =>
+                        setSelectedUsage((current) =>
+                          event.target.checked
+                            ? [...current, option]
+                            : current.filter((item) => item !== option),
+                        )
+                      }
+                      className="visually-hidden"
+                    />
+                    {option}
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+
           <div className="grid gap-2">
             <label htmlFor={`${id}-message`} className="t-small font-semibold">
               Message or quantities
@@ -234,7 +253,7 @@ export function EnquiryForm({
               id={`${id}-message`}
               name="message"
               rows={twoUp ? 3 : 4}
-              className="w-full resize-y border border-line bg-white px-3.5 py-3 text-navy rounded-[var(--radius-control)]"
+              className="border-line text-navy w-full resize-none rounded-[var(--radius-control)] border bg-white px-3.5 py-3"
             />
           </div>
         </>
@@ -265,16 +284,14 @@ export function EnquiryForm({
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => track("whatsapp_click", { location: "form_fallback" })}
-            className="flex items-center gap-2 text-link w-fit"
+            className="text-link flex w-fit items-center gap-2"
           >
             <WhatsAppGlyph size={18} />
             <span>Chat with us on WhatsApp instead</span>
           </a>
         ) : null}
 
-        <p className="t-small text-slate">
-          We&rsquo;ll only use these details to reply to your enquiry.
-        </p>
+        <p className="t-small text-slate">We&rsquo;ll only use these details to reply to your enquiry.</p>
       </div>
     </form>
   );
@@ -315,52 +332,6 @@ function Field({
         className={`${CONTROL} ${error ? "border-[var(--color-error)]" : ""}`.trim()}
         {...rest}
       />
-      {error ? (
-        <p id={`${id}-error`} className="t-small text-[var(--color-error)]">
-          {error}
-        </p>
-      ) : null}
-    </div>
-  );
-}
-
-function SelectField({
-  id,
-  name,
-  label,
-  error,
-  required,
-}: {
-  id: string;
-  name: string;
-  label: string;
-  error?: string;
-  required?: boolean;
-}) {
-  return (
-    <div className="grid gap-2">
-      <label htmlFor={id} className="t-small font-semibold">
-        {label}
-        {required ? <span className="visually-hidden"> (required)</span> : null}
-      </label>
-      <select
-        id={id}
-        name={name}
-        required={required}
-        defaultValue=""
-        aria-invalid={error ? true : undefined}
-        aria-describedby={error ? `${id}-error` : undefined}
-        className={`${CONTROL} ${error ? "border-[var(--color-error)]" : ""}`.trim()}
-      >
-        <option value="" disabled>
-          Choose a market
-        </option>
-        {MARKETS.map((market) => (
-          <option key={market} value={market}>
-            {market}
-          </option>
-        ))}
-      </select>
       {error ? (
         <p id={`${id}-error`} className="t-small text-[var(--color-error)]">
           {error}
