@@ -22,9 +22,23 @@ import { useReducedMotion } from "motion/react";
  * Under reduced motion it does not start, and the poster -- a frame of the
  * footage, so the composition is identical -- carries the panel instead.
  *
- * 16:9 footage in a panel capped at 80vh: `object-cover` takes the difference
- * out of the silk at the top and bottom, never out of the type, which sits
- * across the middle third.
+ * The panel is 1280:570 rather than the footage's 16:9, and the video is
+ * anchored to the top, so the whole of the crop comes off the bottom.
+ *
+ * That is deliberate. The footage carries Gemini's four-pointed sparkle at
+ * roughly x1160 y600 of the 1280x720 frame, about 49px across, and the agency
+ * asked for it gone. Measured, the type runs x169-1111 and y170-344: the
+ * sparkle sits 24px to the right of the last letter of "Voile", so any crop
+ * from the side clips the type, while the bottom has 231px of clearance. So the
+ * crop is from the bottom, at y570, and the sparkle falls outside it.
+ *
+ * It costs no sharpness. `object-cover` was already scaling by width, and the
+ * crop does not change that -- it only shows fewer rows.
+ *
+ * This hides the mark; it does not take it out of the file, and the same
+ * sparkle is in preloader.mp4 at the same coordinates. A re-export without it,
+ * at a width above 1280, would settle both that and the softness on a large
+ * monitor. See 05-open-questions 151.
  */
 const BANNER_WORDS =
   "Luxury in every thread. House of textiles: Giza Cotton, Wool, Atiku, Aesobi, Wax Print, Shirting, Swiss Lace, Suiting, Jacquard and Voile.";
@@ -66,12 +80,12 @@ export function VisionBanner() {
     <section className="bg-white pt-[4.5rem] lg:pt-[5.25rem]">
       <h1 className="visually-hidden">{BANNER_WORDS}</h1>
 
-      <div className="relative aspect-video max-h-[80vh] w-full overflow-hidden">
+      <div className="relative aspect-[1280/570] max-h-[80vh] w-full overflow-hidden">
         <video
           ref={videoRef}
           aria-hidden="true"
           tabIndex={-1}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover object-top"
           poster="/video/luxury-in-every-thread.jpg"
           // Metadata, not none: "none" made the first play() slow and easy to
           // lose on the home hero, and the poster still carries the frame.
