@@ -79,16 +79,23 @@ function CustomerCounter() {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const reduceMotion = useReducedMotion();
-  const [display, setDisplay] = useState("1");
+  const [counted, setCounted] = useState<string | null>(null);
+
+  /**
+   * Derived until the count actually runs, rather than set from inside the
+   * effect. The effect used to open by calling setState synchronously for the
+   * cases that never animate, which is a cascading render and an eslint error.
+   * Before it is in view the figure reads its start; if it is never going to
+   * animate -- out of view, or reduced motion -- it reads its end.
+   */
+  const display = counted ?? (isInView && !reduceMotion ? "1" : "1 Million+");
 
   useEffect(() => {
-    if (!isInView || reduceMotion) {
-      setDisplay("1 Million+");
-      return;
-    }
+    if (!isInView || reduceMotion) return;
 
     const duration = 1500; // 1.5 seconds timer
     const startTime = performance.now();
+    let frame = 0;
 
     const update = (now: number) => {
       const elapsed = now - startTime;
@@ -98,14 +105,16 @@ function CustomerCounter() {
       const current = Math.floor(1 + ease * 999999);
 
       if (progress < 1) {
-        setDisplay(current.toLocaleString());
-        requestAnimationFrame(update);
+        setCounted(current.toLocaleString());
+        frame = requestAnimationFrame(update);
       } else {
-        setDisplay("1 Million+");
+        setCounted("1 Million+");
       }
     };
 
-    requestAnimationFrame(update);
+    frame = requestAnimationFrame(update);
+    // The loop used to run on unmounted: nothing cancelled it.
+    return () => cancelAnimationFrame(frame);
   }, [isInView, reduceMotion]);
 
   return (

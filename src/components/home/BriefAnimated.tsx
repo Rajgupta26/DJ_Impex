@@ -92,7 +92,7 @@ export function BriefAnimated({
 
       {/* Right Column: Archive Image, cleanly displayed without dark gradient overlay */}
       <motion.figure
-        className="relative mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:w-[350px] lg:max-w-[350px] lg:self-center"
+        className="relative mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:w-[350px] lg:max-w-[350px] lg:self-start"
         initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 50 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.25, margin: "-60px 0px" }}

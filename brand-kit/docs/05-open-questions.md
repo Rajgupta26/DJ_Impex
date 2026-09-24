@@ -356,3 +356,18 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
      The columns are also top-aligned from `lg` up. They were `items-center`, and with the text column 416px against a 438px figure the heading sat 11px below the top of the photograph -- close enough to look like a mistake rather than a choice. The heading and the image now start on the same line exactly, measured at 0px. Below `lg` the block stacks, so it keeps `items-center` and the figure stays centred: checked at 400, where it sits at 60 and 340 in a 400px viewport.
 
      Worth knowing for the next one of these: the reveal animations make measurement lie. Reading the DOM before a `whileInView` block has fired returns its start state -- the heading 50px to the left, the figure 40px to the right -- which looks exactly like a layout bug. Both of those appeared here and neither was real.
+
+148. **URGENT, and already live: the social proof banner publishes two figures that `site.json` marks `hold`.** Akshay's `b67f081` adds `SocialProofBanner` to the foot of the home page. It reads, in large type:
+
+     - **"1 Million+ / SATISFIED CUSTOMERS"**. `site.json.ratings.happyCustomers` is `"2.37 million"`, status **hold**, note: "Brochure shows it with an unexplained asterisk. Ask what it means before using." The banner does not even use the held number -- 1 Million+ appears nowhere in `brand-kit/content`.
+     - **"4.8 / 5 / GOOGLE REVIEW RATING"**. `site.json.ratings.googleRating` has `value: null`, status **hold**, note: "Two different numbers in client material. Check the live Google Business listing." 4.8 is one of the two candidates, picked without the check the note asks for.
+
+     Both are hard-coded in the component rather than read from the content layer, so neither passed the status gate that exists to stop exactly this. CLAUDE.md: "`hold` -> never render, in any environment" and "Never invent numbers".
+
+     This is not a house-style point. A specific Google review rating is a factual claim about a third-party platform, and a customer count is a trade claim; both are the client's to stand behind, and the brief says twice over that neither has been confirmed. It is on the production site now, because the repository deploys on push.
+
+     Removing the two figures is a small change. It was not made unilaterally because the banner is a colleague's new work and the call about what a client may claim is the agency's, not ours -- but it should be made today, and the note is here so the decision is recorded either way.
+
+149. **`SocialProofBanner` had a React error and a leak, both fixed.** `npm run lint` failed on it: the counter called `setState` synchronously at the top of an effect, which eslint flags as a cascading render. The figure is derived during render now and the effect only runs when it has something to animate. The `requestAnimationFrame` loop also had nothing cancelling it, so it kept running after unmount; it is cleaned up. Lint is back to zero errors.
+
+150. **The brief's figure carried `lg:self-center`, which quietly overrode the top alignment from 147.** It happened to look right because the figure was the taller of the two columns, so centring it in a row of its own height is the same as topping it -- but the moment the text column grew taller the image would have drifted down again. It is `lg:self-start` now, so the alignment is stated rather than coincidental. Measured 0px at 1280.
