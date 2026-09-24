@@ -19,14 +19,13 @@ function rateLimited(key: string): boolean {
 }
 
 function asText(enquiry: Enquiry): string {
+  const fullWhatsApp = `${enquiry.countryCode} ${enquiry.whatsappNumber}`;
   const rows: Array<[string, string]> = [
     ["Name", enquiry.fullName],
-    ["Company / shop", enquiry.company || "—"],
-    ["Market", enquiry.market],
-    ["City", enquiry.city || "—"],
-    ["WhatsApp", enquiry.whatsappNumber],
+    ["WhatsApp", fullWhatsApp],
     ["Email", enquiry.email || "—"],
     ["Fabrics of interest", enquiry.fabrics.length ? enquiry.fabrics.join(", ") : "—"],
+    ["Usage", enquiry.usage.length ? enquiry.usage.join(", ") : "—"],
     ["Message", enquiry.message || "—"],
     ["Form", enquiry.variant === "short" ? "Contact pop-up" : "Homepage contact section"],
   ];
@@ -34,14 +33,22 @@ function asText(enquiry: Enquiry): string {
 }
 
 function getAdminHtml(enquiry: Enquiry): string {
+  const fullWhatsApp = `${enquiry.countryCode} ${enquiry.whatsappNumber}`;
+  const cleanNumber = fullWhatsApp.replace(/[^0-9]/g, "");
   const rows = [
     ["Full Name", enquiry.fullName],
-    ["Company / Shop", enquiry.company || "—"],
-    ["WhatsApp Number", `<a href="https://wa.me/${enquiry.whatsappNumber.replace(/[^0-9]/g, "")}" style="color: #172850; font-weight: 600; text-decoration: underline;">${enquiry.whatsappNumber}</a>`],
-    ["Country / Market", enquiry.market],
-    ["City", enquiry.city || "—"],
-    ["Email", enquiry.email ? `<a href="mailto:${enquiry.email}" style="color: #172850; text-decoration: underline;">${enquiry.email}</a>` : "—"],
+    [
+      "WhatsApp Number",
+      `<a href="https://wa.me/${cleanNumber}" style="color: #172850; font-weight: 600; text-decoration: underline;">${fullWhatsApp}</a>`,
+    ],
+    [
+      "Email",
+      enquiry.email
+        ? `<a href="mailto:${enquiry.email}" style="color: #172850; text-decoration: underline;">${enquiry.email}</a>`
+        : "—",
+    ],
     ["Fabrics of Interest", enquiry.fabrics.length ? enquiry.fabrics.join(", ") : "—"],
+    ["Usage", enquiry.usage.length ? enquiry.usage.join(", ") : "—"],
     ["Message", enquiry.message || "—"],
     ["Form Source", enquiry.variant === "short" ? "Contact Pop-up" : "Homepage Contact Section"],
   ];
@@ -156,7 +163,7 @@ function getCustomerHtml(enquiry: Enquiry): string {
               </p>
               
               <p class="mobile-text" style="margin: 0 0 24px 0; font-size: 15px; line-height: 1.6; color: #334155;">
-                Our export and customer support team is reviewing your requirements and will reach out to you directly on WhatsApp at <strong>${enquiry.whatsappNumber}</strong> or via this email.
+                Our export and customer support team is reviewing your requirements and will reach out to you directly on WhatsApp at <strong>${enquiry.countryCode} ${enquiry.whatsappNumber}</strong> or via this email.
               </p>
 
               <!-- Summary Card -->
@@ -165,9 +172,8 @@ function getCustomerHtml(enquiry: Enquiry): string {
                   <td style="padding: 16px 18px;">
                     <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: 600; text-transform: uppercase; color: #172850; letter-spacing: 0.5px;">Your Enquiry Details</p>
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size: 14px; line-height: 1.6; color: #475569;">
-                      ${enquiry.company ? `<tr><td style="padding: 3px 0; width: 35%;"><strong>Company:</strong></td><td style="padding: 3px 0; color: #0f172a;">${enquiry.company}</td></tr>` : ""}
-                      <tr><td style="padding: 3px 0; width: 35%;"><strong>Market:</strong></td><td style="padding: 3px 0; color: #0f172a;">${enquiry.market}${enquiry.city ? ` (${enquiry.city})` : ""}</td></tr>
                       ${enquiry.fabrics.length ? `<tr><td style="padding: 3px 0; width: 35%;"><strong>Fabrics:</strong></td><td style="padding: 3px 0; color: #0f172a;">${enquiry.fabrics.join(", ")}</td></tr>` : ""}
+                      ${enquiry.usage.length ? `<tr><td style="padding: 3px 0; width: 35%;"><strong>Usage:</strong></td><td style="padding: 3px 0; color: #0f172a;">${enquiry.usage.join(", ")}</td></tr>` : ""}
                       ${enquiry.message ? `<tr><td style="padding: 3px 0; width: 35%; vertical-align: top;"><strong>Message:</strong></td><td style="padding: 3px 0; color: #0f172a;">${enquiry.message}</td></tr>` : ""}
                     </table>
                   </td>
@@ -209,10 +215,7 @@ function getCustomerHtml(enquiry: Enquiry): string {
 </html>`;
 }
 
-export async function submitEnquiry(
-  _previous: EnquiryState,
-  formData: FormData,
-): Promise<EnquiryState> {
+export async function submitEnquiry(_previous: EnquiryState, formData: FormData): Promise<EnquiryState> {
   const parsed = enquirySchema.safeParse(formDataToEnquiry(formData));
 
   if (!parsed.success) {
@@ -250,13 +253,15 @@ export async function submitEnquiry(
   const smtpPass = rawPass?.replace(/^["']|["']$/g, "").trim();
   const smtpHost = (process.env.SMTP_HOST || "smtp.gmail.com").replace(/^["']|["']$/g, "").trim();
   const smtpPort = Number((process.env.SMTP_PORT || "465").replace(/^["']|["']$/g, "").trim());
-  
+
   const enquiryTo = (
     process.env.CONTACT_RECEIVER_EMAIL ||
     process.env.ENQUIRY_TO_EMAIL ||
     smtpUser ||
     "ceo@djimpex.in"
-  ).replace(/^["']|["']$/g, "").trim();
+  )
+    .replace(/^["']|["']$/g, "")
+    .trim();
 
   // Crucial for SPF/DKIM delivery: The from address must match the authenticated Gmail account
   const fromAddress = smtpUser || "akshaychavan44.ac@gmail.com";
@@ -299,7 +304,7 @@ export async function submitEnquiry(
       from: enquiryFrom,
       to: enquiryTo,
       replyTo: enquiry.email || undefined,
-      subject: `New Fabric Enquiry: ${enquiry.fullName} (${enquiry.market})`,
+      subject: `New Fabric Enquiry: ${enquiry.fullName} (${enquiry.countryCode} ${enquiry.whatsappNumber})`,
       text: asText(enquiry),
       html: getAdminHtml(enquiry),
       headers: {
@@ -310,7 +315,7 @@ export async function submitEnquiry(
 
     // 2. Send auto-reply confirmation to the customer (if email provided)
     if (enquiry.email) {
-      const customerText = `Dear ${enquiry.fullName},\n\nThank you for reaching out to Nabeen®. We have received your enquiry regarding our luxury fabric collection.\n\nOur export team will connect with you shortly on WhatsApp (${enquiry.whatsappNumber}) or by email.\n\nEnquiry Summary:\n- Market: ${enquiry.market}${enquiry.city ? ` (${enquiry.city})` : ""}\n- Fabrics of interest: ${enquiry.fabrics.length ? enquiry.fabrics.join(", ") : "General enquiry"}\n${enquiry.message ? `- Message: ${enquiry.message}\n` : ""}\nIf you need urgent assistance, you can reach us on WhatsApp: https://wa.me/919819693626\n\nWarm regards,\nThe Nabeen® Team\nD J Impex & Co., Mumbai`;
+      const customerText = `Dear ${enquiry.fullName},\n\nThank you for reaching out to Nabeen®. We have received your enquiry regarding our luxury fabric collection.\n\nOur export team will connect with you shortly on WhatsApp (${enquiry.countryCode} ${enquiry.whatsappNumber}) or by email.\n\nEnquiry Summary:\n- Fabrics of interest: ${enquiry.fabrics.length ? enquiry.fabrics.join(", ") : "General enquiry"}\n${enquiry.usage.length ? `- Usage: ${enquiry.usage.join(", ")}\n` : ""}${enquiry.message ? `- Message: ${enquiry.message}\n` : ""}\nIf you need urgent assistance, you can reach us on WhatsApp: https://wa.me/919819693626\n\nWarm regards,\nThe Nabeen® Team\nD J Impex & Co., Mumbai`;
 
       await transporter.sendMail({
         from: enquiryFrom,
@@ -322,7 +327,7 @@ export async function submitEnquiry(
         headers: {
           "Auto-Submitted": "auto-replied",
           "X-Auto-Response-Suppress": "All",
-          "Precedence": "bulk",
+          Precedence: "bulk",
           "X-Priority": "3",
           "X-Mailer": "Nabeen Luxury Fabrics Mailer",
         },

@@ -74,10 +74,13 @@
       "status": "confirmed",
       "note": "Brochure + Facebook."
     },
+    "emailAdmin": {
+      "value": "admin@djimpex.in",
+      "status": "confirmed"
+    },
     "emailSecondary": {
       "value": "djimpex479@gmail.com",
-      "status": "hold",
-      "note": "Brochure only. Ask whether to show a gmail address publicly."
+      "status": "confirmed"
     },
     "address": {
       "lines": [

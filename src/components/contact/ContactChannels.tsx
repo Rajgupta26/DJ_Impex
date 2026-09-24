@@ -4,7 +4,7 @@ import { TbcTag } from "@/components/ui/TbcTag";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 import { getSite } from "@/lib/content";
-import { mailtoLink, telLink, whatsappLink } from "@/lib/contact";
+import { directionsLink, mailtoLink, telLink, whatsappLink } from "@/lib/contact";
 
 /** Every way to reach the team, WhatsApp first. */
 export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
@@ -57,15 +57,20 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
           <div>
             <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Email</dt>
             <dd className="mt-1">
-              <TrackedLink
-                href={mailtoLink("Fabric enquiry")}
-                event="email_click"
-                location="contact_page"
-                external={false}
-                className={`text-link ${onDark ? "text-link-on-dark" : ""}`}
-              >
-                {contact.emailPrimary.value}
-              </TrackedLink>
+              <span className="grid gap-1">
+                {[contact.emailPrimary.value, contact.emailAdmin.value, contact.emailSecondary.value].map((email) => (
+                  <TrackedLink
+                    key={email}
+                    href={`mailto:${email}?subject=${encodeURIComponent("Fabric enquiry")}`}
+                    event="email_click"
+                    location="contact_page"
+                    external={false}
+                    className={`text-link w-fit ${onDark ? "text-link-on-dark" : ""}`}
+                  >
+                    {email}
+                  </TrackedLink>
+                ))}
+              </span>
             </dd>
           </div>
         </div>
@@ -78,15 +83,23 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
             className={`mt-1 shrink-0 ${onDark ? "text-accent" : "text-slate"}`}
           />
           <div>
-            <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Visit</dt>
+            <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Head Office</dt>
             <dd className="mt-1">
-              <address className={`not-italic ${onDark ? "text-white/75" : "text-slate"}`}>
-                {contact.address.lines.map((line) => (
-                  <span key={line} className="block">
-                    {line}
-                  </span>
-                ))}
-              </address>
+              <TrackedLink
+                href={directionsLink()}
+                event="directions_click"
+                location="contact_page"
+                className={`block w-fit transition-opacity hover:opacity-80 ${onDark ? "text-white" : "text-slate"}`}
+                aria-label="Open Head Office directions in Google Maps"
+              >
+                <address className="not-italic">
+                  {contact.address.lines.map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </address>
+              </TrackedLink>
             </dd>
           </div>
         </div>

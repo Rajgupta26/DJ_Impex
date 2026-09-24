@@ -333,7 +333,7 @@ function HeroWords({
       </h1>
 
       <motion.p
-        className="t-lead mt-6 max-w-[30rem] text-white/90"
+        className="t-lead mt-6 max-w-[30rem] !text-white text-white"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: reduceMotion ? 0.01 : 0.5, delay: animate ? 0.5 : 0 }}
