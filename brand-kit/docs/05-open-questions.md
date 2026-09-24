@@ -321,13 +321,17 @@ Build with the current defaults (in brackets). Nothing here blocks the skeleton.
 
      `--color-whatsapp` is scoped in tokens.css to controls that open WhatsApp, and the file says so. It is not a new brand colour and it is not an exception to "the palette is blue only" -- it is a third-party channel's mark.
 
-144. **The preloader is the fabric film, centred, on a ground matched to its own.** Fifth version in two days: a swatch that unfolded, a compact disc of film, the full-bleed Silk Reveal, a CSS glass disc, and now this, to the brief of 2026-09-24. The CSS ring has gone with it.
+144. **The preloader stands on the hero's own ground.** The agency's note was that it "looks like a video playing on the screen" and does not belong to the site. It was right, and the cause was measurable: the overlay was `#a7a9ab`, sampled from the footage, which is a colour that appears in no part of this palette. So the preloader was off-brand for its whole life and then cut hard to a navy hero. The cut was what made it read as a bolted-on part.
 
-     **The ground had to be measured twice.** The brief says to match the overlay to the film's background. Sampled at the corners at four timestamps, that is rgb(167-168, 169-170, 171-172), so the overlay is `#a7a9ab`. But the film's ground is not flat: across a single frame it climbs from 168 in the corners to 230 near the middle, a vignette of some sixty levels. Matching the corners alone therefore left the lighter top and bottom edges of the video reading as a bright rectangle on a darker field -- the exact seam the brief was trying to avoid.
+     It is now `--color-navy-deep`, which is exactly what the hero is. Verified: the overlay and the hero section both compute to `rgb(13, 23, 51)`, so nothing changes colour when it leaves -- the mark lifts away and the hero is already there on the same ground.
 
-     The fix is to fade the film's outer 14% to nothing on all four sides. A radial mask was tried first and was worse: sized to a 16:9 frame it overshoots horizontally, so the sides never reach zero alpha, and undershoots vertically, so the top and bottom stay hard. Four independent linear feathers take all four edges to nothing.
+     The client's footage is kept, but as atmosphere rather than as a video: `mix-blend-mode: screen` lets the white cloth come through bright while the grey ground barely lifts the navy, and a radial mask removes the frame's edges, so there is no rectangle at any point. The raking fall from the lower left is the same treatment the hero and the vision panel use, so the light behaves as it does elsewhere.
 
-     Verified: `position: fixed`, top and left 0, 100vw x 100vh, z-index 9999, `#a7a9ab`, video autoplay/loop/muted/playsinline, `object-fit: contain`. Exit is opacity over 0.5s ease-out, unmounted at 1588ms with nothing left at z-9999, body `overflow` restored, and `elementFromPoint` at screen centre returns the page rather than the overlay. Centred to the pixel at 390x780 as well as on desktop, no overflow. Fallback 3.5s; `MIN_MS` of 900ms is still not in any brief and still stops the whole thing being over in 200ms.
+     Beneath the mark is a selvedge-blue thread that draws while the page loads -- the same warp idea as the pillars on /vision, and the one piece of colour. Measured: it runs from scaleX 0.045 at 351ms to 0.9999 at 2079ms, finishing as the overlay goes at 2139ms. Nothing left at z-9999, body `overflow` restored.
+
+     The floor is 1100ms now rather than 900, because the thread needs long enough to read as drawing rather than flicking.
+
+     This is the sixth preloader in two days. If it is still not right, the thing to change is probably the brief rather than the build: each version so far has been specified in isolation from the page it opens, and what finally fixed it was matching the page.
 
 145. **NOT FIXED, and it is live: a gmail address is now published on the site.** Akshay's `fd6e986` flipped `contact.emailSecondary` -- `djimpex479@gmail.com` -- from `hold` to `confirmed` and deleted its note, which read "Brochure only. Ask whether to show a gmail address publicly." `ContactChannels` now prints all three addresses, so the home page's contact section reads ceo@djimpex.in, admin@djimpex.in and djimpex479@gmail.com together.
 

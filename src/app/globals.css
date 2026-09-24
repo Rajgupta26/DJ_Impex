@@ -220,29 +220,28 @@ html {
 /* ==========================================================================
    The preloader film.
 
-   The footage is not on a flat ground: sampled across a frame it runs from
-   rgb(168,170,172) in the corners to rgb(230,229,229) near the middle, a
-   vignette of some 60 levels. So no single overlay colour can hide the edge of
-   the video -- matching the corners, as the brief asks, leaves the lighter
-   top and bottom edges reading as a bright rectangle on a darker field.
+   The footage is white cloth on a mid-grey ground, rgb(168) in the corners
+   rising to rgb(230) in the middle. Laid on the page as-is it is a grey
+   rectangle -- a colour that is in no part of this palette -- sitting on navy.
 
-   The outer tenth of the video is therefore faded to nothing on all four sides.
-   With the overlay set to the corner colour underneath, the join disappears.
-   The band is narrow enough that it never reaches the cloth itself.
+   `screen` solves that: the grey ground lifts the navy only slightly while the
+   white cloth comes through bright, so the film reads as cloth catching light
+   in a dark room rather than as a video playing. The radial mask then takes the
+   frame's own edges away entirely, so there is no rectangle at any point.
    ========================================================================== */
 
 .preloader-film {
-  /* Four straight feathers, not a radial one. A radial mask sized to this frame
-     overshoots it horizontally -- at a 56% radius the sides never reach zero
-     alpha -- and undershoots vertically, so the top and bottom stay hard.
-     Fading each edge independently takes all four to nothing, which is what the
-     join needs. The band is 14% and the cloth sits well inside it. */
-  -webkit-mask-image:
-    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
-  mask-composite: intersect;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 62% at 50% 46%,
+    #000 0%,
+    rgb(0 0 0 / 0.65) 42%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(
+    ellipse 70% 62% at 50% 46%,
+    #000 0%,
+    rgb(0 0 0 / 0.65) 42%,
+    transparent 78%
+  );
 }
