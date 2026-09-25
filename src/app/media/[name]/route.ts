@@ -31,9 +31,15 @@ export async function GET(_request: Request, { params }: { params: Promise<{ nam
   return new Response(media.stream, {
     headers: {
       "content-type": media.contentType,
-      // The file name carries a timestamp and is never rewritten, so this is
-      // safe to cache hard. A replacement gets a new name and a new URL.
-      "cache-control": "public, max-age=31536000, immutable",
+      // Not `immutable`, despite the file name carrying a timestamp and never
+      // being rewritten. Deleting an image in the panel removes the blob, but a
+      // year-long edge cache went on serving the bytes from the CDN long after
+      // -- measured: the store reported the blob gone while the URL still
+      // returned the JPEG. If someone deletes an image because it should not be
+      // public, it has to stop being public. The shared cache therefore
+      // re-checks every minute; browsers, which only ever hold a file the
+      // person already saw, keep theirs for an hour.
+      "cache-control": "public, max-age=3600, s-maxage=60, stale-while-revalidate=60",
       "content-disposition": "inline",
       "x-content-type-options": "nosniff",
     },
