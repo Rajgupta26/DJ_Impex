@@ -1,5 +1,6 @@
 import { fail, handleError, ok, parseBody } from "@/lib/admin/api";
 import { blogPatchSchema, type AdminBlog } from "@/lib/admin/schemas";
+import { deriveExcerpt, slugify, uniqueSlug } from "@/lib/admin/derive";
 import { revalidateJournal } from "@/lib/admin/revalidate";
 import { mutate, nowIso, readCollection } from "@/lib/admin/store";
 
@@ -32,12 +33,20 @@ export async function PATCH(request: Request, { params }: Context) {
     const outcome = await mutate<"blogs", Outcome>("blogs", (rows) => {
       const index = rows.findIndex((row) => row.id === id);
       if (index === -1) return { rows, result: { kind: "missing" } };
-      const slug = parsed.data.slug;
-      if (slug && rows.some((row) => row.slug === slug && row.id !== id)) {
-        return { rows, result: { kind: "duplicate" } };
+      const merged = { ...rows[index], ...parsed.data };
+
+      // The slug follows the title, and a clash is suffixed rather than
+      // refused: there is no slug field on screen for anyone to correct.
+      merged.slug = uniqueSlug(rows, parsed.data.slug || slugify(merged.title), id);
+
+      // The excerpt is derived, so it tracks the body rather than going stale
+      // the first time the post is rewritten.
+      if (parsed.data.content !== undefined || !merged.excerpt) {
+        merged.excerpt = deriveExcerpt(merged.content);
       }
+
       const next = [...rows];
-      next[index] = { ...next[index], ...parsed.data, updatedAt: nowIso() };
+      next[index] = { ...merged, updatedAt: nowIso() };
       return {
         rows: next,
         result: { kind: "ok", blog: next[index], previousSlug: rows[index].slug },

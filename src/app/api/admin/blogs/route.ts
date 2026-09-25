@@ -1,5 +1,6 @@
-import { fail, handleError, ok, parseBody } from "@/lib/admin/api";
+import { handleError, ok, parseBody } from "@/lib/admin/api";
 import { blogInputSchema, type AdminBlog } from "@/lib/admin/schemas";
+import { deriveExcerpt, slugify, uniqueSlug } from "@/lib/admin/derive";
 import { revalidateJournal } from "@/lib/admin/revalidate";
 import { mutate, newId, nowIso, readCollection } from "@/lib/admin/store";
 
@@ -22,21 +23,23 @@ export async function POST(request: Request) {
     const parsed = await parseBody(request, blogInputSchema);
     if (parsed.response) return parsed.response;
 
-    // The slug is the public identity of a post, so it is checked inside the
-    // lock: two people creating the same slug at once would otherwise both pass.
+    // The slug is the public identity of a post, so it is settled inside the
+    // lock: two posts created in the same moment would otherwise agree on it.
+    // The editor has no slug field, so an empty one is derived from the title
+    // and a clash is suffixed rather than refused -- there is nothing on screen
+    // for anyone to correct. Same for the excerpt, which the card, the
+    // standfirst and the meta description all need.
     const created = await mutate("blogs", (rows) => {
-      if (rows.some((row) => row.slug === parsed.data.slug)) {
-        return { rows, result: null };
-      }
-      const blog: AdminBlog = { ...parsed.data, id: newId(), updatedAt: nowIso() };
+      const blog: AdminBlog = {
+        ...parsed.data,
+        slug: uniqueSlug(rows, parsed.data.slug || slugify(parsed.data.title)),
+        excerpt: parsed.data.excerpt || deriveExcerpt(parsed.data.content),
+        id: newId(),
+        updatedAt: nowIso(),
+      };
       return { rows: [blog, ...rows], result: blog };
     });
 
-    if (!created) {
-      return fail("A post with that slug already exists.", 409, {
-        slug: "This slug is already in use.",
-      });
-    }
     revalidateJournal([created.slug]);
     return ok({ blog: created }, 201);
   } catch (error) {

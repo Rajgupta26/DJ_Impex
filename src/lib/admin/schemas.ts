@@ -70,8 +70,22 @@ export type EnquiryStatus = AdminEnquiry["status"];
 export const BLOG_STATUSES: readonly BlogStatus[] = ["draft", "published"];
 export const ENQUIRY_STATUSES: readonly EnquiryStatus[] = ["unread", "read", "replied"];
 
+const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+/**
+ * A slug on the way in may be empty.
+ *
+ * The editor has no slug field: the server derives one from the title and
+ * suffixes it if it is taken. A sent slug is still validated, so an empty
+ * string means "work it out" rather than "anything goes".
+ */
+const incomingSlug = z.union([
+  z.literal(""),
+  z.string().trim().max(120).regex(slugPattern, "Lower case letters, numbers and hyphens only."),
+]);
+
 /** The fields a client may send when creating. Ids and stamps are ours. */
-export const blogInputSchema = blogSchema.omit({ id: true, updatedAt: true });
+export const blogInputSchema = blogSchema.omit({ id: true, updatedAt: true }).extend({ slug: incomingSlug });
 
 /**
  * The patch schemas are written out by hand, without defaults, and that is the
@@ -100,12 +114,7 @@ export const imagePatchSchema = z
 
 export const blogPatchSchema = z
   .object({
-    slug: z
-      .string()
-      .trim()
-      .min(1, "Please add a slug.")
-      .max(120)
-      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Lower case letters, numbers and hyphens only."),
+    slug: incomingSlug,
     title: z.string().trim().min(1, "Please add a title.").max(160),
     excerpt: z.string().trim().max(400),
     category: z.string().trim().max(60),

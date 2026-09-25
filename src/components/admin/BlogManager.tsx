@@ -42,7 +42,7 @@ function emptyDraft(): Draft {
     category: "",
     content: "",
     coverImage: "",
-    author: "Nabeen editorial",
+    author: "",
     publishedDate: new Date().toISOString().slice(0, 10),
     status: "draft",
   };
@@ -59,7 +59,6 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
   /** null = closed, string = editing that id, "new" = creating. */
   const [editorFor, setEditorFor] = useState<string | null>(null);
   const [draft, setDraft] = useState<Draft>(emptyDraft);
-  const [slugTouched, setSlugTouched] = useState(false);
   /** Which fields the writer has edited, and whether they have tried to save. */
   const [touched, setTouched] = useState<Set<string>>(new Set());
   const [attempted, setAttempted] = useState(false);
@@ -140,7 +139,6 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
 
   function openNew() {
     setDraft(emptyDraft());
-    setSlugTouched(false);
     setTouched(new Set());
     setAttempted(false);
     setServerErrors({});
@@ -160,7 +158,6 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
       publishedDate: blog.publishedDate,
       status: blog.status,
     });
-    setSlugTouched(true);
     setTouched(new Set());
     setAttempted(false);
     setServerErrors({});
@@ -315,7 +312,6 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
                 </p>
                 <p className="mt-1 font-mono text-[11px] text-slate-400 dark:text-slate-500">
                   /{blog.slug} · {formatDate(blog.publishedDate)}
-                  {blog.author ? ` · ${blog.author}` : ""}
                 </p>
               </div>
 
@@ -362,42 +358,15 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
                 onChange={(event) => {
                   const title = event.target.value;
                   setTouched((current) => new Set(current).add("title"));
-                  // The slug follows the title until someone edits it by hand.
-                  setDraft((current) => ({
-                    ...current,
-                    title,
-                    slug: slugTouched ? current.slug : slugify(title),
-                  }));
+                  // The slug is the post's URL and is no longer on the form, so
+                  // it follows the title. The server settles any clash.
+                  setDraft((current) => ({ ...current, title, slug: slugify(title) }));
                 }}
               />
             )}
           </Field>
 
-          <Field label="Slug" error={errors.slug} hint="The URL segment: lower case, hyphens.">
-            {(props) => (
-              <input
-                {...props}
-                className={inputClass}
-                value={draft.slug}
-                onChange={(event) => {
-                  setSlugTouched(true);
-                  edit("slug", event.target.value);
-                }}
-              />
-            )}
-          </Field>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Field label="Author" error={errors.author}>
-              {(props) => (
-                <input
-                  {...props}
-                  className={inputClass}
-                  value={draft.author}
-                  onChange={(event) => edit("author", event.target.value)}
-                />
-              )}
-            </Field>
+          <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Published date" error={errors.publishedDate}>
               {(props) => (
                 <input
@@ -509,18 +478,6 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
               </p>
             )}
           </div>
-
-          <Field label="Excerpt" error={errors.excerpt}>
-            {(props) => (
-              <textarea
-                {...props}
-                className={inputClass}
-                rows={2}
-                value={draft.excerpt}
-                onChange={(event) => edit("excerpt", event.target.value)}
-              />
-            )}
-          </Field>
 
           <div className="grid gap-4 lg:grid-cols-2">
             <Field label="Content" error={errors.content} hint="Markdown: headings, lists, links, bold.">
