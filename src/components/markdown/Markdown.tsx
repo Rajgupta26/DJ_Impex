@@ -1,16 +1,10 @@
 import type { ReactNode } from "react";
 
 /**
- * A deliberately small Markdown renderer, shared by the admin editor's preview
- * and the published page. One renderer means the preview is not an
- * approximation of the post: it is the same code, so what a writer sees is what
- * the website shows.
+ * A deliberately small Markdown renderer, used by the admin editor's preview.
  *
  * It builds React elements rather than an HTML string, so nothing a writer
- * types can inject markup -- React escapes text children. That is also why
- * posts written in the panel do not go through MDXRemote like the MDX files in
- * brand-kit do: MDX compiles its input, so a stray `<` or `{` in a hand-typed
- * post would throw during render and take the page down with it.
+ * types can inject markup -- React escapes text children.
  *
  * Supported: #/##/### headings, paragraphs, - and 1. lists, > quotes,
  * **bold**, *italic*, `code` and [links](url). Anything else renders as text.
@@ -45,23 +39,6 @@ export const adminTheme: MarkdownTheme = {
   code: "rounded bg-slate-100 px-1 py-0.5 text-[0.9em] dark:bg-slate-800",
   link: "text-navy underline dark:text-slate-200",
   empty: "text-sm text-slate-400 dark:text-slate-500",
-};
-
-/** The house style, matched to PostBody so a panel post sits beside an MDX one. */
-export const journalTheme: MarkdownTheme = {
-  wrapper: "measure",
-  h1: "t-h2 mt-16 mb-5 max-w-[20ch] text-[clamp(1.75rem,1.3rem+1.5vw,2.75rem)] first:mt-0",
-  h2: "t-h2 mt-16 mb-5 max-w-[20ch] text-[clamp(1.75rem,1.3rem+1.5vw,2.75rem)] first:mt-0",
-  h3: "t-h3 mt-12 mb-3",
-  p: "text-slate mb-6",
-  ul: "text-slate mb-6 grid gap-2",
-  ol: "text-slate mb-6 grid gap-2",
-  li: "border-line border-l pl-4",
-  quote:
-    "border-accent text-navy my-12 border-l pl-8 text-[clamp(1.25rem,1rem+1vw,1.75rem)] leading-[1.35] font-light",
-  code: "bg-mist rounded px-1 py-0.5 text-[0.9em]",
-  link: "text-link",
-  empty: "text-slate",
 };
 
 function inline(text: string, keyPrefix: string, theme: MarkdownTheme): ReactNode[] {

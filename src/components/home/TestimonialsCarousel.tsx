@@ -1,6 +1,7 @@
 "use client";
 
 import useEmblaCarousel from "embla-carousel-react";
+import { Quote, Star } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 import { withReg } from "@/components/ui/Reg";
@@ -10,9 +11,66 @@ import type { Testimonial } from "@/lib/site";
 type ReviewItem = Testimonial & {
   authorHref?: string;
   sourceHref?: string;
+  rating?: number;
 };
 
 const INTERVAL = 2000;
+
+function GoogleReviewsBrand() {
+  return (
+    <div className="flex items-center">
+      <span className="text-lg font-semibold tracking-tight sm:text-xl md:text-2xl">
+        <span style={{ color: "#4285F4" }}>G</span>
+        <span style={{ color: "#EA4335" }}>o</span>
+        <span style={{ color: "#FBBC05" }}>o</span>
+        <span style={{ color: "#4285F4" }}>g</span>
+        <span style={{ color: "#34A853" }}>l</span>
+        <span style={{ color: "#EA4335" }}>e</span>
+        <span className="ml-2 font-medium text-white">Reviews</span>
+      </span>
+    </div>
+  );
+}
+
+const AVATAR_COLORS = [
+  "#1a73e8", // Blue
+  "#e37400", // Orange
+  "#188038", // Green
+  "#8e24aa", // Purple
+  "#d93025", // Red
+  "#00838f", // Teal
+  "#e52592", // Pink
+  "#f29900", // Amber
+  "#3949ab", // Indigo
+  "#00897b", // Teal Green
+];
+
+function getAvatarBg(name?: string | null, index?: number): string {
+  if (!name || !name.trim()) {
+    return AVATAR_COLORS[(index ?? 0) % AVATAR_COLORS.length];
+  }
+  let hash = 0;
+  for (let i = 0; i < name.length; i += 1) {
+    hash = (hash * 31 + name.charCodeAt(i)) | 0;
+  }
+  const colorIndex = Math.abs(hash) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[colorIndex];
+}
+
+function ReviewerAvatar({ name, index }: { name?: string | null; index?: number }) {
+  const initial = name?.trim().charAt(0).toUpperCase() || "G";
+  const bg = getAvatarBg(name, index);
+
+  return (
+    <span
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-base font-semibold text-white shadow-sm"
+      style={{ backgroundColor: bg }}
+      aria-hidden="true"
+    >
+      {initial}
+    </span>
+  );
+}
 
 /**
  * One large light quote at a time, behind a thread-thin gold rule. Indicators are
@@ -51,7 +109,7 @@ export function TestimonialsCarousel({
 
   return (
     <section
-      className="on-dark bg-navy relative overflow-hidden py-14 text-white sm:py-16 lg:py-20"
+      className="on-dark bg-navy relative overflow-hidden py-10 text-white sm:py-12 lg:py-14"
       aria-roledescription="carousel"
       aria-label="What our trade partners say"
       onFocusCapture={() => setPaused(true)}
@@ -95,12 +153,9 @@ export function TestimonialsCarousel({
 
       {/* High-Contrast Foreground Content */}
       <div className="container-site relative z-10">
-        <h2 className="t-h2 max-w-[22ch] text-white">{withReg(heading)}</h2>
-        {isGoogleReviews ? (
-          <p className="t-small mt-3 text-white/70">Selected 4–5 star Google reviews</p>
-        ) : null}
+        <h2 className="t-h2 max-w-[33ch] text-white -translate-x-1 sm:-translate-x-2">{withReg(heading)}</h2>
 
-        <div ref={emblaRef} className="mt-8 overflow-hidden sm:mt-10">
+        <div ref={emblaRef} className="mt-7 overflow-hidden sm:mt-8">
           <div className="flex">
             {items.map((item, index) => (
               <figure
@@ -108,50 +163,72 @@ export function TestimonialsCarousel({
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`Quote ${index + 1} of ${items.length}`}
-                className="border-accent min-w-0 flex-[0_0_100%] border-l pl-8 sm:pl-10"
+                className="min-w-0 flex-[0_0_100%]"
               >
-                <blockquote>
-                  <p className="max-w-[52rem] text-[clamp(1.35rem,1.05rem+1.4vw,2.2rem)] leading-[1.3] font-light text-white">
-                    {withReg(item.quote)}
-                  </p>
-                </blockquote>
-                <figcaption className="t-small mt-6 text-white/70">
-                  {item.name ? (
-                    item.authorHref ? (
-                      <a
-                        href={item.authorHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline"
-                      >
-                        {item.name}
-                      </a>
-                    ) : (
-                      item.name
-                    )
-                  ) : (
-                    item.role
-                  )}
-                  {item.name ? <span className="text-white/60"> · {item.role}</span> : null}
-                  <TbcTag status={item.status} note="Name and city not yet supplied by the client" />
-                  {item.sourceHref ? (
-                    <a
-                      href={item.sourceHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ml-3 text-white underline"
-                    >
-                      Google review
-                    </a>
-                  ) : null}
-                </figcaption>
+                <div className="max-w-[54rem] py-2 sm:py-3">
+                  <div className="flex items-center gap-4">
+                    <Quote
+                      className="h-9 w-9 fill-white text-white sm:h-11 sm:w-11"
+                      aria-hidden="true"
+                    />
+                    {isGoogleReviews ? <GoogleReviewsBrand /> : null}
+                  </div>
+
+                  <div
+                    className="mt-6 flex items-center gap-2"
+                    aria-label={`${item.rating ?? 4.5} out of 5 stars`}
+                  >
+                    <span className="text-sm font-semibold text-white sm:text-base">
+                      {(item.rating ?? 4.5).toFixed(1)}
+                    </span>
+                    <div className="flex gap-1 text-[#fbbc04]">
+                      {Array.from({ length: 5 }, (_, star) => (
+                        <Star key={star} className="h-4 w-4 fill-current sm:h-5 sm:w-5" aria-hidden="true" />
+                      ))}
+                    </div>
+                  </div>
+
+                  <blockquote className="mt-5">
+                    <p className="max-w-[44rem] text-[clamp(1.25rem,1rem+1.1vw,1.9rem)] leading-[1.38] font-light text-white">
+                      {withReg(item.quote)}
+                    </p>
+                  </blockquote>
+
+                  <figcaption className="mt-6 flex items-center gap-3 pt-2">
+                    <ReviewerAvatar name={item.name} index={index} />
+                    <div className="min-w-0">
+                      {item.name ? (
+                        item.authorHref ? (
+                          <a
+                            href={item.authorHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-white underline-offset-4 hover:underline"
+                          >
+                            {item.name}
+                          </a>
+                        ) : (
+                          <p className="font-medium text-white">{item.name}</p>
+                        )
+                      ) : (
+                        <p className="font-medium text-white">{item.role}</p>
+                      )}
+                      {!isGoogleReviews && (item.role || item.status === "tbc") ? (
+                        <div className="t-small mt-0.5 flex flex-wrap items-center gap-x-2 text-white/65">
+                          {item.name && item.role ? <span>{item.role}</span> : null}
+                          <TbcTag status={item.status} note="Name and city not yet supplied by the client" />
+                        </div>
+                      ) : null}
+                    </div>
+                  </figcaption>
+                </div>
               </figure>
             ))}
           </div>
         </div>
 
         {items.length > 1 ? (
-          <div className="mt-7 flex items-center gap-2 pl-8 sm:pl-10">
+          <div className="mt-7 flex items-center gap-2">
             {items.map((item, index) => (
               <button
                 key={item.quote}

@@ -20,6 +20,7 @@ type PlaceDetailsResponse = {
 export type GoogleReviewTestimonial = Testimonial & {
   authorHref?: string;
   sourceHref?: string;
+  rating?: number;
 };
 
 const FIELD_MASK = "googleMapsUri,reviews";
@@ -57,8 +58,9 @@ export async function getPositiveGoogleReviews(): Promise<GoogleReviewTestimonia
       .map((review) => ({
         quote: review.text.text.trim(),
         name: review.authorAttribution?.displayName ?? null,
-        role: "Google review · 4–5 stars",
+        role: "",
         status: "confirmed" as const,
+        rating: review.rating,
         authorHref: review.authorAttribution?.uri,
         sourceHref: review.googleMapsUri ?? place.googleMapsUri,
       }));
