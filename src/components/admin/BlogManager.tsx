@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
-import { Eye, FilePlus2, Pencil, Search, Trash2 } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { Eye, FilePlus2, ImageUp, Pencil, Search, Trash2 } from "lucide-react";
 
-import { blogInputSchema, type AdminBlog, type BlogStatus } from "@/lib/admin/schemas";
+import { blogInputSchema, type AdminBlog, type AdminImage, type BlogStatus } from "@/lib/admin/schemas";
 
 import { Markdown, adminTheme } from "@/components/markdown/Markdown";
 import { request } from "./request";
@@ -18,6 +18,7 @@ import {
   Field,
   formatDate,
   inputClass,
+  labelClass,
   Modal,
   NoticeBar,
   type Notice,
@@ -63,6 +64,41 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
   const [touched, setTouched] = useState<Set<string>>(new Set());
   const [attempted, setAttempted] = useState(false);
   const [confirming, setConfirming] = useState<AdminBlog | null>(null);
+  const coverRef = useRef<HTMLInputElement>(null);
+  const [coverBusy, setCoverBusy] = useState(false);
+  const [coverError, setCoverError] = useState<string | null>(null);
+
+  /**
+   * Upload a cover straight from the editor, rather than making the writer
+   * find a path and paste it in.
+   *
+   * It goes through the same endpoint as the gallery, so the file is managed
+   * and deletable like any other, but it is marked as a cover so it does not
+   * turn up as a swatch on the home page. Alt text is required by the API and
+   * a cover is decorative next to its own headline, so the post's title is
+   * sent as a reasonable description rather than prompting for one.
+   */
+  async function uploadCover(file: File) {
+    const body = new FormData();
+    body.set("file", file);
+    body.set("usage", "cover");
+    body.set("title", draft.title ? `Cover: ${draft.title}` : file.name);
+    body.set("alt", draft.title || file.name);
+
+    setCoverBusy(true);
+    setCoverError(null);
+    const result = await request<{ image: AdminImage }>("/api/admin/images", {
+      method: "POST",
+      body,
+    });
+    setCoverBusy(false);
+
+    if (!result.ok) {
+      setCoverError(result.fieldErrors?.file ?? result.error);
+      return;
+    }
+    edit("coverImage", result.data.image.src);
+  }
 
   // Validated on every keystroke against the same schema the API uses, so the
   // form cannot disagree with the server about what is acceptable.
@@ -108,6 +144,7 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
     setTouched(new Set());
     setAttempted(false);
     setServerErrors({});
+    setCoverError(null);
     setEditorFor("new");
   }
 
@@ -127,6 +164,7 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
     setTouched(new Set());
     setAttempted(false);
     setServerErrors({});
+    setCoverError(null);
     setEditorFor(blog.id);
   }
 
@@ -401,20 +439,76 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
             )}
           </Field>
 
-          <Field
-            label="Cover image"
-            error={errors.coverImage}
-            hint="A path under /public, for example /images/gallery/03-white-jacquard.jpg"
-          >
-            {(props) => (
-              <input
-                {...props}
-                className={inputClass}
-                value={draft.coverImage}
-                onChange={(event) => edit("coverImage", event.target.value)}
-              />
+          <div className="space-y-1.5">
+            <p className={labelClass}>Cover image</p>
+
+            {draft.coverImage ? (
+              <div className="flex items-start gap-3">
+                <div className="relative h-20 w-32 shrink-0 overflow-hidden rounded border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
+                  <Image src={draft.coverImage} alt="" fill sizes="128px" className="object-cover" />
+                </div>
+                <div className="min-w-0 flex-1 space-y-2">
+                  <p className="font-mono text-[11px] break-all text-slate-400 dark:text-slate-500">
+                    {draft.coverImage}
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      className={buttonQuiet}
+                      onClick={() => coverRef.current?.click()}
+                      disabled={coverBusy}
+                    >
+                      <ImageUp size={14} aria-hidden="true" />
+                      {coverBusy ? "Uploading…" : "Replace"}
+                    </button>
+                    <button
+                      type="button"
+                      className={buttonQuiet}
+                      onClick={() => edit("coverImage", "")}
+                      disabled={coverBusy}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className={buttonQuiet}
+                onClick={() => coverRef.current?.click()}
+                disabled={coverBusy}
+              >
+                <ImageUp size={14} aria-hidden="true" />
+                {coverBusy ? "Uploading…" : "Upload a cover image"}
+              </button>
             )}
-          </Field>
+
+            {/* The picker itself stays hidden: the buttons above are the control,
+                and a bare file input cannot show the image already chosen. */}
+            <input
+              ref={coverRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/avif,image/gif"
+              className="sr-only"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                // Clear the input first, so choosing the same file twice after a
+                // failure still fires a change event.
+                event.target.value = "";
+                if (file) void uploadCover(file);
+              }}
+            />
+
+            {errors.coverImage || coverError ? (
+              <p className="text-xs text-red-600 dark:text-red-400">{coverError ?? errors.coverImage}</p>
+            ) : (
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                JPEG, PNG, WebP, AVIF or GIF, up to 8MB. It is stored with the site&rsquo;s other images but
+                stays out of the home page gallery.
+              </p>
+            )}
+          </div>
 
           <Field label="Excerpt" error={errors.excerpt}>
             {(props) => (

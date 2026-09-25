@@ -18,6 +18,12 @@ export const imageSchema = z.object({
   alt: z.string().trim().min(1, "Alt text is required.").max(240),
   category: z.string().trim().max(60).default(""),
   caption: z.string().trim().max(400).default(""),
+  /**
+   * What the image is for. Gallery images are the swatches on the home page;
+   * covers are uploaded from the blog editor and must stay out of that grid,
+   * while still being managed and deletable like any other file.
+   */
+  usage: z.enum(["gallery", "cover"]).default("gallery"),
   /** Set only for files this panel wrote, so delete knows what it may remove. */
   fileName: z.string().nullable().default(null),
   sizeBytes: z.number().int().nonnegative().nullable().default(null),

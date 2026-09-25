@@ -8,6 +8,7 @@ import type { AdminImage } from "@/lib/admin/schemas";
 
 import { request } from "./request";
 import {
+  Badge,
   buttonDanger,
   buttonPrimary,
   buttonQuiet,
@@ -200,7 +201,14 @@ export function ImageManager({ initial }: { initial: AdminImage[] }) {
               </div>
               <div className="space-y-2 p-4">
                 <div className="flex items-start justify-between gap-3">
-                  <p className="text-sm font-semibold break-words">{image.title}</p>
+                  <p className="text-sm font-semibold break-words">
+                    {image.title}
+                    {image.usage === "cover" ? (
+                      <span className="ml-2 align-middle">
+                        <Badge>Blog cover</Badge>
+                      </span>
+                    ) : null}
+                  </p>
                   {image.category ? (
                     <span className="shrink-0 text-xs text-slate-500 dark:text-slate-400">
                       {image.category}
@@ -214,6 +222,7 @@ export function ImageManager({ initial }: { initial: AdminImage[] }) {
                 <p className="text-[11px] text-slate-400 dark:text-slate-500">
                   Added {formatDate(image.uploadedAt)}
                   {image.fileName ? "" : " · shipped with the site"}
+                  {image.usage === "cover" ? " · not shown in the home gallery" : ""}
                 </p>
                 <div className="flex gap-2 pt-1">
                   <button

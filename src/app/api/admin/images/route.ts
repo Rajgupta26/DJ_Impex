@@ -58,6 +58,7 @@ export async function POST(request: Request) {
     }
 
     const title = String(form.get("title") ?? "").trim() || file.name;
+    const usage: AdminImage["usage"] = form.get("usage") === "cover" ? "cover" : "gallery";
     const candidate = {
       id: newId(),
       src: "",
@@ -65,6 +66,7 @@ export async function POST(request: Request) {
       alt: String(form.get("alt") ?? "").trim(),
       category: String(form.get("category") ?? "").trim(),
       caption: String(form.get("caption") ?? "").trim(),
+      usage,
       fileName: null,
       sizeBytes: file.size,
       uploadedAt: nowIso(),
