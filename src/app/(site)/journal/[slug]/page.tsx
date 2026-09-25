@@ -11,7 +11,21 @@ import { getSite } from "@/lib/content";
 
 type Params = { params: Promise<{ slug: string }> };
 
-export const revalidate = 3600;
+/**
+ * Rendered per request rather than served from the CDN's cache.
+ *
+ * These pages show content the admin panel writes, and `revalidate` plus
+ * `revalidatePath` did not make that reliable on Vercel: measured against
+ * production, consecutive requests after one edit alternated between the old
+ * and the new copy, because the page is cached at several edge nodes that
+ * regenerate independently. A panel that reports success while the website
+ * shows yesterday's text is the whole complaint, so correctness wins here.
+ *
+ * The cost is a server render and one store read per request. If that shows up
+ * in the page timings, cache the store read on a short tag rather than putting
+ * the HTML back in the edge cache.
+ */
+export const dynamic = "force-dynamic";
 
 /**
  * Only the MDX posts are prerendered. A post written in the admin panel is

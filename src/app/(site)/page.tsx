@@ -55,13 +55,20 @@ const HERO_MEDIA: HeroSlideView["media"][] = [
 ];
 
 /**
- * Static, rebuilt when the admin panel adds or removes a gallery image (the
- * images API calls revalidatePath) and hourly as a safety net.
+ * Rendered per request rather than served from the CDN's cache.
  *
- * The page is async for the Google reviews fetch; the gallery read it now also
- * does is awaited inside NabeenGallery.
+ * These pages show content the admin panel writes, and `revalidate` plus
+ * `revalidatePath` did not make that reliable on Vercel: measured against
+ * production, consecutive requests after one edit alternated between the old
+ * and the new copy, because the page is cached at several edge nodes that
+ * regenerate independently. A panel that reports success while the website
+ * shows yesterday's text is the whole complaint, so correctness wins here.
+ *
+ * The cost is a server render and one store read per request. If that shows up
+ * in the page timings, cache the store read on a short tag rather than putting
+ * the HTML back in the edge cache.
  */
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const site = getSite();

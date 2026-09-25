@@ -27,10 +27,20 @@ export const metadata: Metadata = buildMetadata({
  * takes the excerpt from the post's own front matter, so that is gone.
  */
 /**
- * Rebuilt on demand when the panel changes a post (the blogs API calls
- * revalidatePath), and at most an hour after any change that misses that.
+ * Rendered per request rather than served from the CDN's cache.
+ *
+ * These pages show content the admin panel writes, and `revalidate` plus
+ * `revalidatePath` did not make that reliable on Vercel: measured against
+ * production, consecutive requests after one edit alternated between the old
+ * and the new copy, because the page is cached at several edge nodes that
+ * regenerate independently. A panel that reports success while the website
+ * shows yesterday's text is the whole complaint, so correctness wins here.
+ *
+ * The cost is a server render and one store read per request. If that shows up
+ * in the page timings, cache the store read on a short tag rather than putting
+ * the HTML back in the edge cache.
  */
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function JournalPage() {
   const [lead, ...rest] = await getJournalPosts();
