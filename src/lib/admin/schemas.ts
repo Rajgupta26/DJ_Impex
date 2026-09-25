@@ -64,15 +64,54 @@ export type EnquiryStatus = AdminEnquiry["status"];
 export const BLOG_STATUSES: readonly BlogStatus[] = ["draft", "published"];
 export const ENQUIRY_STATUSES: readonly EnquiryStatus[] = ["unread", "read", "replied"];
 
-/** The fields a client may send when creating or editing. Ids and stamps are ours. */
-export const imagePatchSchema = imageSchema
-  .pick({ title: true, alt: true, category: true, caption: true })
+/** The fields a client may send when creating. Ids and stamps are ours. */
+export const blogInputSchema = blogSchema.omit({ id: true, updatedAt: true });
+
+/**
+ * The patch schemas are written out by hand, without defaults, and that is the
+ * whole point of them.
+ *
+ * `.partial()` does not remove a field's `.default()`: parsing `{ title: "x" }`
+ * against a partialled schema returns every defaulted field as well, set to its
+ * default. Merging that over a stored row does not patch it, it resets it.
+ * Pressing Publish sent `{ status }` alone and silently blanked the post's
+ * body, excerpt, cover image, author and category on the way through -- and
+ * because `status` itself defaults to "draft", a patch that left it out
+ * unpublished the post. It saved successfully every time, which is why this
+ * looked like the website failing to pick changes up.
+ *
+ * Nothing here carries a default, so an absent key stays absent and a patch
+ * only touches what was actually sent.
+ */
+export const imagePatchSchema = z
+  .object({
+    title: z.string().trim().min(1, "Please add a title.").max(120),
+    alt: z.string().trim().min(1, "Alt text is required.").max(240),
+    category: z.string().trim().max(60),
+    caption: z.string().trim().max(400),
+  })
   .partial();
 
-export const blogInputSchema = blogSchema.omit({ id: true, updatedAt: true });
-export const blogPatchSchema = blogInputSchema.partial();
+export const blogPatchSchema = z
+  .object({
+    slug: z
+      .string()
+      .trim()
+      .min(1, "Please add a slug.")
+      .max(120)
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Lower case letters, numbers and hyphens only."),
+    title: z.string().trim().min(1, "Please add a title.").max(160),
+    excerpt: z.string().trim().max(400),
+    category: z.string().trim().max(60),
+    content: z.string(),
+    coverImage: z.string().trim(),
+    author: z.string().trim().max(80),
+    publishedDate: isoDate,
+    status: z.enum(["draft", "published"]),
+  })
+  .partial();
 
-export const enquiryPatchSchema = enquirySchema.pick({ status: true }).partial();
+export const enquiryPatchSchema = z.object({ status: z.enum(["unread", "read", "replied"]) }).partial();
 
 export function titleCase(value: string): string {
   return value.charAt(0).toUpperCase() + value.slice(1);
