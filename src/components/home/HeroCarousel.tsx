@@ -43,13 +43,7 @@ const FILM_INTERVAL = 13000;
  * moving across it. Autoplay has a visible pause control (WCAG 2.2.2) and stops
  * under prefers-reduced-motion.
  */
-export function HeroCarousel({
-  slides,
-  whatsappHref,
-}: {
-  slides: HeroSlideView[];
-  whatsappHref: string;
-}) {
+export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]; whatsappHref: string }) {
   const reduceMotion = useReducedMotion();
   const [emblaRef, embla] = useEmblaCarousel({ loop: true, duration: 40 }, [Fade()]);
   const [selected, setSelected] = useState(0);
@@ -87,7 +81,7 @@ export function HeroCarousel({
       data-hero
       aria-roledescription="carousel"
       aria-label="Nabeen fabrics"
-      className="on-dark relative h-screen h-[100dvh] min-h-[36rem] overflow-hidden bg-navy-deep text-white"
+      className="on-dark bg-navy-deep relative h-[100dvh] h-screen min-h-[36rem] overflow-hidden text-white"
     >
       <div ref={emblaRef} className="h-full">
         <div className="flex h-full">
@@ -156,20 +150,10 @@ export function HeroCarousel({
       />
 
       <div className="container-site absolute inset-x-0 bottom-[clamp(3.5rem,10vh,6.5rem)]">
-        <HeroWords
-          slide={active}
-          slideKey={selected}
-          reduceMotion={Boolean(reduceMotion)}
-          rise={!advanced}
-        />
+        <HeroWords slide={active} slideKey={selected} reduceMotion={Boolean(reduceMotion)} rise={!advanced} />
 
         <div className="mt-9 flex flex-wrap items-center gap-4">
-          <TrackedLink
-            href={whatsappHref}
-            event="whatsapp_click"
-            location="hero"
-            className="btn btn-on-dark"
-          >
+          <TrackedLink href={whatsappHref} event="whatsapp_click" location="hero" className="btn btn-on-dark">
             <WhatsAppGlyph size={20} />
             <span>Enquire on WhatsApp</span>
           </TrackedLink>
@@ -180,9 +164,7 @@ export function HeroCarousel({
             </Link>
           ) : (
             <Link href="/about" className="btn btn-ghost">
-              <span>
-                Read our story
-              </span>
+              <span>Read our story</span>
             </Link>
           )}
         </div>
@@ -246,14 +228,14 @@ function HeroVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
-  const allowed = useCanStream();
+  const autoplayAllowed = useCanAutoplay();
   // Mirrors the element rather than guessing: a browser can refuse autoplay, and
   // the viewer can use the control below, so React must not assume either.
   const [paused, setPaused] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !allowed) return;
+    if (!video) return;
 
     const sync = () => setPaused(video.paused);
     video.addEventListener("play", sync);
@@ -265,7 +247,7 @@ function HeroVideo({
     // end a browser that refuses autoplay produced, because the rejected promise
     // was swallowed. Autoplay is still suppressed; the control below is how the
     // viewer starts it.
-    if (active && playing && !reduceMotion) {
+    if (active && playing && !reduceMotion && autoplayAllowed) {
       void video.play().catch(() => setPaused(true));
     } else {
       video.pause();
@@ -275,7 +257,7 @@ function HeroVideo({
       video.removeEventListener("play", sync);
       video.removeEventListener("pause", sync);
     };
-  }, [active, playing, reduceMotion, allowed]);
+  }, [active, playing, reduceMotion, autoplayAllowed]);
 
   const toggle = () => {
     const video = videoRef.current;
@@ -286,43 +268,39 @@ function HeroVideo({
 
   return (
     <div className="absolute inset-0">
-      {allowed ? (
-        <>
-          <video
-            ref={videoRef}
-            className="h-full w-full object-cover"
-            poster={poster}
-            // "none" made the first play() slow and easy to lose. Metadata is a
-            // few kilobytes and the poster still carries the frame; the heavy
-            // guard against metered connections is useCanStream, above.
-            preload="metadata"
-            muted
-            loop
-            playsInline
-            aria-label={alt}
-          >
-            <source src={src} type="video/mp4" />
-          </video>
+      <video
+        ref={videoRef}
+        className="h-full w-full object-cover"
+        poster={poster}
+        // Metadata when the film may start by itself; nothing at all when it may
+        // not, so a Data Saver visitor downloads only the poster until they ask
+        // for the film. Either way the element is here and the control works.
+        preload={autoplayAllowed ? "metadata" : "none"}
+        muted
+        loop
+        playsInline
+        aria-label={alt}
+      >
+        <source src={src} type="video/mp4" />
+      </video>
 
-          {/* Top right, clear of the header above it and of the floating contact
-              buttons at the bottom right. Moving content needs a way to stop it
-              (WCAG 2.2.2), and suppressed autoplay needs a way to start it. */}
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={paused ? "Play the film" : "Pause the film"}
-            className="absolute right-5 top-[6.5rem] z-10 flex h-11 w-11 items-center justify-center border border-white/50 bg-navy-deep/45 text-white backdrop-blur-sm transition-colors duration-[var(--duration-quick)] hover:bg-navy-deep/70 md:right-8"
-          >
-            {paused ? (
-              <Play aria-hidden="true" size={18} strokeWidth={1.6} className="ml-0.5" />
-            ) : (
-              <Pause aria-hidden="true" size={18} strokeWidth={1.6} />
-            )}
-          </button>
-        </>
-      ) : (
-        <Image src={poster} alt={alt} fill sizes="100vw" priority className="object-cover" />
-      )}
+      {/* Top right, clear of the header above it and of the floating contact
+          buttons at the bottom right. Moving content needs a way to stop it
+          (WCAG 2.2.2), and suppressed autoplay needs a way to start it --
+          whether it was suppressed by reduced motion, by Data Saver, or by a
+          browser refusing to autoplay at all. */}
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={paused ? "Play the film" : "Pause the film"}
+        className="bg-navy-deep/45 hover:bg-navy-deep/70 absolute top-[6.5rem] right-5 z-10 flex h-11 w-11 items-center justify-center border border-white/50 text-white backdrop-blur-sm transition-colors duration-[var(--duration-quick)] md:right-8"
+      >
+        {paused ? (
+          <Play aria-hidden="true" size={18} strokeWidth={1.6} className="ml-0.5" />
+        ) : (
+          <Pause aria-hidden="true" size={18} strokeWidth={1.6} />
+        )}
+      </button>
     </div>
   );
 }
@@ -330,11 +308,23 @@ function HeroVideo({
 type NetworkInformation = EventTarget & { saveData?: boolean; effectiveType?: string };
 
 /**
- * Do not pull several megabytes down a metered or slow connection: a buyer in Kano
- * on mobile data gets the poster frame instead. The server snapshot is false, so
- * nothing is requested until the client has looked at the connection.
+ * Whether the film may start on its own. It is not permission to exist: the
+ * element and its control render either way, so a viewer can always press play.
+ *
+ * This used to refuse "3g" as well, and that was wrong. `effectiveType` is an
+ * estimate from recent round-trip times, not a description of the hardware, and
+ * a healthy broadband connection is routinely reported as "3g" while the page
+ * is still loading. The film was therefore suppressed for ordinary visitors on
+ * ordinary connections -- measured on production, where the browser reported
+ * "3g" and no <video> was rendered at all, leaving a still poster that reads as
+ * a video someone has paused.
+ *
+ * What is left is the case the guard was written for: an explicit Data Saver
+ * request, or a connection genuinely too slow to stream several megabytes. The
+ * server snapshot is false, so nothing is requested before the client has
+ * looked.
  */
-function useCanStream(): boolean {
+function useCanAutoplay(): boolean {
   return useSyncExternalStore(
     (onChange) => {
       const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
@@ -345,7 +335,7 @@ function useCanStream(): boolean {
       const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
       if (!connection) return true;
       if (connection.saveData) return false;
-      return !["slow-2g", "2g", "3g"].includes(connection.effectiveType ?? "");
+      return !["slow-2g", "2g"].includes(connection.effectiveType ?? "");
     },
     () => false,
   );
