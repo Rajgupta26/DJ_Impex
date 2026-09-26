@@ -2,7 +2,38 @@ import type { Metadata } from "next";
 
 import { getSite } from "@/lib/content";
 
-export const SITE_URL = "https://www.djimpex.in";
+/**
+ * The address the site tells the world it lives at: every canonical link, Open
+ * Graph URL, sitemap entry and JSON-LD reference is built from it.
+ *
+ * It used to be hard-coded to https://www.djimpex.in, which returns 404 -- the
+ * domain is registered but not pointed at this deployment, and djimpex.in
+ * itself redirects to an expired-subscription page on the old host. Every page
+ * was therefore telling search engines that its canonical version lived at a
+ * dead URL, which is enough on its own to keep the site out of an index, and
+ * every shared link showed a broken preview image.
+ *
+ * So it is no longer a guess. NEXT_PUBLIC_SITE_URL wins when it is set, which
+ * is what to use the moment the real domain is attached. Otherwise Vercel's own
+ * production domain is used, which is always a URL that actually resolves.
+ * Localhost is the last resort, for a plain checkout.
+ */
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "");
+  if (explicit) return explicit;
+
+  // Set by Vercel to the project's production domain: the custom one once it is
+  // attached, the .vercel.app one until then. The non-public name is safe here
+  // because every caller is server-side (metadata, sitemap, robots, JSON-LD),
+  // so this does not depend on the "expose system environment variables"
+  // project setting being on.
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (vercel) return `https://${vercel.replace(/^https?:\/\//, "").replace(/\/$/, "")}`;
+
+  return "http://localhost:3001";
+}
+
+export const SITE_URL = resolveSiteUrl();
 
 /** "{Page} | Nabeen® Luxury Fabrics by DJI" */
 export function pageTitle(title: string): string {

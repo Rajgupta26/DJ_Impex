@@ -45,7 +45,16 @@ export async function getPositiveGoogleReviews(): Promise<GoogleReviewTestimonia
     });
 
     if (!response.ok) {
-      console.error("[google-reviews] Google Places request failed:", response.status);
+      // The status alone is unactionable: a 400 from Places means a malformed
+      // place id, a rejected field mask or a key restriction, and they are not
+      // distinguishable without the body. This was failing on every home page
+      // request with nothing in the log but "400".
+      const detail = await response.text().catch(() => "");
+      console.error(
+        "[google-reviews] Google Places request failed: %s %s",
+        response.status,
+        detail.slice(0, 400),
+      );
       return null;
     }
 
