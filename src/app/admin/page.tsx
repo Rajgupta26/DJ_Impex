@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Fragment } from "react";
 import { Images, Mail, Newspaper } from "lucide-react";
 
 import { loadCollection } from "@/lib/admin/load";
+import { mailChecks, mailWorking } from "@/lib/admin/health";
 import { storageLabel } from "@/lib/admin/store";
 
 export const dynamic = "force-dynamic";
@@ -62,6 +64,8 @@ async function counts(): Promise<{ tiles: Tile[]; problems: string[] }> {
 export default async function AdminDashboard() {
   const { tiles, problems } = await counts();
   const where = storageLabel();
+  const mail = mailChecks();
+  const mailOk = mailWorking();
 
   return (
     <div className="space-y-6">
@@ -103,6 +107,35 @@ export default async function AdminDashboard() {
           </li>
         ))}
       </ul>
+
+      <div
+        className={`rounded-lg border p-5 text-sm ${
+          mailOk
+            ? "border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
+            : "border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950"
+        }`}
+      >
+        <h2 className="font-semibold">Enquiry email</h2>
+        {mailOk ? (
+          <p className="mt-2 text-slate-600 dark:text-slate-300">
+            Configured. Enquiries are emailed as well as saved here.
+          </p>
+        ) : (
+          <p className="mt-2 text-red-900 dark:text-red-200">
+            Not configured, so the form tells visitors it could not send and points them at WhatsApp. The
+            enquiries themselves are still saved on this panel&rsquo;s Enquiries screen, so nothing is lost.
+            Set the missing values in the Vercel project settings and redeploy.
+          </p>
+        )}
+        <dl className="mt-3 grid gap-x-6 gap-y-1 sm:grid-cols-[12rem_1fr]">
+          {mail.map((check) => (
+            <Fragment key={check.label}>
+              <dt className="text-slate-500 dark:text-slate-400">{check.label}</dt>
+              <dd className={check.ok ? "" : "font-medium text-red-700 dark:text-red-300"}>{check.detail}</dd>
+            </Fragment>
+          ))}
+        </dl>
+      </div>
 
       <div className="rounded-lg border border-slate-200 bg-white p-5 text-sm dark:border-slate-800 dark:bg-slate-900">
         <h2 className="font-semibold">Where things are stored</h2>
