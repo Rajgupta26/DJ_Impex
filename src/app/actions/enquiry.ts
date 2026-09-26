@@ -248,10 +248,35 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
     };
   }
 
-  // Keep a copy in data/enquiries.json for the admin panel. This runs before
-  // the send so a mail failure still leaves the lead somewhere a person looks,
-  // and it never throws: delivery is email's job, not this file's.
-  await recordEnquiry(enquiry);
+  // Store the enquiry before attempting the send, so a mail failure still
+  // leaves the lead somewhere a person looks. It never throws.
+  const stored = await recordEnquiry(enquiry);
+
+  /**
+   * What to tell the customer when the email does not go out.
+   *
+   * This used to fail loudly in every case, on the reasoning that a form which
+   * lies about delivering is worse than one that fails. That was right when the
+   * only other copy was a line in a server log that rolls off a serverless host.
+   * It is no longer the situation: the enquiry is now in the admin panel's
+   * store, which survives a deploy and is the screen the team actually reads.
+   *
+   * So a stored enquiry is a received enquiry, and saying otherwise turns a
+   * captured lead into a customer who has been told to go away. The wording
+   * says "received" rather than "sent", because received is what is true.
+   * A failure is still logged at error level, and the panel's dashboard says
+   * plainly that mail is misconfigured.
+   */
+  const whenMailFails = (): EnquiryState =>
+    stored
+      ? {
+          status: "success",
+          message: "Enquiry received. Our team will contact you on WhatsApp shortly.",
+        }
+      : {
+          status: "error",
+          message: "We could not send your enquiry just now. Please message us on WhatsApp.",
+        };
 
   const rawUser = process.env.EMAIL_USER || process.env.SMTP_USER;
   const rawPass = process.env.EMAIL_PASS || process.env.SMTP_PASS;
@@ -288,10 +313,7 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
       "[enquiry] SMTP is not configured (EMAIL_USER / EMAIL_PASS are unset), so this enquiry was NOT sent:\n%s",
       asText(enquiry),
     );
-    return {
-      status: "error",
-      message: "We could not send your enquiry just now. Please message us on WhatsApp.",
-    };
+    return whenMailFails();
   }
 
   try {
@@ -341,10 +363,7 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
     }
   } catch (error) {
     console.error("[enquiry] Nodemailer send failed:", error);
-    return {
-      status: "error",
-      message: "We could not send your enquiry just now. Please message us on WhatsApp.",
-    };
+    return whenMailFails();
   }
 
   return {

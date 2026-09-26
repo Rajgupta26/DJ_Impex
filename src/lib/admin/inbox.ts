@@ -9,12 +9,14 @@ import { mutate, newId, nowIso } from "./store";
 const MAX_ROWS = 500;
 
 /**
- * Append a website enquiry to data/enquiries.json so it appears in the admin
- * panel. Email is still the primary delivery: this is a second copy, and it must
- * never be the reason a customer sees a failure. Every error is swallowed and
- * logged, deliberately.
+ * Append a website enquiry to the panel's store, and say whether it landed.
+ *
+ * It must never be the reason a customer sees a failure, so every error is
+ * swallowed and logged. The return value matters though: if the enquiry is
+ * safely stored, a failed email is no longer a lost lead, and the caller can
+ * tell the customer the truth rather than turning them away.
  */
-export async function recordEnquiry(enquiry: Enquiry): Promise<void> {
+export async function recordEnquiry(enquiry: Enquiry): Promise<boolean> {
   const details = [
     `WhatsApp: ${enquiry.countryCode} ${enquiry.whatsappNumber}`,
     enquiry.fabrics.length ? `Fabrics of interest: ${enquiry.fabrics.join(", ")}` : null,
@@ -36,7 +38,9 @@ export async function recordEnquiry(enquiry: Enquiry): Promise<void> {
 
   try {
     await mutate("enquiries", (rows) => ({ rows: [row, ...rows].slice(0, MAX_ROWS), result: null }));
+    return true;
   } catch (error) {
-    console.error("[enquiry] Could not append to data/enquiries.json:", error);
+    console.error("[enquiry] Could not append the enquiry to the panel's store:", error);
+    return false;
   }
 }
