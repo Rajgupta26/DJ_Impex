@@ -8,6 +8,7 @@ import { TestimonialsCarousel } from "@/components/home/TestimonialsCarousel";
 import { getBrandFilm, getHeroSlides, getPage, getSite } from "@/lib/content";
 import { whatsappLink } from "@/lib/contact";
 import { getGoogleRating, getPositiveGoogleReviews } from "@/lib/google-reviews";
+import { slotMap } from "@/lib/slots";
 import { field, section } from "@/lib/markdown";
 import { visible } from "@/lib/site";
 
@@ -77,6 +78,7 @@ export default async function HomePage() {
   const googleReviews = await getPositiveGoogleReviews();
   // Same cached Places call as the reviews above, so this costs nothing extra.
   const googleRating = await getGoogleRating();
+  const slots = await slotMap();
   const hasGoogleReviews = (googleReviews?.length ?? 0) > 0;
   const testimonials = googleReviews && googleReviews.length > 0 ? googleReviews : fallbackTestimonials;
 
@@ -88,10 +90,16 @@ export default async function HomePage() {
         kind: "video",
         src: film.src,
         // The film's own first frame, at the footage's 9:16, not the landscape crop.
-        poster: film.poster ?? MARCONI_POSTER,
-        alt: MARCONI_ALT,
+        // The backdrop is a replaceable slot; the film still plays over it.
+        poster: slots["home-hero"]?.src ?? film.poster ?? MARCONI_POSTER,
+        alt: slots["home-hero"]?.alt ?? MARCONI_ALT,
       }
-    : { kind: "image", src: MARCONI_POSTER, alt: MARCONI_ALT, position: "74% center" };
+    : {
+        kind: "image",
+        src: slots["home-hero"]?.src ?? MARCONI_POSTER,
+        alt: slots["home-hero"]?.alt ?? MARCONI_ALT,
+        position: "74% center",
+      };
 
   // One slide only, at the client's request. The other three slides' copy stays
   // in content/home.md, so restoring them is a one-line change here.

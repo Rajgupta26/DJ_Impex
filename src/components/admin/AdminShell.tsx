@@ -3,11 +3,23 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { ExternalLink, Images, LayoutDashboard, Mail, Menu, Moon, Newspaper, Sun, X } from "lucide-react";
+import {
+  ExternalLink,
+  Images,
+  LayoutDashboard,
+  LayoutPanelTop,
+  Mail,
+  Menu,
+  Moon,
+  Newspaper,
+  Sun,
+  X,
+} from "lucide-react";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", Icon: LayoutDashboard },
   { href: "/admin/images", label: "Image gallery", Icon: Images },
+  { href: "/admin/page-images", label: "Page images", Icon: LayoutPanelTop },
   { href: "/admin/blogs", label: "Blog manager", Icon: Newspaper },
   { href: "/admin/enquiries", label: "Enquiries", Icon: Mail },
 ] as const;

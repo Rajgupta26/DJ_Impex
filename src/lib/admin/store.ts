@@ -5,8 +5,8 @@ import path from "node:path";
 
 import { z } from "zod";
 
-import { blogSchema, enquirySchema, imageSchema } from "./schemas";
-import { blogSeed, enquirySeed, imageSeed } from "./seed";
+import { blogSchema, enquirySchema, imageSchema, slotSchema } from "./schemas";
+import { blogSeed, enquirySeed, imageSeed, slotSeed } from "./seed";
 import { storage, VersionConflict } from "./storage";
 
 /**
@@ -27,12 +27,13 @@ import { storage, VersionConflict } from "./storage";
 
 export const UPLOAD_URL_BASE = "/media";
 
-export type CollectionName = "images" | "blogs" | "enquiries";
+export type CollectionName = "images" | "blogs" | "enquiries" | "slots";
 
 const definitions = {
   images: { schema: imageSchema, seed: imageSeed },
   blogs: { schema: blogSchema, seed: blogSeed },
   enquiries: { schema: enquirySchema, seed: enquirySeed },
+  slots: { schema: slotSchema, seed: slotSeed },
 } as const;
 
 type Row<N extends CollectionName> = z.infer<(typeof definitions)[N]["schema"]>;

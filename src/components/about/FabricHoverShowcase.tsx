@@ -28,7 +28,8 @@ export const FABRIC_COLLECTION: FabricItem[] = [
     image: "/images/gallery/07-blush-stripe.jpg",
     alt: "Nabeen Cotton Shirting fabric in blush stripe crisp weave",
     weave: "Long-Staple Crisp Weave",
-    description: "High-grade spun cotton engineered for breathability, softness, and crisp garment silhouettes.",
+    description:
+      "High-grade spun cotton engineered for breathability, softness, and crisp garment silhouettes.",
   },
   {
     id: "swiss-voile",
@@ -44,7 +45,8 @@ export const FABRIC_COLLECTION: FabricItem[] = [
     image: "/images/gallery/01-aqua-jacquard.jpg",
     alt: "Nabeen Lace textured jacquard cloth",
     weave: "Textured Openwork Jacquard",
-    description: "Intricate geometric and floral openwork motifs designed for regal and celebratory occasions.",
+    description:
+      "Intricate geometric and floral openwork motifs designed for regal and celebratory occasions.",
   },
   {
     id: "atiku",
@@ -52,7 +54,8 @@ export const FABRIC_COLLECTION: FabricItem[] = [
     image: "/images/gallery/02-taupe-dobby.jpg",
     alt: "Nabeen Atiku dobby woven fabric",
     weave: "Structured Dobby Weave",
-    description: "Signature textured cotton renowned in West African couture for its crisp finish and rich body.",
+    description:
+      "Signature textured cotton renowned in West African couture for its crisp finish and rich body.",
   },
   {
     id: "voile",
@@ -60,7 +63,8 @@ export const FABRIC_COLLECTION: FabricItem[] = [
     image: "/images/gallery/06-mint-dobby.jpg",
     alt: "Nabeen Voile lightweight cloth",
     weave: "Airy Sheer Plain Weave",
-    description: "Lightweight, sheer fabric engineered for warm climates, offering continuous cooling comfort.",
+    description:
+      "Lightweight, sheer fabric engineered for warm climates, offering continuous cooling comfort.",
   },
   {
     id: "brocade",
@@ -68,7 +72,8 @@ export const FABRIC_COLLECTION: FabricItem[] = [
     image: "/images/gallery/05-camel-check-jacquard.jpg",
     alt: "Nabeen Brocade rich check jacquard fabric",
     weave: "Embossed Jacquard Twill",
-    description: "Opulent woven pattern with subtle luster and substantial hand, perfect for statement traditional wear.",
+    description:
+      "Opulent woven pattern with subtle luster and substantial hand, perfect for statement traditional wear.",
   },
   {
     id: "giza",
@@ -76,14 +81,15 @@ export const FABRIC_COLLECTION: FabricItem[] = [
     image: "/images/gallery/08-champagne-check.jpg",
     alt: "Nabeen Giza Egyptian cotton fabric",
     weave: "Extra-Long Staple Cotton",
-    description: "Spun from prestigious Giza Egyptian cotton fibers for peerless luster, strength, and softness.",
+    description:
+      "Spun from prestigious Giza Egyptian cotton fibers for peerless luster, strength, and softness.",
   },
 ];
 
 function resolveFabricItem(name: string, index: number): FabricItem {
   const normalized = name.toLowerCase().replace(/[^a-z0-9]/g, "");
   const match = FABRIC_COLLECTION.find(
-    (item) => item.name.toLowerCase().replace(/[^a-z0-9]/g, "") === normalized
+    (item) => item.name.toLowerCase().replace(/[^a-z0-9]/g, "") === normalized,
   );
   if (match) return match;
 
@@ -101,20 +107,34 @@ interface FabricHoverShowcaseProps {
   names: string[];
   collectionLead: string;
   collectionTail: string;
+  /**
+   * Slot id to image, from lib/slots, so the photographs paired with each
+   * fabric can be replaced from the admin panel. Anything not overridden falls
+   * back to the picture this file ships with.
+   */
+  images?: Record<string, { src: string; alt: string }>;
 }
 
 export function FabricHoverShowcase({
   names,
   collectionLead,
   collectionTail,
+  images,
 }: FabricHoverShowcaseProps) {
-  const items = names.map((name, idx) => resolveFabricItem(name, idx));
+  const items = names.map((name, idx) => {
+    const item = resolveFabricItem(name, idx);
+    const replacement = images?.[`fabric-${item.id}`];
+    return replacement ? { ...item, image: replacement.src, alt: replacement.alt } : item;
+  });
   const [activeItem, setActiveItem] = useState<FabricItem>(items[0] || FABRIC_COLLECTION[0]);
   const reduceMotion = useReducedMotion();
-  const activeIndex = Math.max(0, items.findIndex((item) => item.id === activeItem.id));
+  const activeIndex = Math.max(
+    0,
+    items.findIndex((item) => item.id === activeItem.id),
+  );
   const stackItems = Array.from(
     { length: Math.min(5, Math.max(0, items.length - 1)) },
-    (_, index) => items[(activeIndex + index + 1) % items.length]
+    (_, index) => items[(activeIndex + index + 1) % items.length],
   );
   const baseFabric = stackItems[stackItems.length - 1] || activeItem;
 
@@ -129,15 +149,11 @@ export function FabricHoverShowcase({
         <div className="lg:col-start-1">
           <p className="text-slate">{collectionLead}</p>
         </div>
-        <div className="hidden lg:block lg:col-start-2" aria-hidden="true" />
+        <div className="hidden lg:col-start-2 lg:block" aria-hidden="true" />
 
         {/* Row 2, Col 1: The 8 Fabric Words (Suiting to Giza) */}
         <div className="mt-5 lg:col-start-1 lg:row-start-2">
-          <div
-            role="tablist"
-            aria-label="Nabeen fabric collections"
-            className="border-b border-line"
-          >
+          <div role="tablist" aria-label="Nabeen fabric collections" className="border-line border-b">
             {items.map((item, index) => {
               const isActive = activeItem.id === item.id;
               return (
@@ -162,18 +178,14 @@ export function FabricHoverShowcase({
                   onMouseEnter={() => handleSelect(item)}
                   onFocus={() => handleSelect(item)}
                   onClick={() => handleSelect(item)}
-                  className={`group relative flex min-h-[4.5rem] w-full items-center gap-4 border-t border-line py-2 pl-4 text-left transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent sm:min-h-20 sm:py-2 ${
-                    isActive
-                      ? "text-navy font-normal"
-                      : "text-navy/65 hover:text-navy"
+                  className={`group border-line focus-visible:ring-accent relative flex min-h-[4.5rem] w-full items-center gap-4 border-t py-2 pl-4 text-left transition-all duration-300 ease-out focus-visible:ring-1 focus-visible:outline-none sm:min-h-20 sm:py-2 ${
+                    isActive ? "text-navy font-normal" : "text-navy/65 hover:text-navy"
                   }`}
                 >
                   {/* Active indicator bar in Selvedge Blue */}
                   <span
-                    className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] bg-accent transition-all duration-300 ease-out ${
-                      isActive
-                        ? "h-7 opacity-100"
-                        : "h-0 opacity-0 group-hover:h-3.5 group-hover:opacity-60"
+                    className={`bg-accent absolute top-1/2 left-0 w-[3px] -translate-y-1/2 transition-all duration-300 ease-out ${
+                      isActive ? "h-7 opacity-100" : "h-0 opacity-0 group-hover:h-3.5 group-hover:opacity-60"
                     }`}
                     aria-hidden="true"
                   />
@@ -217,7 +229,7 @@ export function FabricHoverShowcase({
 
                   {/* Micro visual cue: arrow that guides attention to the right-hand image */}
                   <span
-                    className={`ml-auto flex items-center gap-1.5 text-xs font-mono tracking-wider transition-all duration-300 ${
+                    className={`ml-auto flex items-center gap-1.5 font-mono text-xs tracking-wider transition-all duration-300 ${
                       isActive
                         ? "text-accent translate-x-0 opacity-100"
                         : "text-slate/40 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-70"
@@ -234,9 +246,9 @@ export function FabricHoverShowcase({
         </div>
 
         {/* Row 2, Col 2: One hero cutting overlaps five subtle fabric layers. */}
-        <div className="mt-8 lg:mt-5 lg:col-start-2 lg:row-start-2 flex flex-col">
-          <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl border border-line/60 bg-mist sm:aspect-[16/11] lg:h-[clamp(32rem,47vw,40rem)] lg:min-h-0 lg:aspect-auto flex flex-col">
-            <div className="relative flex-1 w-full min-h-0 overflow-hidden bg-mist">
+        <div className="mt-8 flex flex-col lg:col-start-2 lg:row-start-2 lg:mt-5">
+          <div className="border-line/60 bg-mist relative flex aspect-[4/3] w-full flex-col overflow-hidden rounded-2xl border sm:aspect-[16/11] lg:aspect-auto lg:h-[clamp(32rem,47vw,40rem)] lg:min-h-0">
+            <div className="bg-mist relative min-h-0 w-full flex-1 overflow-hidden">
               {/* A full cloth base fills the rounded overlap gaps behind every layer. */}
               <AnimatePresence initial={false}>
                 <motion.div
@@ -245,9 +257,7 @@ export function FabricHoverShowcase({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.99 }}
                   transition={
-                    reduceMotion
-                      ? { duration: 0.01 }
-                      : { duration: 0.58, ease: [0.22, 0.61, 0.36, 1] }
+                    reduceMotion ? { duration: 0.01 } : { duration: 0.58, ease: [0.22, 0.61, 0.36, 1] }
                   }
                   className="absolute inset-0"
                   aria-hidden="true"
@@ -272,25 +282,17 @@ export function FabricHoverShowcase({
                     animate={{ opacity: 1, x: 0 }}
                     exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -5 }}
                     transition={
-                      reduceMotion
-                        ? { duration: 0.01 }
-                        : { duration: 0.52, ease: [0.22, 0.61, 0.36, 1] }
+                      reduceMotion ? { duration: 0.01 } : { duration: 0.52, ease: [0.22, 0.61, 0.36, 1] }
                     }
-                    className="absolute inset-y-0 hidden w-[calc(2%+7px)] overflow-hidden rounded-l-lg border-l border-white/40 bg-navy-deep lg:block"
+                    className="bg-navy-deep absolute inset-y-0 hidden w-[calc(2%+7px)] overflow-hidden rounded-l-lg border-l border-white/40 lg:block"
                     style={{
                       right: `${(stackItems.length - index - 1) * 2}%`,
                       zIndex: stackItems.length - index,
                     }}
                     aria-hidden="true"
                   >
-                    <Image
-                      src={item.image}
-                      alt=""
-                      fill
-                      sizes="4vw"
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-navy-deep/15" />
+                    <Image src={item.image} alt="" fill sizes="4vw" className="object-cover" />
+                    <div className="bg-navy-deep/15 absolute inset-0" />
                   </motion.div>
                 </AnimatePresence>
               ))}
@@ -302,11 +304,9 @@ export function FabricHoverShowcase({
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -12, scale: 0.99 }}
                   transition={
-                    reduceMotion
-                      ? { duration: 0.01 }
-                      : { duration: 0.62, ease: [0.22, 0.61, 0.36, 1] }
+                    reduceMotion ? { duration: 0.01 } : { duration: 0.62, ease: [0.22, 0.61, 0.36, 1] }
                   }
-                  className="absolute inset-y-0 left-0 right-0 z-10 h-full overflow-hidden rounded-xl ring-1 ring-white/30 lg:right-[10%]"
+                  className="absolute inset-y-0 right-0 left-0 z-10 h-full overflow-hidden rounded-xl ring-1 ring-white/30 lg:right-[10%]"
                 >
                   <Image
                     src={activeItem.image}
@@ -319,16 +319,14 @@ export function FabricHoverShowcase({
 
                   {/* Caption & Weave information */}
                   <div className="absolute inset-x-0 bottom-0 p-6 text-white [text-shadow:0_1px_8px_rgb(13_23_51_/_0.8)] sm:p-7">
-                    <div className="flex items-center justify-between text-xs tracking-wider uppercase text-accent font-mono">
+                    <div className="text-accent flex items-center justify-between font-mono text-xs tracking-wider uppercase">
                       <span>{activeItem.weave}</span>
                       <span className="text-white/60">NABEEN® COLLECTION</span>
                     </div>
-                    <h3 className="t-h3 mt-1.5 text-white font-light text-2xl sm:text-3xl">
+                    <h3 className="t-h3 mt-1.5 text-2xl font-light text-white sm:text-3xl">
                       {activeItem.name}
                     </h3>
-                    <p className="mt-2 text-sm text-white/85 max-w-md">
-                      {activeItem.description}
-                    </p>
+                    <p className="mt-2 max-w-md text-sm text-white/85">{activeItem.description}</p>
                   </div>
                 </motion.div>
               </AnimatePresence>

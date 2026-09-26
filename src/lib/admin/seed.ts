@@ -1,6 +1,6 @@
 import { getGalleryImages } from "@/lib/content";
 
-import type { AdminBlog, AdminEnquiry, AdminImage } from "./schemas";
+import type { AdminBlog, AdminEnquiry, AdminImage, AdminSlot } from "./schemas";
 
 /**
  * Starting rows, written the first time a collection is read.
@@ -118,4 +118,12 @@ export function enquirySeed(): AdminEnquiry[] {
       status: "replied",
     },
   ];
+}
+
+/**
+ * No replacements to begin with: every slot shows the image the design shipped
+ * with until somebody puts a different one in it.
+ */
+export function slotSeed(): AdminSlot[] {
+  return [];
 }

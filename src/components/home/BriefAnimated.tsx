@@ -12,6 +12,9 @@ interface BriefAnimatedProps {
   paragraphs: string[];
   linkLabel: string;
   trustMarksSlot?: ReactNode;
+  /** The replaceable photograph beside the brief. See lib/slots. */
+  imageSrc: string;
+  imageAlt: string;
 }
 
 export function BriefAnimated({
@@ -19,6 +22,8 @@ export function BriefAnimated({
   paragraphs,
   linkLabel,
   trustMarksSlot,
+  imageSrc,
+  imageAlt,
 }: BriefAnimatedProps) {
   const reduceMotion = useReducedMotion();
   const ease = [0.22, 1, 0.36, 1] as const;
@@ -71,20 +76,12 @@ export function BriefAnimated({
           ))}
         </div>
 
-        <motion.p
-          className="mt-8"
-          variants={leftVariants}
-          custom={paragraphs.length + 1}
-        >
+        <motion.p className="mt-8" variants={leftVariants} custom={paragraphs.length + 1}>
           <TextLink href="/about">{linkLabel}</TextLink>
         </motion.p>
 
         {trustMarksSlot ? (
-          <motion.div
-            className="mt-8"
-            variants={leftVariants}
-            custom={paragraphs.length + 2}
-          >
+          <motion.div className="mt-8" variants={leftVariants} custom={paragraphs.length + 2}>
             {trustMarksSlot}
           </motion.div>
         ) : null}
@@ -102,16 +99,16 @@ export function BriefAnimated({
           ease,
         }}
       >
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-mist shadow-sm">
+        <div className="bg-mist relative aspect-[4/5] w-full overflow-hidden shadow-sm">
           <Image
-            src="/images/gallery/05-camel-check-jacquard.jpg"
-            alt="Camel check jacquard fabric from the Nabeen range"
+            src={imageSrc}
+            alt={imageAlt}
             fill
             sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 350px"
             className="object-cover object-[50%_58%]"
           />
         </div>
-        <figcaption className="t-small mt-2.5 text-center font-medium text-slate">
+        <figcaption className="t-small text-slate mt-2.5 text-center font-medium">
           Archive · camel check jacquard
         </figcaption>
       </motion.figure>

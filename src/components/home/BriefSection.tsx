@@ -2,10 +2,12 @@ import { Container } from "@/components/ui/Container";
 import { getPage, getSite } from "@/lib/content";
 import { field, section } from "@/lib/markdown";
 import { BriefAnimated } from "@/components/home/BriefAnimated";
+import { slotMap } from "@/lib/slots";
 import { StatBoxes } from "@/components/home/StatBoxes";
 
-export function BriefSection() {
+export async function BriefSection() {
   const site = getSite();
+  const slot = (await slotMap())["home-brief"];
   const brief = section(getPage("home"), "3-short-brief");
   const linkLabel = field(brief, "link").split("→")[0].replace(/"/g, "").trim();
 
@@ -19,6 +21,8 @@ export function BriefSection() {
           title={`A house of cloth since ${site.brand.founded.value}`}
           paragraphs={brief.paragraphs}
           linkLabel={linkLabel}
+          imageSrc={slot.src}
+          imageAlt={slot.alt}
         />
       </Container>
 

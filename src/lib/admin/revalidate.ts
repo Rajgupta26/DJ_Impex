@@ -33,3 +33,9 @@ export function revalidateJournal(slugs: Array<string | undefined> = []): void {
 export function revalidateGallery(): void {
   safely("/");
 }
+
+/** After a design slot changes. Slots appear on the home page and on /about. */
+export function revalidateSlots(): void {
+  safely("/");
+  safely("/about");
+}

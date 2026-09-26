@@ -7,6 +7,7 @@ import { withReg } from "@/components/ui/Reg";
 import { getPage } from "@/lib/content";
 import { field, section } from "@/lib/markdown";
 import { buildMetadata, pageTitle } from "@/lib/seo";
+import { slotMap } from "@/lib/slots";
 
 export const metadata: Metadata = buildMetadata({
   title: pageTitle("About D J Impex & Co."),
@@ -30,7 +31,8 @@ export const metadata: Metadata = buildMetadata({
  * no closing enquiry band, unlike every other inner page.
  * See 05-open-questions.md 81, 84, 85.
  */
-export default function AboutPage() {
+export default async function AboutPage() {
+  const aboutHero = (await slotMap())["about-hero"];
   const head = section(getPage("about"), "about-d-j-impex-co-dji");
 
   return (
@@ -41,8 +43,8 @@ export default function AboutPage() {
         /* The loom frame is busy exactly where the strapline sits, and white text
            across lit machinery is hard to read. The spinning frames are an even
            field at that height. */
-        image="/images/hero/spinning-frames.jpg"
-        alt="Spinning frames drawing cotton into yarn"
+        image={aboutHero.src}
+        alt={aboutHero.alt}
         objectPosition="center 42%"
       />
 

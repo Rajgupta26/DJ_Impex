@@ -2,6 +2,7 @@ import { FabricHoverShowcase } from "@/components/about/FabricHoverShowcase";
 import { Container } from "@/components/ui/Container";
 import { WeaveArt } from "@/components/ui/WeaveArt";
 import { getPage } from "@/lib/content";
+import { slotMap } from "@/lib/slots";
 import { field, section } from "@/lib/markdown";
 
 /**
@@ -22,26 +23,28 @@ import { field, section } from "@/lib/markdown";
  * collection of" on screen twice, once as a heading and again as the showcase's
  * own first line, would read as a mistake.
  */
-export function CollectionShowcase() {
+export async function CollectionShowcase() {
   const copy = section(getPage("about"), "welcome");
+  const slots = await slotMap();
   const names = field(copy, "collection-names")
     .split(",")
     .map((name) => name.trim())
     .filter(Boolean);
 
   return (
-    <section className="relative isolate bg-mist">
+    <section className="bg-mist relative isolate">
       <WeaveArt pattern="lace" tone="mist" scale={1.6} intensity={0.1} />
 
       {/* The showcase opens with its own mt-16, so this pays almost nothing at
           the top. */}
-      <Container className="relative pb-10 pt-2 lg:pb-14">
+      <Container className="relative pt-2 pb-10 lg:pb-14">
         <h2 className="visually-hidden">Our exclusive collection</h2>
 
         <FabricHoverShowcase
           names={names}
           collectionLead={field(copy, "collection-lead")}
           collectionTail={field(copy, "collection-tail")}
+          images={slots}
         />
       </Container>
     </section>

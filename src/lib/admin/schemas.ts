@@ -50,6 +50,20 @@ export const blogSchema = z.object({
   updatedAt: isoDate,
 });
 
+/**
+ * A replacement image put into one of the design's slots. The id is the slot's
+ * own id from lib/slots, so there is at most one row per slot and reverting is
+ * simply deleting it.
+ */
+export const slotSchema = z.object({
+  id: z.string().min(1),
+  src: z.string().min(1),
+  alt: z.string().trim().max(240).default(""),
+  /** The uploaded file, so reverting can remove it. */
+  fileName: z.string().nullable().default(null),
+  updatedAt: isoDate,
+});
+
 export const enquirySchema = z.object({
   id: z.string(),
   name: z.string().trim().min(1).max(120),
@@ -63,6 +77,7 @@ export const enquirySchema = z.object({
 export type AdminImage = z.infer<typeof imageSchema>;
 export type AdminBlog = z.infer<typeof blogSchema>;
 export type AdminEnquiry = z.infer<typeof enquirySchema>;
+export type AdminSlot = z.infer<typeof slotSchema>;
 
 export type BlogStatus = AdminBlog["status"];
 export type EnquiryStatus = AdminEnquiry["status"];
