@@ -14,8 +14,13 @@ type GoogleReview = {
 
 type PlaceDetailsResponse = {
   googleMapsUri?: string;
+  rating?: number;
+  userRatingCount?: number;
   reviews?: GoogleReview[];
 };
+
+/** The place's own score, so the home page can state a real one. */
+export type GoogleRating = { rating: number; count: number; href: string | null };
 
 export type GoogleReviewTestimonial = Testimonial & {
   authorHref?: string;
@@ -23,7 +28,7 @@ export type GoogleReviewTestimonial = Testimonial & {
   rating?: number;
 };
 
-const FIELD_MASK = "googleMapsUri,reviews";
+const FIELD_MASK = "googleMapsUri,rating,userRatingCount,reviews";
 
 /** Env values arrive with stray quotes and whitespace often enough to be worth stripping. */
 function clean(value: string | undefined): string {
@@ -57,24 +62,49 @@ function placeIdFrom(value: string | undefined): string {
  * in memory rather than written anywhere, and dies with the instance. If the
  * agency would rather have no caching at all, set the window to 0 and accept
  * the latency and the per-view cost.
+ *
+ * One call serves both the quotes and the score, so asking for the rating
+ * costs nothing on top of the reviews.
  */
 const CACHE_MS = 10 * 60 * 1000;
-let cached: { at: number; value: GoogleReviewTestimonial[] | null } | null = null;
 
-/** Gets live Google reviews on the server, at most once every CACHE_MS. */
-export async function getPositiveGoogleReviews(): Promise<GoogleReviewTestimonial[] | null> {
+type PlaceSnapshot = {
+  reviews: GoogleReviewTestimonial[] | null;
+  rating: GoogleRating | null;
+};
+
+const EMPTY: PlaceSnapshot = { reviews: null, rating: null };
+
+let cached: { at: number; value: PlaceSnapshot } | null = null;
+
+async function getPlace(): Promise<PlaceSnapshot> {
   if (cached && Date.now() - cached.at < CACHE_MS) return cached.value;
-
-  const fresh = await fetchPositiveGoogleReviews();
+  const fresh = await fetchPlace();
   cached = { at: Date.now(), value: fresh };
   return fresh;
 }
 
-async function fetchPositiveGoogleReviews(): Promise<GoogleReviewTestimonial[] | null> {
+/** Gets live Google reviews on the server, at most once every CACHE_MS. */
+export async function getPositiveGoogleReviews(): Promise<GoogleReviewTestimonial[] | null> {
+  return (await getPlace()).reviews;
+}
+
+/**
+ * The place's real score and review count, or null when Google has none.
+ *
+ * The home page used to print "4.8 / 5" and five stars as fixed markup. This
+ * replaces it with whatever Google actually says, so the figure on the page is
+ * one anybody can check.
+ */
+export async function getGoogleRating(): Promise<GoogleRating | null> {
+  return (await getPlace()).rating;
+}
+
+async function fetchPlace(): Promise<PlaceSnapshot> {
   const apiKey = clean(process.env.GOOGLE_MAPS_API_KEY);
   const placeId = placeIdFrom(process.env.GOOGLE_PLACE_ID);
 
-  if (!apiKey || !placeId) return null;
+  if (!apiKey || !placeId) return EMPTY;
 
   try {
     const response = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
@@ -96,7 +126,7 @@ async function fetchPositiveGoogleReviews(): Promise<GoogleReviewTestimonial[] |
         response.status,
         detail.slice(0, 400),
       );
-      return null;
+      return EMPTY;
     }
 
     const place = (await response.json()) as PlaceDetailsResponse;
@@ -122,9 +152,18 @@ async function fetchPositiveGoogleReviews(): Promise<GoogleReviewTestimonial[] |
       [reviews[index], reviews[replacement]] = [reviews[replacement], reviews[index]];
     }
 
-    return reviews;
+    const rating: GoogleRating | null =
+      typeof place.rating === "number" && place.rating > 0
+        ? {
+            rating: place.rating,
+            count: place.userRatingCount ?? 0,
+            href: place.googleMapsUri ?? null,
+          }
+        : null;
+
+    return { reviews, rating };
   } catch (error) {
     console.error("[google-reviews] Unable to retrieve Google reviews:", error);
-    return null;
+    return EMPTY;
   }
 }

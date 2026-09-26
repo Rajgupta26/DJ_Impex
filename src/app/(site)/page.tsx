@@ -7,7 +7,7 @@ import { SocialProofBanner } from "@/components/home/SocialProofBanner";
 import { TestimonialsCarousel } from "@/components/home/TestimonialsCarousel";
 import { getBrandFilm, getHeroSlides, getPage, getSite } from "@/lib/content";
 import { whatsappLink } from "@/lib/contact";
-import { getPositiveGoogleReviews } from "@/lib/google-reviews";
+import { getGoogleRating, getPositiveGoogleReviews } from "@/lib/google-reviews";
 import { field, section } from "@/lib/markdown";
 import { visible } from "@/lib/site";
 
@@ -75,6 +75,8 @@ export default async function HomePage() {
   const home = getPage("home");
   const fallbackTestimonials = visible(site.testimonials.items);
   const googleReviews = await getPositiveGoogleReviews();
+  // Same cached Places call as the reviews above, so this costs nothing extra.
+  const googleRating = await getGoogleRating();
   const hasGoogleReviews = (googleReviews?.length ?? 0) > 0;
   const testimonials = googleReviews && googleReviews.length > 0 ? googleReviews : fallbackTestimonials;
 
@@ -115,7 +117,7 @@ export default async function HomePage() {
 
       <NabeenGallery />
       <ContactSection />
-      <SocialProofBanner />
+      <SocialProofBanner designs={site.brand.designsCount.value} google={googleRating} />
     </>
   );
 }

@@ -2,6 +2,8 @@
 
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+
+import type { GoogleRating } from "@/lib/google-reviews";
 import { Container } from "@/components/ui/Container";
 
 function UsersThreeOutline({ className = "w-7 h-7 sm:w-8 sm:h-8" }: { className?: string }) {
@@ -52,7 +54,17 @@ function GoogleLogo({ className = "w-7 h-7 sm:w-8 sm:h-8" }: { className?: strin
   );
 }
 
-function StarRating({ triggerFlash = false }: { triggerFlash?: boolean }) {
+const STAR_PATH =
+  "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.54-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.063 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z";
+
+/**
+ * Five stars filled to the given score.
+ *
+ * It used to draw four whole stars and a fifth clipped to 80%, which is a
+ * picture of 4.8 whatever the real rating is. Each star is now filled from the
+ * score, so the drawing and the number cannot disagree.
+ */
+function StarRating({ rating, triggerFlash = false }: { rating: number; triggerFlash?: boolean }) {
   const reduceMotion = useReducedMotion();
 
   // Staggered goldish flash animation
@@ -77,61 +89,50 @@ function StarRating({ triggerFlash = false }: { triggerFlash?: boolean }) {
   };
 
   return (
-    <div className="relative inline-flex items-center gap-1 text-[#f59e0b] overflow-hidden py-0.5" aria-label="4.8 out of 5 stars">
-      {[0, 1, 2, 3].map((i) => (
-        <motion.div
-          key={i}
-          custom={i}
-          variants={starVariants}
-          initial="initial"
-          animate={triggerFlash ? "flash" : "initial"}
-          className="relative inline-block origin-center"
-        >
-          <svg className="h-4 w-4 sm:h-5 sm:w-5 fill-[#f59e0b]" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.54-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.063 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z" />
-          </svg>
-        </motion.div>
-      ))}
-
-      {/* 5th Star (80% filled) */}
-      <motion.div
-        custom={4}
-        variants={starVariants}
-        initial="initial"
-        animate={triggerFlash ? "flash" : "initial"}
-        className="relative h-4 w-4 sm:h-5 sm:w-5 origin-center"
-      >
-        <svg className="h-4 w-4 sm:h-5 sm:w-5 fill-[#e5e7eb]" viewBox="0 0 20 20">
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.54-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.063 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z" />
-        </svg>
-        <div className="absolute inset-0 overflow-hidden w-[80%]">
-          <svg className="h-4 w-4 sm:h-5 sm:w-5 fill-[#f59e0b]" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.54-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.063 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z" />
-          </svg>
-        </div>
-      </motion.div>
+    <div
+      className="relative inline-flex items-center gap-1 overflow-hidden py-0.5 text-[#f59e0b]"
+      aria-label={`${rating.toFixed(1)} out of 5 stars`}
+    >
+      {[0, 1, 2, 3, 4].map((index) => {
+        // 1 for a whole star, 0 for an empty one, a fraction for the partial.
+        const fill = Math.max(0, Math.min(1, rating - index));
+        return (
+          <motion.div
+            key={index}
+            custom={index}
+            variants={starVariants}
+            initial="initial"
+            animate={triggerFlash ? "flash" : "initial"}
+            className="relative h-4 w-4 origin-center sm:h-5 sm:w-5"
+          >
+            <svg className="h-4 w-4 fill-[#e5e7eb] sm:h-5 sm:w-5" viewBox="0 0 20 20">
+              <path d={STAR_PATH} />
+            </svg>
+            {fill > 0 ? (
+              <div className="absolute inset-0 overflow-hidden" style={{ width: `${fill * 100}%` }}>
+                <svg className="h-4 w-4 fill-[#f59e0b] sm:h-5 sm:w-5" viewBox="0 0 20 20">
+                  <path d={STAR_PATH} />
+                </svg>
+              </div>
+            ) : null}
+          </motion.div>
+        );
+      })}
 
       {/* Gold shimmer beam pass */}
       {triggerFlash && !reduceMotion ? (
         <motion.div
           initial={{ x: "-120%", opacity: 0 }}
-          animate={{
-            x: ["-120%", "240%"],
-            opacity: [0, 0.9, 0],
-          }}
-          transition={{
-            delay: 0.65,
-            duration: 0.85,
-            ease: "easeInOut",
-          }}
-          className="pointer-events-none absolute inset-y-0 w-8 bg-gradient-to-r from-transparent via-amber-200/80 to-transparent blur-[2px] mix-blend-screen"
+          animate={{ x: ["-120%", "240%"], opacity: [0, 0.9, 0] }}
+          transition={{ delay: 0.65, duration: 0.85, ease: "easeInOut" }}
+          className="pointer-events-none absolute inset-y-0 w-8 bg-gradient-to-r from-transparent via-amber-200/80 to-transparent mix-blend-screen blur-[2px]"
         />
       ) : null}
     </div>
   );
 }
 
-function CustomerCounter({ isInView }: { isInView: boolean }) {
+function CountUp({ isInView, label }: { isInView: boolean; label: string }) {
   const reduceMotion = useReducedMotion();
   const [counted, setCounted] = useState<string | null>(null);
 
@@ -142,7 +143,7 @@ function CustomerCounter({ isInView }: { isInView: boolean }) {
    * Before it is in view the figure reads its start; if it is never going to
    * animate -- out of view, or reduced motion -- it reads its end.
    */
-  const display = counted ?? (isInView && !reduceMotion ? "1" : "1 Million+");
+  const display = counted ?? (isInView && !reduceMotion ? "1" : label);
 
   useEffect(() => {
     if (!isInView || reduceMotion) return;
@@ -156,29 +157,47 @@ function CustomerCounter({ isInView }: { isInView: boolean }) {
       const progress = Math.min(elapsed / duration, 1);
       // Smooth ease-out curve
       const ease = 1 - Math.pow(1 - progress, 4);
-      const current = Math.floor(1 + ease * 999999);
+      // Counts to the numeric part of the label, so "1000+" ends on 1000+.
+      const target = Number(label.replace(/[^0-9]/g, "")) || 0;
+      const current = Math.floor(1 + ease * Math.max(target - 1, 0));
 
       if (progress < 1) {
         setCounted(current.toLocaleString());
         frame = requestAnimationFrame(update);
       } else {
-        setCounted("1 Million+");
+        setCounted(label);
       }
     };
 
     frame = requestAnimationFrame(update);
     // The loop used to run on unmounted: nothing cancelled it.
     return () => cancelAnimationFrame(frame);
-  }, [isInView, reduceMotion]);
+  }, [isInView, reduceMotion, label]);
 
   return (
-    <span className="font-sans text-3xl font-bold tracking-tight text-[#0f172a] sm:text-4xl lg:text-5xl tabular-nums">
+    <span className="font-sans text-3xl font-bold tracking-tight text-[#0f172a] tabular-nums sm:text-4xl lg:text-5xl">
       {display}
     </span>
   );
 }
 
-export function SocialProofBanner() {
+/**
+ * Two figures, both of which have to be true.
+ *
+ * This band used to print "1 Million+ Satisfied Customers" and a fixed
+ * "4.8 / 5" Google rating. Neither was sourced: site.json holds
+ * ratings.happyCustomers and ratings.googleRating at status "hold", which the
+ * brief says must never be rendered in any environment, and the hard-coded
+ * million did not even match the held figure. A customer count and a review
+ * score are both checkable claims, so publishing invented ones is a liability
+ * as well as a rule breach.
+ *
+ * The left figure is now designsCount from site.json, which is confirmed and
+ * sourced to the brochure. The right is whatever Google actually reports for
+ * the place; when Google has no rating the block is left out rather than
+ * filled in.
+ */
+export function SocialProofBanner({ designs, google }: { designs: string; google: GoogleRating | null }) {
   const containerRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.25 });
   const reduceMotion = useReducedMotion();
@@ -189,69 +208,76 @@ export function SocialProofBanner() {
   return (
     <section
       ref={containerRef}
-      className="border-b border-line/60 bg-white pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-8 lg:pb-20 overflow-hidden"
+      className="border-line/60 overflow-hidden border-b bg-white pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-8 lg:pb-20"
     >
       <Container>
         {/* Strictly symmetric 3-column grid (1fr / auto / 1fr) with left and right blocks pushed to outer corners */}
-        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[1fr_auto_1fr] md:gap-8 lg:gap-12">
+        <div
+          className={`grid grid-cols-1 items-center gap-8 md:gap-8 lg:gap-12 ${google ? "md:grid-cols-[1fr_auto_1fr]" : "md:justify-items-center"}`}
+        >
           {/* Left Block: Aligned to the left corner */}
           <motion.div
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -70 }}
             animate={isInView ? { opacity: 1, x: 0 } : undefined}
             transition={{ duration: 1.0, ease }}
-            className="flex w-full items-center justify-center gap-5 sm:gap-6 md:justify-start"
+            className={`flex w-full items-center justify-center gap-5 sm:gap-6 ${google ? "md:justify-start" : ""}`}
           >
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#e3f4ee] sm:h-20 sm:w-20 transition-transform duration-300 hover:scale-105">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#e3f4ee] transition-transform duration-300 hover:scale-105 sm:h-20 sm:w-20">
               <UsersThreeOutline />
             </div>
-            <div className="min-w-[170px] sm:min-w-[210px] flex flex-col justify-center">
+            <div className="flex min-w-[170px] flex-col justify-center sm:min-w-[210px]">
               <div className="flex items-baseline">
-                <CustomerCounter isInView={isInView} />
+                <CountUp isInView={isInView} label={designs} />
               </div>
               <p className="mt-1 text-xs font-semibold tracking-[0.2em] text-[#556070] uppercase sm:text-sm">
-                Satisfied Customers
+                Fabric designs
               </p>
             </div>
           </motion.div>
 
-          {/* Centered Vertical Hairline Divider - permanently fixed in 1 position */}
-          <motion.div
-            initial={reduceMotion ? { scaleY: 1, opacity: 1 } : { scaleY: 0, opacity: 0 }}
-            animate={isInView ? { scaleY: 1, opacity: 1 } : undefined}
-            transition={{ duration: 0.9, ease, delay: 0.15 }}
-            className="hidden h-16 sm:h-20 w-px bg-gray-200 md:block origin-center shrink-0"
-            aria-hidden="true"
-          />
+          {/* Centered Vertical Hairline Divider. It separates two blocks, so it
+              goes when there is only one. */}
+          {google ? (
+            <motion.div
+              initial={reduceMotion ? { scaleY: 1, opacity: 1 } : { scaleY: 0, opacity: 0 }}
+              animate={isInView ? { scaleY: 1, opacity: 1 } : undefined}
+              transition={{ duration: 0.9, ease, delay: 0.15 }}
+              className="hidden h-16 w-px shrink-0 origin-center bg-gray-200 sm:h-20 md:block"
+              aria-hidden="true"
+            />
+          ) : null}
 
-          {/* Right Block: Aligned to the right corner */}
-          <motion.div
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 70 }}
-            animate={isInView ? { opacity: 1, x: 0 } : undefined}
-            transition={{ duration: 1.0, ease }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="flex w-full items-center justify-center gap-5 sm:gap-6 md:justify-end"
-          >
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-gray-100 bg-white shadow-[0_4px_16px_rgba(0,0,0,0.06)] sm:h-20 sm:w-20 transition-transform duration-300 hover:scale-105">
-              <GoogleLogo />
-            </div>
-            <div className="min-w-[170px] sm:min-w-[210px] flex flex-col justify-center">
-              <div className="flex items-baseline gap-1.5">
-                <span className="font-sans text-3xl font-bold tracking-tight text-[#0f172a] sm:text-4xl lg:text-5xl">
-                  4.8
-                </span>
-                <span className="font-sans text-xl italic text-slate sm:text-2xl">
-                  / 5
-                </span>
+          {/* Right Block: only when Google actually reports a score. */}
+          {google ? (
+            <motion.div
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 70 }}
+              animate={isInView ? { opacity: 1, x: 0 } : undefined}
+              transition={{ duration: 1.0, ease }}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              className="flex w-full items-center justify-center gap-5 sm:gap-6 md:justify-end"
+            >
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-gray-100 bg-white shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:scale-105 sm:h-20 sm:w-20">
+                <GoogleLogo />
               </div>
-              <div className="mt-1">
-                <StarRating triggerFlash={isInView || isHovered} />
+              <div className="flex min-w-[170px] flex-col justify-center sm:min-w-[210px]">
+                <div className="flex items-baseline gap-1.5">
+                  <span className="font-sans text-3xl font-bold tracking-tight text-[#0f172a] sm:text-4xl lg:text-5xl">
+                    {google.rating.toFixed(1)}
+                  </span>
+                  <span className="text-slate font-sans text-xl italic sm:text-2xl">/ 5</span>
+                </div>
+                <div className="mt-1">
+                  <StarRating rating={google.rating} triggerFlash={isInView || isHovered} />
+                </div>
+                <p className="mt-1 text-xs font-semibold tracking-[0.2em] text-[#556070] uppercase sm:text-sm">
+                  {google.count > 0
+                    ? `Google rating, ${google.count} review${google.count === 1 ? "" : "s"}`
+                    : "Google rating"}
+                </p>
               </div>
-              <p className="mt-1 text-xs font-semibold tracking-[0.2em] text-[#556070] uppercase sm:text-sm">
-                Google Review Rating
-              </p>
-            </div>
-          </motion.div>
+            </motion.div>
+          ) : null}
         </div>
       </Container>
     </section>
