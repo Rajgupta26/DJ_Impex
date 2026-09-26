@@ -25,13 +25,32 @@ export type GoogleReviewTestimonial = Testimonial & {
 
 const FIELD_MASK = "googleMapsUri,reviews";
 
+/** Env values arrive with stray quotes and whitespace often enough to be worth stripping. */
+function clean(value: string | undefined): string {
+  return (value ?? "").replace(/^["']|["']$/g, "").trim();
+}
+
+/**
+ * The place id on its own, however it was pasted in.
+ *
+ * Google's Place ID finder shows the id followed by the formatted address, and
+ * the whole line had been pasted into GOOGLE_PLACE_ID: "ChIJ... Gopal Gully,
+ * Mangaldas Mkt, ... Mumbai ... India". Every home page request then failed
+ * with `INVALID_ARGUMENT`, silently, on a billed API. A place id contains no
+ * whitespace, so taking the first token recovers it and makes the same paste
+ * harmless in future.
+ */
+function placeIdFrom(value: string | undefined): string {
+  return clean(value).split(/\s+/)[0] ?? "";
+}
+
 /**
  * Gets live Google reviews on the server. Google review content must not be
  * stored, so this intentionally bypasses Next's data cache.
  */
 export async function getPositiveGoogleReviews(): Promise<GoogleReviewTestimonial[] | null> {
-  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-  const placeId = process.env.GOOGLE_PLACE_ID;
+  const apiKey = clean(process.env.GOOGLE_MAPS_API_KEY);
+  const placeId = placeIdFrom(process.env.GOOGLE_PLACE_ID);
 
   if (!apiKey || !placeId) return null;
 
