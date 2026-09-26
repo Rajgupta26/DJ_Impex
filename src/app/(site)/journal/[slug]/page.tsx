@@ -64,7 +64,7 @@ export default async function JournalPostPage({ params }: Params) {
       <JournalArticleAnimated post={post} />
 
       {more.length > 0 ? (
-        <section className="page-end bg-mist py-[var(--spacing-section)]">
+        <section className="page-end bg-mist pt-12 md:pt-16 pb-[var(--spacing-section)]">
           <Container>
             <h2 className="t-h2">More from the journal</h2>
             <ul className="mt-12 grid gap-14 md:grid-cols-2 md:gap-x-16">

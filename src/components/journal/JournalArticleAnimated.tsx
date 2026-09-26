@@ -113,7 +113,7 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
       </motion.div>
 
       {/* 2-Section Content Layout: Left Heading from Left, Right Paragraphs from Right */}
-      <div className="bg-white py-[clamp(3rem,2.5rem+3.5vw,5.5rem)]">
+      <div className="bg-white pt-[clamp(3rem,2.5rem+3.5vw,5.5rem)] pb-10">
         <div className="container-site divide-y divide-line/60">
           {sections.map((section, idx) => (
             <div
