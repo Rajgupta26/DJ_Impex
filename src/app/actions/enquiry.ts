@@ -236,7 +236,10 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
 
   // The honeypot is invisible to people. If it is filled in, accept quietly.
   if (enquiry.website) {
-    return { status: "success", message: "Enquiry sent. Our team will contact you on WhatsApp shortly." };
+    return {
+      status: "success",
+      message: "Enquiry received. Our team will contact you on WhatsApp shortly.",
+    };
   }
 
   const headerList = await headers();
@@ -368,6 +371,6 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
 
   return {
     status: "success",
-    message: "Enquiry sent. Our team will contact you on WhatsApp shortly.",
+    message: "Enquiry received. Our team will contact you on WhatsApp shortly.",
   };
 }

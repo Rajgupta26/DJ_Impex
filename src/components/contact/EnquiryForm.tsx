@@ -137,7 +137,10 @@ export function EnquiryForm({
   if (state.status === "success") {
     return (
       <div className={`border-accent border-l pl-6 ${className}`.trim()} role="status">
-        <p className="t-h3">Enquiry sent</p>
+        {/* "Received" rather than "sent": the enquiry is always stored, and the
+            email may not have gone out. The action's own message carries the
+            detail; this heading must not contradict it. */}
+        <p className="t-h3">Enquiry received</p>
         <p className="text-slate mt-3 max-w-[34rem]">{state.message}</p>
       </div>
     );
