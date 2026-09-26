@@ -45,10 +45,32 @@ function placeIdFrom(value: string | undefined): string {
 }
 
 /**
- * Gets live Google reviews on the server. Google review content must not be
- * stored, so this intentionally bypasses Next's data cache.
+ * A short in-process cache in front of the Places call.
+ *
+ * The home page renders per request, so once the call started succeeding every
+ * single visitor was waiting on a live round trip to Google -- measured, it put
+ * the home page's time to first byte up from about 0.7s to 0.9-1.2s -- and each
+ * one was a billed request. Reviews change a few times a year at most.
+ *
+ * Ten minutes is deliberately short. Google's Places terms permit temporary
+ * caching of place content for performance; this is well inside that, is held
+ * in memory rather than written anywhere, and dies with the instance. If the
+ * agency would rather have no caching at all, set the window to 0 and accept
+ * the latency and the per-view cost.
  */
+const CACHE_MS = 10 * 60 * 1000;
+let cached: { at: number; value: GoogleReviewTestimonial[] | null } | null = null;
+
+/** Gets live Google reviews on the server, at most once every CACHE_MS. */
 export async function getPositiveGoogleReviews(): Promise<GoogleReviewTestimonial[] | null> {
+  if (cached && Date.now() - cached.at < CACHE_MS) return cached.value;
+
+  const fresh = await fetchPositiveGoogleReviews();
+  cached = { at: Date.now(), value: fresh };
+  return fresh;
+}
+
+async function fetchPositiveGoogleReviews(): Promise<GoogleReviewTestimonial[] | null> {
   const apiKey = clean(process.env.GOOGLE_MAPS_API_KEY);
   const placeId = placeIdFrom(process.env.GOOGLE_PLACE_ID);
 
