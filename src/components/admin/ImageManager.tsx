@@ -221,7 +221,7 @@ export function ImageManager({ initial }: { initial: AdminImage[] }) {
                 </p>
                 <p className="text-[11px] text-slate-400 dark:text-slate-500">
                   Added {formatDate(image.uploadedAt)}
-                  {image.fileName ? "" : " · shipped with the site"}
+                  {image.fileName ? "" : " · ships with the site"}
                   {image.usage === "cover" ? " · not shown in the home gallery" : ""}
                 </p>
                 <div className="flex gap-2 pt-1">
@@ -408,12 +408,17 @@ export function ImageManager({ initial }: { initial: AdminImage[] }) {
         {confirming ? (
           <div className="space-y-4">
             <p className="text-sm text-slate-600 dark:text-slate-300">
-              “{confirming.title}” will be removed from data/images.json
+              “{confirming.title}” will stop appearing in the gallery on the website
               {confirming.fileName
-                ? ", and public/uploads/" + confirming.fileName + " will be deleted from disk."
-                : ". The file itself ships with the site and will be left alone."}
+                ? ", and the uploaded file will be deleted."
+                : ". The image file ships with the site, so it stays in the project and only " +
+                  "stops being shown."}
             </p>
-            <p className="text-sm text-slate-600 dark:text-slate-300">This cannot be undone.</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              {confirming.fileName
+                ? "This cannot be undone."
+                : "A developer can put it back; you cannot from here."}
+            </p>
             <div className="flex justify-end gap-2">
               <button type="button" className={buttonQuiet} onClick={() => setConfirming(null)}>
                 Keep it

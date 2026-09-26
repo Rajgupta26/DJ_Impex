@@ -1,10 +1,12 @@
+import { getGalleryImages } from "@/lib/content";
+
 import type { AdminBlog, AdminEnquiry, AdminImage } from "./schemas";
 
 /**
  * Starting rows, written the first time a collection is read.
  *
- * The images point at files that already exist in /public, so a fresh checkout
- * shows real thumbnails rather than broken ones. The three posts mirror the
+ * The images are read from public/images/gallery, so the panel starts with a
+ * row for every swatch on the site and each one can be edited or removed. The three posts mirror the
  * MDX in brand-kit/content/journal, so nothing here invents a claim about the
  * business; they are seeded as drafts because the journal itself is still built
  * from the MDX files, not from this panel. The enquiries are sample rows and are
@@ -13,56 +15,25 @@ import type { AdminBlog, AdminEnquiry, AdminImage } from "./schemas";
 
 export function imageSeed(): AdminImage[] {
   const uploadedAt = "2026-09-24T09:00:00.000Z";
-  return [
-    {
-      id: "img-aqua-jacquard",
-      src: "/images/gallery/01-aqua-jacquard.jpg",
-      title: "Aqua jacquard",
-      alt: "Aqua jacquard fabric with a raised woven pattern, photographed flat",
-      category: "Jacquard",
-      caption: "Gallery swatch, aqua jacquard.",
-      usage: "gallery",
-      fileName: null,
-      sizeBytes: null,
-      uploadedAt,
-    },
-    {
-      id: "img-white-jacquard",
-      src: "/images/gallery/03-white-jacquard.jpg",
-      title: "White jacquard",
-      alt: "White jacquard fabric showing a tonal woven motif",
-      category: "Jacquard",
-      caption: "Gallery swatch, white jacquard.",
-      usage: "gallery",
-      fileName: null,
-      sizeBytes: null,
-      uploadedAt,
-    },
-    {
-      id: "img-charcoal-herringbone",
-      src: "/images/gallery/04-charcoal-herringbone.jpg",
-      title: "Charcoal herringbone",
-      alt: "Charcoal herringbone fabric with a fine diagonal weave",
-      category: "Herringbone",
-      caption: "Gallery swatch, charcoal herringbone.",
-      usage: "gallery",
-      fileName: null,
-      sizeBytes: null,
-      uploadedAt,
-    },
-    {
-      id: "img-weaving-loom",
-      src: "/images/brand-imagery/weaving-loom.jpg",
-      title: "Weaving loom",
-      alt: "A weaving loom in operation, warp threads under tension",
-      category: "Manufacturing",
-      caption: "On the loom.",
-      usage: "gallery",
-      fileName: null,
-      sizeBytes: null,
-      uploadedAt,
-    },
-  ];
+
+  // Read from the folder rather than a hand-written list, so the panel starts
+  // out holding a row for every swatch the site actually ships with. A
+  // hard-coded subset meant the gallery showed ten tiles while the panel listed
+  // four of them, and the six it did not list could not be managed at all.
+  return getGalleryImages().map((image) => ({
+    id: `img-${image.src.replace(/^.*\//, "").replace(/\.[^.]+$/, "")}`,
+    src: image.src,
+    title: image.name,
+    alt: image.alt,
+    category: "",
+    caption: "",
+    usage: "gallery" as const,
+    // Null: the file is part of the project, not something this panel wrote, so
+    // deleting the row hides the tile and leaves the file alone.
+    fileName: null,
+    sizeBytes: null,
+    uploadedAt,
+  }));
 }
 
 export function blogSeed(): AdminBlog[] {
