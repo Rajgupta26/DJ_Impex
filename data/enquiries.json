@@ -1,12 +1,21 @@
 [
   {
+    "id": "86b7244f-058d-41d1-8074-f714b497a82b",
+    "name": "Akshay Deepak Chavan",
+    "email": "akky13883@gmail.com",
+    "subject": "Enquiry from the home page",
+    "message": "WhatsApp: +93 7304763998\nFabrics of interest: Giza Cotton, Voile & Jacquard\nUsage: Retail\n\ntesting",
+    "date": "2026-09-26T05:16:50.741Z",
+    "status": "read"
+  },
+  {
     "id": "enq-sample-1",
     "name": "Sample enquiry, Lagos",
     "email": "sample.lagos@example.com",
     "subject": "Swiss lace, wholesale quantities",
     "message": "Sample row. Please send your current Swiss lace range with minimum order quantities for Lagos.",
     "date": "2026-09-22T11:20:00.000Z",
-    "status": "unread"
+    "status": "read"
   },
   {
     "id": "enq-sample-2",

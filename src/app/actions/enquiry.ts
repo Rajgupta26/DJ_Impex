@@ -284,7 +284,7 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
   const rawUser = process.env.EMAIL_USER || process.env.SMTP_USER;
   const rawPass = process.env.EMAIL_PASS || process.env.SMTP_PASS;
   const smtpUser = rawUser?.replace(/^["']|["']$/g, "").trim();
-  const smtpPass = rawPass?.replace(/^["']|["']$/g, "").trim();
+  const smtpPass = rawPass?.replace(/^["']|["']$/g, "").replace(/\s+/g, "").trim();
   const smtpHost = (process.env.SMTP_HOST || "smtp.gmail.com").replace(/^["']|["']$/g, "").trim();
   const smtpPort = Number((process.env.SMTP_PORT || "465").replace(/^["']|["']$/g, "").trim());
 

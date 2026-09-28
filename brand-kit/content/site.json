@@ -65,8 +65,8 @@
     },
     "whatsapp": {
       "e164": "919819693626",
-      "prefill": "Hello Nabeen team, I would like to know more about your fabrics.",
-      "status": "tbc",
+      "prefill": "Hello Nabeen team, I’m interested in your fabrics. Please share available designs, prices, and order details.",
+      "status": "confirmed",
       "note": "Assumed to be the primary phone. Confirm which number is on WhatsApp."
     },
     "emailPrimary": {
