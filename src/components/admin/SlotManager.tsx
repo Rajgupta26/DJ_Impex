@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { ImageUp, RotateCcw } from "lucide-react";
 
+import { mb, prepareImage } from "./prepareImage";
 import { request } from "./request";
 import { Badge, buttonPrimary, buttonQuiet, card, NoticeBar, type Notice } from "./ui";
 
@@ -31,12 +32,14 @@ export function SlotManager({ initial }: { initial: SlotView[] }) {
   const inputs = useRef<Record<string, HTMLInputElement | null>>({});
 
   async function replace(slot: SlotView, file: File) {
+    setBusyId(slot.id);
+    const prepared = await prepareImage(file);
+
     const body = new FormData();
     body.set("id", slot.id);
-    body.set("file", file);
+    body.set("file", prepared.file);
     body.set("alt", slot.alt);
 
-    setBusyId(slot.id);
     const result = await request<{ slot: SlotView }>("/api/admin/slots", { method: "POST", body });
     setBusyId(null);
 
@@ -45,7 +48,12 @@ export function SlotManager({ initial }: { initial: SlotView[] }) {
       return;
     }
     setSlots((current) => current.map((s) => (s.id === slot.id ? { ...s, ...result.data.slot } : s)));
-    setNotice({ tone: "success", message: `${slot.label} was replaced.` });
+    setNotice({
+      tone: "success",
+      message: prepared.resized
+        ? `${slot.label} was replaced, resized from ${mb(prepared.from)} to ${mb(prepared.to)}.`
+        : `${slot.label} was replaced.`,
+    });
   }
 
   async function revert(slot: SlotView) {

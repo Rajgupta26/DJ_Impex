@@ -6,6 +6,7 @@ import { Pencil, Search, Trash2, Upload } from "lucide-react";
 
 import type { AdminImage } from "@/lib/admin/schemas";
 
+import { mb, prepareImage } from "./prepareImage";
 import { request } from "./request";
 import {
   Badge,
@@ -63,15 +64,20 @@ export function ImageManager({ initial }: { initial: AdminImage[] }) {
       return;
     }
 
+    setBusy(true);
+    setFieldErrors({});
+
+    // Shrink it here: a phone photograph is larger than the request body the
+    // host will accept, and the site has no use for the extra pixels.
+    const prepared = await prepareImage(file);
+
     const body = new FormData();
-    body.set("file", file);
+    body.set("file", prepared.file);
     body.set("title", draft.title || file.name);
     body.set("alt", draft.alt);
     body.set("category", draft.category);
     body.set("caption", draft.caption);
 
-    setBusy(true);
-    setFieldErrors({});
     const result = await request<{ image: AdminImage }>("/api/admin/images", { method: "POST", body });
     setBusy(false);
 
@@ -83,7 +89,12 @@ export function ImageManager({ initial }: { initial: AdminImage[] }) {
     setImages((current) => [result.data.image, ...current]);
     setUploadOpen(false);
     setDraft(EMPTY_DRAFT);
-    setNotice({ tone: "success", message: `“${result.data.image.title}” was uploaded.` });
+    setNotice({
+      tone: "success",
+      message: prepared.resized
+        ? `“${result.data.image.title}” was uploaded, resized from ${mb(prepared.from)} to ${mb(prepared.to)}.`
+        : `“${result.data.image.title}” was uploaded.`,
+    });
   }
 
   async function handleSaveEdit(event: React.FormEvent<HTMLFormElement>) {
@@ -253,7 +264,11 @@ export function ImageManager({ initial }: { initial: AdminImage[] }) {
 
       <Modal open={uploadOpen} onClose={() => setUploadOpen(false)} title="Upload an image">
         <form onSubmit={handleUpload} className="space-y-4">
-          <Field label="File" error={fieldErrors.file} hint="JPEG, PNG, WebP, AVIF or GIF, up to 8MB.">
+          <Field
+            label="File"
+            error={fieldErrors.file}
+            hint="JPEG, PNG, WebP, AVIF or GIF. Large photographs are resized automatically."
+          >
             {(props) => (
               <input
                 {...props}

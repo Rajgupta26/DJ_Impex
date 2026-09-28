@@ -7,6 +7,7 @@ import { Eye, FilePlus2, ImageUp, Pencil, Search, Trash2 } from "lucide-react";
 import { blogInputSchema, type AdminBlog, type AdminImage, type BlogStatus } from "@/lib/admin/schemas";
 
 import { Markdown, adminTheme } from "@/components/markdown/Markdown";
+import { mb, prepareImage } from "./prepareImage";
 import { request } from "./request";
 import {
   Badge,
@@ -78,14 +79,16 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
    * sent as a reasonable description rather than prompting for one.
    */
   async function uploadCover(file: File) {
+    setCoverBusy(true);
+    setCoverError(null);
+    const prepared = await prepareImage(file);
+
     const body = new FormData();
-    body.set("file", file);
+    body.set("file", prepared.file);
     body.set("usage", "cover");
     body.set("title", draft.title ? `Cover: ${draft.title}` : file.name);
     body.set("alt", draft.title || file.name);
 
-    setCoverBusy(true);
-    setCoverError(null);
     const result = await request<{ image: AdminImage }>("/api/admin/images", {
       method: "POST",
       body,
@@ -97,6 +100,13 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
       return;
     }
     edit("coverImage", result.data.image.src);
+    if (prepared.resized) {
+      setCoverError(null);
+      setNotice({
+        tone: "success",
+        message: `Cover uploaded, resized from ${mb(prepared.from)} to ${mb(prepared.to)}.`,
+      });
+    }
   }
 
   // Validated on every keystroke against the same schema the API uses, so the
@@ -473,8 +483,8 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
               <p className="text-xs text-red-600 dark:text-red-400">{coverError ?? errors.coverImage}</p>
             ) : (
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                JPEG, PNG, WebP, AVIF or GIF, up to 8MB. It is stored with the site&rsquo;s other images but
-                stays out of the home page gallery.
+                JPEG, PNG, WebP or AVIF; large photographs are resized automatically. It is stored with the
+                site&rsquo;s other images but stays out of the home page gallery.
               </p>
             )}
           </div>

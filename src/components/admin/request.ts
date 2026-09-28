@@ -26,9 +26,16 @@ export async function request<T>(
 
     if (!response.ok) {
       const body = payload as { error?: string; fieldErrors?: Record<string, string> } | null;
+      // A 413 usually comes from the host rather than the route, as plain
+      // text, so there is no message to show. Say what actually happened.
+      const fallback =
+        response.status === 413
+          ? "That file is too large to upload. Please use an image under 4MB."
+          : `The server returned ${response.status}.`;
+
       return {
         ok: false,
-        error: body?.error ?? `The server returned ${response.status}.`,
+        error: body?.error ?? fallback,
         fieldErrors: body?.fieldErrors,
       };
     }

@@ -13,7 +13,13 @@ import {
 
 export const dynamic = "force-dynamic";
 
-const MAX_BYTES = 8 * 1024 * 1024;
+/**
+ * Below the host's own request body limit, which is about 4.5MB and enforced in
+ * front of this route: a larger body never reaches here and comes back as plain
+ * text the panel cannot read. The browser shrinks images before sending, so
+ * this is the backstop rather than the thing a person normally meets.
+ */
+const MAX_BYTES = 4 * 1024 * 1024;
 const ALLOWED = new Map([
   ["image/jpeg", ".jpg"],
   ["image/png", ".png"],
@@ -44,7 +50,7 @@ export async function POST(request: Request) {
       return fail("Please choose an image to upload.", 400, { file: "An image is required." });
     }
     if (file.size > MAX_BYTES) {
-      return fail(`That file is ${(file.size / 1024 / 1024).toFixed(1)}MB. The limit is 8MB.`, 413, {
+      return fail(`That file is ${(file.size / 1024 / 1024).toFixed(1)}MB. The limit is 4MB.`, 413, {
         file: "The file is too large.",
       });
     }
