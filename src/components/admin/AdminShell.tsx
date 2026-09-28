@@ -3,21 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import {
-  ExternalLink,
-  Images,
-  LayoutDashboard,
-  LayoutPanelTop,
-  Mail,
-  Menu,
-  Moon,
-  Newspaper,
-  Sun,
-  X,
-} from "lucide-react";
+import { ExternalLink, Images, LayoutPanelTop, Mail, Menu, Moon, Newspaper, Sun, X } from "lucide-react";
 
 const NAV = [
-  { href: "/admin", label: "Dashboard", Icon: LayoutDashboard },
   { href: "/admin/images", label: "Image gallery", Icon: Images },
   { href: "/admin/page-images", label: "Page images", Icon: LayoutPanelTop },
   { href: "/admin/blogs", label: "Blog manager", Icon: Newspaper },
@@ -76,7 +64,7 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
 
           <nav aria-label="Admin sections" className="space-y-1 p-3">
             {NAV.map(({ href, label, Icon }) => {
-              const active = href === "/admin" ? pathname === href : pathname.startsWith(href);
+              const active = pathname.startsWith(href);
               return (
                 <Link
                   key={href}

@@ -219,8 +219,3 @@ export async function saveUpload(originalName: string, bytes: Buffer, contentTyp
   }
   return fileName;
 }
-
-/** Where the data actually lives, for the dashboard to report honestly. */
-export function storageLabel(): string {
-  return storage().label;
-}
