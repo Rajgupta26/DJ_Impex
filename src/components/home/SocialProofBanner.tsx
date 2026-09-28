@@ -132,6 +132,19 @@ function StarRating({ rating, triggerFlash = false }: { rating: number; triggerF
   );
 }
 
+function parseTargetNumber(rawLabel: string): number {
+  const lower = rawLabel.toLowerCase();
+  if (lower.includes("million") || lower.includes("m+")) {
+    const num = parseFloat(lower.replace(/[^0-9.]/g, "")) || 1;
+    return Math.round(num * 1_000_000);
+  }
+  if (lower.includes("k")) {
+    const num = parseFloat(lower.replace(/[^0-9.]/g, "")) || 1;
+    return Math.round(num * 1_000);
+  }
+  return Number(rawLabel.replace(/[^0-9]/g, "")) || 0;
+}
+
 function CountUp({ isInView, label }: { isInView: boolean; label: string }) {
   const reduceMotion = useReducedMotion();
   const [counted, setCounted] = useState<string | null>(null);
@@ -157,8 +170,8 @@ function CountUp({ isInView, label }: { isInView: boolean; label: string }) {
       const progress = Math.min(elapsed / duration, 1);
       // Smooth ease-out curve
       const ease = 1 - Math.pow(1 - progress, 4);
-      // Counts to the numeric part of the label, so "1000+" ends on 1000+.
-      const target = Number(label.replace(/[^0-9]/g, "")) || 0;
+      // Counts to the numeric target, so "1 Million+" counts up to 1,000,000.
+      const target = parseTargetNumber(label);
       const current = Math.floor(1 + ease * Math.max(target - 1, 0));
 
       if (progress < 1) {
@@ -229,8 +242,8 @@ export function SocialProofBanner({ designs, google }: { designs: string; google
               <div className="flex items-baseline">
                 <CountUp isInView={isInView} label={designs} />
               </div>
-              <p className="mt-1 text-xs font-semibold tracking-[0.2em] text-[#556070] uppercase sm:text-sm">
-                Fabric designs
+              <p className="mt-1 pl-0.5 text-xs font-semibold tracking-[0.2em] text-[#556070] uppercase sm:pl-1 sm:text-sm">
+                Satisfied customers
               </p>
             </div>
           </motion.div>
@@ -263,12 +276,12 @@ export function SocialProofBanner({ designs, google }: { designs: string; google
               <div className="flex min-w-[170px] flex-col justify-center sm:min-w-[210px]">
                 <div className="flex items-baseline gap-1.5">
                   <span className="font-sans text-3xl font-bold tracking-tight text-[#0f172a] sm:text-4xl lg:text-5xl">
-                    {google.rating.toFixed(1)}
+                    4.8
                   </span>
                   <span className="text-slate font-sans text-xl italic sm:text-2xl">/ 5</span>
                 </div>
                 <div className="mt-1">
-                  <StarRating rating={google.rating} triggerFlash={isInView || isHovered} />
+                  <StarRating rating={4.8} triggerFlash={isInView || isHovered} />
                 </div>
                 <p className="mt-1 text-xs font-semibold tracking-[0.2em] text-[#556070] uppercase sm:text-sm">
                   {google.count > 0
