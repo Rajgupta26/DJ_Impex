@@ -13,7 +13,7 @@ status: confirmed client copy
 
 **Intro:** At the heart of our commitment to quality and customer satisfaction, we strive for excellence across every dimension.
 
-## The five pillars
+## The Five Pillars
 This is a list of 5 equal pillars, not a sequence. Do not number them 01-05.
 
 1. **Inspiring Admiration.** We aspire to be the textile hub that earns the admiration of all our stakeholders: our cherished customers, dedicated employees, valued partners and society at large.
