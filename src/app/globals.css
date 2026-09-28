@@ -23,6 +23,15 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* The same clip as on body, and it has to be on both.
+       body alone was not enough: a reveal animation's start state sits 50px to
+       the right of where it lands, and on /about four such paragraphs pushed the
+       root element to 404px on a 375px screen. The phone then let the whole page
+       be dragged sideways, which is what the agency reported. Clipping here
+       stops the root growing at all.
+       `clip` rather than `hidden` for the reason given on body: hidden would
+       make this a scroll container and break every sticky descendant. */
+    overflow-x: clip;
   }
 
   *,

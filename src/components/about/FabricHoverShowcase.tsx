@@ -144,7 +144,13 @@ export function FabricHoverShowcase({
 
   return (
     <div className="mt-16 lg:mt-20">
-      <div className="grid gap-x-12 lg:grid-cols-[6.5fr_5.5fr] lg:gap-x-14 xl:gap-x-16">
+      {/* [&>*]:min-w-0 is load-bearing. A grid item defaults to min-width:auto,
+          so it refuses to shrink below its content. The fabric tabs below are a
+          horizontal scroller whose content is wider than a phone, so instead of
+          scrolling, the item grew to its content width and took the whole page
+          with it -- measured on production at 375px, the layout viewport came
+          out 717px wide and the page could be dragged sideways. */}
+      <div className="grid gap-x-12 lg:grid-cols-[6.5fr_5.5fr] lg:gap-x-14 xl:gap-x-16 [&>*]:min-w-0">
         {/* Row 1: Collection Lead on Left, empty spacer on Right */}
         <div className="lg:col-start-1">
           <p className="text-slate">{collectionLead}</p>
@@ -156,7 +162,7 @@ export function FabricHoverShowcase({
           <div
             role="tablist"
             aria-label="Nabeen fabric collections"
-            className="border-line flex snap-x snap-mandatory gap-2 overflow-x-auto border-y px-1 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:block lg:border-y-0 lg:border-b lg:px-0 lg:py-0"
+            className="border-line flex snap-x snap-mandatory [scrollbar-width:none] gap-2 overflow-x-auto border-y px-1 py-3 lg:block lg:border-y-0 lg:border-b lg:px-0 lg:py-0 [&::-webkit-scrollbar]:hidden"
           >
             {items.map((item, index) => {
               const isActive = activeItem.id === item.id;
@@ -182,7 +188,7 @@ export function FabricHoverShowcase({
                   onMouseEnter={() => handleSelect(item)}
                   onFocus={() => handleSelect(item)}
                   onClick={() => handleSelect(item)}
-                  className={`group border-line focus-visible:ring-accent relative flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-full border px-3 py-1.5 text-left transition-all duration-300 ease-out focus-visible:ring-1 focus-visible:outline-none lg:min-h-20 lg:w-full lg:gap-4 lg:rounded-none lg:border-x-0 lg:border-b-0 lg:border-t lg:px-0 lg:py-2 lg:pl-4 ${
+                  className={`group border-line focus-visible:ring-accent relative flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-full border px-3 py-1.5 text-left transition-all duration-300 ease-out focus-visible:ring-1 focus-visible:outline-none lg:min-h-20 lg:w-full lg:gap-4 lg:rounded-none lg:border-x-0 lg:border-t lg:border-b-0 lg:px-0 lg:py-2 lg:pl-4 ${
                     isActive ? "text-navy font-normal" : "text-navy/65 hover:text-navy"
                   }`}
                 >
@@ -213,7 +219,7 @@ export function FabricHoverShowcase({
                   </span>
 
                   <span
-                    className={`inline-block min-w-0 text-sm font-medium tracking-tight transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-focus:-translate-x-1 lg:t-h3 lg:text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] lg:font-light ${
+                    className={`lg:t-h3 inline-block min-w-0 text-sm font-medium tracking-tight transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-focus:-translate-x-1 lg:text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] lg:font-light ${
                       isActive
                         ? "bg-clip-text text-transparent [text-shadow:0_1px_1px_rgb(13_23_51_/_0.2)]"
                         : "text-inherit"
