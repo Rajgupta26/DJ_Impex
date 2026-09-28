@@ -53,6 +53,7 @@ export default async function JournalPage() {
       <PageHero
         title="The Fabric Journal"
         strapline="Guides to choosing, judging and wearing fine fabric."
+        straplineClassName="md:max-w-none md:whitespace-nowrap"
         pattern="check"
       />
 

@@ -320,7 +320,7 @@ export function FabricHoverShowcase({
                   {/* Caption & Weave information */}
                   <div className="absolute inset-x-0 bottom-0 p-6 text-white [text-shadow:0_1px_8px_rgb(13_23_51_/_0.8)] sm:p-7">
                     <div className="text-accent flex items-center justify-between font-mono text-xs tracking-wider uppercase">
-                      <span>{activeItem.weave}</span>
+                      <span className="text-white">{activeItem.weave}</span>
                       <span className="text-white/60">NABEEN® COLLECTION</span>
                     </div>
                     <h3 className="t-h3 mt-1.5 text-2xl font-light text-white sm:text-3xl">

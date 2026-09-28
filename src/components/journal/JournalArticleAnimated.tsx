@@ -129,11 +129,11 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
                 transition={{ duration: 0.75, delay: 0.1, ease }}
               >
                 {section.heading ? (
-                  <h2 className="t-h2 max-w-[18ch] text-[clamp(1.75rem,1.3rem+1.5vw,2.75rem)] leading-tight text-navy">
+                  <h2 className="font-semibold text-navy max-w-[18ch] text-[clamp(1.75rem,1.3rem+1.5vw,2.75rem)] leading-tight">
                     {withReg(section.heading)}
                   </h2>
                 ) : (
-                  <h2 className="t-h2 max-w-[18ch] text-[clamp(1.75rem,1.3rem+1.5vw,2.75rem)] leading-tight text-navy">
+                  <h2 className="font-semibold text-navy max-w-[18ch] text-[clamp(1.75rem,1.3rem+1.5vw,2.75rem)] leading-tight">
                     Overview
                   </h2>
                 )}
@@ -150,7 +150,7 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
                 {section.paragraphs.map((para, pIdx) => (
                   <p
                     key={pIdx}
-                    className="text-base font-light leading-[1.75] text-slate sm:text-lg"
+                    className="text-base font-normal leading-[1.75] text-navy/85 sm:text-lg"
                   >
                     {withReg(para)}
                   </p>

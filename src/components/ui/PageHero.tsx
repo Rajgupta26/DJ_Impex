@@ -17,6 +17,7 @@ export function PageHero({
   pending,
   pattern,
   objectPosition = "center",
+  straplineClassName,
 }: {
   title: ReactNode;
   strapline?: ReactNode;
@@ -31,6 +32,7 @@ export function PageHero({
    */
   pattern?: WeavePattern;
   objectPosition?: string;
+  straplineClassName?: string;
 }) {
   return (
     <section
@@ -71,7 +73,9 @@ export function PageHero({
 
       <div className="container-site relative pb-[clamp(2.5rem,6vh,4.5rem)] pt-24">
         <h1 className="t-h1 max-w-[18ch]">{title}</h1>
-        {strapline ? <p className="t-lead mt-6 max-w-[32rem] text-white/90">{strapline}</p> : null}
+        {strapline ? (
+          <p className={`t-lead mt-6 max-w-[32rem] text-white/90 ${straplineClassName ?? ""}`}>{strapline}</p>
+        ) : null}
       </div>
     </section>
   );

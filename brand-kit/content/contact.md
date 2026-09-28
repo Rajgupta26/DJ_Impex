@@ -12,7 +12,7 @@ source: site.json contact block
 ## Channels (from site.json, respect statuses)
 - WhatsApp (primary action)
 - Phone: +91 98196 93626
-- Email: ceo@djimpex.in
+- Email: admin@djimpex.in
 - Visit: address block + embedded Google Map (lazy-loaded, click-to-load on mobile) + "Get directions" link
 
 ## Enquiry form

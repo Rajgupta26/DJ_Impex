@@ -292,7 +292,7 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
     process.env.CONTACT_RECEIVER_EMAIL ||
     process.env.ENQUIRY_TO_EMAIL ||
     smtpUser ||
-    "ceo@djimpex.in"
+    "admin@djimpex.in"
   )
     .replace(/^["']|["']$/g, "")
     .trim();
