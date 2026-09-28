@@ -46,7 +46,7 @@ export default async function AboutPage() {
         image={aboutHero.src}
         alt={aboutHero.alt}
         objectPosition="center 42%"
-        straplineClassName="max-w-none whitespace-nowrap"
+        straplineClassName="md:max-w-none md:whitespace-nowrap"
       />
 
       <WelcomeSection />

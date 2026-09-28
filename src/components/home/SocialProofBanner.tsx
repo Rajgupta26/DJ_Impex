@@ -223,22 +223,22 @@ export function SocialProofBanner({ designs, google }: { designs: string; google
       ref={containerRef}
       className="border-line/60 overflow-hidden border-b bg-white pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-8 lg:pb-20"
     >
-      <Container>
+      <Container className="min-w-0">
         {/* Strictly symmetric 3-column grid (1fr / auto / 1fr) with left and right blocks pushed to outer corners */}
         <div
-          className={`grid grid-cols-1 items-center gap-8 md:gap-8 lg:gap-12 ${google ? "md:grid-cols-[1fr_auto_1fr]" : "md:justify-items-center"}`}
+          className={`grid min-w-0 grid-cols-1 items-center gap-8 md:gap-8 lg:gap-12 ${google ? "md:grid-cols-[1fr_auto_1fr]" : "md:justify-items-center"}`}
         >
           {/* Left Block: Aligned to the left corner */}
           <motion.div
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -70 }}
             animate={isInView ? { opacity: 1, x: 0 } : undefined}
             transition={{ duration: 1.0, ease }}
-            className={`flex w-full items-center justify-center gap-5 sm:gap-6 ${google ? "md:justify-start" : ""}`}
+            className={`flex min-w-0 w-full items-center justify-center gap-5 sm:gap-6 ${google ? "md:justify-start" : ""}`}
           >
             <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#e3f4ee] transition-transform duration-300 hover:scale-105 sm:h-20 sm:w-20">
               <UsersThreeOutline />
             </div>
-            <div className="flex min-w-[170px] flex-col justify-center sm:min-w-[210px]">
+            <div className="flex min-w-0 flex-1 flex-col justify-center sm:min-w-[210px] sm:flex-none">
               <div className="flex items-baseline">
                 <CountUp isInView={isInView} label={designs} />
               </div>
@@ -268,12 +268,12 @@ export function SocialProofBanner({ designs, google }: { designs: string; google
               transition={{ duration: 1.0, ease }}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              className="flex w-full items-center justify-center gap-5 sm:gap-6 md:justify-end"
+              className="flex min-w-0 w-full items-center justify-center gap-5 sm:gap-6 md:justify-end"
             >
               <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-gray-100 bg-white shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:scale-105 sm:h-20 sm:w-20">
                 <GoogleLogo />
               </div>
-              <div className="flex min-w-[170px] flex-col justify-center sm:min-w-[210px]">
+              <div className="flex min-w-0 flex-1 flex-col justify-center sm:min-w-[210px] sm:flex-none">
                 <div className="flex items-baseline gap-1.5">
                   <span className="font-sans text-3xl font-bold tracking-tight text-[#0f172a] sm:text-4xl lg:text-5xl">
                     4.8

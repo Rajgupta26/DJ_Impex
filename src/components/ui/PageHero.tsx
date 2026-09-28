@@ -37,7 +37,7 @@ export function PageHero({
   return (
     <section
       data-hero
-      className="on-dark relative flex h-[45vh] min-h-[22rem] items-end overflow-hidden bg-navy-deep text-white md:h-[55vh] md:min-h-[26rem]"
+      className="on-dark relative flex h-[42svh] min-h-[20rem] items-end overflow-hidden bg-navy-deep text-white md:h-[55vh] md:min-h-[26rem]"
     >
       {pattern && !image ? (
         <WeaveArt pattern={pattern} scale={1.35} />
@@ -71,10 +71,10 @@ export function PageHero({
         className="absolute inset-0 bg-[radial-gradient(125%_115%_at_0%_100%,rgb(13_23_51/0.88)_0%,rgb(13_23_51/0.5)_40%,transparent_74%)]"
       />
 
-      <div className="container-site relative pb-[clamp(2.5rem,6vh,4.5rem)] pt-24">
+      <div className="container-site relative pb-10 pt-20 sm:pb-12 sm:pt-24 md:pb-[clamp(2.5rem,6vh,4.5rem)]">
         <h1 className="t-h1 max-w-[18ch]">{title}</h1>
         {strapline ? (
-          <p className={`t-lead mt-6 max-w-[32rem] text-white/90 ${straplineClassName ?? ""}`}>{strapline}</p>
+          <p className={`t-lead mt-4 max-w-[32rem] !text-white sm:mt-6 ${straplineClassName ?? ""}`}>{strapline}</p>
         ) : null}
       </div>
     </section>

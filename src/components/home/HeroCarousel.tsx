@@ -81,10 +81,10 @@ export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]
       data-hero
       aria-roledescription="carousel"
       aria-label="Nabeen fabrics"
-      className="on-dark bg-navy-deep relative h-[100dvh] h-screen min-h-[36rem] overflow-hidden text-white"
+      className="on-dark bg-navy-deep relative h-[82svh] min-h-[32rem] w-full max-w-full min-w-0 overflow-hidden text-white sm:h-[100dvh] sm:min-h-[36rem]"
     >
-      <div ref={emblaRef} className="h-full">
-        <div className="flex h-full">
+      <div ref={emblaRef} className="h-full w-full max-w-full min-w-0 overflow-hidden">
+        <div className="flex h-full w-full min-w-0">
           {slides.map((slide, index) => (
             <div
               key={slide.headline}
@@ -92,7 +92,7 @@ export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]
               aria-roledescription="slide"
               aria-label={`Slide ${index + 1} of ${slides.length}`}
               aria-hidden={index !== selected}
-              className="relative h-full min-w-0 flex-[0_0_100%]"
+              className="relative h-full w-full max-w-full min-w-0 flex-[0_0_100%]"
             >
               {slide.media.kind === "image" ? (
                 <Image

@@ -153,7 +153,11 @@ export function FabricHoverShowcase({
 
         {/* Row 2, Col 1: The 8 Fabric Words (Suiting to Giza) */}
         <div className="mt-5 lg:col-start-1 lg:row-start-2">
-          <div role="tablist" aria-label="Nabeen fabric collections" className="border-line border-b">
+          <div
+            role="tablist"
+            aria-label="Nabeen fabric collections"
+            className="border-line flex snap-x snap-mandatory gap-2 overflow-x-auto border-y px-1 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:block lg:border-y-0 lg:border-b lg:px-0 lg:py-0"
+          >
             {items.map((item, index) => {
               const isActive = activeItem.id === item.id;
               return (
@@ -178,13 +182,13 @@ export function FabricHoverShowcase({
                   onMouseEnter={() => handleSelect(item)}
                   onFocus={() => handleSelect(item)}
                   onClick={() => handleSelect(item)}
-                  className={`group border-line focus-visible:ring-accent relative flex min-h-[4.5rem] w-full items-center gap-4 border-t py-2 pl-4 text-left transition-all duration-300 ease-out focus-visible:ring-1 focus-visible:outline-none sm:min-h-20 sm:py-2 ${
+                  className={`group border-line focus-visible:ring-accent relative flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-full border px-3 py-1.5 text-left transition-all duration-300 ease-out focus-visible:ring-1 focus-visible:outline-none lg:min-h-20 lg:w-full lg:gap-4 lg:rounded-none lg:border-x-0 lg:border-b-0 lg:border-t lg:px-0 lg:py-2 lg:pl-4 ${
                     isActive ? "text-navy font-normal" : "text-navy/65 hover:text-navy"
                   }`}
                 >
                   {/* Active indicator bar in Selvedge Blue */}
                   <span
-                    className={`bg-accent absolute top-1/2 left-0 w-[3px] -translate-y-1/2 transition-all duration-300 ease-out ${
+                    className={`bg-accent absolute top-1/2 left-0 hidden w-[3px] -translate-y-1/2 transition-all duration-300 ease-out lg:block ${
                       isActive ? "h-7 opacity-100" : "h-0 opacity-0 group-hover:h-3.5 group-hover:opacity-60"
                     }`}
                     aria-hidden="true"
@@ -192,7 +196,7 @@ export function FabricHoverShowcase({
 
                   {/* Each ticket gets a real vertical cutting before its name. */}
                   <span
-                    className={`relative h-14 w-12 shrink-0 overflow-hidden border transition-all duration-300 ease-out sm:h-16 sm:w-14 ${
+                    className={`relative hidden shrink-0 overflow-hidden border transition-all duration-300 ease-out lg:block lg:h-16 lg:w-14 ${
                       isActive
                         ? "border-accent shadow-[0_0_0_2px_rgb(95_149_221_/_0.18)]"
                         : "border-line group-hover:border-navy/45"
@@ -209,7 +213,7 @@ export function FabricHoverShowcase({
                   </span>
 
                   <span
-                    className={`t-h3 inline-block min-w-0 text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] font-light tracking-tight transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-focus:-translate-x-1 ${
+                    className={`inline-block min-w-0 text-sm font-medium tracking-tight transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-focus:-translate-x-1 lg:t-h3 lg:text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] lg:font-light ${
                       isActive
                         ? "bg-clip-text text-transparent [text-shadow:0_1px_1px_rgb(13_23_51_/_0.2)]"
                         : "text-inherit"
