@@ -80,7 +80,7 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
             <PublishedDate post={post} />
           </p>
 
-          <h1 className="t-h1 mt-6 max-w-[28ch]">
+          <h1 className="t-h1 mt-6 max-w-none [text-wrap:pretty]">
             {withReg(post.title)}
             <TbcTag
               status={post.titleStatus ?? "confirmed"}

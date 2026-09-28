@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { JournalFeatureGrid } from "@/components/journal/JournalFeatureGrid";
 import { PostCard } from "@/components/journal/PostCard";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
@@ -44,6 +45,8 @@ export const dynamic = "force-dynamic";
 
 export default async function JournalPage() {
   const [lead, ...rest] = await getJournalPosts();
+  const supporting = rest.slice(0, 2);
+  const olderPosts = rest.slice(2);
 
   return (
     <>
@@ -53,13 +56,13 @@ export default async function JournalPage() {
         pattern="check"
       />
 
-      <section className="page-end bg-white pt-[var(--spacing-section)]">
+      <section className="page-end bg-white pt-6 sm:pt-8 md:pt-10">
         <Container>
-          <PostCard post={lead} size="large" layout="horizontal" />
+          {lead ? <JournalFeatureGrid lead={lead} supporting={supporting} /> : null}
 
-          {rest.length > 0 ? (
+          {olderPosts.length > 0 ? (
             <ul className="border-line mt-20 grid gap-14 border-t pt-14 md:grid-cols-2 md:gap-x-16">
-              {rest.map((post) => (
+              {olderPosts.map((post) => (
                 <li key={post.slug}>
                   <PostCard post={post} />
                 </li>
