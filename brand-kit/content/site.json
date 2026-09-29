@@ -136,7 +136,7 @@
     {
       "name": "Pinterest",
       "handle": null,
-      "url": null,
+      "url": "https://in.pinterest.com/NabeenbyDJI/",
       "status": "tbc",
       "note": "Required by the home page spec, but no Pinterest account found anywhere. Ask the client."
     }

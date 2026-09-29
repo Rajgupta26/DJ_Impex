@@ -12,7 +12,7 @@ import { visible } from "@/lib/site";
 function SocialIcon({ name }: { name: string }) {
   if (name === "Instagram") {
     return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4 shrink-0 fill-none" strokeWidth="1.8">
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5 shrink-0 fill-none" strokeWidth="1.8">
         <defs>
           <linearGradient id="instagram-gradient" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse">
             <stop stopColor="#FEDA75" />
@@ -31,7 +31,7 @@ function SocialIcon({ name }: { name: string }) {
 
   if (name === "Facebook") {
     return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4 shrink-0">
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5 shrink-0">
         <rect x="2" y="2" width="20" height="20" rx="5" fill="#1877F2" />
         <path fill="white" d="M13.5 20v-6.35h2.13l.32-2.48H13.5V9.59c0-.72.2-1.21 1.23-1.21h1.31V6.16c-.23-.03-1-.1-1.9-.1-1.88 0-3.17 1.15-3.17 3.26v1.85H8.84v2.48h2.13V20h2.53Z" />
       </svg>
@@ -39,7 +39,7 @@ function SocialIcon({ name }: { name: string }) {
   }
 
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4 shrink-0">
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5 shrink-0">
       <rect x="2" y="2" width="20" height="20" rx="5" fill="#E60023" />
       <path fill="white" d="M12.54 4.1c-4.4 0-6.62 3.15-6.62 5.78 0 1.6.6 3.02 1.9 3.55.21.09.4.01.46-.23l.17-.7c.06-.23.04-.31-.12-.5-.36-.42-.59-.96-.59-1.73 0-2.23 1.67-4.23 4.35-4.23 2.37 0 3.68 1.45 3.68 3.39 0 2.55-1.13 4.7-2.8 4.7-.93 0-1.62-.77-1.4-1.72.27-1.13.8-2.35.8-3.16 0-.73-.39-1.34-1.2-1.34-.95 0-1.71.98-1.71 2.3 0 .84.28 1.41.28 1.41l-1.13 4.8c-.33 1.41-.05 3.14-.03 3.31.02.1.15.12.22.05.09-.1 1.23-1.52 1.62-2.93.11-.4.64-2.5.64-2.5.32.6 1.25 1.14 2.24 1.14 2.95 0 4.95-2.69 4.95-6.28 0-2.72-2.3-5.26-5.8-5.26Z" />
     </svg>
@@ -147,23 +147,22 @@ export function Footer() {
           {socials.length > 0 ? (
             <div>
               <h2 className="t-small mb-4 font-semibold text-accent">Follow</h2>
-              <ul className="flex flex-nowrap items-center gap-3 text-white/80 sm:gap-3.5">
+              <ul className="flex items-center gap-3 text-white/80">
                 {socials.map((social) => (
-                  <li key={social.name} className="shrink-0">
+                  <li key={social.name}>
                     {social.url ? (
                       <a
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 transition-colors hover:text-white"
+                        aria-label={`Visit Nabeen on ${social.name}`}
+                        className="inline-flex size-8 items-center justify-center transition-transform hover:scale-110 focus-visible:scale-110"
                       >
                         <SocialIcon name={social.name} />
-                        <span className="whitespace-nowrap">{social.name}</span>
                       </a>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 text-white/70">
+                      <span className="inline-flex size-8 items-center justify-center text-white/70" aria-label={social.name}>
                         <SocialIcon name={social.name} />
-                        <span className="whitespace-nowrap">{social.name}</span>
                       </span>
                     )}
                   </li>
