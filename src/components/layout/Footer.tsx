@@ -79,9 +79,6 @@ export function Footer() {
               height={345}
               className="h-11 w-auto"
             />
-            <p className="mt-6 max-w-[24rem] text-white/70">
-              {withReg(`${site.brand.brand.value} is the fabric brand of ${site.brand.company.value}, Mumbai. Woven in India since ${site.brand.founded.value} for ${site.brand.markets.value}.`)}
-            </p>
           </div>
 
           <nav aria-label="Footer">
@@ -219,9 +216,12 @@ export function Footer() {
         <div className="border-t border-white/15 bg-black/20 py-6 sm:py-7">
           <div className="container-site">
             <p className="mx-auto max-w-[850px] text-center text-sm leading-relaxed text-white/85 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
-              {withReg(
-                "Nabeen® contributes a percentage of its profits to support child education in Africa. Every dollar you spend at Nabeen® goes towards shaping a brighter future for Africa.",
-              )}
+              <span className="block">
+                {withReg("Nabeen® contributes a percentage of its profits to support child education in Africa.")}
+              </span>
+              <span className="mt-1 block sm:mt-1.5">
+                {withReg("Every dollar you spend at Nabeen® goes towards shaping a brighter future for Africa.")}
+              </span>
             </p>
           </div>
         </div>
