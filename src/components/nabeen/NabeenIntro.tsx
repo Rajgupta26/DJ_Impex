@@ -1,7 +1,8 @@
 "use client";
 
 import { Award, Handshake, TrendingUp } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useRef } from "react";
 
 import { Container } from "@/components/ui/Container";
 import { withReg } from "@/components/ui/Reg";
@@ -17,38 +18,67 @@ export function NabeenIntro({
   coreLine: string;
   values: string[];
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
-  const rise = (delay = 0) => ({
-    initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 46 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.25 },
-    transition: { duration: reduceMotion ? 0.01 : 1.1, delay, ease: [0.22, 0.61, 0.36, 1] as const },
+
+  // Connect animations directly to user's scroll progress through this section
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 88%", "center 45%"],
   });
 
+  // Heading glides in smoothly from the left as user scrolls
+  const headingX = useTransform(scrollYProgress, [0, 0.6], reduceMotion ? [0, 0] : [-75, 0]);
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.5], reduceMotion ? [1, 1] : [0, 1]);
+
+  // Paragraph 1 glides up smoothly from the bottom as user scrolls
+  const para1Y = useTransform(scrollYProgress, [0.15, 0.75], reduceMotion ? [0, 0] : [55, 0]);
+  const para1Opacity = useTransform(scrollYProgress, [0.15, 0.65], reduceMotion ? [1, 1] : [0, 1]);
+
+  // Paragraph 2 glides up smoothly from the bottom sequentially as user scrolls
+  const para2Y = useTransform(scrollYProgress, [0.3, 0.9], reduceMotion ? [0, 0] : [55, 0]);
+  const para2Opacity = useTransform(scrollYProgress, [0.3, 0.8], reduceMotion ? [1, 1] : [0, 1]);
+
+  // Values on the right glide in smoothly from the right
+  const valuesX = useTransform(scrollYProgress, [0.2, 0.85], reduceMotion ? [0, 0] : [65, 0]);
+  const valuesOpacity = useTransform(scrollYProgress, [0.2, 0.75], reduceMotion ? [1, 1] : [0, 1]);
+
   return (
-    <section className="bg-white py-14 sm:py-18 md:py-24">
+    <section ref={containerRef} className="overflow-hidden bg-white py-14 sm:py-18 md:py-24">
       <Container>
         <div className="grid gap-14 lg:grid-cols-[1.3fr_0.9fr] lg:gap-20 xl:gap-28">
           <div>
             <p className="text-xs font-semibold tracking-[0.22em] text-slate uppercase">About Nabeen</p>
             <span aria-hidden="true" className="mt-5 block h-px w-12 bg-accent" />
+
+            {/* Heading smoothly moves from the left tied to scroll */}
             <motion.h2
+              style={{ x: headingX, opacity: headingOpacity }}
               className="mt-8 max-w-none font-sans text-[clamp(2.6rem,3.3vw,4.35rem)] leading-[0.98] tracking-[-0.035em] text-navy"
-              {...rise()}
             >
               <span className="block md:whitespace-nowrap">A Global Fabric Brand</span>
               <span className="block md:whitespace-nowrap">with a Deeper Purpose</span>
             </motion.h2>
+
+            {/* Paragraphs smoothly move up from the bottom tied to scroll */}
             <div className="mt-10 grid max-w-2xl gap-7 text-[clamp(1.05rem,0.98rem+0.3vw,1.22rem)] leading-relaxed text-slate">
-              {paragraphs.map((paragraph, index) => (
-                <motion.p key={paragraph} {...rise(0.14 + index * 0.14)}>
-                  {withReg(paragraph)}
-                </motion.p>
-              ))}
+              {paragraphs.map((paragraph, index) => {
+                const y = index === 0 ? para1Y : para2Y;
+                const opacity = index === 0 ? para1Opacity : para2Opacity;
+                return (
+                  <motion.p key={paragraph} style={{ y, opacity }}>
+                    {withReg(paragraph)}
+                  </motion.p>
+                );
+              })}
             </div>
           </div>
 
-          <div className="border-l border-line pl-7 sm:pl-10 lg:pl-14">
+          {/* Right Column: Values smoothly move from the right tied to scroll */}
+          <motion.div
+            style={{ x: valuesX, opacity: valuesOpacity }}
+            className="border-l border-line pl-7 sm:pl-10 lg:pl-14"
+          >
             <p className="text-xs font-semibold tracking-[0.22em] text-slate uppercase">Our Values</p>
             <span aria-hidden="true" className="mt-5 block h-px w-12 bg-accent" />
             <p className="mt-8 max-w-md text-[clamp(1rem,0.94rem+0.25vw,1.15rem)] leading-relaxed text-slate">
@@ -58,18 +88,7 @@ export function NabeenIntro({
               {values.map((value, index) => {
                 const Icon = valueIcons[index] ?? Award;
                 return (
-                  <motion.li
-                    key={value}
-                    className="flex items-center gap-5 sm:gap-6"
-                    initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 52 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{
-                      duration: reduceMotion ? 0.01 : 1.1,
-                      delay: index * 0.16,
-                      ease: [0.22, 0.61, 0.36, 1],
-                    }}
-                  >
+                  <li key={value} className="flex items-center gap-5 sm:gap-6">
                     <span className="flex size-[4.6rem] shrink-0 items-center justify-center rounded-full bg-mist text-navy sm:size-[5.25rem]">
                       <Icon aria-hidden="true" size={35} strokeWidth={1.4} />
                     </span>
@@ -78,11 +97,11 @@ export function NabeenIntro({
                         {value}
                       </span>
                     </span>
-                  </motion.li>
+                  </li>
                 );
               })}
             </ul>
-          </div>
+          </motion.div>
         </div>
       </Container>
     </section>
