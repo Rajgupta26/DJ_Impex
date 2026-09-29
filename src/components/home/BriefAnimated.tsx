@@ -96,9 +96,9 @@ export function BriefAnimated({
         ) : null}
       </motion.div>
 
-      {/* Right Column: Premium DJI Brand Heritage Card with Multi-layer Triangle Animation */}
+      {/* Right Column: Just the DJI Logo and Text (No surrounding box/card) */}
       <motion.div
-        className="relative top-[10%] mx-auto flex w-full max-w-[280px] flex-col items-center justify-center rounded-2xl border border-line bg-gradient-to-b from-mist/70 via-mist/25 to-white p-8 text-center shadow-sm sm:max-w-[320px] lg:w-[350px] lg:max-w-[350px] lg:self-start lg:py-12"
+        className="relative mx-auto flex w-full max-w-[280px] flex-col items-center justify-center text-center sm:max-w-[320px] lg:w-[320px] lg:self-center"
         initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 50 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.25, margin: "-60px 0px" }}
@@ -112,10 +112,10 @@ export function BriefAnimated({
           style={reduceMotion ? {} : { scale: logoScale, y: logoY, opacity: logoOpacity }}
           className="relative flex items-center justify-center origin-center"
         >
-          <DJIAnimatedLogo size={145} />
+          <DJIAnimatedLogo size={160} />
         </motion.div>
 
-        <div className="mt-6 w-full border-t border-line/60 pt-5">
+        <div className="mt-5 w-full text-center">
           <p className="text-xs font-bold tracking-[0.2em] text-navy uppercase sm:text-sm">
             D J Impex & Co.
           </p>
