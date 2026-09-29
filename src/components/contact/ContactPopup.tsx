@@ -12,49 +12,29 @@ import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 import { track } from "@/lib/analytics";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 
-const SEEN_KEY = "nabeen-popup-seen";
-const SENT_KEY = "nabeen-enquiry-sent";
-
-function readSession(key: string): string | null {
-  try {
-    return sessionStorage.getItem(key);
-  } catch {
-    return null;
-  }
-}
-
 /**
- * The welcome pop-up, rebuilt to the agency's mock (2026-09-23): the mark, a
- * rule, the line, a rule, and one WhatsApp button. The short enquiry form that
- * used to sit here is gone -- the mock has no form.
+ * The welcome pop-up: centered luxury card with Nabeen mark, rule, brand statement,
+ * and action button that smoothly scrolls to the contact section.
  *
- * It opens six seconds after the first page load, once per session, and never
- * once someone has already sent an enquiry. It no longer skips the home page:
- * the instruction is that it appears when a visitor arrives, and the home page
- * is where they arrive. The enquiry form is at the foot of that page, which the
- * reader will not have reached six seconds in.
- *
- * The button is WhatsApp's own green. See the note on `--color-whatsapp` in
- * tokens.css: the authentic green carries white at 1.98:1, which fails, and the
- * agency asked for the authentic green anyway. 05-open-questions 143.
+ * Appears automatically every time the page is loaded/refreshed after delaySeconds.
  */
 export function ContactPopup({
-  whatsappHref,
-  line,
-  cta,
-  delaySeconds,
+  line = "Wrap Yourself in Opulence with the Finest African-Inspired Luxury Fabrics by Nabeen®",
+  cta = "WhatsApp us",
+  delaySeconds = 5,
 }: {
-  whatsappHref: string;
-  line: string;
-  cta: string;
-  delaySeconds: number;
+  whatsappHref?: string;
+  line?: string;
+  cta?: string;
+  delaySeconds?: number;
+  fabrics?: string[];
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
 
-  useOverlay("contact-popup", open);
+  useOverlay("welcome-popup", open);
 
   const close = useCallback(
     (reason: "dismiss" | "success") => {
@@ -65,22 +45,14 @@ export function ContactPopup({
   );
 
   useEffect(() => {
-    if (readSession(SEEN_KEY) || readSession(SENT_KEY)) return;
-
+    // Reliably open within 5 seconds after page load/refresh
     const timer = window.setTimeout(() => {
-      try {
-        sessionStorage.setItem(SEEN_KEY, "1");
-      } catch {
-        /* Private browsing: show it, just do not remember it. */
-      }
       setOpen(true);
-      track("popup_open", { path: pathname });
-    }, delaySeconds * 1000);
+      track("popup_open", { path: window.location.pathname });
+    }, (delaySeconds ?? 5) * 1000);
 
     return () => window.clearTimeout(timer);
-    // Once per session, on whichever page the visitor happens to land on.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [delaySeconds]);
 
   useFocusTrap(panelRef, open, () => close("dismiss"));
 
@@ -96,7 +68,7 @@ export function ContactPopup({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduceMotion ? 0.01 : 0.24 }}
-            className="absolute inset-0 h-full w-full cursor-default bg-navy-deep/60"
+            className="absolute inset-0 h-full w-full cursor-default bg-navy-deep/60 backdrop-blur-[2px]"
           />
 
           <motion.div
@@ -105,19 +77,19 @@ export function ContactPopup({
             aria-modal="true"
             aria-labelledby="contact-popup-title"
             tabIndex={-1}
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
-            transition={{ duration: reduceMotion ? 0.01 : 0.32, ease: [0.22, 0.61, 0.36, 1] }}
-            className="relative w-full max-w-[44rem] bg-white px-6 pb-12 pt-14 text-center shadow-[var(--shadow-float)] sm:px-12 sm:pb-16 sm:pt-16"
+            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.98 }}
+            transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.61, 0.36, 1] }}
+            className="relative w-full max-w-[34rem] rounded-xl bg-white px-6 py-8 text-center shadow-[var(--shadow-float)] sm:px-10 sm:py-10"
           >
             <button
               type="button"
               onClick={() => close("dismiss")}
-              className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center text-slate transition-colors hover:text-navy"
+              className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center text-slate transition-colors hover:text-navy"
             >
               <span className="visually-hidden">Close</span>
-              <X aria-hidden="true" size={30} strokeWidth={1.25} />
+              <X aria-hidden="true" size={24} strokeWidth={1.5} />
             </button>
 
             <Image
@@ -126,26 +98,37 @@ export function ContactPopup({
               width={1088}
               height={345}
               priority
-              className="mx-auto h-auto w-[min(20rem,70%)]"
+              className="mx-auto h-auto w-[min(15rem,60%)]"
             />
 
             <p
               id="contact-popup-title"
-              className="mt-12 border-y border-line py-6 text-[clamp(1rem,0.9rem+0.5vw,1.25rem)] leading-relaxed text-navy-mid sm:mt-14"
+              className="my-7 border-y border-line py-5 text-[clamp(0.95rem,0.85rem+0.4vw,1.125rem)] leading-relaxed text-navy-mid sm:my-8 sm:py-5"
             >
               {withReg(line)}
             </p>
 
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => track("whatsapp_click", { location: "popup" })}
-              className="mt-12 inline-flex min-h-12 items-center justify-center gap-2.5 bg-[var(--color-whatsapp)] px-8 py-3.5 font-semibold uppercase tracking-[0.06em] text-[var(--color-whatsapp-ink)] transition-opacity duration-[var(--duration-quick)] hover:opacity-90 sm:mt-14"
+            <button
+              type="button"
+              onClick={() => {
+                track("whatsapp_click", { location: "popup" });
+                close("success");
+                if (pathname === "/") {
+                  const el = document.getElementById("contact");
+                  if (el) {
+                    el.scrollIntoView({ behavior: "smooth" });
+                  } else {
+                    window.location.hash = "contact";
+                  }
+                } else {
+                  window.location.href = "/#contact";
+                }
+              }}
+              className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2.5 rounded bg-[var(--color-whatsapp)] px-7 py-3 text-sm font-semibold uppercase tracking-[0.06em] text-[var(--color-whatsapp-ink)] transition-opacity duration-[var(--duration-quick)] hover:opacity-90"
             >
-              <WhatsAppGlyph size={20} />
+              <WhatsAppGlyph size={18} />
               <span>{cta}</span>
-            </a>
+            </button>
           </motion.div>
         </div>
       ) : null}

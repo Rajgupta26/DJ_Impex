@@ -14,7 +14,7 @@ type ReviewItem = Testimonial & {
   rating?: number;
 };
 
-const INTERVAL = 2000;
+const INTERVAL = 3500;
 
 function GoogleReviewsBrand() {
   return (
@@ -176,15 +176,25 @@ export function TestimonialsCarousel({
 
                   <div
                     className="mt-6 flex items-center gap-2"
-                    aria-label={`${item.rating ?? 4.5} out of 5 stars`}
+                    aria-label={`${(item.rating ?? 5).toFixed(1)} out of 5 stars`}
                   >
                     <span className="text-sm font-semibold text-white sm:text-base">
-                      {(item.rating ?? 4.5).toFixed(1)}
+                      {(item.rating ?? 5).toFixed(1)}
                     </span>
-                    <div className="flex gap-1 text-[#fbbc04]">
-                      {Array.from({ length: 5 }, (_, star) => (
-                        <Star key={star} className="h-4 w-4 fill-current sm:h-5 sm:w-5" aria-hidden="true" />
-                      ))}
+                    <div className="flex gap-1">
+                      {Array.from({ length: 5 }, (_, star) => {
+                        const score = item.rating ?? 5;
+                        const isFilled = star < Math.round(score);
+                        return (
+                          <Star
+                            key={star}
+                            className={`h-4 w-4 sm:h-5 sm:w-5 ${
+                              isFilled ? "fill-[#fbbc04] text-[#fbbc04]" : "fill-white/10 text-white/25"
+                            }`}
+                            aria-hidden="true"
+                          />
+                        );
+                      })}
                     </div>
                   </div>
 

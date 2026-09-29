@@ -9,15 +9,11 @@ interface StatItem {
   accentColor: string;
 }
 
-/* A tonal ladder, lightest to deepest. These were ochre, crimson, navy and
-   forest green, which is four hues the palette does not have: CLAUDE.md says the
-   site is blue only. Each is used for the large lead text as well as the rule
-   above it, so each is measured against white and clears 4.5:1. */
 const STAT_ITEMS: StatItem[] = [
   {
     lead: "1995",
     title: "Founded",
-    subtitle: "Over 30 years in trade · Mumbai",
+    subtitle: "Over 30 years of textile excellence - Mumbai",
     accentColor: "var(--color-navy-mid)", // 5.63:1 on white
   },
   {
@@ -103,11 +99,10 @@ export function StatBoxes({ className = "" }: { className?: string }) {
                 {/* Large Lead Stat Number / Name - BOLD IN REVERTED BRAND COLORS */}
                 <div className="flex min-h-[3.5rem] items-baseline lg:min-h-[4rem]">
                   <span
-                    className={`t-number leading-none font-bold tracking-tight ${
-                      item.lead.length > 5
+                    className={`t-number leading-none font-bold tracking-tight ${item.lead.length > 5
                         ? "text-[clamp(1.85rem,1.4rem+1.2vw,2.5rem)] uppercase"
                         : "text-[clamp(3.25rem,2.4rem+2.2vw,4.5rem)]"
-                    }`}
+                      }`}
                     style={{ color: item.accentColor }}
                   >
                     {item.lead}

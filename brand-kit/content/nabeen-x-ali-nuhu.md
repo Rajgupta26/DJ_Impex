@@ -10,15 +10,15 @@ status: confirmed client copy; all imagery pending
 **H1:** Wear2Care x Ali Nuhu
 **Strapline (client):** Igniting young minds, by Nabeen®.
 
-## Luxury that gives back
-In an initiative that merges luxury and philanthropy, D J Impex & Co. (DJI), a renowned Indian Star Export House, presents its brand Nabeen® as a beacon of luxury fabrics and textiles in Kano, Nigeria.
+## Luxury That Gives Back
+In an initiative that merges luxury and philanthropy, D J Impex & Co. (DJI), a renowned Indian Star Export House, presents its brand Nabeen® as a beacon of luxury fabrics and textiles in Kano, Nigeria, drawing unwavering support and love from its people for over a decade.
 
-Nabeen has been an integral part of Nigeria's community for over a decade, drawing unwavering support and love from its people. In recognition of this, D J Impex & Co. has committed to giving back by contributing to child education and welfare in Nigeria, a cause that speaks to the heart of the nation.
+Nabeen has been an integral part of Nigeria's community. In recognition of this, D J Impex & Co. has committed to giving back by contributing to child education and welfare in Nigeria, a cause that speaks to the heart of the nation.
 
 ## A social mission with heart
 To further its vision of supporting child education and welfare, Nabeen has joined forces with Mr. Ali Nuhu, Nigeria's most cherished and influential actor, often called the "Sarki" (King) of Kannywood. Together they have launched "Wear2Care x Ali Nuhu by Nabeen", a portion of which supports children's education and welfare across Nigeria.
 
-## Join the mission: Wear2Care, Wear2Transform Lives
+## Join The Mission: Wear2Care, Wear2Transform Lives
 As this journey unfolds, Wear2Care x Ali Nuhu by Nabeen invites you to be part of a movement that not only embraces luxury but also transforms lives.
 
 Every purchase contributes to a larger mission: education, hope and opportunity for the children of Nigeria.

@@ -20,12 +20,16 @@ export function BrandFilm({
   poster,
   caption,
   heading,
+  quote,
+  signoff,
 }: {
   /** null until the client sends the file: the section draws cloth instead. */
   src: string | null;
   poster: string | null;
   caption: string;
   heading: string;
+  quote?: string;
+  signoff?: string;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -61,12 +65,27 @@ export function BrandFilm({
 
   return (
     <section className="on-dark relative overflow-hidden bg-navy-deep text-white">
-      <div className="container-site grid items-center gap-10 py-[clamp(3.5rem,2.5rem+4vw,6rem)] lg:grid-cols-[1fr_auto] lg:gap-20">
+      <div className="container-site grid items-center gap-10 pt-[clamp(3rem,2.5rem+3vw,5rem)] pb-[clamp(2.5rem,2rem+2vw,3.5rem)] lg:grid-cols-[1fr_auto] lg:gap-20">
         <div className="order-2 lg:order-1">
-          <h2 className="t-h2 max-w-[14ch] text-[clamp(1.75rem,1.3rem+1.6vw,3rem)]">
+          <h2 className="t-h2 max-w-none text-[clamp(1.75rem,1.3rem+1.6vw,3rem)]">
             {withReg(heading)}
           </h2>
           <p className="measure mt-5 text-white/80">{withReg(caption)}</p>
+
+          {quote ? (
+            <figure className="mt-8 border-l border-zari pl-6 sm:pl-8">
+              <blockquote>
+                <p className="text-[clamp(1.0625rem,0.95rem+0.4vw,1.25rem)] font-light leading-relaxed text-white/90">
+                  {withReg(quote.replace(/^"|"$/g, ""))}
+                </p>
+              </blockquote>
+              {signoff ? (
+                <figcaption className="t-small mt-4 text-white/60">
+                  {withReg(signoff)}
+                </figcaption>
+              ) : null}
+            </figure>
+          ) : null}
         </div>
 
         {/* The footage is a 9:16 reel, so it is set as a standing panel at its own

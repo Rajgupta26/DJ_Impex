@@ -15,7 +15,7 @@ const openSans = Open_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: pageTitle("House of luxury men's fabrics"),
+    default: pageTitle("House Of Luxury Men's Fabrics"),
     template: "%s | Nabeen® Luxury Fabrics by DJI",
   },
   description:

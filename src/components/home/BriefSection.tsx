@@ -18,7 +18,7 @@ export async function BriefSection() {
     <section className="overflow-hidden bg-white pt-16 lg:pt-20">
       <Container>
         <BriefAnimated
-          title={`A House Of Cloth Since ${site.brand.founded.value}`}
+          title="House Of Luxury Textiles"
           paragraphs={brief.paragraphs}
           linkLabel={linkLabel}
           imageSrc={slot.src}

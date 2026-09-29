@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type RefObject } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 
 const FOCUSABLE = [
   "a[href]",
@@ -20,6 +20,11 @@ export function useFocusTrap(
   isOpen: boolean,
   onClose: () => void,
 ) {
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
+
   useEffect(() => {
     if (!isOpen) return;
     const container = ref.current;
@@ -32,13 +37,18 @@ export function useFocusTrap(
         (element) => element.offsetParent !== null || element === document.activeElement,
       );
 
-    const first = focusables()[0];
-    (first ?? container).focus({ preventScroll: true });
+    // Initial focus when modal opens: prioritize first input over close button
+    const timer = setTimeout(() => {
+      if (container && !container.contains(document.activeElement)) {
+        const firstInput = container.querySelector<HTMLElement>("input, select, textarea");
+        (firstInput ?? focusables()[0] ?? container).focus({ preventScroll: true });
+      }
+    }, 50);
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (event.key !== "Tab") return;
@@ -63,8 +73,9 @@ export function useFocusTrap(
 
     document.addEventListener("keydown", onKeyDown);
     return () => {
+      clearTimeout(timer);
       document.removeEventListener("keydown", onKeyDown);
       previouslyFocused?.focus({ preventScroll: true });
     };
-  }, [ref, isOpen, onClose]);
+  }, [ref, isOpen]);
 }

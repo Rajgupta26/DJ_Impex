@@ -65,3 +65,13 @@ export function useOverlay(id: string, isOpen: boolean) {
 export function useAnyOverlayOpen(): boolean {
   return useOverlayContext().open.length > 0;
 }
+
+export function useWhatsAppPopup() {
+  const { open, setOpen } = useOverlayContext();
+  const isOpen = open.includes("whatsapp-modal");
+  return {
+    isOpen,
+    open: () => setOpen("whatsapp-modal", true),
+    close: () => setOpen("whatsapp-modal", false),
+  };
+}

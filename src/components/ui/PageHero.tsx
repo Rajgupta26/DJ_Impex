@@ -5,9 +5,8 @@ import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
 
 /**
- * The inner-page hero: shorter than the home hero, a fabric photograph under a
- * navy veil, the H1 set bottom-left. No selvedge here: the selvedge belongs only
- * to the home hero and the footer.
+ * The inner-page hero: clear fabric/photograph display with subtle bottom shadow for text legibility,
+ * the H1 set bottom-left. No selvedge here: the selvedge belongs only to the home hero and the footer.
  */
 export function PageHero({
   title,
@@ -37,7 +36,7 @@ export function PageHero({
   return (
     <section
       data-hero
-      className="on-dark relative flex h-[42svh] min-h-[20rem] items-end overflow-hidden bg-navy-deep text-white md:h-[55vh] md:min-h-[26rem]"
+      className="on-dark relative flex h-auto min-h-[16rem] items-end overflow-hidden bg-navy-deep text-white sm:min-h-[18rem] md:min-h-[22rem]"
     >
       {pattern && !image ? (
         <WeaveArt pattern={pattern} scale={1.35} />
@@ -48,7 +47,7 @@ export function PageHero({
           fill
           priority
           sizes="100vw"
-          quality={88}
+          quality={90}
           className="object-cover"
           style={{ objectPosition }}
         />
@@ -58,23 +57,22 @@ export function PageHero({
         </div>
       )}
 
+      {/* Subtle top vignette for transparent navbar clarity */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(100deg,rgb(13_23_51/0.8)_0%,rgb(13_23_51/0.5)_38%,rgb(23_40_80/0.2)_72%,rgb(23_40_80/0.08)_100%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-[64%] bg-[linear-gradient(to_top,rgb(13_23_51/0.6)_0%,rgb(13_23_51/0.2)_46%,transparent_100%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(125%_115%_at_0%_100%,rgb(13_23_51/0.88)_0%,rgb(13_23_51/0.5)_40%,transparent_74%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/50 via-black/20 to-transparent"
       />
 
-      <div className="container-site relative pb-10 pt-20 sm:pb-12 sm:pt-24 md:pb-[clamp(2.5rem,6vh,4.5rem)]">
-        <h1 className="t-h1 max-w-[18ch]">{title}</h1>
+      {/* Subtle neutral bottom vignette strictly for text legibility, preserving true HD image colors without any blue cast */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
+      />
+
+      <div className="container-site relative w-full pb-7 pt-24 [text-shadow:0_2px_12px_rgba(0,0,0,0.6)] sm:pb-8 sm:pt-26 md:pb-9 md:pt-28">
+        <h1 className="t-h1 max-w-none">{title}</h1>
         {strapline ? (
-          <p className={`t-lead mt-4 max-w-[32rem] !text-white sm:mt-6 ${straplineClassName ?? ""}`}>{strapline}</p>
+          <p className={`t-lead mt-3 max-w-none !text-white sm:mt-4 ${straplineClassName ?? ""}`}>{strapline}</p>
         ) : null}
       </div>
     </section>

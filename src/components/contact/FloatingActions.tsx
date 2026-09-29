@@ -1,14 +1,12 @@
 "use client";
 
-
-import { useAnyOverlayOpen } from "@/components/layout/OverlayContext";
+import { useAnyOverlayOpen, useWhatsAppPopup } from "@/components/layout/OverlayContext";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 import { track } from "@/lib/analytics";
 
 /**
- * On every page: WhatsApp above Directions, bottom-right, clear of the iOS home
- * indicator. They step aside while the menu or the popup is open so they never
- * float over a dialog.
+ * On every page: WhatsApp button, bottom-right, clear of the iOS home
+ * indicator. Steps aside while any popup/modal is open.
  */
 export function FloatingActions({
   whatsappHref,
@@ -17,6 +15,7 @@ export function FloatingActions({
   directionsHref?: string;
 }) {
   const overlayOpen = useAnyOverlayOpen();
+  const { open: openWhatsAppModal } = useWhatsAppPopup();
 
   return (
     <div
@@ -26,15 +25,19 @@ export function FloatingActions({
       }`}
       style={{ bottom: "calc(1rem + env(safe-area-inset-bottom))" }}
     >
-      <FloatingAction
-        href={whatsappHref}
-        label="Enquire on WhatsApp"
-        tone="whatsapp"
-        onClick={() => track("whatsapp_click", { location: "floating" })}
+      <button
+        type="button"
+        aria-label="Enquire on WhatsApp"
+        onClick={() => {
+          track("whatsapp_click", { location: "floating" });
+          openWhatsAppModal();
+        }}
         disabled={overlayOpen}
+        tabIndex={overlayOpen ? -1 : undefined}
+        className="group relative flex h-14 w-14 items-center justify-center rounded-[var(--radius-pill)] bg-[var(--color-whatsapp)] text-[var(--color-whatsapp-ink)] shadow-[var(--shadow-float)] transition-transform duration-[var(--duration-quick)] hover:-translate-y-0.5"
       >
         <WhatsAppGlyph size={24} />
-      </FloatingAction>
+      </button>
     </div>
   );
 }

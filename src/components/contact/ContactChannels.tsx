@@ -2,28 +2,17 @@ import { Mail, MapPin, Phone } from "lucide-react";
 
 import { TbcTag } from "@/components/ui/TbcTag";
 import { TrackedLink } from "@/components/ui/TrackedLink";
-import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 import { getSite } from "@/lib/content";
-import { directionsLink, mailtoLink, telLink, whatsappLink } from "@/lib/contact";
+import { directionsLink, telLink } from "@/lib/contact";
 
-/** Every way to reach the team, WhatsApp first. */
+/** Every way to reach the team. */
 export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
   const { contact } = getSite();
 
   return (
-    <div className="grid gap-8">
-      <TrackedLink
-        href={whatsappLink()}
-        event="whatsapp_click"
-        location="contact_page"
-        className={onDark ? "btn btn-on-dark w-fit" : "btn btn-primary w-fit"}
-      >
-        <WhatsAppGlyph size={20} />
-        <span>Enquire on WhatsApp</span>
-      </TrackedLink>
-
-      <dl className="grid gap-7">
-        <div className={`flex gap-4 border-t pt-7 ${onDark ? "border-white/15" : "border-line"}`}>
+    <div className="grid gap-5">
+      <dl className="grid gap-5">
+        <div className="flex gap-4">
           <Phone
             aria-hidden="true"
             size={18}
@@ -32,7 +21,7 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
           />
           <div>
             <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Phone</dt>
-            <dd className="mt-1">
+            <dd className="mt-1 flex flex-wrap items-center gap-x-2">
               <TrackedLink
                 href={telLink()}
                 event="call_click"
@@ -43,11 +32,23 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
                 {contact.phonePrimary.display}
               </TrackedLink>
               <TbcTag status={contact.phonePrimary.status} note={contact.phonePrimary.note} />
+              <span className={onDark ? "text-white/40" : "text-slate/40"} aria-hidden="true">
+                /
+              </span>
+              <TrackedLink
+                href={`tel:${contact.phoneSecondary.e164}`}
+                event="call_click"
+                location="contact_page"
+                external={false}
+                className={`text-link ${onDark ? "text-link-on-dark" : ""}`}
+              >
+                {contact.phoneSecondary.display}
+              </TrackedLink>
             </dd>
           </div>
         </div>
 
-        <div className={`flex gap-4 border-t pt-7 ${onDark ? "border-white/15" : "border-line"}`}>
+        <div className={`flex gap-4 border-t pt-5 ${onDark ? "border-white/15" : "border-line"}`}>
           <Mail
             aria-hidden="true"
             size={18}
@@ -75,7 +76,7 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
           </div>
         </div>
 
-        <div className={`flex gap-4 border-t pt-7 ${onDark ? "border-white/15" : "border-line"}`}>
+        <div className={`flex gap-4 border-t pt-5 ${onDark ? "border-white/15" : "border-line"}`}>
           <MapPin
             aria-hidden="true"
             size={18}
@@ -83,14 +84,13 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
             className={`mt-1 shrink-0 ${onDark ? "text-accent" : "text-slate"}`}
           />
           <div>
-            <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Head Office</dt>
+            <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Address</dt>
             <dd className="mt-1">
               <TrackedLink
                 href={directionsLink()}
                 event="directions_click"
                 location="contact_page"
-                className={`block w-fit transition-opacity hover:opacity-80 ${onDark ? "text-white" : "text-slate"}`}
-                aria-label="Open Head Office directions in Google Maps"
+                className={`text-link block ${onDark ? "text-link-on-dark" : ""}`}
               >
                 <address className="not-italic">
                   {contact.address.lines.map((line) => (

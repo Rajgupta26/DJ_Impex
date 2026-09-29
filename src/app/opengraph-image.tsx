@@ -34,7 +34,7 @@ export default async function OpenGraphImage() {
 
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", fontSize: 78, fontWeight: 300, lineHeight: 1.05 }}>
-            House of luxury men&rsquo;s fabrics
+            House Of Luxury Men&rsquo;s Fabrics
           </div>
           <div style={{ display: "flex", marginTop: 28, fontSize: 26, color: "rgba(255,255,255,0.75)" }}>
             {site.brand.logoTagline.value} · Est. {site.brand.founded.value}

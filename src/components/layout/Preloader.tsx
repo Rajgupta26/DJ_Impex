@@ -161,7 +161,7 @@ export function Preloader() {
               />
 
               <p className="t-small mt-5 tracking-[0.2em] text-white/55">
-                House of luxury men&rsquo;s fabrics
+                House Of Luxury Men&rsquo;s Fabrics
               </p>
 
               {/* Silver, not the house accent: the brief is no blue anywhere. */}

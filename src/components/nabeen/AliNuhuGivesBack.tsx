@@ -1,0 +1,72 @@
+"use client";
+
+import Image from "next/image";
+import { motion, useReducedMotion } from "motion/react";
+
+import { Container } from "@/components/ui/Container";
+import { withReg } from "@/components/ui/Reg";
+
+type Photo = { file: string; alt: string };
+
+export function AliNuhuGivesBack({
+  heading,
+  paragraphs,
+  photos,
+}: {
+  heading: string;
+  paragraphs: string[];
+  photos: Photo[];
+}) {
+  const reduceMotion = useReducedMotion();
+  const enter = (x: number, delay = 0) => ({
+    initial: reduceMotion ? { opacity: 0 } : { opacity: 0, x },
+    whileInView: { opacity: 1, x: 0 },
+    viewport: { once: true, amount: 0.25 },
+    transition: { duration: reduceMotion ? 0.01 : 1.2, delay, ease: [0.22, 0.61, 0.36, 1] as const },
+  });
+
+  return (
+    <section className="bg-white pt-8 pb-10 sm:pt-12 sm:pb-12 md:pt-14 md:pb-16">
+      <Container>
+        <div>
+          <motion.h2 className="t-h2 max-w-none" {...enter(-48)}>
+            {withReg(heading)}
+          </motion.h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-2 md:gap-8">
+            {paragraphs.map((paragraph, index) => (
+              <motion.p
+                key={paragraph}
+                className="measure text-slate"
+                {...enter(index === 0 ? -42 : 42, index * 0.12)}
+              >
+                {withReg(paragraph)}
+              </motion.p>
+            ))}
+          </div>
+        </div>
+
+        <ul className="mt-8 grid gap-6 sm:mt-10 md:grid-cols-2 md:gap-8">
+          {photos.map((photo, index) => (
+            <motion.li
+              key={photo.file}
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 52 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.18 }}
+              transition={{ duration: reduceMotion ? 0.01 : 0.75, delay: index * 0.12, ease: [0.22, 0.61, 0.36, 1] }}
+            >
+              <figure className="relative aspect-[4/3] w-full overflow-hidden bg-mist">
+                <Image
+                  src={`/images/wear2care/${photo.file}`}
+                  alt={photo.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 46vw"
+                  className="object-cover"
+                />
+              </figure>
+            </motion.li>
+          ))}
+        </ul>
+      </Container>
+    </section>
+  );
+}

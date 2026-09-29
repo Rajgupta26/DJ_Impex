@@ -44,6 +44,7 @@ export function EnquiryForm({
   const id = useId();
   const [selected, setSelected] = useState<string[]>([]);
   const [selectedUsage, setSelectedUsage] = useState<string[]>([]);
+  const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (state.status !== "success") return;
@@ -56,11 +57,74 @@ export function EnquiryForm({
     onSuccess?.();
   }, [state, variant, onSuccess]);
 
-  const fieldError = (name: string) => (state.status === "error" ? state.fieldErrors?.[name] : undefined);
+  const fieldError = (name: string) => clientErrors[name] || (state.status === "error" ? state.fieldErrors?.[name] : undefined);
+
+  const handleInputChange = (fieldName: string) => {
+    if (clientErrors[fieldName]) {
+      setClientErrors((prev) => {
+        const next = { ...prev };
+        delete next[fieldName];
+        return next;
+      });
+    }
+  };
 
   // The full form set two fields to a row. The pop-up's short variant is already
   // short and stays in a single file.
   const twoUp = paired && variant === "full";
+
+  const handleWhatsAppSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const formElement = e.currentTarget.closest("form");
+    if (!formElement) return;
+
+    const formData = new FormData(formElement);
+    const name = formData.get("fullName")?.toString().trim() || "";
+    const code = formData.get("countryCode")?.toString().trim() || "+91";
+    const phone = formData.get("whatsappNumber")?.toString().trim() || "";
+    const emailVal = formData.get("email")?.toString().trim() || "";
+    const msg = formData.get("message")?.toString().trim() || "";
+
+    const errors: Record<string, string> = {};
+
+    if (!name || name.length < 2) {
+      errors.fullName = "Please tell us your name.";
+    }
+
+    if (!phone || phone.length < 5) {
+      errors.whatsappNumber = "Please add your WhatsApp number.";
+    } else if (!/^[0-9\s()-]{5,20}$/.test(phone)) {
+      errors.whatsappNumber = "Please use digits only for your WhatsApp number.";
+    }
+
+    if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+      errors.email = "Please check this email address.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setClientErrors(errors);
+      const firstErrorKey = Object.keys(errors)[0];
+      const inputEl = formElement.querySelector<HTMLElement>(`[name="${firstErrorKey}"]`);
+      inputEl?.focus();
+      return;
+    }
+
+    setClientErrors({});
+
+    const lines: string[] = ["*New Fabric Enquiry - Nabeen®*"];
+    lines.push(`• *Name:* ${name}`);
+    lines.push(`• *WhatsApp:* ${code} ${phone}`);
+    if (emailVal) lines.push(`• *Email:* ${emailVal}`);
+    if (selected.length > 0) lines.push(`• *Fabrics:* ${selected.join(", ")}`);
+    if (selectedUsage.length > 0) lines.push(`• *Usage:* ${selectedUsage.join(", ")}`);
+    if (msg) lines.push(`• *Message:* ${msg}`);
+
+    const prefill = lines.join("\n");
+
+    track("whatsapp_click", { location: "enquiry_form_whatsapp_btn" });
+    const baseUrl = whatsappHref ? whatsappHref.split("?")[0] : "https://wa.me/919819693626";
+    window.open(`${baseUrl}?text=${encodeURIComponent(prefill)}`, "_blank", "noopener,noreferrer");
+  };
 
   const fullName = (
     <Field
@@ -71,6 +135,7 @@ export function EnquiryForm({
       required
       autoComplete="name"
       error={fieldError("fullName")}
+      onChange={() => handleInputChange("fullName")}
     />
   );
 
@@ -103,6 +168,7 @@ export function EnquiryForm({
           required
           placeholder="WhatsApp number"
           autoComplete="tel-national"
+          onChange={() => handleInputChange("whatsappNumber")}
           aria-invalid={fieldError("whatsappNumber") ? true : undefined}
           aria-describedby={fieldError("whatsappNumber") ? `${id}-whatsappNumber-error` : undefined}
           className={`${CONTROL} ${fieldError("whatsappNumber") ? "border-[var(--color-error)]" : ""}`.trim()}
@@ -131,6 +197,7 @@ export function EnquiryForm({
         type="email"
         autoComplete="email"
         error={fieldError("email")}
+        onChange={() => handleInputChange("email")}
       />
     ) : null;
 
@@ -273,13 +340,24 @@ export function EnquiryForm({
       </div>
 
       <div className="mt-1 grid gap-4">
-        <button
-          type="submit"
-          disabled={pending}
-          className={`btn btn-primary justify-center ${variant === "short" ? "" : "sm:w-fit"}`}
-        >
-          <span>{pending ? "Sending…" : "Send enquiry"}</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="submit"
+            disabled={pending}
+            className={`btn btn-primary justify-center ${variant === "short" ? "" : "sm:w-fit"}`}
+          >
+            <span>{pending ? "Sending…" : "Send enquiry"}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleWhatsAppSubmit}
+            className={`btn border-0 bg-[#25D366] text-white hover:bg-[#20ba5a] active:bg-[#1caa52] justify-center gap-2 font-medium shadow-sm transition-colors duration-150 ${variant === "short" ? "" : "sm:w-fit"}`}
+          >
+            <WhatsAppGlyph size={18} />
+            <span>Send enquiry via WhatsApp</span>
+          </button>
+        </div>
 
         {state.status === "error" ? (
           <a
@@ -310,6 +388,7 @@ function Field({
   error,
   required,
   type = "text",
+  onChange,
   ...rest
 }: {
   id: string;
@@ -318,6 +397,7 @@ function Field({
   error?: string;
   required?: boolean;
   type?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div className="grid gap-2">
@@ -330,6 +410,7 @@ function Field({
         name={name}
         type={type}
         required={required}
+        onChange={onChange}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
         className={`${CONTROL} ${error ? "border-[var(--color-error)]" : ""}`.trim()}

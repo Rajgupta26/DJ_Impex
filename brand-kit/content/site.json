@@ -58,9 +58,9 @@
       "note": "Appears in brochure, Facebook and prototype."
     },
     "phoneSecondary": {
-      "display": "+91 98193 41904",
-      "e164": "+919819341904",
-      "status": "tbc",
+      "display": "+91 22-47833999",
+      "e164": "+912247833999",
+      "status": "confirmed",
       "note": "Brochure only."
     },
     "whatsapp": {
@@ -137,7 +137,7 @@
       "name": "Pinterest",
       "handle": null,
       "url": null,
-      "status": "hold",
+      "status": "tbc",
       "note": "Required by the home page spec, but no Pinterest account found anywhere. Ask the client."
     }
   ],
@@ -151,12 +151,20 @@
       "href": "/about"
     },
     {
+      "label": "Nabeen®",
+      "href": "/nabeen"
+    },
+    {
       "label": "Our Vision",
       "href": "/vision"
     },
     {
       "label": "The Fabric Journal",
       "href": "/journal"
+    },
+    {
+      "label": "Nabeen x Ali Nuhu",
+      "href": "/nabeen-x-ali-nuhu"
     },
     {
       "label": "Contact Us",
@@ -304,7 +312,7 @@
         ]
       },
       {
-        "name": "Nabeen #White",
+        "name": "Nabeen White",
         "products": [
           "Fantasy",
           "Marconi",
@@ -350,6 +358,6 @@
     "status": "tbc",
     "line": "Wrap Yourself in Opulence with the Finest African-Inspired Luxury Fabrics by Nabeen®",
     "cta": "WhatsApp us",
-    "delaySeconds": 6
+    "delaySeconds": 5
   }
 }

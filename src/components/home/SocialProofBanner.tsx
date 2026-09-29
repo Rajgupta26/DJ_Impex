@@ -276,12 +276,12 @@ export function SocialProofBanner({ designs, google }: { designs: string; google
               <div className="flex min-w-0 flex-1 flex-col justify-center sm:min-w-[210px] sm:flex-none">
                 <div className="flex items-baseline gap-1.5">
                   <span className="font-sans text-3xl font-bold tracking-tight text-[#0f172a] sm:text-4xl lg:text-5xl">
-                    4.8
+                    4.9
                   </span>
                   <span className="text-slate font-sans text-xl italic sm:text-2xl">/ 5</span>
                 </div>
                 <div className="mt-1">
-                  <StarRating rating={4.8} triggerFlash={isInView || isHovered} />
+                  <StarRating rating={4.9} triggerFlash={isInView || isHovered} />
                 </div>
                 <p className="mt-1 text-xs font-semibold tracking-[0.2em] text-[#556070] uppercase sm:text-sm">
                   {google.count > 0

@@ -12,6 +12,8 @@ import { withReg } from "@/components/ui/Reg";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
+import { useWhatsAppPopup } from "@/components/layout/OverlayContext";
+import { track } from "@/lib/analytics";
 
 export type HeroMedia =
   | { kind: "image"; src: string; alt: string; position?: string; muted?: boolean }
@@ -45,6 +47,7 @@ const FILM_INTERVAL = 13000;
  */
 export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]; whatsappHref: string }) {
   const reduceMotion = useReducedMotion();
+  const { open: openWhatsAppModal } = useWhatsAppPopup();
   const [emblaRef, embla] = useEmblaCarousel({ loop: true, duration: 40 }, [Fade()]);
   const [selected, setSelected] = useState(0);
   const playing = true;
@@ -153,10 +156,17 @@ export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]
         <HeroWords slide={active} slideKey={selected} reduceMotion={Boolean(reduceMotion)} rise={!advanced} />
 
         <div className="mt-9 flex flex-wrap items-center gap-4">
-          <TrackedLink href={whatsappHref} event="whatsapp_click" location="hero" className="btn btn-on-dark">
+          <button
+            type="button"
+            onClick={() => {
+              track("whatsapp_click", { location: "hero" });
+              openWhatsAppModal();
+            }}
+            className="btn btn-on-dark cursor-pointer"
+          >
             <WhatsAppGlyph size={20} />
             <span>Enquire on WhatsApp</span>
-          </TrackedLink>
+          </button>
 
           {active.href ? (
             <Link href={active.href} className="btn btn-ghost">
@@ -270,12 +280,13 @@ function HeroVideo({
     <div className="absolute inset-0">
       <video
         ref={videoRef}
-        className="h-full w-full object-cover"
+        className="h-full w-full object-cover contrast-[1.04] saturate-[1.06] brightness-[1.02] [image-rendering:-webkit-optimize-contrast]"
+        style={{ objectPosition: "50% 35%" }}
         poster={poster}
         // Metadata when the film may start by itself; nothing at all when it may
         // not, so a Data Saver visitor downloads only the poster until they ask
         // for the film. Either way the element is here and the control works.
-        preload={autoplayAllowed ? "metadata" : "none"}
+        preload={autoplayAllowed ? "auto" : "none"}
         muted
         loop
         playsInline

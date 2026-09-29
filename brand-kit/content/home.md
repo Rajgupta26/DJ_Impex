@@ -23,7 +23,7 @@ The client referenced "images shared" for the brief section, the journal section
 Slide copy is PROPOSED (client has not supplied hero copy). Keep it short. Images: pending from client; use assets/brand-imagery + gallery as placeholders.
 
 - Slide 1
-  - Headline: House of luxury men's fabrics
+  - Headline: House Of Luxury Men's Fabrics
   - Sub: Nabeen® by D J Impex & Co. Woven in India since 1995 for Africa and the Middle East.
 - Slide 2
   - Headline: Over 1000 designs. One standard.

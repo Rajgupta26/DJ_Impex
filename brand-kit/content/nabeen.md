@@ -7,8 +7,8 @@ status: confirmed client copy; product structure TBC (see site.json)
 
 # Nabeen®
 
-**H1:** Nabeen®: luxury fabrics by DJI
-**Strapline (client):** Your style, our fabric: a perfect blend of tradition and modernity.
+**H1:** Nabeen®: Luxury Fabrics by DJI
+**Strapline (client):** Your Style, Our Fabric: A Perfect Blend of Tradition and Modernity.
 
 ## Introduction
 Nabeen® is a renowned brand across the Middle East and Africa, crafted by D J Impex & Co. (DJI) to meet the flourishing needs and trends of African markets.
@@ -28,7 +28,7 @@ Big number: 1000+ designs and variations
 Giza Cotton, Swiss Lace (incl. Zürique), Atiku, Voile & Jacquard, Suiting, Wool. Each gets an anchor id (#giza-cotton etc.) so footer tags can deep-link. No prices. Each card's action is "Enquire about {fabric}" → WhatsApp with prefilled text naming the fabric.
 
 ### Signature lines (site.json → signatureLines.fourLines)
-Nabeen Classic, Nabeen Royale, Nabeen Luxuré, Nabeen #White, each with its product names. Present as four tabs (or an accordion on mobile).
+Nabeen Classic, Nabeen Royale, Nabeen Luxuré, Nabeen White, each with its product names. Present as four tabs (or an accordion on mobile).
 
 ## Brand promise (brochure p.3)
 "We strive to provide quality fabrics with selections from the finest and best sourced organic cotton for the spinning of our yarns, specialised weaving with modern techniques and rigorous quality-check parameters."
