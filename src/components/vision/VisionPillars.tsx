@@ -88,10 +88,14 @@ export function VisionPillars({
   };
 
   return (
-    <section className="page-end bg-white pt-12 lg:pt-16">
+    <section className="page-end bg-white pt-4 lg:pt-6">
       <Container>
-        <h2 className="t-h2 max-w-[18ch]">{withReg(heading)}</h2>
-        {intro ? <p className="t-lead measure mt-6">{intro}</p> : null}
+        <h2 className="t-h2 max-w-[18ch] font-sans font-normal tracking-tight text-navy">{withReg(heading)}</h2>
+        {intro ? (
+          <p className="mt-6 max-w-[42rem] font-sans font-normal text-base sm:text-lg text-slate leading-relaxed">
+            {intro}
+          </p>
+        ) : null}
 
         <motion.div
           className="mt-14 w-full lg:mt-16"
@@ -133,11 +137,15 @@ export function VisionPillars({
                       last ? "" : "pb-12 lg:pb-14"
                     }`.trim()}
                   >
-                    <motion.h3 className="t-h3 pt-2 lg:pt-1.5" variants={headingVariants} custom={index}>
+                    <motion.h3
+                      className="font-sans font-light text-xl sm:text-2xl lg:text-[1.65rem] text-navy tracking-tight leading-snug pt-2 lg:pt-1.5"
+                      variants={headingVariants}
+                      custom={index}
+                    >
                       {withReg(pillar.lead ?? "")}
                     </motion.h3>
                     <motion.p
-                      className="text-slate font-sans mt-3 max-w-[56rem] font-normal leading-relaxed lg:mt-1.5"
+                      className="text-slate font-sans mt-3 max-w-[42rem] font-normal text-base sm:text-lg leading-relaxed lg:mt-1.5"
                       variants={textVariants}
                       custom={index}
                     >

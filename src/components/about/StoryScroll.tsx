@@ -144,7 +144,7 @@ export function StoryScroll({ chapters }: { chapters: StoryChapter[] }) {
                     </p>
 
                     {/* Chapter Title */}
-                    <h3 className="text-2xl sm:text-3xl lg:text-[2.25rem] font-serif font-medium text-navy tracking-tight mt-1.5 leading-snug">
+                    <h3 className="text-2xl sm:text-3xl lg:text-[2.25rem] font-sans font-normal text-navy tracking-tight mt-1.5 leading-snug">
                       {withReg(chapter.title.replace(/\.$/, ""))}
                     </h3>
 

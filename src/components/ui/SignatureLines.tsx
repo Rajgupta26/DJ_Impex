@@ -138,7 +138,7 @@ export function SignatureLines({
 
                 <div className="flex items-center gap-4">
                   <span
-                    className={`font-mono text-xs font-semibold tracking-wider transition-colors ${
+                    className={`font-sans text-xs font-semibold tracking-wider transition-colors ${
                       isSelected ? "text-navy" : "text-slate-400 group-hover:text-slate-600"
                     }`}
                   >
@@ -218,7 +218,7 @@ export function SignatureLines({
                 : "bg-white/80 text-slate-700 border border-line hover:bg-white"
             }`}
           >
-            <span className="font-mono text-xs opacity-75">{line.number}</span>
+            <span className="font-sans text-xs opacity-75">{line.number}</span>
             <span>{withReg(line.name)}</span>
           </button>
         ))}

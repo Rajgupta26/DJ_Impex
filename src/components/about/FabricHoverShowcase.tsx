@@ -230,7 +230,7 @@ export function FabricHoverShowcase({
 
                   {/* Micro visual cue: arrow that guides attention to the right-hand image */}
                   <span
-                    className={`ml-auto flex items-center gap-1.5 font-mono text-xs tracking-wider transition-all duration-300 ${
+                    className={`ml-auto flex items-center gap-1.5 font-sans text-xs tracking-wider transition-all duration-300 ${
                       isActive
                         ? "text-accent translate-x-0 opacity-100"
                         : "text-slate/40 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-70"
@@ -320,7 +320,7 @@ export function FabricHoverShowcase({
 
                   {/* Caption & Weave information */}
                   <div className="absolute inset-x-0 bottom-0 p-6 text-white [text-shadow:0_1px_8px_rgb(13_23_51_/_0.8)] sm:p-7">
-                    <div className="text-accent flex items-center justify-between font-mono text-xs tracking-wider uppercase">
+                    <div className="text-accent flex items-center justify-between font-sans text-xs tracking-wider uppercase">
                       <span className="text-white">{activeItem.weave}</span>
                       <span className="text-white/60">NABEEN® COLLECTION</span>
                     </div>
