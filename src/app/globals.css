@@ -121,9 +121,10 @@
 
 /* ---- Text link: navy, 600, thread-thin gold underline -------------------- */
 .text-link {
+  display: inline-block;
   font-weight: 600;
   border-bottom: 1px solid var(--color-accent);
-  padding-bottom: 3px;
+  padding-bottom: 8px;
   transition: border-color var(--duration-quick) var(--ease-weave);
 }
 
@@ -279,4 +280,42 @@ html {
   .preloader-film {
     animation: preloader-turn 30s linear infinite;
   }
+}
+
+/* ---- Google Translate Custom UI Reset ------------------------------------- */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+iframe.skiptranslate,
+iframe.VIpgJd-ZVi9od-OR9Gof-Oxy9Pf,
+.VIpgJd-ZVi9od-OR9Gof-Oxy9Pf,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover,
+#goog-gt-voting,
+.goog-te-gadget,
+#google_translate_element {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0px !important;
+  width: 0px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body > .skiptranslate {
+  display: none !important;
+}
+
+html,
+body {
+  top: 0px !important;
+  position: static !important;
+  margin-top: 0px !important;
+}
+
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
 }

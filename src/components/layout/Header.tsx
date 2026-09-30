@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { MobileMenu } from "@/components/layout/MobileMenu";
+import { LanguageSelector } from "@/components/ui/LanguageSelector";
 import { withReg } from "@/components/ui/Reg";
 import type { NavItem } from "@/lib/site";
 
@@ -143,59 +144,63 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
             />
           </Link>
 
-          <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
-            {navigation.map((item) => {
-              const isJournal = item.href === "/#journal";
-              const isContact = item.href === "/#contact";
-              const isHome = item.href === "/";
-              const active = isJournal
-                ? pathname === "/" && currentHash === "#journal"
-                : isContact
-                ? pathname === "/" && currentHash === "#contact"
-                : isHome
-                ? pathname === "/" && currentHash !== "#journal" && currentHash !== "#contact"
-                : pathname === item.href;
+          <div className="flex items-center gap-4 lg:gap-7">
+            <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
+              {navigation.map((item) => {
+                const isJournal = item.href === "/#journal";
+                const isContact = item.href === "/#contact";
+                const isHome = item.href === "/";
+                const active = isJournal
+                  ? pathname === "/" && currentHash === "#journal"
+                  : isContact
+                  ? pathname === "/" && currentHash === "#contact"
+                  : isHome
+                  ? pathname === "/" && currentHash !== "#journal" && currentHash !== "#contact"
+                  : pathname === item.href;
 
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => {
-                    if (isJournal) {
-                      setCurrentHash("#journal");
-                    } else if (isContact) {
-                      setCurrentHash("#contact");
-                    } else if (isHome) {
-                      setCurrentHash("");
-                    }
-                  }}
-                  aria-current={active ? "page" : undefined}
-                  className={`border-b pb-0.5 text-[0.9375rem] font-medium transition-all duration-[var(--duration-quick)] ${
-                    active
-                      ? "border-accent opacity-100"
-                      : "border-transparent opacity-85 hover:border-accent hover:opacity-100"
-                  }`}
-                >
-                  {withReg(item.label)}
-                </Link>
-              );
-            })}
-          </nav>
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => {
+                      if (isJournal) {
+                        setCurrentHash("#journal");
+                      } else if (isContact) {
+                        setCurrentHash("#contact");
+                      } else if (isHome) {
+                        setCurrentHash("");
+                      }
+                    }}
+                    aria-current={active ? "page" : undefined}
+                    className={`border-b pb-0.5 text-[0.9375rem] font-medium transition-all duration-[var(--duration-quick)] ${
+                      active
+                        ? "border-accent opacity-100"
+                        : "border-transparent opacity-85 hover:border-accent hover:opacity-100"
+                    }`}
+                  >
+                    {withReg(item.label)}
+                  </Link>
+                );
+              })}
+            </nav>
 
-          <button
-            type="button"
-            onClick={() => setOpenedAt(pathname)}
-            aria-expanded={menuOpen}
-            aria-haspopup="dialog"
-            className="-mr-2 flex h-11 w-11 items-center justify-center lg:hidden"
-          >
-            <span className="visually-hidden">Open menu</span>
-            <span aria-hidden="true" className="grid w-6 gap-[5px]">
-              <span className="h-px w-full bg-current" />
-              <span className="h-px w-full bg-current" />
-              <span className="h-px w-full bg-current" />
-            </span>
-          </button>
+            <LanguageSelector variant="header" />
+
+            <button
+              type="button"
+              onClick={() => setOpenedAt(pathname)}
+              aria-expanded={menuOpen}
+              aria-haspopup="dialog"
+              className="-mr-2 flex h-11 w-11 items-center justify-center lg:hidden"
+            >
+              <span className="visually-hidden">Open menu</span>
+              <span aria-hidden="true" className="grid w-6 gap-[5px]">
+                <span className="h-px w-full bg-current" />
+                <span className="h-px w-full bg-current" />
+                <span className="h-px w-full bg-current" />
+              </span>
+            </button>
+          </div>
         </div>
       </header>
 

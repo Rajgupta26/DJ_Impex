@@ -9,6 +9,7 @@ import { useRef } from "react";
 
 import type { HeaderContact } from "@/components/layout/Header";
 import { useOverlay } from "@/components/layout/OverlayContext";
+import { LanguageSelector } from "@/components/ui/LanguageSelector";
 import { withReg } from "@/components/ui/Reg";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 import { track } from "@/lib/analytics";
@@ -89,9 +90,11 @@ export function MobileMenu({
           </nav>
 
           <div
-            className="container-site mt-10 border-t border-white/12 pt-8"
+            className="container-site mt-8 border-t border-white/12 pt-6"
             style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom))" }}
           >
+            <LanguageSelector variant="mobile" className="mb-6" />
+
             <a
               href={contact.whatsapp}
               target="_blank"

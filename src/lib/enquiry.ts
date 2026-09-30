@@ -224,8 +224,18 @@ export const enquirySchema = z.object({
     .default(""),
   fabrics: z.array(z.string()).max(12).optional().default([]),
   usage: z
-    .array(z.enum(["Wholesale", "Retail", "Personal use"]))
-    .max(3)
+    .array(
+      z.enum([
+        "Distributor",
+        "Wholesaler",
+        "Retailer",
+        "Fashion House / Tailor",
+        "Wholesale",
+        "Retail",
+        "Personal use",
+      ]),
+    )
+    .max(5)
     .optional()
     .default([]),
   message: z.string().trim().max(2000).optional().default(""),

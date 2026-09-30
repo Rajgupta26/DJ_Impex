@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
       // 404. Temporary, not permanent: this structure has changed twice today
       // and a 308 is cached by the browser until the end of time.
       { source: "/contact", destination: "/#contact", permanent: false },
+      { source: "/vision", destination: "/about", permanent: false },
     ];
   },
 };

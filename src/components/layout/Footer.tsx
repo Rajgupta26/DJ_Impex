@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
 
+import { LanguageSelector } from "@/components/ui/LanguageSelector";
 import { withReg } from "@/components/ui/Reg";
 import { TbcTag } from "@/components/ui/TbcTag";
 import { TrackedLink } from "@/components/ui/TrackedLink";
@@ -111,6 +112,18 @@ export function Footer() {
               </li>
               <li>
                 <TrackedLink
+                  href={`tel:${contact.phoneSecondary.e164}`}
+                  event="call_click"
+                  location="footer"
+                  external={false}
+                  className="transition-colors hover:text-white"
+                >
+                  {contact.phoneSecondary.display}
+                </TrackedLink>
+                <TbcTag status={contact.phoneSecondary.status} note={contact.phoneSecondary.note} />
+              </li>
+              <li>
+                <TrackedLink
                   href={mailtoLink("Fabric enquiry")}
                   event="email_click"
                   location="footer"
@@ -118,6 +131,28 @@ export function Footer() {
                   className="transition-colors hover:text-white"
                 >
                   {contact.emailPrimary.value}
+                </TrackedLink>
+              </li>
+              <li>
+                <TrackedLink
+                  href={`mailto:${contact.emailAdmin.value}`}
+                  event="email_click"
+                  location="footer"
+                  external={false}
+                  className="transition-colors hover:text-white"
+                >
+                  {contact.emailAdmin.value}
+                </TrackedLink>
+              </li>
+              <li>
+                <TrackedLink
+                  href={`mailto:${contact.emailSecondary.value}`}
+                  event="email_click"
+                  location="footer"
+                  external={false}
+                  className="transition-colors hover:text-white"
+                >
+                  {contact.emailSecondary.value}
                 </TrackedLink>
               </li>
               <li className="mt-1">
@@ -239,6 +274,10 @@ export function Footer() {
             © {year} {site.brand.company.value.replace(/\.$/, "")}. All rights reserved.
           </p>
           <p className="t-small text-white/60">{site.brand.starExportHouse.value}</p>
+
+          <div className="ml-auto">
+            <LanguageSelector variant="footer" />
+          </div>
         </div>
       </div>
     </footer>

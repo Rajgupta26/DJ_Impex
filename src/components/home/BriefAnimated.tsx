@@ -64,12 +64,26 @@ export function BriefAnimated({
         viewport={{ once: true, amount: 0.25, margin: "-60px 0px" }}
       >
         <motion.h2
-          className="t-h2 max-w-[15ch]"
+          className="t-h2 max-w-[28ch]"
           style={{ fontWeight: 400 }}
           variants={leftVariants}
           custom={0}
         >
-          {withReg(title)}
+          {title.includes("|") ? (
+            title.split("|").map((line, i) => (
+              <span key={i} className="block sm:whitespace-nowrap">
+                {withReg(line.trim())}
+              </span>
+            ))
+          ) : title.includes("\n") ? (
+            title.split("\n").map((line, i) => (
+              <span key={i} className="block sm:whitespace-nowrap">
+                {withReg(line.trim())}
+              </span>
+            ))
+          ) : (
+            withReg(title)
+          )}
         </motion.h2>
 
         <div className="mt-8 grid gap-5">
@@ -85,9 +99,23 @@ export function BriefAnimated({
           ))}
         </div>
 
-        <motion.p className="mt-8" variants={leftVariants} custom={paragraphs.length + 1}>
-          <TextLink href="/about">{linkLabel}</TextLink>
-        </motion.p>
+        <motion.div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" variants={leftVariants} custom={paragraphs.length + 1}>
+          {linkLabel.includes("·") ? (
+            linkLabel.split("·").map((part, i) => (
+              <TextLink key={i} href="/about">
+                {part.trim()}
+              </TextLink>
+            ))
+          ) : linkLabel.includes("|") ? (
+            linkLabel.split("|").map((part, i) => (
+              <TextLink key={i} href="/about">
+                {part.trim()}
+              </TextLink>
+            ))
+          ) : (
+            <TextLink href="/about">{linkLabel}</TextLink>
+          )}
+        </motion.div>
 
         {trustMarksSlot ? (
           <motion.div className="mt-8" variants={leftVariants} custom={paragraphs.length + 2}>

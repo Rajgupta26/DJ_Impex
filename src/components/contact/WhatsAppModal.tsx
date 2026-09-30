@@ -22,7 +22,12 @@ const DEFAULT_FABRICS = [
   "Wool",
 ];
 
-const USAGE_OPTIONS = ["Wholesale", "Retail", "Personal use"];
+const USAGE_OPTIONS = [
+  "Distributor",
+  "Wholesaler",
+  "Retailer",
+  "Fashion House / Tailor",
+];
 
 export function WhatsAppModal({
   fabrics = DEFAULT_FABRICS,

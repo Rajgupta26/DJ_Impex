@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 
 import "./globals.css";
 
+import { TranslationProvider } from "@/components/ui/TranslationProvider";
 import { pageTitle, SITE_URL } from "@/lib/seo";
 
 const openSans = Open_Sans({
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans">
         {/* The marketing chrome lives in (site)/layout.tsx, not here, so that
             /admin can render without a header, footer or preloader. */}
+        <TranslationProvider />
         {children}
 
         <Analytics />

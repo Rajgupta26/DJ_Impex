@@ -9,7 +9,8 @@ export async function BriefSection() {
   const site = getSite();
   const slot = (await slotMap())["home-brief"];
   const brief = section(getPage("home"), "3-short-brief");
-  const linkLabel = field(brief, "link").split("→")[0].replace(/"/g, "").trim();
+  const heading = field(brief, "heading") || "Crafted In India | Chosen Across Africa.";
+  const linkLabel = field(brief, "link").split("→")[0].replace(/"/g, "").trim() || "Discover our story";
 
   return (
     /* The hero above is full height and ends on a hard edge, so this does not
@@ -18,7 +19,7 @@ export async function BriefSection() {
     <section className="overflow-hidden bg-white pt-16 lg:pt-20">
       <Container>
         <BriefAnimated
-          title="House Of Luxury Textiles"
+          title={heading}
           paragraphs={brief.paragraphs}
           linkLabel={linkLabel}
           imageSrc={slot.src}

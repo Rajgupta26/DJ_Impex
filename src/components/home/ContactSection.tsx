@@ -28,7 +28,7 @@ export function ContactSection() {
             </div>
 
             <div className="min-w-0">
-              <h3 className="t-h3 text-navy">Find Nabeen</h3>
+              <h3 className="t-h3 text-navy">Head Office</h3>
               <p className="mt-1 text-sm text-slate">Visit us at our location below.</p>
               <a
                 href={MAPS_PLACE_URL}

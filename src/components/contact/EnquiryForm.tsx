@@ -9,7 +9,12 @@ import { COUNTRY_CODES, IDLE, type EnquiryState } from "@/lib/enquiry";
 
 export type FabricChoice = { slug: string; name: string };
 
-const USAGE_OPTIONS = ["Wholesale", "Retail", "Personal use"] as const;
+const USAGE_OPTIONS = [
+  "Distributor",
+  "Wholesaler",
+  "Retailer",
+  "Fashion House / Tailor",
+] as const;
 
 /**
  * One form, two shapes: the full version on /contact, and a short version

@@ -23,8 +23,8 @@ The client referenced "images shared" for the brief section, the journal section
 Slide copy is PROPOSED (client has not supplied hero copy). Keep it short. Images: pending from client; use assets/brand-imagery + gallery as placeholders.
 
 - Slide 1
-  - Headline: House Of Luxury Men's Fabrics
-  - Sub: Nabeen® by D J Impex & Co. Woven in India since 1995 for Africa and the Middle East.
+  - Headline: LUXURY IN EVERY THREAD.
+  - Sub: Nabeen® by D J Impex & Co. | Premium men’s fabrics, woven in India since 1995 | for discerning markets across Africa and the Middle East.
 - Slide 2
   - Headline: Over 1000 designs. One standard.
   - Sub: From Giza to Jacquard, a world of choice backed by uncompromising quality.
@@ -38,13 +38,19 @@ Slide copy is PROPOSED (client has not supplied hero copy). Keep it short. Image
 
 Primary CTA on hero: "Enquire on WhatsApp"  |  Secondary: "Explore Nabeen®" (/nabeen)
 
-## 3. Short brief (client copy, lightly trimmed)
+## 3. Short brief (client copy)
 
-Since 1995, D J Impex & Co. (DJI) has built lasting partnerships with clients, growing together with them. We offer premium fabrics with exceptional comfort and quality at affordable prices, and our expertise covers the full journey of textiles, from sourcing and manufacturing to supplying and trading.
+Heading: Crafted In India | Chosen Across Africa.
 
-Today we export under our brand Nabeen® to discerning markets across Africa and the Middle East. For our consistent export excellence, the Government of India has awarded D J Impex & Co. the status of Star Export House.
+For three decades, D J Impex & Co. has built its expertise around one enduring belief: that exceptional fabric begins with exceptional craftsmanship.
 
-Link: "Read our story" → /about
+Since 1995, we have built lasting partnerships across markets, combining Indian textile expertise with an intimate understanding of the customers we serve.
+
+Today, through Nabeen®️, our fabrics travel from India to discerning markets across Africa and the Middle East.
+
+For our consistent export excellence, the Government of India has awarded D J Impex & Co. the status of Star Export House.
+
+Link: "Crafted In India · Chosen Across Africa" → /about
 
 ## 4. Our exclusive collection
 The same hover showcase that runs on /about, placed here on 2026-09-23.
@@ -59,7 +65,7 @@ Its own heading and strapline are on that page. Was: "The Fabric Journal" /
 "Guides to choosing, judging and wearing fine fabric.")
 
 ## 5. Testimonials
-Heading (client, brochure p.8): People love us, as much as we love serving them.
+Heading: TRUST, WOVEN OVER TIME. | What our customers say about Nabeen®
 Data: site.json → testimonials. Rating and "2.37 million happy customers" are on HOLD. Do not show.
 
 ## 6. Gallery: World of Nabeen®

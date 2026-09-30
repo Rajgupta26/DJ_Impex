@@ -1,7 +1,6 @@
 "use client";
 
-import { Pause, Play } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useReducedMotion } from "motion/react";
 
 /**
@@ -12,12 +11,6 @@ import { useReducedMotion } from "motion/react";
  * The words are in the footage, so the H1 carries them as text of its own and
  * the video is decoration. A video has no alt attribute; without this the page
  * would have no heading at all for a search engine or a screen reader.
- *
- * It loops, which makes it moving content, so WCAG 2.2.2 needs a way to stop it
- * and the button is that. The button also reflects the element's real state
- * rather than what the code assumed: a browser can refuse autoplay, and the
- * rejected promise used to be swallowed on the home hero, which is what left a
- * dead paused film there (question 98).
  *
  * Under reduced motion it does not start, and the poster -- a frame of the
  * footage, so the composition is identical -- carries the panel instead.
@@ -56,38 +49,26 @@ import { useReducedMotion } from "motion/react";
 const BANNER_WORDS =
   "Luxury in every thread. House of textiles: Giza Cotton, Wool, Atiku, Aesobi, Wax Print, Shirting, Swiss Lace, Suiting, Jacquard and Voile.";
 
-export function VisionBanner() {
+export function VisionBanner({
+  title,
+  strapline,
+}: {
+  title?: string;
+  strapline?: string;
+} = {}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
-  const [paused, setPaused] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const sync = () => setPaused(video.paused);
-    video.addEventListener("play", sync);
-    video.addEventListener("pause", sync);
-    sync();
-
     if (reduceMotion) {
       video.pause();
     } else {
-      void video.play().catch(() => setPaused(true));
+      void video.play().catch(() => undefined);
     }
-
-    return () => {
-      video.removeEventListener("play", sync);
-      video.removeEventListener("pause", sync);
-    };
   }, [reduceMotion]);
-
-  const toggle = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) void video.play().catch(() => setPaused(true));
-    else video.pause();
-  };
 
   return (
     <section className="bg-white pt-[4.5rem] lg:pt-[5.25rem]">
@@ -109,19 +90,6 @@ export function VisionBanner() {
         >
           <source src="/video/luxury-in-every-thread.mp4" type="video/mp4" />
         </video>
-
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={paused ? "Play the banner animation" : "Pause the banner animation"}
-          className="absolute right-5 top-5 z-10 flex h-11 w-11 items-center justify-center border border-white/30 bg-navy-deep/85 text-white backdrop-blur-sm transition-colors duration-[var(--duration-quick)] hover:bg-navy-deep md:right-8"
-        >
-          {paused ? (
-            <Play aria-hidden="true" size={18} strokeWidth={1.6} className="ml-0.5" />
-          ) : (
-            <Pause aria-hidden="true" size={18} strokeWidth={1.6} />
-          )}
-        </button>
       </div>
     </section>
   );

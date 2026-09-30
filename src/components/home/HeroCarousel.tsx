@@ -1,7 +1,6 @@
 "use client";
 
 import useEmblaCarousel from "embla-carousel-react";
-import { Pause, Play } from "lucide-react";
 import Fade from "embla-carousel-fade";
 import Image from "next/image";
 import Link from "next/link";
@@ -156,6 +155,10 @@ export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]
         <HeroWords slide={active} slideKey={selected} reduceMotion={Boolean(reduceMotion)} rise={!advanced} />
 
         <div className="mt-9 flex flex-wrap items-center gap-4">
+          <Link href="/nabeen" className="btn btn-ghost">
+            <span>Discover Nabeen</span>
+          </Link>
+
           <button
             type="button"
             onClick={() => {
@@ -167,16 +170,6 @@ export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]
             <WhatsAppGlyph size={20} />
             <span>Enquire on WhatsApp</span>
           </button>
-
-          {active.href ? (
-            <Link href={active.href} className="btn btn-ghost">
-              <span>Read the story</span>
-            </Link>
-          ) : (
-            <Link href="/about" className="btn btn-ghost">
-              <span>Read our story</span>
-            </Link>
-          )}
         </div>
       </div>
 
@@ -219,8 +212,7 @@ export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]
  *
  * The poster is a real image so it can be the LCP element and the hero is never
  * blank. The video carries preload="none", starts only while its slide is showing,
- * and follows the carousel's own pause button, so one control governs everything
- * moving on the hero (WCAG 2.2.2). On a metered or slow connection it never loads
+ * and plays only while its slide is showing. On a metered or slow connection it never loads
  * at all: the poster carries the slide instead.
  */
 function HeroVideo({
@@ -239,42 +231,16 @@ function HeroVideo({
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
   const autoplayAllowed = useCanAutoplay();
-  // Mirrors the element rather than guessing: a browser can refuse autoplay, and
-  // the viewer can use the control below, so React must not assume either.
-  const [paused, setPaused] = useState(true);
-
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const sync = () => setPaused(video.paused);
-    video.addEventListener("play", sync);
-    video.addEventListener("pause", sync);
-    sync();
-
-    // Under reduced motion the film does not start on its own. It used to stop
-    // there, which left a paused video and no way to start it -- the same dead
-    // end a browser that refuses autoplay produced, because the rejected promise
-    // was swallowed. Autoplay is still suppressed; the control below is how the
-    // viewer starts it.
     if (active && playing && !reduceMotion && autoplayAllowed) {
-      void video.play().catch(() => setPaused(true));
+      void video.play().catch(() => undefined);
     } else {
       video.pause();
     }
-
-    return () => {
-      video.removeEventListener("play", sync);
-      video.removeEventListener("pause", sync);
-    };
   }, [active, playing, reduceMotion, autoplayAllowed]);
-
-  const toggle = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) void video.play().catch(() => setPaused(true));
-    else video.pause();
-  };
 
   return (
     <div className="absolute inset-0">
@@ -294,24 +260,6 @@ function HeroVideo({
       >
         <source src={src} type="video/mp4" />
       </video>
-
-      {/* Top right, clear of the header above it and of the floating contact
-          buttons at the bottom right. Moving content needs a way to stop it
-          (WCAG 2.2.2), and suppressed autoplay needs a way to start it --
-          whether it was suppressed by reduced motion, by Data Saver, or by a
-          browser refusing to autoplay at all. */}
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={paused ? "Play the film" : "Pause the film"}
-        className="bg-navy-deep/45 hover:bg-navy-deep/70 absolute top-[6.5rem] right-5 z-10 flex h-11 w-11 items-center justify-center border border-white/50 text-white backdrop-blur-sm transition-colors duration-[var(--duration-quick)] md:right-8"
-      >
-        {paused ? (
-          <Play aria-hidden="true" size={18} strokeWidth={1.6} className="ml-0.5" />
-        ) : (
-          <Pause aria-hidden="true" size={18} strokeWidth={1.6} />
-        )}
-      </button>
     </div>
   );
 }
@@ -401,14 +349,22 @@ function HeroWords({
         </span>
       </h1>
 
-      <motion.p
-        className="t-lead mt-6 max-w-[30rem] !text-white text-white"
+      <motion.div
+        className="t-lead mt-6 max-w-2xl lg:max-w-4xl !text-white text-white"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: reduceMotion ? 0.01 : 0.5, delay: animate ? 0.5 : 0 }}
       >
-        {withReg(slide.sub)}
-      </motion.p>
+        {slide.sub.includes("|") ? (
+          slide.sub.split("|").map((line, i) => (
+            <span key={i} className="block sm:whitespace-nowrap">
+              {withReg(line.trim())}
+            </span>
+          ))
+        ) : (
+          <p>{withReg(slide.sub)}</p>
+        )}
+      </motion.div>
     </div>
   );
 }
