@@ -40,7 +40,7 @@ Primary CTA on hero: "Enquire on WhatsApp"  |  Secondary: "Explore Nabeen®" (/n
 
 ## 3. Short brief (client copy)
 
-Heading: Crafted In India | Chosen Across Africa.
+Heading: MORE THAN A FABRIC | A SIGNATURE OF DISTINCTION.
 
 For three decades, D J Impex & Co. has built its expertise around one enduring belief: that exceptional fabric begins with exceptional craftsmanship.
 
@@ -50,7 +50,8 @@ Today, through Nabeen®️, our fabrics travel from India to discerning markets 
 
 For our consistent export excellence, the Government of India has awarded D J Impex & Co. the status of Star Export House.
 
-Link: "Crafted In India · Chosen Across Africa" → /about
+Tagline: Crafted In India · Chosen Across Africa
+Link: "Discover our story" → /about
 
 ## 4. Our exclusive collection
 The same hover showcase that runs on /about, placed here on 2026-09-23.

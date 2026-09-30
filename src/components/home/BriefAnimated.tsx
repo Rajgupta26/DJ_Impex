@@ -9,6 +9,7 @@ import { DJIAnimatedLogo } from "@/components/home/DJIAnimatedLogo";
 
 interface BriefAnimatedProps {
   title: string;
+  tagline?: string;
   paragraphs: string[];
   linkLabel: string;
   trustMarksSlot?: ReactNode;
@@ -19,6 +20,7 @@ interface BriefAnimatedProps {
 
 export function BriefAnimated({
   title,
+  tagline,
   paragraphs,
   linkLabel,
   trustMarksSlot,
@@ -100,21 +102,13 @@ export function BriefAnimated({
         </div>
 
         <motion.div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" variants={leftVariants} custom={paragraphs.length + 1}>
-          {linkLabel.includes("·") ? (
-            linkLabel.split("·").map((part, i) => (
-              <TextLink key={i} href="/about">
-                {part.trim()}
-              </TextLink>
-            ))
-          ) : linkLabel.includes("|") ? (
-            linkLabel.split("|").map((part, i) => (
-              <TextLink key={i} href="/about">
-                {part.trim()}
-              </TextLink>
-            ))
-          ) : (
-            <TextLink href="/about">{linkLabel}</TextLink>
-          )}
+          <TextLink href="/about">{linkLabel}</TextLink>
+
+          {tagline ? (
+            <span className="pb-2 text-xs font-semibold tracking-[0.14em] text-slate uppercase sm:text-sm">
+              {tagline}
+            </span>
+          ) : null}
         </motion.div>
 
         {trustMarksSlot ? (
