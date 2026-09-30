@@ -26,7 +26,7 @@ second "Voile". Confirm the range before launch.
 **Eyebrow:** About us
 **Heading:** Welcome to D J Impex & Co.
 **Lead:** Discover the epitome of luxury and comfort with Nabeen® by D J Impex & Co., a brand synonymous with a Middle Eastern flair for luxury fabrics.
-**Collection lead:** Our exclusive collection of
+**Collection lead:** The Nabeen Collection
 **Collection names:** Atiku, Suiting, Jacquard, Swiss Voile, African Wax Prints, Giza Cotton Shirting, Zürique Swiss Men Lace
 **Collection tail:** Fabrics embodies the highest standards of quality, seamlessly blending rich traditions with a contemporary appeal.
 **Craft:** Crafted by D J Impex & Co (DJI), a trusted name in fabric manufacturing and export, Nabeen® showcases a diverse range of meticulously curated textiles that speak of unwavering commitment to excellence. With an emphasis on trust, quality, automation, and process-driven performance, our fabrics are an ode to fine craftsmanship.

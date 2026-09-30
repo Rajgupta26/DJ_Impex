@@ -53,7 +53,7 @@ For our consistent export excellence, the Government of India has awarded D J Im
 Tagline: Crafted In India · Chosen Across Africa
 Link: "Discover our story" → /about
 
-## 4. Our exclusive collection
+## 4. The Nabeen Collection
 The same hover showcase that runs on /about, placed here on 2026-09-23.
 Copy: about.md → "Collection lead", "Collection names", "Collection tail". It is
 one sentence and it is NOT duplicated into this file, so the two pages cannot

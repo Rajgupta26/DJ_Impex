@@ -38,7 +38,7 @@ export async function CollectionShowcase() {
       {/* The showcase opens with its own mt-16, so this pays almost nothing at
           the top. */}
       <Container className="relative pt-2 pb-10 lg:pb-14">
-        <h2 className="visually-hidden">Our exclusive collection</h2>
+        <h2 className="visually-hidden">The Nabeen Collection</h2>
 
         <FabricHoverShowcase
           names={names}
