@@ -135,12 +135,12 @@ export function WhatsAppModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 16 }}
             transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.61, 0.36, 1] }}
-            className="relative max-h-[92svh] w-full max-w-[28rem] overflow-y-auto rounded-2xl bg-white p-6 shadow-[var(--shadow-float)] sm:p-8"
+            className="relative max-h-[calc(100dvh-1.5rem)] w-full max-w-[28rem] overflow-y-auto overscroll-contain rounded-2xl bg-white p-5 shadow-[var(--shadow-float)] sm:max-h-[92dvh] sm:p-8"
           >
             <button
               type="button"
               onClick={() => close("dismiss")}
-              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-slate transition-colors hover:bg-mist hover:text-navy"
+              className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-mist hover:text-navy"
             >
               <span className="visually-hidden">Close</span>
               <X aria-hidden="true" size={20} strokeWidth={1.5} />
@@ -163,7 +163,7 @@ export function WhatsAppModal({
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
+            <form onSubmit={handleSubmit} className="mt-6 grid min-w-0 grid-cols-1 gap-4 [&>div]:min-w-0">
               {error ? (
                 <div className="rounded-lg bg-red-50 p-2.5 text-xs text-red-600">
                   {error}
@@ -193,7 +193,7 @@ export function WhatsAppModal({
                   <select
                     value={countryCode}
                     onChange={(e) => setCountryCode(e.target.value)}
-                    className="max-w-[130px] shrink-0 rounded-lg border border-line bg-white px-2.5 py-2.5 text-xs outline-none transition focus:border-navy focus:ring-1 focus:ring-navy"
+                    className="w-32 max-w-[130px] shrink-0 rounded-lg border border-line bg-white px-2.5 py-2.5 text-xs outline-none transition focus:border-navy focus:ring-1 focus:ring-navy"
                     aria-label="Country Calling Code"
                   >
                     {COUNTRY_CODES.map((c) => (
@@ -226,7 +226,7 @@ export function WhatsAppModal({
                         key={fabric}
                         type="button"
                         onClick={() => toggleFabric(fabric)}
-                        className={`rounded-md border px-2.5 py-1 text-xs transition-all ${
+                        className={`min-h-11 rounded-md border px-2.5 py-1 text-xs transition-all lg:min-h-0 ${
                           active
                             ? "border-navy bg-navy text-white"
                             : "border-line bg-white text-slate hover:border-slate/60 hover:text-navy"
@@ -251,7 +251,7 @@ export function WhatsAppModal({
                         key={usage}
                         type="button"
                         onClick={() => toggleUsage(usage)}
-                        className={`rounded-md border px-2.5 py-1 text-xs transition-all ${
+                        className={`min-h-11 rounded-md border px-2.5 py-1 text-xs transition-all lg:min-h-0 ${
                           active
                             ? "border-navy bg-navy text-white"
                             : "border-line bg-white text-slate hover:border-slate/60 hover:text-navy"

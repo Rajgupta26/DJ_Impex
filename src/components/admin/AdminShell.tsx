@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { ExternalLink, Images, LayoutPanelTop, Mail, Menu, Moon, Newspaper, Sun, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useFocusTrap } from "@/lib/useFocusTrap";
+import { useMediaQuery } from "@/lib/useMediaQuery";
+import { ExternalLink, HeartHandshake, Images, Layers, LayoutPanelTop, Mail, Menu, Moon, Newspaper, Sun, X } from "lucide-react";
 
 const NAV = [
   { href: "/admin/images", label: "Image gallery", Icon: Images },
   { href: "/admin/page-images", label: "Page images", Icon: LayoutPanelTop },
+  { href: "/admin/nabeen-collection", label: "Nabeen collection", Icon: Layers },
+  { href: "/admin/wear2care", label: "Wear2Care images", Icon: HeartHandshake },
   { href: "/admin/blogs", label: "Blog manager", Icon: Newspaper },
   { href: "/admin/enquiries", label: "Enquiries", Icon: Mail },
 ] as const;
@@ -18,6 +22,16 @@ export const THEME_CLASS = "admin-dark";
 export function AdminShell({ children, unprotected }: { children: React.ReactNode; unprotected: boolean }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
+  const compact = useMediaQuery("(max-width: 1023px)");
+  useFocusTrap(sidebarRef, menuOpen && compact, () => setMenuOpen(false));
+
+  useEffect(() => {
+    if (!menuOpen || !compact) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previous; };
+  }, [menuOpen, compact]);
 
   /**
    * The theme lives on <html> as a class, not in React state.
@@ -40,12 +54,17 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-dvh bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className="admin-panel min-h-dvh bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <div className="lg:flex">
         {/* Sidebar */}
         <aside
-          className={`fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 flex-col border-r border-slate-200 bg-white transition-transform lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0 dark:border-slate-800 dark:bg-slate-900 ${
-            menuOpen ? "translate-x-0" : "-translate-x-full"
+          ref={sidebarRef}
+          role={compact && menuOpen ? "dialog" : undefined}
+          aria-modal={compact && menuOpen ? true : undefined}
+          aria-label="Admin navigation"
+          tabIndex={-1}
+          className={`fixed inset-y-0 left-0 z-40 flex w-64 max-w-[calc(100%-3rem)] shrink-0 flex-col overflow-y-auto overscroll-contain border-r border-slate-200 bg-white transition-transform lg:visible lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0 dark:border-slate-800 dark:bg-slate-900 ${
+            menuOpen ? "visible translate-x-0" : "invisible -translate-x-full"
           }`}
         >
           <div className="flex h-16 items-center justify-between border-b border-slate-200 px-5 dark:border-slate-800">
@@ -71,7 +90,7 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
                   href={href}
                   aria-current={active ? "page" : undefined}
                   onClick={() => setMenuOpen(false)}
-                  className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition ${
+                  className={`flex min-h-11 items-center gap-3 rounded-md px-3 py-2 text-sm transition lg:min-h-0 ${
                     active
                       ? "bg-navy text-white dark:bg-slate-800 dark:text-white"
                       : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
@@ -136,7 +155,7 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
             </p>
           ) : null}
 
-          <div className="mx-auto max-w-6xl px-4 py-8 lg:px-8">{children}</div>
+          <main className="mx-auto max-w-6xl px-4 py-6 lg:px-8 lg:py-8">{children}</main>
         </div>
       </div>
     </div>

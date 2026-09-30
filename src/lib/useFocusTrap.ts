@@ -19,6 +19,7 @@ export function useFocusTrap(
   ref: RefObject<HTMLElement | null>,
   isOpen: boolean,
   onClose: () => void,
+  initialFocusSelector = "input, select, textarea",
 ) {
   const onCloseRef = useRef(onClose);
   useEffect(() => {
@@ -40,8 +41,8 @@ export function useFocusTrap(
     // Initial focus when modal opens: prioritize first input over close button
     const timer = setTimeout(() => {
       if (container && !container.contains(document.activeElement)) {
-        const firstInput = container.querySelector<HTMLElement>("input, select, textarea");
-        (firstInput ?? focusables()[0] ?? container).focus({ preventScroll: true });
+        const preferred = container.querySelector<HTMLElement>(initialFocusSelector);
+        (preferred ?? focusables()[0] ?? container).focus({ preventScroll: true });
       }
     }, 50);
 
@@ -77,5 +78,5 @@ export function useFocusTrap(
       document.removeEventListener("keydown", onKeyDown);
       previouslyFocused?.focus({ preventScroll: true });
     };
-  }, [ref, isOpen]);
+  }, [ref, isOpen, initialFocusSelector]);
 }

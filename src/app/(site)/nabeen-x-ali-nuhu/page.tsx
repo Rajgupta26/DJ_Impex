@@ -11,6 +11,9 @@ import { getPage, getSite } from "@/lib/content";
 import { whatsappLink } from "@/lib/contact";
 import { field, section } from "@/lib/markdown";
 import { buildMetadata, pageTitle } from "@/lib/seo";
+import { slotMap } from "@/lib/slots";
+
+import { ExploreNabeenCTA } from "@/components/ui/ExploreNabeenCTA";
 
 export const metadata: Metadata = buildMetadata({
   title: pageTitle("Nabeen x Ali Nuhu"),
@@ -19,26 +22,45 @@ export const metadata: Metadata = buildMetadata({
   path: "/nabeen-x-ali-nuhu",
 });
 
-export default function AliNuhuPage() {
+export default async function AliNuhuPage() {
   const site = getSite();
   const page = getPage("nabeen-x-ali-nuhu");
   const head = section(page, "nabeen-x-ali-nuhu");
   const gives = section(page, "luxury-that-gives-back");
   const join = section(page, "join-the-mission-wear2care-wear2transform-lives");
+  const slots = await slotMap();
+
+  const heroSlot = slots["wear2care-hero"];
+  const donation1Slot = slots["wear2care-donation-1"];
+  const donation2Slot = slots["wear2care-donation-2"];
+
+  const heroImage = heroSlot?.src || "/images/wear2care/handover.jpg";
+  const heroAlt = heroSlot?.alt || site.wear2care.photos[0].alt;
+
+  const photos = [
+    {
+      src: donation1Slot?.src || `/images/wear2care/${site.wear2care.photos[0].file}`,
+      alt: donation1Slot?.alt || site.wear2care.photos[0].alt,
+    },
+    {
+      src: donation2Slot?.src || `/images/wear2care/${site.wear2care.photos[1].file}`,
+      alt: donation2Slot?.alt || site.wear2care.photos[1].alt,
+    },
+  ];
 
   return (
     <>
       <PageHero
         title={withReg(field(head, "h1"))}
         strapline={withReg(field(head, "strapline"))}
-        image="/images/wear2care/handover.jpg"
-        alt={site.wear2care.photos[0].alt}
+        image={heroImage}
+        alt={heroAlt}
         objectPosition="center 32%"
       />
 
-      <AliNuhuGivesBack heading={gives.heading} paragraphs={gives.paragraphs} photos={site.wear2care.photos} />
+      <AliNuhuGivesBack heading={gives.heading} paragraphs={gives.paragraphs} photos={photos} />
 
-      <section className="bg-mist py-10 sm:py-12 md:py-16">
+      <section className="bg-mist pt-10 sm:pt-12 md:pt-16 pb-0">
         <Container>
           <AliNuhuMissionHeading heading={join.heading} />
           <div className="mt-8 grid gap-5">
@@ -59,11 +81,13 @@ export default function AliNuhuPage() {
               className="btn btn-primary"
             >
               <WhatsAppGlyph size={20} />
-              <span>Enquire about the Wear2Care collection</span>
+              <span>Enquire Now</span>
             </TrackedLink>
           </p>
         </Container>
       </section>
+
+      <ExploreNabeenCTA bg="bg-mist" className="pt-10 sm:pt-12 pb-14 sm:pb-16" />
     </>
   );
 }

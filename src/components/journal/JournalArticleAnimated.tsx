@@ -94,7 +94,7 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
       {/* Fabric Cover Media — Animated from Upper-Left */}
       <motion.div
         className="container-site my-4"
-        initial={{ opacity: 0, y: reduceMotion ? 0 : -35, x: reduceMotion ? 0 : -25 }}
+        initial={{ opacity: 0, y: reduceMotion ? 0 : -35, x: reduceMotion ? 0 : "var(--reveal-distance-negative,-25px)" }}
         whileInView={{ opacity: 1, y: 0, x: 0 }}
         viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.85, ease }}
@@ -113,27 +113,27 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
       </motion.div>
 
       {/* 2-Section Content Layout: Left Heading from Left, Right Paragraphs from Right */}
-      <div className="bg-white pt-[clamp(3rem,2.5rem+3.5vw,5.5rem)] pb-10">
+      <div className="bg-white pt-8 pb-10 lg:pt-[clamp(3rem,2.5rem+3.5vw,5.5rem)]">
         <div className="container-site divide-y divide-line/60">
           {sections.map((section, idx) => (
             <div
               key={section.heading ?? `intro-${idx}`}
-              className="grid gap-6 py-10 first:pt-0 last:pb-0 lg:grid-cols-12 lg:gap-14 xl:gap-16 lg:py-14"
+              className="grid min-w-0 gap-4 py-7 first:pt-0 last:pb-0 lg:grid-cols-12 lg:gap-14 xl:gap-16 lg:py-14"
             >
               {/* Left Column: Heading / Topic — Animated from Left */}
               <motion.div
                 className="lg:col-span-5"
-                initial={{ opacity: 0, x: reduceMotion ? 0 : -40 }}
+                initial={{ opacity: 0, x: reduceMotion ? 0 : "var(--reveal-distance-negative,-40px)" }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.75, delay: 0.1, ease }}
               >
                 {section.heading ? (
-                  <h2 className="font-semibold text-navy max-w-[18ch] text-[clamp(1.75rem,1.3rem+1.5vw,2.75rem)] leading-tight">
+                  <h2 className="font-semibold text-navy max-w-none lg:max-w-[18ch] text-[clamp(1.75rem,1.3rem+1.5vw,2.75rem)] leading-tight">
                     {withReg(section.heading)}
                   </h2>
                 ) : (
-                  <h2 className="font-semibold text-navy max-w-[18ch] text-[clamp(1.75rem,1.3rem+1.5vw,2.75rem)] leading-tight">
+                  <h2 className="font-semibold text-navy max-w-none lg:max-w-[18ch] text-[clamp(1.75rem,1.3rem+1.5vw,2.75rem)] leading-tight">
                     Overview
                   </h2>
                 )}
@@ -141,8 +141,8 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
 
               {/* Right Column: Paragraphs — Animated from Right */}
               <motion.div
-                className="space-y-6 lg:col-span-7"
-                initial={{ opacity: 0, x: reduceMotion ? 0 : 40 }}
+                className="min-w-0 space-y-5 lg:col-span-7 lg:space-y-6"
+                initial={{ opacity: 0, x: reduceMotion ? 0 : "var(--reveal-distance,40px)" }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.75, delay: 0.2, ease }}

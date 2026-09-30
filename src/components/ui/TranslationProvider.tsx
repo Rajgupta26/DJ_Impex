@@ -9,7 +9,7 @@ export function TranslationProvider() {
   // 1. Initial mount: configure translation engine and load scripts
   useEffect(() => {
     const saved = localStorage.getItem("nabeen_lang");
-    if (saved && ["fr", "ar"].includes(saved)) {
+    if (saved && saved !== "en") {
       document.documentElement.dir = "ltr";
       document.documentElement.lang = saved;
       document.cookie = `googtrans=/en/${saved}; path=/;`;
@@ -24,7 +24,6 @@ export function TranslationProvider() {
         new window.google.translate.TranslateElement(
           {
             pageLanguage: "en",
-            includedLanguages: "en,fr,ar",
             autoDisplay: false,
           },
           "google_translate_element"
@@ -70,7 +69,7 @@ export function TranslationProvider() {
   // 2. On route change: ensure current page applies active language
   useEffect(() => {
     const saved = localStorage.getItem("nabeen_lang");
-    if (saved && ["fr", "ar"].includes(saved)) {
+    if (saved && saved !== "en") {
       document.documentElement.dir = "ltr";
       document.documentElement.lang = saved;
 
@@ -88,3 +87,4 @@ export function TranslationProvider() {
 
   return <div id="google_translate_element" className="hidden" aria-hidden="true" />;
 }
+

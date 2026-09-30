@@ -4,6 +4,7 @@ import { useRef, type ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
 import { withReg } from "@/components/ui/Reg";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import { TextLink } from "@/components/ui/TextLink";
 import { DJIAnimatedLogo } from "@/components/home/DJIAnimatedLogo";
 
@@ -27,6 +28,7 @@ export function BriefAnimated({
 }: BriefAnimatedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+  const compact = useMediaQuery("(max-width: 1023px)");
   const ease = [0.22, 1, 0.36, 1] as const;
 
   const { scrollYProgress } = useScroll({
@@ -36,12 +38,12 @@ export function BriefAnimated({
 
   // Scroll-linked transforms:
   // Starts large and prominent as user scrolls down, then scales into its resting place
-  const logoScale = useTransform(scrollYProgress, [0, 1], reduceMotion ? [1, 1] : [1.85, 1]);
+  const logoScale = useTransform(scrollYProgress, [0, 1], reduceMotion ? [1, 1] : [compact ? 1.15 : 1.85, 1]);
   const logoY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [-35, 0]);
   const logoOpacity = useTransform(scrollYProgress, [0, 0.2, 1], [0.3, 0.85, 1]);
 
   const leftVariants = {
-    hidden: { opacity: 0, x: reduceMotion ? 0 : -50 },
+    hidden: { opacity: 0, x: reduceMotion ? 0 : "var(--reveal-distance-negative,-50px)" },
     visible: (custom: number) => ({
       opacity: 1,
       x: 0,
@@ -66,20 +68,19 @@ export function BriefAnimated({
         viewport={{ once: true, amount: 0.25, margin: "-60px 0px" }}
       >
         <motion.h2
-          className="t-h2 max-w-[28ch]"
-          style={{ fontWeight: 400 }}
+          className="max-w-[28ch] text-[clamp(1.6rem,1.15rem+1.75vw,2.8rem)] font-sans font-normal tracking-tight leading-[1.12] text-navy"
           variants={leftVariants}
           custom={0}
         >
           {title.includes("|") ? (
             title.split("|").map((line, i) => (
-              <span key={i} className="block sm:whitespace-nowrap">
+              <span key={i} className="block lg:whitespace-nowrap">
                 {withReg(line.trim())}
               </span>
             ))
           ) : title.includes("\n") ? (
             title.split("\n").map((line, i) => (
-              <span key={i} className="block sm:whitespace-nowrap">
+              <span key={i} className="block lg:whitespace-nowrap">
                 {withReg(line.trim())}
               </span>
             ))
@@ -89,26 +90,32 @@ export function BriefAnimated({
         </motion.h2>
 
         <div className="mt-8 grid gap-5">
-          {paragraphs.map((paragraph, index) => (
-            <motion.p
-              key={paragraph}
-              className="measure text-slate"
-              variants={leftVariants}
-              custom={index + 1}
-            >
-              {withReg(paragraph)}
-            </motion.p>
-          ))}
+          {paragraphs.map((paragraph, index) => {
+            const formatted = paragraph.replace(/D J Impex & Co\./g, "D\u00A0J\u00A0Impex\u00A0&\u00A0Co.");
+            return (
+              <motion.p
+                key={paragraph}
+                className="measure text-left text-slate lg:text-justify"
+                variants={leftVariants}
+                custom={index + 1}
+              >
+                {withReg(formatted)}
+              </motion.p>
+            );
+          })}
         </div>
 
-        <motion.div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" variants={leftVariants} custom={paragraphs.length + 1}>
-          <TextLink href="/about">{linkLabel}</TextLink>
-
-          {tagline ? (
-            <span className="pb-2 text-xs font-semibold tracking-[0.14em] text-slate uppercase sm:text-sm">
-              {tagline}
-            </span>
-          ) : null}
+        <motion.div
+          className="mt-8 flex flex-col items-start gap-1"
+          variants={leftVariants}
+          custom={paragraphs.length + 1}
+        >
+          <span className="inline-block border-b border-navy pb-0.5 font-sans text-xs font-semibold tracking-[0.16em] text-slate uppercase sm:text-sm">
+            Crafted In India
+          </span>
+          <span className="inline-block border-b border-navy pb-0.5 font-sans text-xs font-semibold tracking-[0.16em] text-slate uppercase sm:text-sm">
+            Chosen Across Africa
+          </span>
         </motion.div>
 
         {trustMarksSlot ? (
@@ -118,10 +125,10 @@ export function BriefAnimated({
         ) : null}
       </motion.div>
 
-      {/* Right Column: Just the DJI Logo and Text (No surrounding box/card) */}
+      {/* Right Column: Just the DJI Logo and Text (Increased logo size by 20%) */}
       <motion.div
-        className="relative mx-auto flex w-full max-w-[280px] flex-col items-center justify-center text-center sm:max-w-[320px] lg:w-[320px] lg:self-center"
-        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 50 }}
+        className="relative mx-auto flex w-full max-w-[320px] flex-col items-center justify-center text-center sm:max-w-[360px] lg:w-[360px] lg:self-center"
+        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: "var(--reveal-distance,50px)" }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.25, margin: "-60px 0px" }}
         transition={{
@@ -134,7 +141,7 @@ export function BriefAnimated({
           style={reduceMotion ? {} : { scale: logoScale, y: logoY, opacity: logoOpacity }}
           className="relative flex items-center justify-center origin-center"
         >
-          <DJIAnimatedLogo size={160} />
+          <DJIAnimatedLogo size={192} />
         </motion.div>
 
         <div className="mt-5 w-full text-center">

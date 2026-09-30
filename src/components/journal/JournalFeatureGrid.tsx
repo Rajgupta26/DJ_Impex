@@ -34,7 +34,7 @@ function FeatureCard({ post, featured = false }: FeatureCardProps) {
       >
         <div
           className={`relative overflow-hidden bg-mist ${
-            featured ? "aspect-[6/5] lg:aspect-auto lg:flex-1" : "aspect-[16/9]"
+            featured ? "aspect-[16/10] lg:aspect-auto lg:flex-1" : "aspect-[16/9]"
           }`}
         >
           <Image
@@ -51,7 +51,7 @@ function FeatureCard({ post, featured = false }: FeatureCardProps) {
 
         <div className={featured ? "p-6 sm:p-8 lg:p-10" : "p-5 sm:p-6"}>
           <div className="flex items-end justify-between gap-5">
-            <div>
+            <div className="min-w-0">
               <h3 className={featured ? "t-h2 font-semibold" : "t-h3"}>
                 {withReg(post.title)}
                 <TbcTag

@@ -66,7 +66,7 @@ export function BrandFilm({
   return (
     <section className="on-dark relative overflow-hidden bg-navy-deep text-white">
       <div className="container-site grid items-center gap-10 pt-[clamp(3rem,2.5rem+3vw,5rem)] pb-[clamp(2.5rem,2rem+2vw,3.5rem)] lg:grid-cols-[1fr_auto] lg:gap-20">
-        <div className="order-2 lg:order-1">
+        <div className="order-1">
           <h2 className="t-h2 max-w-none text-[clamp(1.75rem,1.3rem+1.6vw,3rem)]">
             {withReg(heading)}
           </h2>
@@ -90,7 +90,7 @@ export function BrandFilm({
 
         {/* The footage is a 9:16 reel, so it is set as a standing panel at its own
             proportions rather than cropped into a landscape band. */}
-        <div className="relative order-1 aspect-[9/16] w-full max-w-[20rem] justify-self-center overflow-hidden bg-navy lg:order-2 lg:h-[34rem] lg:w-auto lg:max-w-none">
+        <div className="relative order-2 aspect-[9/16] w-full max-w-[min(16rem,65svh*9/16)] justify-self-center overflow-hidden bg-navy lg:h-[34rem] lg:w-auto lg:max-w-none">
           {src ? (
             <>
               <video

@@ -71,10 +71,10 @@ export function VisionBanner({
   }, [reduceMotion]);
 
   return (
-    <section className="bg-white pt-[4.5rem] lg:pt-[5.25rem]">
+    <section className="bg-white pt-16 sm:pt-[4.5rem] lg:pt-[5.25rem]">
       <h1 className="visually-hidden">{BANNER_WORDS}</h1>
 
-      <div className="relative h-[calc(100dvh-4.5rem)] max-h-[59vw] w-full overflow-hidden lg:h-[calc(100dvh-5.25rem)]">
+      <div className="relative h-[calc(100dvh-4rem)] max-h-[59vw] w-full overflow-hidden sm:h-[calc(100dvh-4.5rem)] lg:h-[calc(100dvh-5.25rem)]">
         <video
           ref={videoRef}
           aria-hidden="true"

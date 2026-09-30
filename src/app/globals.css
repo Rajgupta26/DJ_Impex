@@ -23,15 +23,6 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* The same clip as on body, and it has to be on both.
-       body alone was not enough: a reveal animation's start state sits 50px to
-       the right of where it lands, and on /about four such paragraphs pushed the
-       root element to 404px on a 375px screen. The phone then let the whole page
-       be dragged sideways, which is what the agency reported. Clipping here
-       stops the root growing at all.
-       `clip` rather than `hidden` for the reason given on body: hidden would
-       make this a scroll container and break every sticky descendant. */
-    overflow-x: clip;
   }
 
   *,
@@ -42,10 +33,6 @@
 
   body {
     margin: 0;
-    /* clip, not hidden: `overflow-x: hidden` makes body a scroll container, and a
-       scroll container with no scrollport breaks every `position: sticky`
-       descendant. `clip` contains overflow without creating one. */
-    overflow-x: clip;
     text-wrap: pretty;
   }
 
@@ -318,4 +305,108 @@ body {
 .goog-text-highlight {
   background-color: transparent !important;
   box-shadow: none !important;
+}
+
+/* Compact layouts share one scale; the original desktop tokens stay intact. */
+@media (width < 64rem) {
+  :root {
+    --reveal-distance: 12px;
+    --reveal-distance-negative: -12px;
+    --spacing-gutter: clamp(1rem, 4.5vw, 2rem);
+    --spacing-section: clamp(3rem, 2rem + 3vw, 4.5rem);
+    --text-display: clamp(2.25rem, 1.5rem + 3.2vw, 3.25rem);
+    --text-h1: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+    --text-h2: clamp(1.75rem, 1.3rem + 2.2vw, 2.75rem);
+    --text-body: 1rem;
+  }
+
+  .container-site :where(h1, h2, h3, h4, p, address) {
+    overflow-wrap: anywhere;
+  }
+
+  .site-hero {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: clamp(32rem, 82svh, 44rem);
+  }
+
+  .site-hero__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .site-hero__content {
+    position: relative;
+    bottom: auto;
+    margin-top: auto;
+    padding-top: 7rem;
+    padding-bottom: 5.5rem;
+  }
+
+  .site-hero__content .t-display {
+    max-width: 18ch;
+    line-height: 1.08;
+  }
+
+  .site-hero__content .t-lead {
+    margin-top: 1rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .nabeen-closing .t-h2 {
+    font-size: clamp(1.375rem, 1.1rem + 1.2vw, 1.875rem);
+    line-height: 1.35;
+  }
+
+  :where(input, select, textarea):not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]) {
+    min-width: 0;
+    min-height: 2.75rem;
+    font-size: 1rem;
+  }
+
+  .enquiry-form :where(button) {
+    min-height: 2.75rem;
+  }
+
+  .site-footer {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  }
+
+  .site-footer :where(a) {
+    overflow-wrap: anywhere;
+  }
+
+  .site-footer nav a,
+  .site-footer .footer-contact a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+
+  .admin-panel :where(button[aria-label]) {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+}
+
+@media (width < 40rem) {
+  .site-hero__actions {
+    display: grid;
+    justify-items: stretch;
+    gap: 0.75rem;
+    max-width: 22rem;
+    margin-top: 1.5rem;
+  }
+
+  .site-hero__actions .btn {
+    justify-content: center;
+    padding-inline: 1rem;
+    font-size: 0.875rem;
+  }
+
+  .page-end {
+    padding-bottom: 2.5rem;
+  }
 }

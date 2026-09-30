@@ -36,7 +36,7 @@ export async function NabeenGallery() {
           <p className="t-lead mt-5">{withReg(field(gallery, "intro"))}</p>
         </div>
 
-        <ul className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-5">
+        <ul className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:grid-cols-3 lg:mt-14 lg:grid-cols-4 lg:gap-5">
           {images.map((image, index) => (
             <li
               key={image.src}
@@ -50,7 +50,7 @@ export async function NabeenGallery() {
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover transition-transform duration-[var(--duration-base)] ease-[var(--ease-weave)] group-hover:scale-[1.04]"
               />
-              <span className="t-small text-navy absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] truncate rounded-full bg-white/95 px-3 py-1 text-xs font-semibold opacity-0 shadow-[0_2px_8px_rgba(0,0,0,0.15)] backdrop-blur-sm transition-opacity duration-[var(--duration-base)] group-hover:opacity-100">
+              <span className="t-small text-navy absolute bottom-2 left-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-white/95 px-2 py-1 text-xs font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.15)] backdrop-blur-sm transition-opacity duration-[var(--duration-base)] lg:bottom-3 lg:left-3 lg:max-w-[calc(100%-1.5rem)] lg:px-3 lg:opacity-0 lg:group-hover:opacity-100">
                 {image.name}
               </span>
             </li>

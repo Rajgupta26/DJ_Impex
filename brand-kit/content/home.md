@@ -48,9 +48,8 @@ Since 1995, we have built lasting partnerships across markets, combining Indian 
 
 Today, through Nabeen®️, our fabrics travel from India to discerning markets across Africa and the Middle East.
 
-For our consistent export excellence, the Government of India has awarded D J Impex & Co. the status of Star Export House.
+For our consistent export excellence, the Government of India has awarded D J Impex & Co. the status of Star Export House.
 
-Tagline: Crafted In India · Chosen Across Africa
 Link: "Discover our story" → /about
 
 ## 4. The Nabeen Collection

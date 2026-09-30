@@ -9,6 +9,7 @@ import { withReg } from "@/components/ui/Reg";
 import { SignatureLines } from "@/components/ui/SignatureLines";
 import { TbcTag } from "@/components/ui/TbcTag";
 import { getBrandFilm, getPage, getSite } from "@/lib/content";
+import { slotMap } from "@/lib/slots";
 import { field, section } from "@/lib/markdown";
 import { buildMetadata, pageTitle } from "@/lib/seo";
 
@@ -19,8 +20,9 @@ export const metadata: Metadata = buildMetadata({
   path: "/nabeen",
 });
 
-export default function NabeenPage() {
+export default async function NabeenPage() {
   const site = getSite();
+  const slots = await slotMap();
   const page = getPage("nabeen");
   const head = section(page, "nabeen");
   const intro = section(page, "introduction");
@@ -63,7 +65,7 @@ export default function NabeenPage() {
             alt=""
             fill
             sizes="100vw"
-            quality={95}
+            quality={88}
             className="object-cover object-right-top opacity-85"
           />
           {/* Subtle gradient veil to keep the left text area crisp while letting fabric folds shine through on the right */}
@@ -84,7 +86,7 @@ export default function NabeenPage() {
           </div>
 
           <div className="mt-8 sm:mt-10">
-            <SignatureLines />
+            <SignatureLines images={slots} />
           </div>
         </Container>
       </section>
@@ -92,14 +94,14 @@ export default function NabeenPage() {
       {/* Luxury white fabric framed card - widened horizontally with generous spacing above */}
       <section className="bg-mist pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20">
         <Container>
-          <div className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-xl border border-line/80 bg-white shadow-[var(--shadow-float)]">
+          <div className="nabeen-closing relative mx-auto w-full max-w-6xl overflow-hidden rounded-xl border border-line/80 bg-white shadow-[var(--shadow-float)]">
             {/* White luxury jacquard fabric background */}
             <Image
               src="/images/brand-imagery/white-fabric-closing.jpg"
               alt=""
               fill
               sizes="(max-width: 1280px) 100vw, 1280px"
-              quality={90}
+              quality={88}
               className="pointer-events-none object-cover object-center brightness-105"
             />
             {/* Soft semi-translucent veil for crystal-clear readability */}

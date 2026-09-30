@@ -4,6 +4,7 @@ import { RecognitionSection } from "@/components/about/RecognitionSection";
 import { WelcomeSection } from "@/components/about/WelcomeSection";
 import { VisionBanner } from "@/components/vision/VisionBanner";
 import { VisionPillars } from "@/components/vision/VisionPillars";
+import { ExploreNabeenCTA } from "@/components/ui/ExploreNabeenCTA";
 import { withReg } from "@/components/ui/Reg";
 import { getPage } from "@/lib/content";
 import { field, section } from "@/lib/markdown";
@@ -39,6 +40,8 @@ export default function AboutPage() {
         intro={withReg(field(visionHead, "intro"))}
         items={pillars.items}
       />
+
+      <ExploreNabeenCTA />
     </>
   );
 }

@@ -35,11 +35,24 @@ export function withReg(text: string): ReactNode {
   const typed = typeset(text);
   if (!typed.includes("®")) return typed;
 
-  const parts = typed.split("®");
-  return parts.map((part, index) => (
-    <Fragment key={index}>
-      {part}
-      {index < parts.length - 1 ? <Reg /> : null}
-    </Fragment>
-  ));
+  return typed.split(/(Nabeen®)/).map((part, partIndex) => {
+    // Google Translate rewrites text nodes. Keeping the protected brand and its
+    // registered mark in one non-translatable element prevents it from splitting
+    // the two nodes and leaving the mark visually detached in translated copy.
+    if (part === "Nabeen®") {
+      return (
+        <span key={partIndex} className="notranslate" translate="no">
+          Nabeen<Reg />
+        </span>
+      );
+    }
+
+    const pieces = part.split("®");
+    return pieces.map((piece, pieceIndex) => (
+      <Fragment key={`${partIndex}-${pieceIndex}`}>
+        {piece}
+        {pieceIndex < pieces.length - 1 ? <Reg /> : null}
+      </Fragment>
+    ));
+  });
 }

@@ -17,11 +17,9 @@ import { field, section } from "@/lib/markdown";
  * fabric lists in three places (questions 119 and 134). A fourth, kept in step
  * by hand, was not worth it.
  *
- * The showcase sets its lead as body text, not a heading, because on /about the
- * "Welcome" heading sits above it. Here there is nothing above it, so the
- * section carries a heading for the outline and hides it: putting "Our exclusive
- * collection of" on screen twice, once as a heading and again as the showcase's
- * own first line, would read as a mistake.
+ * The showcase keeps its lead as body text, because it is supporting copy rather
+ * than the section title. On the home page, “The Nabeen Collection” provides the
+ * visible heading and keeps the collection easy to scan.
  */
 export async function CollectionShowcase() {
   const copy = section(getPage("about"), "welcome");
@@ -35,10 +33,8 @@ export async function CollectionShowcase() {
     <section className="bg-mist relative isolate">
       <WeaveArt pattern="lace" tone="mist" scale={1.6} intensity={0.1} />
 
-      {/* The showcase opens with its own mt-16, so this pays almost nothing at
-          the top. */}
       <Container className="relative pt-2 pb-10 lg:pb-14">
-        <h2 className="visually-hidden">The Nabeen Collection</h2>
+        <h2 className="t-h2 mt-8 text-navy lg:mt-12">The Nabeen Collection</h2>
 
         <FabricHoverShowcase
           names={names}

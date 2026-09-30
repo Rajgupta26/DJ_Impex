@@ -17,7 +17,7 @@ export async function BriefSection() {
     /* The hero above is full height and ends on a hard edge, so this does not
        need a full --spacing-section on top of it: at 1130 that was 127px of
        white before the heading. 64/80px instead. */
-    <section className="overflow-hidden bg-white pt-16 lg:pt-20">
+    <section className="overflow-hidden bg-white pt-10 sm:pt-14 lg:pt-20">
       <Container>
         <BriefAnimated
           title={heading}

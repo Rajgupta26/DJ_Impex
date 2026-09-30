@@ -31,7 +31,7 @@ const STAT_ITEMS: StatItem[] = [
   {
     lead: "Make in India",
     title: "Indigenous Craft",
-    subtitle: "Mill-direct, container load",
+    subtitle: "Chosen Across Africa",
     accentColor: "var(--color-navy-deep)", // 17.68:1 on white
   },
 ];
@@ -46,14 +46,15 @@ export function StatBoxes({ className = "" }: { className?: string }) {
   const getBoxAnimation = (index: number) => {
     if (reduceMotion) {
       return {
-        initial: { opacity: 0 },
-        whileInView: { opacity: 1 },
+        initial: { opacity: 0, x: 0 },
+        whileInView: { opacity: 1, x: 0 },
+        viewport: { once: true, amount: 0.2 },
         transition: { duration: 0.01 },
       };
     }
 
     const isLeft = index < 2;
-    const initialX = isLeft ? -60 : 60;
+    const initialX = isLeft ? "var(--reveal-distance-negative,-60px)" : "var(--reveal-distance,60px)";
     // Stagger timing:
     // Left pair: Box 0 (0.15s) -> Box 1 (0.40s)
     // Right pair: Box 2 (0.55s) -> Box 3 (0.80s)
@@ -73,7 +74,7 @@ export function StatBoxes({ className = "" }: { className?: string }) {
 
   return (
     <div className={`w-full overflow-hidden bg-white ${className}`.trim()}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4">
         {STAT_ITEMS.map((item, index) => {
           const anim = getBoxAnimation(index);
 
@@ -84,7 +85,7 @@ export function StatBoxes({ className = "" }: { className?: string }) {
               whileInView={anim.whileInView}
               viewport={anim.viewport}
               transition={anim.transition}
-              className="group relative flex min-h-[12.5rem] sm:min-h-[14rem] lg:min-h-[15.5rem] flex-col justify-between p-6 sm:p-7 lg:p-9 cursor-pointer transition-colors duration-300 hover:bg-mist/40"
+              className="group relative flex min-w-0 min-h-[11rem] sm:min-h-[14rem] lg:min-h-[15.5rem] flex-col justify-between p-4 sm:p-7 lg:p-9 cursor-pointer transition-colors duration-300 hover:bg-mist/40"
             >
               <div>
                 {/* Top Accent Line with 0 -> full length hover effect */}
@@ -100,8 +101,8 @@ export function StatBoxes({ className = "" }: { className?: string }) {
                 <div className="flex min-h-[3.5rem] items-baseline lg:min-h-[4rem]">
                   <span
                     className={`t-number leading-none font-bold tracking-tight ${item.lead.length > 5
-                        ? "text-[clamp(1.85rem,1.4rem+1.2vw,2.5rem)] uppercase"
-                        : "text-[clamp(3.25rem,2.4rem+2.2vw,4.5rem)]"
+                        ? "text-[clamp(1.2rem,0.75rem+2vw,1.85rem)] uppercase lg:text-[clamp(1.85rem,1.4rem+1.2vw,2.5rem)]"
+                        : "text-[clamp(2.1rem,1.3rem+3vw,3.25rem)] lg:text-[clamp(3.25rem,2.4rem+2.2vw,4.5rem)]"
                       }`}
                     style={{ color: item.accentColor }}
                   >
@@ -132,7 +133,7 @@ export function StatBoxes({ className = "" }: { className?: string }) {
               {index % 2 === 0 && (
                 <span
                   aria-hidden="true"
-                  className="hidden sm:block lg:hidden absolute right-0 top-1/2 -translate-y-1/2 h-20 w-px bg-line/70 pointer-events-none"
+                  className="block lg:hidden absolute right-0 top-1/2 -translate-y-1/2 h-20 w-px bg-line/70 pointer-events-none"
                 />
               )}
             </motion.div>

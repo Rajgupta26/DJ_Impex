@@ -33,7 +33,7 @@ export function MobileMenu({
   const reduceMotion = useReducedMotion();
 
   useOverlay("mobile-menu", open);
-  useFocusTrap(panelRef, open, onClose);
+  useFocusTrap(panelRef, open, onClose, "nav a");
 
   return (
     <AnimatePresence>
@@ -48,9 +48,9 @@ export function MobileMenu({
           animate={{ opacity: 1, y: 0 }}
           exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
           transition={{ duration: reduceMotion ? 0.01 : 0.32, ease: [0.22, 0.61, 0.36, 1] }}
-          className="on-dark fixed inset-0 z-50 flex flex-col overflow-y-auto bg-navy-deep text-white lg:hidden"
+          className="on-dark fixed inset-0 z-50 flex h-dvh flex-col overflow-y-auto overscroll-contain bg-navy-deep text-white xl:hidden"
         >
-          <div className="container-site flex h-[4.5rem] shrink-0 items-center justify-between">
+          <div className="container-site flex h-16 shrink-0 items-center justify-between sm:h-[4.5rem]">
             <Image
               src="/images/logos/nabeen-logo-white.png"
               alt="Nabeen, luxury fabrics by DJI"
@@ -68,7 +68,7 @@ export function MobileMenu({
             </button>
           </div>
 
-          <nav aria-label="Main" className="container-site mt-6 flex-1">
+          <nav aria-label="Main" className="container-site mt-4 flex-1">
             <ul className="grid">
               {navigation.map((item) => {
                 const active = pathname === item.href;
@@ -79,7 +79,7 @@ export function MobileMenu({
                       href={item.href}
                       onClick={onClose}
                       aria-current={active ? "page" : undefined}
-                      className="t-h3 block py-5 font-light text-[clamp(1.5rem,1.1rem+2.4vw,2.25rem)]"
+                      className="t-h3 block py-3 font-light text-[clamp(1.5rem,1.1rem+2.4vw,2.25rem)] sm:py-4"
                     >
                       {withReg(item.label)}
                     </Link>
@@ -90,7 +90,7 @@ export function MobileMenu({
           </nav>
 
           <div
-            className="container-site mt-8 border-t border-white/12 pt-6"
+            className="container-site mt-6 border-t border-white/12 pt-5"
             style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom))" }}
           >
             <LanguageSelector variant="mobile" className="mb-6" />
@@ -110,7 +110,7 @@ export function MobileMenu({
               <a
                 href={contact.tel}
                 onClick={() => track("call_click", { location: "menu" })}
-                className="flex items-center gap-3"
+                className="flex min-h-11 min-w-0 items-center gap-3 break-words"
               >
                 <Phone aria-hidden="true" size={17} strokeWidth={1.5} />
                 <span>{contact.telDisplay}</span>
@@ -118,7 +118,7 @@ export function MobileMenu({
               <a
                 href={contact.email}
                 onClick={() => track("email_click", { location: "menu" })}
-                className="flex items-center gap-3"
+                className="flex min-h-11 min-w-0 items-center gap-3 break-words"
               >
                 <Mail aria-hidden="true" size={17} strokeWidth={1.5} />
                 <span>{contact.emailDisplay}</span>

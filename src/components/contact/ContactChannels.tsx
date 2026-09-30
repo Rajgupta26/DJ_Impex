@@ -19,7 +19,7 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
             strokeWidth={1.5}
             className={`mt-1 shrink-0 ${onDark ? "text-accent" : "text-slate"}`}
           />
-          <div>
+          <div className="min-w-0 flex-1">
             <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Phone</dt>
             <dd className="mt-1 flex flex-wrap items-center gap-x-2">
               <TrackedLink
@@ -55,7 +55,7 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
             strokeWidth={1.5}
             className={`mt-1 shrink-0 ${onDark ? "text-accent" : "text-slate"}`}
           />
-          <div>
+          <div className="min-w-0 flex-1">
             <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Email</dt>
             <dd className="mt-1">
               <span className="grid gap-1">
@@ -66,7 +66,7 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
                     event="email_click"
                     location="contact_page"
                     external={false}
-                    className={`text-link w-fit ${onDark ? "text-link-on-dark" : ""}`}
+                    className={`text-link max-w-full w-fit break-words ${onDark ? "text-link-on-dark" : ""}`}
                   >
                     {email}
                   </TrackedLink>
@@ -83,7 +83,7 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
             strokeWidth={1.5}
             className={`mt-1 shrink-0 ${onDark ? "text-accent" : "text-slate"}`}
           />
-          <div>
+          <div className="min-w-0 flex-1">
             <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Address</dt>
             <dd className="mt-1">
               <TrackedLink

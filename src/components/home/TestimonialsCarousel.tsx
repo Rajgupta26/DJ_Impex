@@ -153,16 +153,26 @@ export function TestimonialsCarousel({
 
       {/* High-Contrast Foreground Content */}
       <div className="container-site relative z-10">
-        <h2 className="t-h2 w-full max-w-none text-white -translate-x-1 sm:-translate-x-2">
+        <h2 className="t-h2 w-full max-w-none text-white sm:-translate-x-2">
           {heading.includes("|") ? (
             heading.split("|").map((line, i) => (
-              <span key={i} className="block sm:whitespace-nowrap">
+              <span
+                key={i}
+                className={`block lg:whitespace-nowrap ${
+                  i > 0 ? "text-[clamp(1.1rem,0.8rem+1.21vw,1.925rem)] opacity-90" : ""
+                }`}
+              >
                 {withReg(line.trim())}
               </span>
             ))
           ) : heading.includes("\n") ? (
             heading.split("\n").map((line, i) => (
-              <span key={i} className="block sm:whitespace-nowrap">
+              <span
+                key={i}
+                className={`block lg:whitespace-nowrap ${
+                  i > 0 ? "text-[clamp(1.1rem,0.8rem+1.21vw,1.925rem)] opacity-90" : ""
+                }`}
+              >
                 {withReg(line.trim())}
               </span>
             ))
@@ -179,6 +189,8 @@ export function TestimonialsCarousel({
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`Quote ${index + 1} of ${items.length}`}
+                aria-hidden={index !== selected}
+                inert={index !== selected}
                 className="min-w-0 flex-[0_0_100%]"
               >
                 <div className="max-w-[54rem] py-2 sm:py-3">
@@ -261,7 +273,7 @@ export function TestimonialsCarousel({
                 type="button"
                 onClick={() => goTo(index)}
                 aria-current={index === selected ? "true" : undefined}
-                className="group flex h-11 items-center"
+                className="group flex h-11 w-11 items-center justify-center sm:w-auto"
               >
                 <span className="visually-hidden">
                   Show quote {index + 1} of {items.length}

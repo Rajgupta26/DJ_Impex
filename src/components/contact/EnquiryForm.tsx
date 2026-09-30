@@ -219,7 +219,7 @@ export function EnquiryForm({
   }
 
   return (
-    <form action={action} className={`grid ${twoUp ? "gap-4" : "gap-5"} ${className}`.trim()} noValidate>
+    <form action={action} className={`enquiry-form grid min-w-0 ${twoUp ? "gap-4" : "gap-5"} ${className}`.trim()} noValidate>
       <input type="hidden" name="variant" value={variant} />
 
       {/* Honeypot: hidden from people, irresistible to bots. */}
@@ -346,14 +346,6 @@ export function EnquiryForm({
 
       <div className="mt-1 grid gap-4">
         <div className="flex flex-wrap items-center gap-3">
-          <button
-            type="submit"
-            disabled={pending}
-            className={`btn btn-primary justify-center ${variant === "short" ? "" : "sm:w-fit"}`}
-          >
-            <span>{pending ? "Sending…" : "Send enquiry"}</span>
-          </button>
-
           <button
             type="button"
             onClick={handleWhatsAppSubmit}

@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { Container } from "@/components/ui/Container";
 import { withReg } from "@/components/ui/Reg";
 
-type Photo = { file: string; alt: string };
+type Photo = { file?: string; src?: string; alt: string };
 
 export function AliNuhuGivesBack({
   heading,
@@ -19,7 +19,7 @@ export function AliNuhuGivesBack({
 }) {
   const reduceMotion = useReducedMotion();
   const enter = (x: number, delay = 0) => ({
-    initial: reduceMotion ? { opacity: 0 } : { opacity: 0, x },
+    initial: reduceMotion ? { opacity: 0 } : { opacity: 0, x: `var(${x < 0 ? "--reveal-distance-negative" : "--reveal-distance"},${x}px)` },
     whileInView: { opacity: 1, x: 0 },
     viewport: { once: true, amount: 0.25 },
     transition: { duration: reduceMotion ? 0.01 : 1.2, delay, ease: [0.22, 0.61, 0.36, 1] as const },
@@ -46,25 +46,29 @@ export function AliNuhuGivesBack({
         </div>
 
         <ul className="mt-8 grid gap-6 sm:mt-10 md:grid-cols-2 md:gap-8">
-          {photos.map((photo, index) => (
-            <motion.li
-              key={photo.file}
-              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 52 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.18 }}
-              transition={{ duration: reduceMotion ? 0.01 : 0.75, delay: index * 0.12, ease: [0.22, 0.61, 0.36, 1] }}
-            >
-              <figure className="relative aspect-[4/3] w-full overflow-hidden bg-mist">
-                <Image
-                  src={`/images/wear2care/${photo.file}`}
-                  alt={photo.alt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 46vw"
-                  className="object-cover"
-                />
-              </figure>
-            </motion.li>
-          ))}
+          {photos.map((photo, index) => {
+            const src = photo.src || (photo.file?.startsWith("/") ? photo.file : `/images/wear2care/${photo.file}`);
+            return (
+              <motion.li
+                key={photo.file || photo.src || index}
+                initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 52 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.18 }}
+                transition={{ duration: reduceMotion ? 0.01 : 0.75, delay: index * 0.12, ease: [0.22, 0.61, 0.36, 1] }}
+              >
+                <figure className="relative aspect-[4/3] w-full overflow-hidden bg-mist">
+                  <Image
+                    src={src}
+                    alt={photo.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 46vw"
+                    className="object-cover"
+                    unoptimized={src.startsWith("/api/")}
+                  />
+                </figure>
+              </motion.li>
+            );
+          })}
         </ul>
       </Container>
     </section>

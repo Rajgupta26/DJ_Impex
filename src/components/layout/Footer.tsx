@@ -54,14 +54,14 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="on-dark relative overflow-hidden bg-navy-deep text-white">
+    <footer className="site-footer on-dark relative overflow-hidden bg-navy-deep text-white">
       {/* Full-bleed luxury fabric background across the entire footer */}
       <Image
         src="/images/footer/fabric-banner.jpg"
         alt=""
         fill
         sizes="100vw"
-        quality={90}
+        quality={88}
         className="object-cover object-center brightness-75 pointer-events-none"
       />
       {/* Rich dark navy overlay to ensure optimal contrast and readability */}
@@ -71,8 +71,8 @@ export function Footer() {
       />
 
       <div className="relative z-10">
-        <div className="container-site grid gap-12 pb-14 pt-16 md:grid-cols-2 lg:grid-cols-[1.4fr_0.85fr_1.15fr_1.6fr] lg:gap-8 lg:pt-20">
-          <div>
+        <div className="container-site grid gap-8 pb-10 pt-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.85fr_1.15fr_1.6fr] lg:gap-8 lg:pb-14 lg:pt-20">
+          <div className="lg:translate-y-[30%]">
             <Image
               src="/images/logos/nabeen-logo-white.png"
               alt="Nabeen, luxury fabrics by DJI"
@@ -84,7 +84,7 @@ export function Footer() {
 
           <nav aria-label="Footer">
             <h2 className="t-small mb-4 font-semibold text-accent">Explore</h2>
-            <ul className="grid gap-2.5 text-white/80">
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-white/80 lg:grid-cols-1 lg:gap-2.5">
               {site.navigation.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="transition-colors hover:text-white">
@@ -95,7 +95,7 @@ export function Footer() {
             </ul>
           </nav>
 
-          <div>
+          <div className="footer-contact min-w-0">
             <h2 className="t-small mb-4 font-semibold text-accent">Talk to us</h2>
             <ul className="grid gap-2.5 text-white/80">
               <li>
@@ -188,7 +188,7 @@ export function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`Visit Nabeen on ${social.name}`}
-                        className="inline-flex size-8 items-center justify-center transition-transform hover:scale-110 focus-visible:scale-110"
+                        className="inline-flex size-11 items-center justify-center transition-transform hover:scale-110 focus-visible:scale-110 lg:size-8"
                       >
                         <SocialIcon name={social.name} />
                       </a>
@@ -201,13 +201,13 @@ export function Footer() {
                 ))}
               </ul>
 
-              <div className="mt-6 flex w-36 flex-col gap-3">
+              <div className="mt-5 flex flex-wrap gap-3 lg:mt-6 lg:w-36 lg:flex-col">
                 <TrackedLink
                   href={telLink()}
                   event="call_click"
                   location="footer_actions"
                   external={false}
-                  className="btn btn-primary !h-11 !w-full !justify-center !px-4 !text-sm"
+                  className="btn btn-primary !h-11 !justify-center !px-4 !text-sm lg:!w-full"
                 >
                   <Phone aria-hidden="true" size={14} strokeWidth={1.8} />
                   <span>Call us</span>
@@ -217,7 +217,7 @@ export function Footer() {
                   event="email_click"
                   location="footer_actions"
                   external={false}
-                  className="btn btn-outline !h-11 !w-full !justify-center !px-4 !text-sm !border-white/20 !text-white hover:!bg-white/10"
+                  className="btn btn-outline !h-11 !justify-center !px-4 !text-sm !border-white/20 !text-white hover:!bg-white/10 lg:!w-full"
                 >
                   <Mail aria-hidden="true" size={14} strokeWidth={1.8} />
                   <span>Mail us</span>
@@ -229,7 +229,7 @@ export function Footer() {
 
         <div className="container-site border-t border-white/15 py-8">
           <h2 className="visually-hidden">Fabrics</h2>
-          <ul className="flex flex-wrap gap-x-6 gap-y-3">
+          <ul className="flex flex-wrap gap-x-5 gap-y-3 lg:gap-x-6">
             {site.fabricTypes.items.map((fabric) => (
               <li key={fabric.slug}>
                 <TrackedLink
@@ -261,7 +261,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="container-site flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/15 py-7">
+        <div className="container-site flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-white/15 py-7 lg:gap-x-6">
           {/* The parent-company mark, per ASSETS.md. */}
           <Image
             src="/images/logos/dji-logo-transparent.png"

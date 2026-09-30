@@ -211,7 +211,7 @@ export function ImageManager({ initial }: { initial: AdminImage[] }) {
                 />
               </div>
               <div className="space-y-2 p-4">
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex flex-wrap items-start justify-between gap-3">
                   <p className="text-sm font-semibold break-words">
                     {image.title}
                     {image.usage === "cover" ? (
@@ -221,7 +221,7 @@ export function ImageManager({ initial }: { initial: AdminImage[] }) {
                     ) : null}
                   </p>
                   {image.category ? (
-                    <span className="shrink-0 text-xs text-slate-500 dark:text-slate-400">
+                    <span className="max-w-full break-words text-xs text-slate-500 dark:text-slate-400">
                       {image.category}
                     </span>
                   ) : null}

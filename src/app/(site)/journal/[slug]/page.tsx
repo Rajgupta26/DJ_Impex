@@ -52,6 +52,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   });
 }
 
+import { ExploreNabeenCTA } from "@/components/ui/ExploreNabeenCTA";
+
 export default async function JournalPostPage({ params }: Params) {
   const { slug } = await params;
   const post = await getJournalPost(slug);
@@ -64,10 +66,10 @@ export default async function JournalPostPage({ params }: Params) {
       <JournalArticleAnimated post={post} />
 
       {more.length > 0 ? (
-        <section className="page-end bg-mist pt-12 md:pt-16 pb-[var(--spacing-section)]">
+        <section className="bg-mist pt-12 md:pt-16 pb-10">
           <Container>
             <h2 className="t-h2">More from the journal</h2>
-            <ul className="mt-12 grid gap-14 md:grid-cols-2 md:gap-x-16">
+            <ul className="mt-8 grid gap-8 md:mt-12 md:grid-cols-2 md:gap-x-16 md:gap-y-14">
               {more.map((item) => (
                 <li key={item.slug}>
                   <PostCard post={item} />
@@ -77,6 +79,8 @@ export default async function JournalPostPage({ params }: Params) {
           </Container>
         </section>
       ) : null}
+
+      <ExploreNabeenCTA bg={more.length > 0 ? "bg-mist" : "bg-white"} />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(articleJsonLd(post))} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbJsonLd(post))} />

@@ -71,7 +71,7 @@ export function VisionPillars({
   };
 
   const textVariants = {
-    hidden: { opacity: reduceMotion ? 1 : 0, x: reduceMotion ? 0 : 40 },
+    hidden: { opacity: reduceMotion ? 1 : 0, x: reduceMotion ? 0 : "var(--reveal-distance,40px)" },
     visible: (index: number) => ({
       opacity: 1,
       x: 0,
@@ -98,7 +98,7 @@ export function VisionPillars({
         ) : null}
 
         <motion.div
-          className="mt-14 w-full lg:mt-16"
+          className="mt-8 w-full sm:mt-10 lg:mt-16"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.25 }}
@@ -110,7 +110,7 @@ export function VisionPillars({
               return (
                 <li
                   key={pillar.lead ?? pillar.text}
-                  className="grid grid-cols-[3.5rem_1fr] gap-x-5 sm:grid-cols-[4rem_1fr] sm:gap-x-8"
+                  className="grid grid-cols-[3rem_minmax(0,1fr)] gap-x-3 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-x-8"
                 >
                   <span aria-hidden="true" className="flex flex-col items-center">
                     <motion.span
@@ -134,7 +134,7 @@ export function VisionPillars({
 
                   <div
                     className={`lg:grid lg:grid-cols-[16rem_1fr] lg:gap-x-12 xl:grid-cols-[18rem_1fr] xl:gap-x-16 ${
-                      last ? "" : "pb-12 lg:pb-14"
+                      last ? "" : "pb-8 lg:pb-14"
                     }`.trim()}
                   >
                     <motion.h3

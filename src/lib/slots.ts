@@ -77,6 +77,66 @@ export const IMAGE_SLOTS: readonly ImageSlot[] = [
   fabricSlot("brocade", "Brocade", "/images/gallery/05-camel-check-jacquard.jpg", "Nabeen Brocade fabric"),
   fabricSlot("cashmere", "Cashmere", "/images/gallery/08-champagne-check.jpg", "Nabeen Cashmere fabric"),
   fabricSlot("wool", "Wool", "/images/gallery/09-sky-circle-jacquard.jpg", "Nabeen Wool fabric"),
+
+  // 01 Nabeen Classic
+  signatureSlot("classic", "Nabeen Classic", "oscar", "Oscar", "/images/gallery/04-charcoal-herringbone.jpg"),
+  signatureSlot("classic", "Nabeen Classic", "fantasy", "Fantasy", "/images/gallery/02-taupe-dobby.jpg"),
+  signatureSlot("classic", "Nabeen Classic", "delicacy", "Delicacy™", "/images/gallery/07-blush-stripe.jpg"),
+  signatureSlot("classic", "Nabeen Classic", "excelsor", "Excelsor", "/images/gallery/06-mint-dobby.jpg"),
+  signatureSlot("classic", "Nabeen Classic", "spencer", "Spencer", "/images/gallery/10-slate-rib.jpg"),
+  signatureSlot("classic", "Nabeen Classic", "golden-arc", "Golden Arc", "/images/gallery/05-camel-check-jacquard.jpg"),
+  signatureSlot("classic", "Nabeen Classic", "four-corners", "Four Corners", "/images/gallery/08-champagne-check.jpg"),
+
+  // 02 Nabeen Royale
+  signatureSlot("royale", "Nabeen Royale", "star-rose", "Star Rose", "/images/gallery/swatch-star-rose.jpg"),
+  signatureSlot("royale", "Nabeen Royale", "mark-polo", "Mark Polo", "/images/gallery/swatch-mark-polo.jpg"),
+  signatureSlot("royale", "Nabeen Royale", "cotton-house-giza", "Cotton House Egyptian Giza", "/images/gallery/03-white-jacquard.jpg"),
+  signatureSlot("royale", "Nabeen Royale", "silver-rock", "Silver Rock", "/images/gallery/swatch-silver-rock.jpg"),
+  signatureSlot("royale", "Nabeen Royale", "sicora-luxe-harrier", "Sicora, Luxe and Harrier", "/images/gallery/09-sky-circle-jacquard.jpg"),
+  signatureSlot("royale", "Nabeen Royale", "president-vp", "President & Vice President", "/images/gallery/swatch-president.jpg"),
+
+  // 03 Nabeen Luxuré
+  signatureSlot("luxure", "Nabeen Luxuré", "zare-nx", "Zare NX", "/images/gallery/01-aqua-jacquard.jpg"),
+  signatureSlot("luxure", "Nabeen Luxuré", "trident", "Trident", "/images/gallery/04-charcoal-herringbone.jpg"),
+  signatureSlot("luxure", "Nabeen Luxuré", "morocco", "Morocco", "/images/gallery/05-camel-check-jacquard.jpg"),
+  signatureSlot("luxure", "Nabeen Luxuré", "gold-pearl", "Gold Pearl", "/images/gallery/08-champagne-check.jpg"),
+  signatureSlot("luxure", "Nabeen Luxuré", "lenova-zx", "Lenova ZX", "/images/gallery/02-taupe-dobby.jpg"),
+  signatureSlot("luxure", "Nabeen Luxuré", "millionaire", "Millionaire", "/images/gallery/swatch-president.jpg"),
+  signatureSlot("luxure", "Nabeen Luxuré", "switzerland-look", "Switzerland Look", "/images/gallery/03-white-jacquard.jpg"),
+  signatureSlot("luxure", "Nabeen Luxuré", "australian-wool", "Australian, Turkish Wool", "/images/gallery/swatch-silver-rock.jpg"),
+
+  // 04 Nabeen White
+  signatureSlot("white", "Nabeen White", "white-fantasy", "Fantasy", "/images/gallery/swatch-white-fantasy.jpg"),
+  signatureSlot("white", "Nabeen White", "white-marconi", "Marconi", "/images/gallery/swatch-white-marconi.jpg"),
+  signatureSlot("white", "Nabeen White", "white-silver-rock", "Silver Rock", "/images/gallery/swatch-white-silver-rock.jpg"),
+  signatureSlot("white", "Nabeen White", "white-vice-president", "Vice President", "/images/brand-imagery/white-fabric-closing.jpg"),
+  signatureSlot("white", "Nabeen White", "president-plain-giza", "President Plain Giza", "/images/gallery/03-white-jacquard.jpg"),
+
+  // Wear2Care × Ali Nuhu
+  {
+    id: "wear2care-hero",
+    label: "Wear2Care hero banner",
+    where: "Wear2Care × Ali Nuhu page, at the top",
+    defaultSrc: "/images/wear2care/handover.jpg",
+    defaultAlt: "Representatives gathered for the Wear2Care x Ali Nuhu charity donation, beneath the campaign banner",
+    hint: "Wide landscape photograph (16:9 or similar). It sits behind the page title.",
+  },
+  {
+    id: "wear2care-donation-1",
+    label: "Handover photograph",
+    where: "Wear2Care × Ali Nuhu page, left image in Luxury That Gives Back",
+    defaultSrc: "/images/wear2care/handover.jpg",
+    defaultAlt: "Representatives gathered for the Wear2Care x Ali Nuhu charity donation, beneath the campaign banner",
+    hint: "4:3 landscape photograph showing the handover event.",
+  },
+  {
+    id: "wear2care-donation-2",
+    label: "Donated supplies photograph",
+    where: "Wear2Care × Ali Nuhu page, right image in Luxury That Gives Back",
+    defaultSrc: "/images/wear2care/donation.jpg",
+    defaultAlt: "Food and household supplies donated through Wear2Care x Ali Nuhu, stacked beneath the campaign banner",
+    hint: "4:3 landscape photograph showing the donated goods.",
+  },
 ] as const;
 
 function fabricSlot(id: string, name: string, defaultSrc: string, defaultAlt: string): ImageSlot {
@@ -87,6 +147,23 @@ function fabricSlot(id: string, name: string, defaultSrc: string, defaultAlt: st
     defaultSrc,
     defaultAlt,
     hint: "Portrait or square. It is shown as a tall panel.",
+  };
+}
+
+function signatureSlot(
+  lineId: string,
+  lineName: string,
+  productSlug: string,
+  productName: string,
+  defaultSrc: string,
+): ImageSlot {
+  return {
+    id: `nabeen-${lineId}-${productSlug}`,
+    label: `${lineName}: ${productName}`,
+    where: `Nabeen page → ${lineName}`,
+    defaultSrc,
+    defaultAlt: `${lineName} - ${productName} fabric swatch`,
+    hint: "Fabric swatch thumbnail.",
   };
 }
 

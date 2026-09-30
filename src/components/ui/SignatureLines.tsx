@@ -7,6 +7,7 @@ import { useId, useState, useSyncExternalStore } from "react";
 import { withReg } from "@/components/ui/Reg";
 
 export type ProductSwatch = {
+  id?: string;
   name: string;
   image: string;
 };
@@ -25,13 +26,13 @@ export const SIGNATURE_COLLECTIONS: CollectionLine[] = [
     description:
       "Refined everyday fabrics designed for effortless style, versatile tailoring, and all-day comfort.",
     products: [
-      { name: "Oscar", image: "/images/gallery/04-charcoal-herringbone.jpg" },
-      { name: "Fantasy", image: "/images/gallery/02-taupe-dobby.jpg" },
-      { name: "Delicacy™", image: "/images/gallery/07-blush-stripe.jpg" },
-      { name: "Excelsor", image: "/images/gallery/06-mint-dobby.jpg" },
-      { name: "Spencer", image: "/images/gallery/10-slate-rib.jpg" },
-      { name: "Golden Arc", image: "/images/gallery/05-camel-check-jacquard.jpg" },
-      { name: "Four Corners", image: "/images/gallery/08-champagne-check.jpg" },
+      { id: "nabeen-classic-oscar", name: "Oscar", image: "/images/gallery/04-charcoal-herringbone.jpg" },
+      { id: "nabeen-classic-fantasy", name: "Fantasy", image: "/images/gallery/02-taupe-dobby.jpg" },
+      { id: "nabeen-classic-delicacy", name: "Delicacy™", image: "/images/gallery/07-blush-stripe.jpg" },
+      { id: "nabeen-classic-excelsor", name: "Excelsor", image: "/images/gallery/06-mint-dobby.jpg" },
+      { id: "nabeen-classic-spencer", name: "Spencer", image: "/images/gallery/10-slate-rib.jpg" },
+      { id: "nabeen-classic-golden-arc", name: "Golden Arc", image: "/images/gallery/05-camel-check-jacquard.jpg" },
+      { id: "nabeen-classic-four-corners", name: "Four Corners", image: "/images/gallery/08-champagne-check.jpg" },
     ],
   },
   {
@@ -40,12 +41,12 @@ export const SIGNATURE_COLLECTIONS: CollectionLine[] = [
     description:
       "The Royale collection represents the finest expression of Nabeen — crafted for those who appreciate distinction, quality and timeless style.",
     products: [
-      { name: "Star Rose", image: "/images/gallery/swatch-star-rose.jpg" },
-      { name: "Mark Polo", image: "/images/gallery/swatch-mark-polo.jpg" },
-      { name: "Cotton House Egyptian Giza", image: "/images/gallery/03-white-jacquard.jpg" },
-      { name: "Silver Rock", image: "/images/gallery/swatch-silver-rock.jpg" },
-      { name: "Sicora, Luxe and Harrier", image: "/images/gallery/09-sky-circle-jacquard.jpg" },
-      { name: "President & Vice President", image: "/images/gallery/swatch-president.jpg" },
+      { id: "nabeen-royale-star-rose", name: "Star Rose", image: "/images/gallery/swatch-star-rose.jpg" },
+      { id: "nabeen-royale-mark-polo", name: "Mark Polo", image: "/images/gallery/swatch-mark-polo.jpg" },
+      { id: "nabeen-royale-cotton-house-giza", name: "Cotton House Egyptian Giza", image: "/images/gallery/03-white-jacquard.jpg" },
+      { id: "nabeen-royale-silver-rock", name: "Silver Rock", image: "/images/gallery/swatch-silver-rock.jpg" },
+      { id: "nabeen-royale-sicora-luxe-harrier", name: "Sicora, Luxe and Harrier", image: "/images/gallery/09-sky-circle-jacquard.jpg" },
+      { id: "nabeen-royale-president-vp", name: "President & Vice President", image: "/images/gallery/swatch-president.jpg" },
     ],
   },
   {
@@ -54,14 +55,14 @@ export const SIGNATURE_COLLECTIONS: CollectionLine[] = [
     description:
       "Sophisticated contemporary weaves, premium wool blends, and international craftsmanship for discerning connoisseurs.",
     products: [
-      { name: "Zare NX", image: "/images/gallery/01-aqua-jacquard.jpg" },
-      { name: "Trident", image: "/images/gallery/04-charcoal-herringbone.jpg" },
-      { name: "Morocco", image: "/images/gallery/05-camel-check-jacquard.jpg" },
-      { name: "Gold Pearl", image: "/images/gallery/08-champagne-check.jpg" },
-      { name: "Lenova ZX", image: "/images/gallery/02-taupe-dobby.jpg" },
-      { name: "Millionaire", image: "/images/gallery/swatch-president.jpg" },
-      { name: "Switzerland Look", image: "/images/gallery/03-white-jacquard.jpg" },
-      { name: "Australian, Turkish Wool", image: "/images/gallery/swatch-silver-rock.jpg" },
+      { id: "nabeen-luxure-zare-nx", name: "Zare NX", image: "/images/gallery/01-aqua-jacquard.jpg" },
+      { id: "nabeen-luxure-trident", name: "Trident", image: "/images/gallery/04-charcoal-herringbone.jpg" },
+      { id: "nabeen-luxure-morocco", name: "Morocco", image: "/images/gallery/05-camel-check-jacquard.jpg" },
+      { id: "nabeen-luxure-gold-pearl", name: "Gold Pearl", image: "/images/gallery/08-champagne-check.jpg" },
+      { id: "nabeen-luxure-lenova-zx", name: "Lenova ZX", image: "/images/gallery/02-taupe-dobby.jpg" },
+      { id: "nabeen-luxure-millionaire", name: "Millionaire", image: "/images/gallery/swatch-president.jpg" },
+      { id: "nabeen-luxure-switzerland-look", name: "Switzerland Look", image: "/images/gallery/03-white-jacquard.jpg" },
+      { id: "nabeen-luxure-australian-wool", name: "Australian, Turkish Wool", image: "/images/gallery/swatch-silver-rock.jpg" },
     ],
   },
   {
@@ -70,26 +71,36 @@ export const SIGNATURE_COLLECTIONS: CollectionLine[] = [
     description:
       "The pinnacle of white luxury fabrics, from immaculate Egyptian Giza cotton to intricate jacquard weaves.",
     products: [
-      { name: "Fantasy", image: "/images/gallery/swatch-white-fantasy.jpg" },
-      { name: "Marconi", image: "/images/gallery/swatch-white-marconi.jpg" },
-      { name: "Silver Rock", image: "/images/gallery/swatch-white-silver-rock.jpg" },
-      { name: "Vice President", image: "/images/brand-imagery/white-fabric-closing.jpg" },
-      { name: "President Plain Giza", image: "/images/gallery/03-white-jacquard.jpg" },
+      { id: "nabeen-white-white-fantasy", name: "Fantasy", image: "/images/gallery/swatch-white-fantasy.jpg" },
+      { id: "nabeen-white-white-marconi", name: "Marconi", image: "/images/gallery/swatch-white-marconi.jpg" },
+      { id: "nabeen-white-white-silver-rock", name: "Silver Rock", image: "/images/gallery/swatch-white-silver-rock.jpg" },
+      { id: "nabeen-white-white-vice-president", name: "Vice President", image: "/images/brand-imagery/white-fabric-closing.jpg" },
+      { id: "nabeen-white-president-plain-giza", name: "President Plain Giza", image: "/images/gallery/03-white-jacquard.jpg" },
     ],
   },
 ];
 
 export function SignatureLines({
   lines,
+  images,
 }: {
   lines?: { name: string; products: string[] }[];
+  images?: Record<string, { src: string; alt?: string }>;
 }) {
   const isDesktop = useMediaQuery("(min-width: 64rem)");
   const [open, setOpen] = useState(1); // Default to 02 Nabeen Royale
   const id = useId();
   const reduceMotion = useReducedMotion();
 
-  const activeCollection = SIGNATURE_COLLECTIONS[open] ?? SIGNATURE_COLLECTIONS[0];
+  const collections = SIGNATURE_COLLECTIONS.map((col) => ({
+    ...col,
+    products: col.products.map((prod) => ({
+      ...prod,
+      image: prod.id && images?.[prod.id]?.src ? images[prod.id].src : prod.image,
+    })),
+  }));
+
+  const activeCollection = collections[open] ?? collections[0];
 
   if (isDesktop) {
     return (
@@ -100,7 +111,7 @@ export function SignatureLines({
           aria-label="Signature Collections"
           className="flex flex-col gap-2.5 border-r border-line/70 pr-8"
         >
-          {SIGNATURE_COLLECTIONS.map((line, index) => {
+          {collections.map((line, index) => {
             const isSelected = index === open;
             return (
               <button
@@ -207,12 +218,13 @@ export function SignatureLines({
     <div className="space-y-4">
       {/* Mobile Horizontal Tabs */}
       <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-        {SIGNATURE_COLLECTIONS.map((line, index) => (
+        {collections.map((line, index) => (
           <button
             key={line.name}
             type="button"
             onClick={() => setOpen(index)}
-            className={`flex shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 text-left text-sm transition-all cursor-pointer font-sans font-normal ${
+            aria-pressed={index === open}
+            className={`flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 text-left text-sm transition-all cursor-pointer font-sans font-normal ${
               index === open
                 ? "bg-navy text-white shadow-sm font-medium"
                 : "bg-white/80 text-slate-700 border border-line hover:bg-white"
@@ -232,13 +244,13 @@ export function SignatureLines({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.2 }}
-          className="rounded-xl border border-line/80 bg-white/90 p-5 shadow-sm backdrop-blur-sm"
+          className="rounded-xl border border-line/80 bg-white/90 p-4 shadow-sm backdrop-blur-sm sm:p-5"
         >
           <div className="border-b border-line pb-3">
             <h3 className="font-sans text-2xl text-navy-deep font-normal mt-0.5">
               {withReg(activeCollection.name)}
             </h3>
-            <p className="mt-1.5 text-xs text-slate-600 font-light leading-relaxed">
+            <p className="mt-1.5 text-sm text-slate-600 font-light leading-relaxed">
               {activeCollection.description}
             </p>
           </div>
@@ -264,14 +276,14 @@ function SwatchCard({ product }: { product: ProductSwatch }) {
           alt={product.name}
           fill
           sizes="(max-width: 640px) 80px, 96px"
-          quality={90}
+          quality={88}
           className="object-cover transition-transform duration-300 group-hover:scale-105 brightness-[0.98] contrast-[1.04]"
         />
       </div>
 
       {/* Swatch Name (Open Sans Normal, no subheadings, no arrow) */}
       <div className="min-w-0 flex-1">
-        <h4 className="truncate font-sans text-base sm:text-lg font-normal text-navy-deep transition-colors group-hover:text-navy">
+        <h4 className="break-words font-sans text-base sm:text-lg font-normal text-navy-deep transition-colors group-hover:text-navy">
           {withReg(product.name)}
         </h4>
       </div>

@@ -16,7 +16,7 @@ export function WelcomeSection() {
   const closing = field(copy, "closing");
 
   return (
-    <section className="relative isolate bg-mist py-16 lg:py-24">
+    <section className="relative isolate bg-mist py-10 sm:py-14 lg:py-24">
       <WeaveArt pattern="lace" tone="mist" scale={1.6} intensity={0.08} />
 
       <Container className="relative">

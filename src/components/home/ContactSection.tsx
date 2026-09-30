@@ -18,9 +18,9 @@ export function ContactSection() {
   return (
     <section id="contact" className="scroll-mt-20 lg:scroll-mt-24 border-t border-line bg-white pt-[var(--spacing-section)] pb-8 sm:pb-12">
       <Container>
-        <div className="grid min-w-0 gap-16 lg:grid-cols-[5fr_7fr] lg:gap-20 items-start">
+        <div className="grid min-w-0 gap-10 lg:grid-cols-[5fr_7fr] lg:gap-20 items-start">
           <div className="flex min-w-0 flex-col gap-5">
-            <div className="min-w-0 rounded-2xl bg-navy text-white on-dark p-6 sm:p-7 shadow-lg">
+            <div className="min-w-0 rounded-2xl bg-navy text-white on-dark p-5 sm:p-7 shadow-lg">
               <h2 className="t-h3 text-white">Talk to us directly</h2>
               <div className="mt-5 sm:mt-6">
                 <ContactChannels onDark={true} />

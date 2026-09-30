@@ -65,11 +65,16 @@ export function Preloader() {
     } catch {
       /* Not supported: the refresh simply keeps its old position. */
     }
-    window.scrollTo(0, 0);
+    const restoreInitialPosition = () => {
+      const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+      if (target) target.scrollIntoView({ behavior: "instant" });
+      else window.scrollTo(0, 0);
+    };
+    restoreInitialPosition();
 
     const leave = () => {
       // Again on load: a browser can restore its position after hydration.
-      window.scrollTo(0, 0);
+      restoreInitialPosition();
       const remaining = Math.max(0, MIN_MS - (Date.now() - mountedAt));
       window.setTimeout(() => setShow(false), remaining);
     };

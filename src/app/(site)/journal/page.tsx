@@ -4,6 +4,7 @@ import { JournalFeatureGrid } from "@/components/journal/JournalFeatureGrid";
 import { PostCard } from "@/components/journal/PostCard";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
+import { ExploreNabeenCTA } from "@/components/ui/ExploreNabeenCTA";
 import { getJournalPosts } from "@/lib/journal";
 import { buildMetadata, pageTitle } from "@/lib/seo";
 
@@ -57,7 +58,7 @@ export default async function JournalPage() {
         pattern="check"
       />
 
-      <section className="page-end bg-white pt-6 sm:pt-8 md:pt-10">
+      <section className="bg-white pt-6 sm:pt-8 md:pt-10">
         <Container>
           {lead ? <JournalFeatureGrid lead={lead} supporting={supporting} /> : null}
 
@@ -72,6 +73,8 @@ export default async function JournalPage() {
           ) : null}
         </Container>
       </section>
+
+      <ExploreNabeenCTA bg="bg-white" />
     </>
   );
 }

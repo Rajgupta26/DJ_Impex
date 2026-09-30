@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 export interface FabricItem {
@@ -96,8 +97,8 @@ function resolveFabricItem(name: string, index: number): FabricItem {
 
 interface FabricHoverShowcaseProps {
   names: string[];
-  collectionLead: string;
-  collectionTail: string;
+  collectionLead?: string;
+  collectionTail?: string;
   /**
    * Slot id to image, from lib/slots, so the photographs paired with each
    * fabric can be replaced from the admin panel. Anything not overridden falls
@@ -112,6 +113,9 @@ export function FabricHoverShowcase({
   collectionTail,
   images,
 }: FabricHoverShowcaseProps) {
+  const showLead = Boolean(
+    collectionLead && collectionLead.trim().toLowerCase() !== "the nabeen collection",
+  );
   const items = names.map((name, idx) => {
     const item = resolveFabricItem(name, idx);
     const replacement = images?.[`fabric-${item.id}`];
@@ -119,6 +123,8 @@ export function FabricHoverShowcase({
   });
   const [activeItem, setActiveItem] = useState<FabricItem>(items[0] || FABRIC_COLLECTION[0]);
   const reduceMotion = useReducedMotion();
+  const compact = useMediaQuery("(max-width: 1023px)");
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const activeIndex = Math.max(
     0,
     items.findIndex((item) => item.id === activeItem.id),
@@ -134,7 +140,7 @@ export function FabricHoverShowcase({
   };
 
   return (
-    <div className="mt-16 lg:mt-20">
+    <div className={showLead ? "mt-16 lg:mt-20" : "mt-8 lg:mt-10"}>
       {/* [&>*]:min-w-0 is load-bearing. A grid item defaults to min-width:auto,
           so it refuses to shrink below its content. The fabric tabs below are a
           horizontal scroller whose content is wider than a phone, so instead of
@@ -142,28 +148,42 @@ export function FabricHoverShowcase({
           with it -- measured on production at 375px, the layout viewport came
           out 717px wide and the page could be dragged sideways. */}
       <div className="grid gap-x-12 lg:grid-cols-[6.5fr_5.5fr] lg:gap-x-14 xl:gap-x-16 [&>*]:min-w-0">
-        {/* Row 1: Collection Lead on Left, empty spacer on Right */}
-        <div className="lg:col-start-1">
-          <p className="text-slate">{collectionLead}</p>
-        </div>
-        <div className="hidden lg:col-start-2 lg:block" aria-hidden="true" />
+        {/* Row 1: Collection Lead on Left (if present), empty spacer on Right */}
+        {showLead ? (
+          <>
+            <div className="lg:col-start-1">
+              <p className="text-slate">{collectionLead}</p>
+            </div>
+            <div className="hidden lg:col-start-2 lg:block" aria-hidden="true" />
+          </>
+        ) : null}
 
-        {/* Row 2, Col 1: The 8 Fabric Words (Suiting to Giza) */}
-        <div className="mt-5 lg:col-start-1 lg:row-start-2">
+        {/* Fabric Names Column */}
+        <div className={`mt-5 lg:col-start-1 ${showLead ? "lg:row-start-2" : "lg:row-start-1 lg:mt-0"}`}>
           <div
             role="tablist"
             aria-label="Nabeen fabric collections"
-            className="border-line flex snap-x snap-mandatory [scrollbar-width:none] gap-2 overflow-x-auto border-y px-1 py-3 lg:block lg:border-y-0 lg:border-b lg:px-0 lg:py-0 [&::-webkit-scrollbar]:hidden"
+            className="fabric-tabs border-line flex snap-x snap-mandatory [scrollbar-width:none] gap-2 overflow-x-auto border-y px-1 py-3 lg:block lg:border-y-0 lg:border-b lg:px-0 lg:py-0 [&::-webkit-scrollbar]:hidden"
           >
             {items.map((item, index) => {
               const isActive = activeItem.id === item.id;
               return (
                 <motion.button
                   key={item.id}
+                  ref={(node) => { tabRefs.current[index] = node; }}
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  tabIndex={0}
+                  tabIndex={isActive ? 0 : -1}
+                  onKeyDown={(event) => {
+                    const next = event.key === "Home" ? 0 : event.key === "End" ? items.length - 1
+                      : ["ArrowRight", "ArrowDown"].includes(event.key) ? (index + 1) % items.length
+                      : ["ArrowLeft", "ArrowUp"].includes(event.key) ? (index - 1 + items.length) % items.length : -1;
+                    if (next < 0) return;
+                    event.preventDefault();
+                    handleSelect(items[next]);
+                    tabRefs.current[next]?.focus();
+                  }}
                   initial={reduceMotion ? false : { opacity: 0, x: -42 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
@@ -210,13 +230,13 @@ export function FabricHoverShowcase({
                   </span>
 
                   <span
-                    className={`lg:t-h3 inline-block min-w-0 text-sm font-medium tracking-tight transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-focus:-translate-x-1 lg:text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] lg:font-light ${
+                    className={`lg:t-h3 inline-block min-w-0 text-sm font-medium tracking-tight transition-[color,transform] duration-200 ease-out lg:group-hover:-translate-x-1 lg:group-focus:-translate-x-1 lg:text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] lg:font-light ${
                       isActive
-                        ? "bg-clip-text text-transparent [text-shadow:0_1px_1px_rgb(13_23_51_/_0.2)]"
+                        ? "text-navy lg:bg-clip-text lg:text-transparent lg:[text-shadow:0_1px_1px_rgb(13_23_51_/_0.2)]"
                         : "text-inherit"
                     }`}
                     style={
-                      isActive
+                      isActive && !compact
                         ? {
                             backgroundImage: `linear-gradient(rgb(13 23 51 / 0.18), rgb(13 23 51 / 0.18)), url(${item.image})`,
                             backgroundPosition: "center",
@@ -246,9 +266,9 @@ export function FabricHoverShowcase({
           </div>
         </div>
 
-        {/* Row 2, Col 2: One hero cutting overlaps five subtle fabric layers. */}
-        <div className="mt-8 flex flex-col lg:col-start-2 lg:row-start-2 lg:mt-5">
-          <div className="border-line/60 bg-mist relative flex aspect-[4/3] w-full flex-col overflow-hidden rounded-2xl border sm:aspect-[16/11] lg:aspect-auto lg:h-[clamp(32rem,47vw,40rem)] lg:min-h-0">
+        {/* Right Column: Hero cutting & fabric layers */}
+        <div className={`mt-8 flex flex-col lg:col-start-2 ${showLead ? "lg:row-start-2 lg:mt-5" : "lg:row-start-1 lg:mt-0"}`}>
+          <div className="border-line/60 bg-mist relative flex min-h-72 aspect-[4/3] w-full flex-col overflow-hidden rounded-2xl border sm:aspect-[16/11] lg:aspect-auto lg:h-[clamp(32rem,47vw,40rem)] lg:min-h-0">
             <div className="bg-mist relative min-h-0 w-full flex-1 overflow-hidden">
               {/* A full cloth base fills the rounded overlap gaps behind every layer. */}
               <AnimatePresence initial={false}>
@@ -319,8 +339,9 @@ export function FabricHoverShowcase({
                   />
 
                   {/* Caption & Weave information */}
-                  <div className="absolute inset-x-0 bottom-0 p-6 text-white [text-shadow:0_1px_8px_rgb(13_23_51_/_0.8)] sm:p-7">
-                    <div className="text-accent flex items-center justify-between font-sans text-xs tracking-wider uppercase">
+                  <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/20 to-transparent lg:hidden" />
+                  <div className="absolute inset-x-0 bottom-0 p-4 text-white [text-shadow:0_1px_8px_rgb(13_23_51_/_0.8)] sm:p-7">
+                    <div className="text-accent flex flex-col items-start gap-1 font-sans text-xs tracking-wider uppercase sm:flex-row sm:items-center sm:justify-between">
                       <span className="text-white">{activeItem.weave}</span>
                       <span className="text-white/60">NABEEN® COLLECTION</span>
                     </div>
@@ -335,8 +356,8 @@ export function FabricHoverShowcase({
           </div>
         </div>
 
-        {/* Row 3: Collection Tail beneath the fabric list */}
-        <div className="mt-6 pt-2 lg:col-start-1 lg:row-start-3">
+        {/* Collection Tail beneath the fabric list */}
+        <div className={`mt-6 pt-2 lg:col-start-1 ${showLead ? "lg:row-start-3" : "lg:row-start-2"}`}>
           <p className="text-slate">{collectionTail}</p>
         </div>
       </div>

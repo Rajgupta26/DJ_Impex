@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { useOverlay } from "@/components/layout/OverlayContext";
+import { useAnyOverlayOpen, useOverlay } from "@/components/layout/OverlayContext";
 import { withReg } from "@/components/ui/Reg";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 import { track } from "@/lib/analytics";
@@ -33,6 +33,8 @@ export function ContactPopup({
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+  const otherOverlayOpen = useAnyOverlayOpen("welcome-popup");
+  const hasOpened = useRef(false);
 
   useOverlay("welcome-popup", open);
 
@@ -45,14 +47,15 @@ export function ContactPopup({
   );
 
   useEffect(() => {
-    // Reliably open within 5 seconds after page load/refresh
+    if (otherOverlayOpen || hasOpened.current) return;
     const timer = window.setTimeout(() => {
+      hasOpened.current = true;
       setOpen(true);
       track("popup_open", { path: window.location.pathname });
     }, (delaySeconds ?? 5) * 1000);
 
     return () => window.clearTimeout(timer);
-  }, [delaySeconds]);
+  }, [delaySeconds, otherOverlayOpen]);
 
   useFocusTrap(panelRef, open, () => close("dismiss"));
 
@@ -81,12 +84,12 @@ export function ContactPopup({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.98 }}
             transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.61, 0.36, 1] }}
-            className="relative w-full max-w-[34rem] rounded-xl bg-white px-6 py-8 text-center shadow-[var(--shadow-float)] sm:px-10 sm:py-10"
+            className="relative max-h-[calc(100dvh-2rem)] w-full max-w-[34rem] overflow-y-auto overscroll-contain rounded-xl bg-white px-5 py-6 text-center shadow-[var(--shadow-float)] sm:px-10 sm:py-10"
           >
             <button
               type="button"
               onClick={() => close("dismiss")}
-              className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center text-slate transition-colors hover:text-navy"
+              className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center text-slate transition-colors hover:text-navy"
             >
               <span className="visually-hidden">Close</span>
               <X aria-hidden="true" size={24} strokeWidth={1.5} />

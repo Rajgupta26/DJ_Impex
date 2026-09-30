@@ -40,22 +40,24 @@ export function WelcomeAnimated({
           transition={{ duration: 0.8, delay: 0.2, ease }}
           className="t-h2 mt-4 font-sans font-normal tracking-tight text-navy"
         >
-          Welcome to D J Impex &amp; Co.
+          <span className="block">Welcome to</span>
+          <span className="block sm:whitespace-nowrap">D J Impex &amp; Co.</span>
         </motion.h2>
 
-        {closing ? (
-          <motion.div
-            initial={{ opacity: 0, y: reduceMotion ? 0 : 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2, margin: "-40px 0px" }}
-            transition={{ duration: 0.7, delay: 0.35, ease }}
-            className="mt-8 pt-6 border-t border-accent/30 max-w-sm"
-          >
-            <p className="font-sans font-semibold text-navy text-sm sm:text-base tracking-wide">
-              {closing}
-            </p>
-          </motion.div>
-        ) : null}
+        <motion.div
+          initial={{ opacity: 0, y: reduceMotion ? 0 : 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2, margin: "-40px 0px" }}
+          transition={{ duration: 0.7, delay: 0.35, ease }}
+          className="mt-8 flex flex-col items-start gap-1 border-t border-accent/30 pt-6 max-w-sm"
+        >
+          <span className="inline-block border-b border-navy pb-0.5 font-sans text-xs font-semibold tracking-[0.16em] text-slate uppercase sm:text-sm">
+            Crafted In India
+          </span>
+          <span className="inline-block border-b border-navy pb-0.5 font-sans text-xs font-semibold tracking-[0.16em] text-slate uppercase sm:text-sm">
+            Chosen Across Africa
+          </span>
+        </motion.div>
       </div>
 
       {/* Right Column: Paragraphs gliding up smoothly line-by-line */}

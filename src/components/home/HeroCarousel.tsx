@@ -83,9 +83,9 @@ export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]
       data-hero
       aria-roledescription="carousel"
       aria-label="Nabeen fabrics"
-      className="on-dark bg-navy-deep relative h-[82svh] min-h-[32rem] w-full max-w-full min-w-0 overflow-hidden text-white sm:h-[100dvh] sm:min-h-[36rem]"
+      className="site-hero on-dark bg-navy-deep relative h-[82svh] min-h-[32rem] w-full max-w-full min-w-0 overflow-hidden text-white sm:h-[100dvh] sm:min-h-[36rem]"
     >
-      <div ref={emblaRef} className="h-full w-full max-w-full min-w-0 overflow-hidden">
+      <div ref={emblaRef} className="site-hero__media h-full w-full max-w-full min-w-0 overflow-hidden">
         <div className="flex h-full w-full min-w-0">
           {slides.map((slide, index) => (
             <div
@@ -151,10 +151,10 @@ export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]
         className="absolute inset-0 bg-[radial-gradient(130%_118%_at_0%_100%,rgb(0_0_0/0.86)_0%,rgb(0_0_0/0.6)_34%,rgb(0_0_0/0.28)_56%,transparent_78%)]"
       />
 
-      <div className="container-site absolute inset-x-0 bottom-[clamp(3.5rem,10vh,6.5rem)]">
+      <div className="site-hero__content container-site absolute inset-x-0 bottom-[clamp(3.5rem,10vh,6.5rem)]">
         <HeroWords slide={active} slideKey={selected} reduceMotion={Boolean(reduceMotion)} rise={!advanced} />
 
-        <div className="mt-9 flex flex-wrap items-center gap-4">
+        <div className="site-hero__actions mt-9 flex flex-wrap items-center gap-4">
           <Link href="/nabeen" className="btn btn-ghost">
             <span>Discover Nabeen</span>
           </Link>
@@ -333,10 +333,10 @@ function HeroWords({
             <span key={`${word}-${index}`} className="inline-block overflow-hidden align-bottom">
               <motion.span
                 className="inline-block"
-                initial={animate ? { y: "108%" } : { opacity: 0 }}
-                animate={animate ? { y: 0 } : { opacity: 1 }}
+                initial={risesOnMount ? { y: "108%" } : { opacity: 0 }}
+                animate={risesOnMount ? { y: 0, opacity: 1 } : { opacity: 1 }}
                 transition={{
-                  duration: animate ? 0.9 : 0.35,
+                  duration: reduceMotion ? 0.01 : animate ? 0.9 : 0.35,
                   delay: animate ? index * 0.07 : 0,
                   ease: [0.22, 0.61, 0.36, 1],
                 }}

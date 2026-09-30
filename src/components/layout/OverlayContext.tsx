@@ -62,8 +62,8 @@ export function useOverlay(id: string, isOpen: boolean) {
   }, [id, isOpen, setOpen]);
 }
 
-export function useAnyOverlayOpen(): boolean {
-  return useOverlayContext().open.length > 0;
+export function useAnyOverlayOpen(exceptId?: string): boolean {
+  return useOverlayContext().open.some((id) => id !== exceptId);
 }
 
 export function useWhatsAppPopup() {

@@ -320,7 +320,7 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
                 <p className="mt-1 line-clamp-1 text-xs text-slate-500 dark:text-slate-400">
                   {blog.excerpt || "No excerpt"}
                 </p>
-                <p className="mt-1 font-mono text-[11px] text-slate-400 dark:text-slate-500">
+                <p className="mt-1 break-all font-mono text-[11px] text-slate-400 dark:text-slate-500">
                   /{blog.slug} · {formatDate(blog.publishedDate)}
                 </p>
               </div>
@@ -422,7 +422,7 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
             <p className={labelClass}>Cover image</p>
 
             {draft.coverImage ? (
-              <div className="flex items-start gap-3">
+              <div className="flex flex-col items-start gap-3 sm:flex-row">
                 <div className="relative h-20 w-32 shrink-0 overflow-hidden rounded border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
                   <Image src={draft.coverImage} alt="" fill sizes="128px" className="object-cover" />
                 </div>
@@ -430,7 +430,7 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
                   <p className="font-mono text-[11px] break-all text-slate-400 dark:text-slate-500">
                     {draft.coverImage}
                   </p>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <button
                       type="button"
                       className={buttonQuiet}
@@ -515,7 +515,7 @@ export function BlogManager({ initial }: { initial: AdminBlog[] }) {
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="flex flex-wrap items-center justify-end gap-3 pt-2">
             {!validation.valid && (attempted || touched.size > 0) ? (
               <p className="mr-auto text-xs text-slate-500 dark:text-slate-400">
                 Fix the highlighted fields to save.
