@@ -15,40 +15,6 @@ export interface FabricItem {
 
 export const FABRIC_COLLECTION: FabricItem[] = [
   {
-    id: "suiting",
-    name: "Suiting",
-    image: "/images/gallery/04-charcoal-herringbone.jpg",
-    alt: "Nabeen Suiting fabric in charcoal herringbone broken twill weave",
-    weave: "Wool-Touch Broken Twill",
-    description: "Substantial drape and structured weave tailored for ceremonial and formal suiting.",
-  },
-  {
-    id: "cotton-shirting",
-    name: "Cotton Shirting",
-    image: "/images/gallery/07-blush-stripe.jpg",
-    alt: "Nabeen Cotton Shirting fabric in blush stripe crisp weave",
-    weave: "Long-Staple Crisp Weave",
-    description:
-      "High-grade spun cotton engineered for breathability, softness, and crisp garment silhouettes.",
-  },
-  {
-    id: "swiss-voile",
-    name: "Swiss Voile",
-    image: "/images/gallery/03-white-jacquard.jpg",
-    alt: "Nabeen Swiss Voile fabric in fine white jacquard weave",
-    weave: "High-Twist Fine Jacquard",
-    description: "Ultra-fine yarn counts producing a featherweight, silky hand feel with graceful drape.",
-  },
-  {
-    id: "lace",
-    name: "Lace",
-    image: "/images/gallery/01-aqua-jacquard.jpg",
-    alt: "Nabeen Lace textured jacquard cloth",
-    weave: "Textured Openwork Jacquard",
-    description:
-      "Intricate geometric and floral openwork motifs designed for regal and celebratory occasions.",
-  },
-  {
     id: "atiku",
     name: "Atiku",
     image: "/images/gallery/02-taupe-dobby.jpg",
@@ -58,31 +24,56 @@ export const FABRIC_COLLECTION: FabricItem[] = [
       "Signature textured cotton renowned in West African couture for its crisp finish and rich body.",
   },
   {
-    id: "voile",
-    name: "Voile",
-    image: "/images/gallery/06-mint-dobby.jpg",
-    alt: "Nabeen Voile lightweight cloth",
-    weave: "Airy Sheer Plain Weave",
-    description:
-      "Lightweight, sheer fabric engineered for warm climates, offering continuous cooling comfort.",
+    id: "suiting",
+    name: "Suiting",
+    image: "/images/gallery/04-charcoal-herringbone.jpg",
+    alt: "Nabeen Suiting fabric in charcoal herringbone broken twill weave",
+    weave: "Wool-Touch Broken Twill",
+    description: "Substantial drape and structured weave tailored for ceremonial and formal suiting.",
   },
   {
-    id: "brocade",
-    name: "Brocade",
+    id: "jacquard",
+    name: "Jacquard",
+    image: "/images/gallery/01-aqua-jacquard.jpg",
+    alt: "Nabeen Jacquard rich woven pattern cloth",
+    weave: "Embossed Jacquard Weave",
+    description:
+      "Intricate woven motifs with subtle luster and substantial hand, perfect for statement traditional wear.",
+  },
+  {
+    id: "swiss-voile",
+    name: "Swiss Voile",
+    image: "/images/gallery/03-white-jacquard.jpg",
+    alt: "Nabeen Swiss Voile fabric in fine white jacquard weave",
+    weave: "High-Twist Fine Voile",
+    description: "Ultra-fine yarn counts producing a featherweight, silky hand feel with graceful drape.",
+  },
+  {
+    id: "african-wax-prints",
+    name: "African Wax Prints",
     image: "/images/gallery/05-camel-check-jacquard.jpg",
-    alt: "Nabeen Brocade rich check jacquard fabric",
-    weave: "Embossed Jacquard Twill",
+    alt: "Nabeen African Wax Prints premium cotton textile",
+    weave: "Vibrant Wax-Resist Cotton",
     description:
-      "Opulent woven pattern with subtle luster and substantial hand, perfect for statement traditional wear.",
+      "Richly patterned, color-fast premium cotton textiles celebrated across African celebrations and everyday luxury.",
   },
   {
-    id: "giza",
-    name: "Giza",
-    image: "/images/gallery/08-champagne-check.jpg",
-    alt: "Nabeen Giza Egyptian cotton fabric",
+    id: "giza-cotton-shirting",
+    name: "Giza Cotton Shirting",
+    image: "/images/gallery/07-blush-stripe.jpg",
+    alt: "Nabeen Giza Cotton Shirting fabric",
     weave: "Extra-Long Staple Cotton",
     description:
-      "Spun from prestigious Giza Egyptian cotton fibers for peerless luster, strength, and softness.",
+      "Spun from prestigious Giza Egyptian cotton fibers for peerless luster, strength, and crisp garment silhouettes.",
+  },
+  {
+    id: "zurique-swiss-men-lace",
+    name: "Zürique Swiss Men Lace",
+    image: "/images/gallery/09-sky-circle-jacquard.jpg",
+    alt: "Nabeen Zürique Swiss Men Lace fabric",
+    weave: "Swiss-Inspired Viscose & Cotton",
+    description:
+      "Refined openwork lace tailored specifically for West African menswear, agbada tailoring, and prestigious occasions.",
   },
 ];
 
