@@ -83,7 +83,7 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
   }
 
   return (
-    <div className="admin-panel min-h-dvh bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className="admin-panel min-h-dvh bg-[#f8fafc] text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <div className="lg:flex">
         {/* Sidebar */}
         <aside
