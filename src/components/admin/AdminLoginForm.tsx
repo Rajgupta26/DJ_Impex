@@ -7,7 +7,7 @@ import { Eye, EyeOff, Lock } from "lucide-react";
 
 import { loginAdminAction, type AuthState } from "@/app/actions/admin-auth";
 import { ChangePasswordModal } from "@/components/admin/ChangePasswordModal";
-import { DJIAnimatedLogo } from "@/components/home/DJIAnimatedLogo";
+import { buttonPrimary, card, inputClass, labelClass } from "@/components/admin/ui";
 
 export function AdminLoginForm() {
   const [state, formAction, isPending] = useActionState<AuthState, FormData>(
@@ -18,66 +18,58 @@ export function AdminLoginForm() {
   const [showForgotModal, setShowForgotModal] = useState(false);
 
   return (
-    <div className="relative min-h-dvh w-full overflow-hidden bg-white text-slate-900 selection:bg-teal-500 selection:text-white flex flex-col justify-between">
-      {/* Luxury White Draped Fabric Background */}
-      <div className="pointer-events-none absolute inset-0 z-0">
-        <Image
-          src="/images/brand-imagery/white-fabric-drape.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          quality={92}
-          className="object-cover object-center opacity-80"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-white/60 backdrop-blur-[0.5px]"
-        />
-      </div>
-
-      {/* Top Left Header Branding (Matching Mockup) */}
-      <header className="relative z-10 p-6 sm:p-8 lg:p-10">
-        <Link href="/" className="inline-flex items-center gap-3.5 group">
-          <div className="flex h-12 w-12 items-center justify-center shrink-0">
+    <div className="relative min-h-dvh w-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col justify-between">
+      {/* Top Header Branding */}
+      <header className="p-6 sm:p-8">
+        <Link href="/" className="inline-flex items-center gap-3 group">
+          <div className="flex h-10 w-10 items-center justify-center shrink-0">
             <Image
               src="/images/logos/dji-logo-transparent.png"
               alt="DJ Impex"
-              width={64}
-              height={64}
-              className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+              width={48}
+              height={48}
+              className="h-9 w-auto object-contain transition-transform group-hover:scale-105"
             />
           </div>
           <div>
-            <span className="block font-sans text-2xl font-bold tracking-tight text-navy sm:text-3xl">
+            <span className="block font-sans text-xl font-bold tracking-tight text-navy dark:text-white">
               DJ Impex
             </span>
-            <span className="block text-xs font-medium text-slate tracking-wide">
-              Premium Nabeen Fabric · Textile & Exports
+            <span className="block text-xs font-medium text-slate-500 dark:text-slate-400 tracking-wide">
+              Nabeen® Admin Portal
             </span>
           </div>
         </Link>
       </header>
 
       {/* Centered Login Card */}
-      <main className="relative z-10 flex items-center justify-center px-4 py-8 sm:px-6">
-        <div className="w-full max-w-[440px] rounded-3xl border border-line/80 bg-white/95 p-7 sm:p-10 shadow-[0_20px_50px_rgba(13,23,51,0.08)] backdrop-blur-md">
-          {/* Card Header */}
+      <main className="flex items-center justify-center px-4 py-6 sm:px-6">
+        <div className={`${card} w-full max-w-[420px] p-7 sm:p-9 shadow-md`}>
+          {/* Card Header with Centered Logo */}
           <div className="text-center">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              Welcome Back
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 shadow-xs">
+              <Image
+                src="/images/logos/dji-logo-transparent.png"
+                alt="DJ Impex"
+                width={40}
+                height={40}
+                className="h-8 w-auto object-contain"
+              />
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+              Welcome back
             </h1>
-            <p className="mt-2 text-sm text-slate-500">
-              Sign in to your DJ Impex account to continue
+            <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+              Sign in to manage images, fabrics and site content
             </p>
           </div>
 
           {/* Form */}
-          <form action={formAction} className="mt-8 space-y-5">
+          <form action={formAction} className="mt-6 space-y-4">
             {state?.error ? (
               <div
                 role="alert"
-                className="rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300"
+                className="rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300"
               >
                 {state.error}
               </div>
@@ -85,10 +77,7 @@ export function AdminLoginForm() {
 
             {/* Email Address */}
             <div className="space-y-1.5">
-              <label
-                htmlFor="admin-email"
-                className="block text-xs font-semibold text-slate-700"
-              >
+              <label htmlFor="admin-email" className={labelClass}>
                 Email Address
               </label>
               <input
@@ -96,17 +85,14 @@ export function AdminLoginForm() {
                 type="email"
                 name="email"
                 defaultValue="admin@djimpex.in"
-                placeholder="you@company.com"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#52968e] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#52968e]/20 transition"
+                placeholder="admin@djimpex.in"
+                className={inputClass}
               />
             </div>
 
             {/* Password */}
             <div className="space-y-1.5">
-              <label
-                htmlFor="admin-password"
-                className="block text-xs font-semibold text-slate-700"
-              >
+              <label htmlFor="admin-password" className={labelClass}>
                 Password
               </label>
               <div className="relative">
@@ -116,31 +102,31 @@ export function AdminLoginForm() {
                   name="password"
                   required
                   placeholder="••••••••••••"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 pr-11 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#52968e] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#52968e]/20 transition"
+                  className={`${inputClass} pr-10`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
-                    <EyeOff size={18} aria-hidden="true" />
+                    <EyeOff size={16} aria-hidden="true" />
                   ) : (
-                    <Eye size={18} aria-hidden="true" />
+                    <Eye size={16} aria-hidden="true" />
                   )}
                 </button>
               </div>
             </div>
 
             {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between text-xs">
-              <label className="flex items-center gap-2 cursor-pointer select-none text-slate-600">
+            <div className="flex items-center justify-between text-xs pt-1">
+              <label className="flex items-center gap-2 cursor-pointer select-none text-slate-600 dark:text-slate-400">
                 <input
                   type="checkbox"
                   name="remember"
                   defaultChecked
-                  className="size-4 rounded border-slate-300 text-[#52968e] focus:ring-[#52968e]/30"
+                  className="size-4 rounded border-slate-300 text-navy focus:ring-navy/20 dark:border-slate-700 dark:bg-slate-950"
                 />
                 <span>Remember me</span>
               </label>
@@ -148,7 +134,7 @@ export function AdminLoginForm() {
               <button
                 type="button"
                 onClick={() => setShowForgotModal(true)}
-                className="font-medium text-[#52968e] hover:underline cursor-pointer"
+                className="font-medium text-navy hover:underline dark:text-slate-300 cursor-pointer"
               >
                 Forgot password?
               </button>
@@ -158,11 +144,11 @@ export function AdminLoginForm() {
             <button
               type="submit"
               disabled={isPending}
-              className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#52968e] py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#437d76] hover:shadow-lg active:scale-[0.99] disabled:opacity-70 cursor-pointer"
+              className={`${buttonPrimary} w-full py-2.5 mt-2 text-sm cursor-pointer`}
             >
               {isPending ? (
                 <>
-                  <span className="inline-block size-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  <span className="inline-block size-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-slate-900" />
                   <span>Signing in…</span>
                 </>
               ) : (
@@ -171,35 +157,27 @@ export function AdminLoginForm() {
             </button>
           </form>
 
-          {/* Additional Info */}
-          <div className="mt-6 border-t border-slate-100 pt-5 text-center text-xs text-slate-500">
-            <p className="flex items-center justify-center gap-1.5 text-slate-400">
-              <Lock size={13} aria-hidden="true" className="text-slate-400" />
-              <span>Secure login · Protected by encrypted session</span>
+          {/* Security Notice */}
+          <div className="mt-6 border-t border-slate-100 pt-4 text-center text-xs text-slate-400 dark:border-slate-800 dark:text-slate-500">
+            <p className="flex items-center justify-center gap-1.5">
+              <Lock size={12} aria-hidden="true" />
+              <span>Protected administrator session</span>
             </p>
           </div>
         </div>
       </main>
 
       {/* Page Footer */}
-      <footer className="relative z-10 p-6 text-center text-xs text-slate-500 sm:p-8">
+      <footer className="p-6 text-center text-xs text-slate-400 dark:text-slate-500">
         <p>
-          © {new Date().getFullYear()} DJ Impex &amp; Co. All rights reserved. ·{" "}
-          <Link href="/" className="hover:text-slate-800 transition">
-            Privacy Policy
-          </Link>{" "}
-          ·{" "}
-          <Link href="/" className="hover:text-slate-800 transition">
-            Terms of Service
-          </Link>{" "}
-          ·{" "}
-          <Link href="/#contact" className="hover:text-slate-800 transition">
-            Support
+          © {new Date().getFullYear()} DJ Impex &amp; Co. ·{" "}
+          <Link href="/" className="hover:text-slate-600 dark:hover:text-slate-300 transition">
+            Back to Website
           </Link>
         </p>
       </footer>
 
-      {/* Interactive Reset / Change Password Modal */}
+      {/* Password Reset Modal */}
       <ChangePasswordModal
         isOpen={showForgotModal}
         onClose={() => setShowForgotModal(false)}
