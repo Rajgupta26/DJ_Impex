@@ -88,7 +88,7 @@ export function VisionPillars({
   };
 
   return (
-    <section className="page-end bg-white pt-4 lg:pt-6">
+    <section className="page-end bg-transparent pt-4 lg:pt-6">
       <Container>
         <h2 className="t-h2 max-w-[18ch] font-sans font-normal tracking-tight text-navy">{withReg(heading)}</h2>
         {intro ? (

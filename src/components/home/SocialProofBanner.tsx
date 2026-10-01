@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -221,9 +222,25 @@ export function SocialProofBanner({ designs, google }: { designs: string; google
   return (
     <section
       ref={containerRef}
-      className="border-line/60 overflow-hidden border-b bg-white pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-8 lg:pb-20"
+      className="relative border-line/60 overflow-hidden border-b bg-white pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-8 lg:pb-20"
     >
-      <Container className="min-w-0">
+      {/* Luxury white fabric drape background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <Image
+          src="/images/brand-imagery/white-fabric-drape.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          quality={90}
+          className="object-cover object-center opacity-70"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-white/70 backdrop-blur-[0.5px]"
+        />
+      </div>
+
+      <Container className="relative z-10 min-w-0">
         {/* Strictly symmetric 3-column grid (1fr / auto / 1fr) with left and right blocks pushed to outer corners */}
         <div
           className={`grid min-w-0 grid-cols-1 items-center gap-8 md:gap-8 lg:gap-12 ${google ? "md:grid-cols-[1fr_auto_1fr]" : "md:justify-items-center"}`}

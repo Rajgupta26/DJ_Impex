@@ -28,17 +28,16 @@ export function typeset(text: string): string {
 }
 
 /**
- * Render a content string: typeset it, and wrap every ® correctly.
- * Content files write "Nabeen®" as plain text; this turns it into markup.
+ * Render a content string: typeset it, wrap every ® correctly, and ensure
+ * the company name "DJ Impex & Co." is kept on one line (non-breaking).
  */
 export function withReg(text: string): ReactNode {
   const typed = typeset(text);
-  if (!typed.includes("®")) return typed;
+  const pattern = /(Nabeen®|DJ\s*Impex\s*&\s*Co\.|D\s*J\s*Impex\s*&\s*Co\.|DJ\s*Impex|D\s*J\s*Impex)/;
 
-  return typed.split(/(Nabeen®)/).map((part, partIndex) => {
-    // Google Translate rewrites text nodes. Keeping the protected brand and its
-    // registered mark in one non-translatable element prevents it from splitting
-    // the two nodes and leaving the mark visually detached in translated copy.
+  if (!pattern.test(typed) && !typed.includes("®")) return typed;
+
+  return typed.split(pattern).map((part, partIndex) => {
     if (part === "Nabeen®") {
       return (
         <span key={partIndex} className="notranslate" translate="no">
@@ -46,13 +45,31 @@ export function withReg(text: string): ReactNode {
         </span>
       );
     }
+    if (/^(DJ\s*Impex\s*&\s*Co\.|D\s*J\s*Impex\s*&\s*Co\.)$/i.test(part)) {
+      return (
+        <span key={partIndex} className="whitespace-nowrap notranslate" translate="no">
+          DJ Impex &amp; Co.
+        </span>
+      );
+    }
+    if (/^(DJ\s*Impex|D\s*J\s*Impex)$/i.test(part)) {
+      return (
+        <span key={partIndex} className="whitespace-nowrap notranslate" translate="no">
+          DJ Impex
+        </span>
+      );
+    }
 
-    const pieces = part.split("®");
-    return pieces.map((piece, pieceIndex) => (
-      <Fragment key={`${partIndex}-${pieceIndex}`}>
-        {piece}
-        {pieceIndex < pieces.length - 1 ? <Reg /> : null}
-      </Fragment>
-    ));
+    if (part.includes("®")) {
+      const pieces = part.split("®");
+      return pieces.map((piece, pieceIndex) => (
+        <Fragment key={`${partIndex}-${pieceIndex}`}>
+          {piece}
+          {pieceIndex < pieces.length - 1 ? <Reg /> : null}
+        </Fragment>
+      ));
+    }
+
+    return part;
   });
 }

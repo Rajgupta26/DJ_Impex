@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, type ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
@@ -106,16 +107,21 @@ export function BriefAnimated({
         </div>
 
         <motion.div
-          className="mt-8 flex flex-col items-start gap-1"
+          className="mt-8"
           variants={leftVariants}
           custom={paragraphs.length + 1}
         >
-          <span className="inline-block border-b border-navy pb-0.5 font-sans text-xs font-semibold tracking-[0.16em] text-slate uppercase sm:text-sm">
+          <Link
+            href="/about"
+            className="group inline-flex flex-col items-start gap-1 transition-opacity hover:opacity-80"
+          >
+            <span className="inline-block border-b border-navy pb-0.5 font-sans text-xs font-semibold tracking-[0.16em] text-slate uppercase transition-colors group-hover:text-navy sm:text-sm">
             Crafted In India
-          </span>
-          <span className="inline-block border-b border-navy pb-0.5 font-sans text-xs font-semibold tracking-[0.16em] text-slate uppercase sm:text-sm">
+            </span>
+            <span className="inline-block border-b border-navy pb-0.5 font-sans text-xs font-semibold tracking-[0.16em] text-slate uppercase transition-colors group-hover:text-navy sm:text-sm">
             Chosen Across Africa
-          </span>
+            </span>
+          </Link>
         </motion.div>
 
         {trustMarksSlot ? (
@@ -141,12 +147,12 @@ export function BriefAnimated({
           style={reduceMotion ? {} : { scale: logoScale, y: logoY, opacity: logoOpacity }}
           className="relative flex items-center justify-center origin-center"
         >
-          <DJIAnimatedLogo size={192} />
+          <DJIAnimatedLogo size={210} />
         </motion.div>
 
-        <div className="mt-5 w-full text-center">
+        <div className="mt-3 w-full text-center">
           <p className="text-xs font-bold tracking-[0.2em] text-navy uppercase sm:text-sm">
-            D J Impex & Co.
+            DJ Impex & Co.
           </p>
           <p className="mt-1 text-xs font-medium text-slate">
             Star Export House · Est. 1995

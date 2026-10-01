@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { getPage, getSite } from "@/lib/content";
 import { field, section } from "@/lib/markdown";
@@ -17,8 +18,23 @@ export async function BriefSection() {
     /* The hero above is full height and ends on a hard edge, so this does not
        need a full --spacing-section on top of it: at 1130 that was 127px of
        white before the heading. 64/80px instead. */
-    <section className="overflow-hidden bg-white pt-10 sm:pt-14 lg:pt-20">
-      <Container>
+    <section className="relative overflow-hidden bg-white pt-10 sm:pt-14 lg:pt-20">
+      {/* Luxury white fabric drape background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <Image
+          src="/images/brand-imagery/white-fabric-drape.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          quality={90}
+          className="object-cover object-top opacity-70"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-white/70 backdrop-blur-[0.5px]"
+        />
+      </div>
+      <Container className="relative z-10">
         <BriefAnimated
           title={heading}
           tagline={tagline}
@@ -30,7 +46,7 @@ export async function BriefSection() {
       </Container>
 
       {/* Full screen width 4-box stat section */}
-      <div className="mt-12 w-full lg:mt-16">
+      <div className="relative z-10 mt-12 w-full lg:mt-16">
         <StatBoxes />
       </div>
     </section>

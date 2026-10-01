@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Award, Handshake, TrendingUp } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
@@ -46,8 +47,24 @@ export function NabeenIntro({
   const valuesOpacity = useTransform(scrollYProgress, [0.2, 0.75], reduceMotion ? [1, 1] : [0, 1]);
 
   return (
-    <section ref={containerRef} className="overflow-hidden bg-white py-14 sm:py-18 md:py-24">
-      <Container>
+    <section ref={containerRef} className="relative overflow-hidden bg-white py-14 sm:py-18 md:py-24">
+      {/* Luxury white fabric drape background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <Image
+          src="/images/brand-imagery/white-fabric-drape.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          quality={90}
+          className="object-cover object-top opacity-70"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-white/70 backdrop-blur-[0.5px]"
+        />
+      </div>
+
+      <Container className="relative z-10">
         <div className="grid min-w-0 gap-10 lg:grid-cols-[1.3fr_0.9fr] lg:gap-20 xl:gap-28">
           <div>
             <p className="text-xs font-semibold tracking-[0.22em] text-slate uppercase">About Nabeen</p>

@@ -1,13 +1,13 @@
 ---
-page: About D J Impex & Co. (DJI)
+page: About DJ Impex & Co. (DJI)
 route: /about
 source: About_D_J_Impex_and_Co.pdf, brochure p.4 and p.6
 status: confirmed client copy
 ---
 
-# About D J Impex & Co. (DJI)
+# About DJ Impex & Co. (DJI)
 
-**Page title / H1:** About D J Impex & Co.
+**Page title / H1:** About DJ Impex & Co.
 **Strapline (client):** Empowering the textile industry with high-quality fabrics.
 
 ## Welcome
@@ -24,17 +24,17 @@ The fabric list is rendered exactly as supplied, including "Swiss Voile, Lace" a
 second "Voile". Confirm the range before launch.
 
 **Eyebrow:** About us
-**Heading:** Welcome to D J Impex & Co.
-**Lead:** Discover the epitome of luxury and comfort with Nabeen® by D J Impex & Co., a brand synonymous with a Middle Eastern flair for luxury fabrics.
+**Heading:** Welcome to DJ Impex & Co.
+**Lead:** Discover the epitome of luxury and comfort with Nabeen® by DJ Impex & Co., a brand synonymous with a Middle Eastern flair for luxury fabrics.
 **Collection lead:** The Nabeen Collection
 **Collection names:** Atiku, Suiting, Jacquard, Swiss Voile, African Wax Prints, Giza Cotton Shirting, Zürique Swiss Men Lace
 **Collection tail:** Fabrics embodies the highest standards of quality, seamlessly blending rich traditions with a contemporary appeal.
-**Craft:** Crafted by D J Impex & Co (DJI), a trusted name in fabric manufacturing and export, Nabeen® showcases a diverse range of meticulously curated textiles that speak of unwavering commitment to excellence. With an emphasis on trust, quality, automation, and process-driven performance, our fabrics are an ode to fine craftsmanship.
+**Craft:** Crafted by DJ Impex & Co (DJI), a trusted name in fabric manufacturing and export, Nabeen® showcases a diverse range of meticulously curated textiles that speak of unwavering commitment to excellence. With an emphasis on trust, quality, automation, and process-driven performance, our fabrics are an ode to fine craftsmanship.
 **Invitation:** Immerse yourself in a world of opulence, where each fabric is a masterpiece designed to elevate your style. Experience the luxury of Nabeen® by DJI, offering you an exquisite tapestry of comfort, quality, and class.
 **Closing:** Crafted with love, from India.
 
 ## Our story
-Since its establishment in 1995, D J Impex & Co. (DJI) has forged strong synergies with clients, fostering mutual growth.
+Since its establishment in 1995, DJ Impex & Co. (DJI) has forged strong synergies with clients, fostering mutual growth.
 
 DJI presents a diverse collection of premium fabrics that offer unparalleled comfort and quality at affordable price ranges. Our expertise encompasses the entire spectrum of textiles, from sourcing and manufacturing to supplying and trading, reflecting both art and science.
 
@@ -51,7 +51,7 @@ their own wording.
 3. **Today.** Africa and the Middle East
 
 ## Recognition
-In recognition of our consistent export excellence, D J Impex & Co. has earned the esteemed "Star Export House" status from the Government of India.
+In recognition of our consistent export excellence, DJ Impex & Co. has earned the esteemed "Star Export House" status from the Government of India.
 (Show as a trust mark alongside: Since 1995 · Make in India. Do not use the middle-dot separator in the UI; lay them out as separate items.)
 
 ## How our fabric is made (brochure p.4 + p.6)

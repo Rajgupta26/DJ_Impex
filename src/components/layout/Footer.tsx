@@ -72,13 +72,13 @@ export function Footer() {
 
       <div className="relative z-10">
         <div className="container-site grid gap-8 pb-10 pt-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.85fr_1.15fr_1.6fr] lg:gap-8 lg:pb-14 lg:pt-20">
-          <div className="lg:translate-y-[30%]">
+          <div className="lg:translate-y-[38%]">
             <Image
               src="/images/logos/nabeen-logo-white.png"
               alt="Nabeen, luxury fabrics by DJI"
               width={1088}
               height={345}
-              className="h-11 w-auto"
+              className="h-10 w-auto"
             />
           </div>
 

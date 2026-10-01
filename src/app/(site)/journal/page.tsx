@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 import { JournalFeatureGrid } from "@/components/journal/JournalFeatureGrid";
 import { PostCard } from "@/components/journal/PostCard";
@@ -58,23 +59,43 @@ export default async function JournalPage() {
         pattern="check"
       />
 
-      <section className="bg-white pt-6 sm:pt-8 md:pt-10">
-        <Container>
-          {lead ? <JournalFeatureGrid lead={lead} supporting={supporting} /> : null}
+      <div className="relative overflow-hidden bg-white">
+        {/* Luxury white fabric drape background */}
+        <div className="pointer-events-none absolute inset-0 z-0">
+          <Image
+            src="/images/brand-imagery/white-fabric-drape.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            quality={90}
+            className="object-cover object-top opacity-70"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-white/70 backdrop-blur-[0.5px]"
+          />
+        </div>
 
-          {olderPosts.length > 0 ? (
-            <ul className="border-line mt-20 grid gap-14 border-t pt-14 md:grid-cols-2 md:gap-x-16">
-              {olderPosts.map((post) => (
-                <li key={post.slug}>
-                  <PostCard post={post} />
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </Container>
-      </section>
+        <div className="relative z-10">
+          <section className="bg-transparent pt-6 sm:pt-8 md:pt-10">
+            <Container>
+              {lead ? <JournalFeatureGrid lead={lead} supporting={supporting} /> : null}
 
-      <ExploreNabeenCTA bg="bg-white" />
+              {olderPosts.length > 0 ? (
+                <ul className="border-line mt-20 grid gap-14 border-t pt-14 md:grid-cols-2 md:gap-x-16">
+                  {olderPosts.map((post) => (
+                    <li key={post.slug}>
+                      <PostCard post={post} />
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </Container>
+          </section>
+
+          <ExploreNabeenCTA bg="bg-transparent" />
+        </div>
+      </div>
     </>
   );
 }

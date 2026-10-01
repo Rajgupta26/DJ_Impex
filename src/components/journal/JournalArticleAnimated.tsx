@@ -65,9 +65,26 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
   const sections = parseMarkdownSections(post.body);
 
   return (
-    <article>
+    <article className="relative overflow-hidden bg-white">
+      {/* Luxury white fabric drape background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <Image
+          src="/images/brand-imagery/white-fabric-drape.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          quality={90}
+          className="object-cover object-top opacity-70"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-white/70 backdrop-blur-[0.5px]"
+        />
+      </div>
+
+      <div className="relative z-10">
       {/* Article Header */}
-      <header className="bg-white pb-12 pt-[calc(4.5rem+var(--spacing-section)/2)] lg:pt-[calc(5.25rem+var(--spacing-section)/2)]">
+        <header className="bg-transparent pb-12 pt-[calc(4.5rem+var(--spacing-section)/2)] lg:pt-[calc(5.25rem+var(--spacing-section)/2)]">
         <div className="container-site">
           <p className="t-small flex flex-wrap items-center gap-x-3 text-slate">
             <Link href="/journal" className="text-link">
@@ -113,7 +130,7 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
       </motion.div>
 
       {/* 2-Section Content Layout: Left Heading from Left, Right Paragraphs from Right */}
-      <div className="bg-white pt-8 pb-10 lg:pt-[clamp(3rem,2.5rem+3.5vw,5.5rem)]">
+        <div className="bg-transparent pt-8 pb-10 lg:pt-[clamp(3rem,2.5rem+3.5vw,5.5rem)]">
         <div className="container-site divide-y divide-line/60">
           {sections.map((section, idx) => (
             <div
@@ -168,6 +185,7 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
             </p>
           </div>
         </div>
+      </div>
       </div>
     </article>
   );

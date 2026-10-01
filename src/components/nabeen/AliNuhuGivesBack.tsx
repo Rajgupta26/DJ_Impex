@@ -26,8 +26,23 @@ export function AliNuhuGivesBack({
   });
 
   return (
-    <section className="bg-white pt-8 pb-10 sm:pt-12 sm:pb-12 md:pt-14 md:pb-16">
-      <Container>
+    <section className="relative overflow-hidden bg-white pt-8 pb-10 sm:pt-12 sm:pb-12 md:pt-14 md:pb-16">
+      {/* Luxury white fabric drape background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <Image
+          src="/images/brand-imagery/white-fabric-drape.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          quality={90}
+          className="object-cover object-top opacity-70"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-white/70 backdrop-blur-[0.5px]"
+        />
+      </div>
+      <Container className="relative z-10">
         <div>
           <motion.h2 className="t-h2 max-w-none" {...enter(-48)}>
             {withReg(heading)}

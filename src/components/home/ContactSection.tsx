@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ExternalLink, MapPin } from "lucide-react";
 import { ContactChannels } from "@/components/contact/ContactChannels";
 import { EnquiryForm } from "@/components/contact/EnquiryForm";
@@ -16,8 +17,23 @@ export function ContactSection() {
   const site = getSite();
 
   return (
-    <section id="contact" className="scroll-mt-20 lg:scroll-mt-24 border-t border-line bg-white pt-[var(--spacing-section)] pb-8 sm:pb-12">
-      <Container>
+    <section id="contact" className="relative overflow-hidden scroll-mt-20 lg:scroll-mt-24 border-t border-line bg-white pt-[var(--spacing-section)] pb-8 sm:pb-12">
+      {/* Luxury white fabric drape background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <Image
+          src="/images/brand-imagery/white-fabric-drape.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          quality={90}
+          className="object-cover object-top opacity-70"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-white/70 backdrop-blur-[0.5px]"
+        />
+      </div>
+      <Container className="relative z-10">
         <div className="grid min-w-0 gap-10 lg:grid-cols-[5fr_7fr] lg:gap-20 items-start">
           <div className="flex min-w-0 flex-col gap-5">
             <div className="min-w-0 rounded-2xl bg-navy text-white on-dark p-5 sm:p-7 shadow-lg">

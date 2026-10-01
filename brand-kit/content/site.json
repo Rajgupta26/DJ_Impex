@@ -2,7 +2,7 @@
   "_readme": "Single source of truth for facts used across the site. Every fact carries a status. confirmed = use as-is. tbc = render it, but show a dev-only 'TBC' badge when NEXT_PUBLIC_SHOW_TODO=true. hold = do NOT render anywhere until the client confirms it.",
   "brand": {
     "company": {
-      "value": "D J Impex & Co.",
+      "value": "DJ Impex & Co.",
       "short": "DJI",
       "status": "confirmed"
     },

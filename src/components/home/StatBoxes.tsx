@@ -73,7 +73,7 @@ export function StatBoxes({ className = "" }: { className?: string }) {
   };
 
   return (
-    <div className={`w-full overflow-hidden bg-white ${className}`.trim()}>
+    <div className={`w-full overflow-hidden bg-transparent ${className}`.trim()}>
       <div className="grid grid-cols-2 lg:grid-cols-4">
         {STAT_ITEMS.map((item, index) => {
           const anim = getBoxAnimation(index);
