@@ -26,7 +26,9 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
     return <>{children}</>;
   }
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const sidebarRef = useRef<HTMLElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
   const compact = useMediaQuery("(max-width: 1023px)");
   useFocusTrap(sidebarRef, menuOpen && compact, () => setMenuOpen(false));
 
@@ -36,6 +38,26 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = previous; };
   }, [menuOpen, compact]);
+
+  useEffect(() => {
+    if (!profileOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setProfileOpen(false);
+      }
+    }
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setProfileOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [profileOpen]);
 
   /**
    * The theme lives on <html> as a class, not in React state.
@@ -107,7 +129,7 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
             })}
           </nav>
 
-          <div className="mt-auto border-t border-slate-200 p-3 dark:border-slate-800 space-y-1">
+          <div className="mt-auto border-t border-slate-200 p-3 dark:border-slate-800">
             <Link
               href="/"
               className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
@@ -115,15 +137,6 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
               <ExternalLink size={17} aria-hidden="true" />
               View the website
             </Link>
-            <form action={logoutAdminAction}>
-              <button
-                type="submit"
-                className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40 transition cursor-pointer"
-              >
-                <LogOut size={17} aria-hidden="true" />
-                Sign out
-              </button>
-            </form>
           </div>
         </aside>
 
@@ -150,6 +163,8 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
             <p className="flex-1 truncate text-sm text-slate-500 dark:text-slate-400">
               Content and enquiries, stored in /data
             </p>
+
+            {/* Theme Toggle */}
             <button
               type="button"
               onClick={toggleTheme}
@@ -159,6 +174,50 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
               <Moon size={16} aria-hidden="true" className="dark:hidden" />
               <Sun size={16} aria-hidden="true" className="hidden dark:block" />
             </button>
+
+            {/* Circular Admin Profile Avatar with Logout Dropdown */}
+            <div ref={profileRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setProfileOpen(!profileOpen)}
+                aria-expanded={profileOpen}
+                aria-haspopup="true"
+                aria-label="Admin account menu"
+                className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#52968e] text-sm font-bold text-white shadow-sm ring-2 ring-transparent transition hover:bg-[#437d76] hover:ring-[#52968e]/30 focus:outline-none focus:ring-2 focus:ring-[#52968e] cursor-pointer select-none"
+              >
+                A
+                <span className="absolute bottom-0 right-0 block size-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900" />
+              </button>
+
+              {profileOpen ? (
+                <div
+                  role="menu"
+                  className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl backdrop-blur-md dark:border-slate-800 dark:bg-slate-900 z-50 animate-in fade-in zoom-in-95 duration-100"
+                >
+                  <div className="px-3 py-2.5 border-b border-slate-100 dark:border-slate-800">
+                    <p className="text-xs font-semibold text-slate-900 dark:text-slate-100">
+                      DJ Impex Admin
+                    </p>
+                    <p className="truncate text-xs text-slate-500 dark:text-slate-400">
+                      admin@djimpex.in
+                    </p>
+                  </div>
+
+                  <div className="pt-1.5">
+                    <form action={logoutAdminAction}>
+                      <button
+                        type="submit"
+                        role="menuitem"
+                        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40 transition cursor-pointer"
+                      >
+                        <LogOut size={15} aria-hidden="true" />
+                        <span>Sign out</span>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </header>
 
           {unprotected ? (
