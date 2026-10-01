@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 import { useMediaQuery } from "@/lib/useMediaQuery";
-import { ExternalLink, HeartHandshake, Images, Layers, LayoutPanelTop, LogOut, Mail, Menu, Moon, Newspaper, Sun, X } from "lucide-react";
+import { ExternalLink, HeartHandshake, Images, KeyRound, Layers, LayoutPanelTop, LogOut, Mail, Menu, Moon, Newspaper, Sun, X } from "lucide-react";
 import { logoutAdminAction } from "@/app/actions/admin-auth";
+import { ChangePasswordModal } from "@/components/admin/ChangePasswordModal";
 
 const NAV = [
   { href: "/admin/images", label: "Image gallery", Icon: Images },
@@ -27,6 +28,7 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
   }
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const sidebarRef = useRef<HTMLElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const compact = useMediaQuery("(max-width: 1023px)");
@@ -175,7 +177,7 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
               <Sun size={16} aria-hidden="true" className="hidden dark:block" />
             </button>
 
-            {/* Circular Admin Profile Avatar with Logout Dropdown */}
+            {/* Circular Admin Profile Avatar with Logout & Change Password Dropdown */}
             <div ref={profileRef} className="relative">
               <button
                 type="button"
@@ -203,7 +205,20 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
                     </p>
                   </div>
 
-                  <div className="pt-1.5">
+                  <div className="pt-1.5 space-y-1">
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={() => {
+                        setProfileOpen(false);
+                        setPasswordModalOpen(true);
+                      }}
+                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition cursor-pointer"
+                    >
+                      <KeyRound size={15} aria-hidden="true" className="text-[#52968e]" />
+                      <span>Change password</span>
+                    </button>
+
                     <form action={logoutAdminAction}>
                       <button
                         type="submit"
@@ -230,6 +245,12 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
           <main className="mx-auto max-w-6xl px-4 py-6 lg:px-8 lg:py-8">{children}</main>
         </div>
       </div>
+
+      {/* Change Password Modal for logged in admins */}
+      <ChangePasswordModal
+        isOpen={passwordModalOpen}
+        onClose={() => setPasswordModalOpen(false)}
+      />
     </div>
   );
 }

@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useState } from "react";
-import { Eye, EyeOff, Lock, ShieldCheck } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 
 import { loginAdminAction, type AuthState } from "@/app/actions/admin-auth";
+import { ChangePasswordModal } from "@/components/admin/ChangePasswordModal";
 import { DJIAnimatedLogo } from "@/components/home/DJIAnimatedLogo";
 
 export function AdminLoginForm() {
@@ -147,7 +148,7 @@ export function AdminLoginForm() {
               <button
                 type="button"
                 onClick={() => setShowForgotModal(true)}
-                className="font-medium text-[#52968e] hover:underline"
+                className="font-medium text-[#52968e] hover:underline cursor-pointer"
               >
                 Forgot password?
               </button>
@@ -198,35 +199,12 @@ export function AdminLoginForm() {
         </p>
       </footer>
 
-      {/* Forgot Password Modal */}
-      {showForgotModal ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-sm rounded-2xl border border-line/80 bg-white p-6 shadow-2xl">
-            <div className="flex items-center gap-2.5 text-navy font-semibold text-base">
-              <ShieldCheck size={20} className="text-[#52968e]" />
-              <span>Password Recovery</span>
-            </div>
-            <p className="mt-3 text-xs text-slate-600 leading-relaxed">
-              If you forgot the administrator password, please check your project configuration (`ADMIN_PASSWORD` in `.env.local`) or contact the DJ Impex technical team at{" "}
-              <a
-                href="mailto:admin@djimpex.in"
-                className="font-medium text-[#52968e] underline"
-              >
-                admin@djimpex.in
-              </a>.
-            </p>
-            <div className="mt-5 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setShowForgotModal(false)}
-                className="rounded-lg bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-200 transition"
-              >
-                Got it
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+      {/* Interactive Reset / Change Password Modal */}
+      <ChangePasswordModal
+        isOpen={showForgotModal}
+        onClose={() => setShowForgotModal(false)}
+        redirectTo="/admin/images"
+      />
     </div>
   );
 }
