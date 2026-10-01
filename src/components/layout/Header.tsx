@@ -25,6 +25,10 @@ export type HeaderContact = {
  * "Past the hero" is measured from the hero itself (every hero carries data-hero),
  * not from a guessed scroll offset, so it is right on the tall home hero and on
  * the shorter inner ones alike. Pages without a hero start solid.
+ *
+ * The state lives in a data attribute rather than React state: it is a paint
+ * concern, it changes on every scroll past the fold, and writing it in a layout
+ * effect means the transparent header is correct on the very first frame.
  */
 export function Header({ navigation, contact }: { navigation: NavItem[]; contact: HeaderContact }) {
   const pathname = usePathname();
@@ -34,7 +38,6 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
   const [openedAt, setOpenedAt] = useState<string | null>(null);
   const menuOpen = openedAt === pathname;
   const [currentHash, setCurrentHash] = useState<string>("");
-  const [isSolid, setIsSolid] = useState(true);
 
   useEffect(() => {
     const updateHash = () => {
@@ -96,7 +99,6 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
 
     const setSolid = (solid: boolean) => {
       header.dataset.solid = String(solid);
-      setIsSolid(solid);
     };
 
     const hero = document.querySelector("[data-hero]");
@@ -121,43 +123,28 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
         data-solid="true"
         className="site-header on-dark fixed inset-x-0 top-0 z-40 border-b border-transparent text-white transition-colors duration-[var(--duration-base)] data-[solid=true]:border-line data-[solid=true]:bg-white data-[solid=true]:text-navy"
       >
-        <div className="flex h-16 w-full items-center justify-between gap-3 px-4 sm:h-[4.5rem] sm:px-8 lg:h-[5.25rem] lg:gap-6 lg:px-12 xl:px-16">
-          <Link href="/" aria-label="DJ Impex & Co. Home" className="relative flex items-center">
-            {/* Mobile emblem: Displays DJI prism crest without duplicate 'Nabeen' wordmark on mobile */}
-            <div className="block sm:hidden">
-              <Image
-                src="/images/logos/dji-logo-transparent.png"
-                alt="D J Impex & Co."
-                width={120}
-                height={120}
-                priority
-                className="h-9 w-auto object-contain drop-shadow-sm transition-transform duration-200 active:scale-95"
-              />
-            </div>
-
-            {/* Desktop & Tablet: Full NABEEN wordmark */}
-            <div className="relative hidden sm:block">
-              <Image
-                src="/images/logos/nabeen-logo-white.png"
-                alt="Nabeen, luxury fabrics by DJI"
-                width={1088}
-                height={345}
-                priority
-                className="site-header__logo site-header__logo--white h-8 w-auto lg:h-10"
-              />
-              <Image
-                src="/images/logos/nabeen-logo-navy.png"
-                alt=""
-                aria-hidden="true"
-                width={1088}
-                height={345}
-                priority
-                className="site-header__logo site-header__logo--navy absolute left-0 top-0 h-8 w-auto lg:h-10"
-              />
-            </div>
+        <div className="flex h-16 w-full items-center justify-between gap-3 px-[var(--spacing-gutter)] sm:h-[4.5rem] sm:px-8 lg:h-[5.25rem] lg:gap-6 lg:px-12 xl:px-16">
+          <Link href="/" aria-label="Nabeen, luxury fabrics by DJI: home" className="relative block">
+            <Image
+              src="/images/logos/nabeen-logo-white.png"
+              alt="Nabeen, luxury fabrics by DJI"
+              width={1088}
+              height={345}
+              priority
+              className="site-header__logo site-header__logo--white h-8 w-auto lg:h-10"
+            />
+            <Image
+              src="/images/logos/nabeen-logo-navy.png"
+              alt=""
+              aria-hidden="true"
+              width={1088}
+              height={345}
+              priority
+              className="site-header__logo site-header__logo--navy absolute left-0 top-0 h-8 w-auto lg:h-10"
+            />
           </Link>
 
-          <div className="flex items-center gap-3 sm:gap-4 lg:gap-7">
+          <div className="flex items-center gap-4 lg:gap-7">
             <nav aria-label="Main" className="hidden items-center gap-7 xl:flex">
               {navigation.map((item) => {
                 const isJournal = item.href === "/#journal";
@@ -197,21 +184,20 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
               })}
             </nav>
 
-            <LanguageSelector variant="header" onDark={!isSolid} />
+            <LanguageSelector variant="header" />
 
             <button
               type="button"
               onClick={() => setOpenedAt(pathname)}
               aria-expanded={menuOpen}
               aria-haspopup="dialog"
-              aria-label="Open menu"
-              className="flex h-11 w-11 items-center justify-center rounded-lg p-2 transition-colors hover:bg-white/10 active:scale-95 xl:hidden"
+              className="-mr-2 flex h-11 w-11 items-center justify-center xl:hidden"
             >
               <span className="visually-hidden">Open menu</span>
-              <span aria-hidden="true" className="grid w-5 gap-[5px]">
-                <span className="h-0.5 w-full rounded-full bg-current" />
-                <span className="h-0.5 w-full rounded-full bg-current" />
-                <span className="h-0.5 w-full rounded-full bg-current" />
+              <span aria-hidden="true" className="grid w-6 gap-[5px]">
+                <span className="h-px w-full bg-current" />
+                <span className="h-px w-full bg-current" />
+                <span className="h-px w-full bg-current" />
               </span>
             </button>
           </div>
