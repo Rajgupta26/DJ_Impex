@@ -88,7 +88,7 @@ export function VisionPillars({
   };
 
   return (
-    <section className="page-end bg-transparent pt-4 lg:pt-6">
+    <section className="bg-transparent pt-4 pb-2 lg:pt-6 lg:pb-3">
       <Container>
         <h2 className="t-h2 max-w-[18ch] font-sans font-normal tracking-tight text-navy">{withReg(heading)}</h2>
         {intro ? (
@@ -161,4 +161,3 @@ export function VisionPillars({
     </section>
   );
 }
-

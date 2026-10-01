@@ -4,7 +4,7 @@ import { Reg } from "@/components/ui/Reg";
 
 export function AboutNabeenCTA() {
   return (
-    <section className="bg-white pb-16 pt-4 sm:pb-20 sm:pt-6">
+    <section className="bg-white pb-12 pt-3 sm:pb-16 sm:pt-5">
       <Container className="flex justify-center">
         <Link
           href="/nabeen"

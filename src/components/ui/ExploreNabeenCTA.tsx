@@ -10,7 +10,7 @@ export function ExploreNabeenCTA({
   className?: string;
 }) {
   return (
-    <section className={`${bg} py-14 sm:py-16 lg:py-20 ${className}`.trim()}>
+    <section className={`${bg} py-11 sm:py-12 lg:py-16 ${className}`.trim()}>
       <Container className="flex justify-center">
         <Link
           href="/nabeen"
