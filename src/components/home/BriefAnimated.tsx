@@ -150,7 +150,7 @@ export function BriefAnimated({
           <DJIAnimatedLogo size={210} />
         </motion.div>
 
-        <div className="mt-3 w-full text-center">
+        <div className="mt-3 w-full translate-x-[10%] text-center">
           <p className="text-xs font-bold tracking-[0.2em] text-navy uppercase sm:text-sm">
             DJ Impex & Co.
           </p>

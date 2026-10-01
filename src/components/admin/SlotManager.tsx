@@ -155,14 +155,16 @@ export function SlotManager({ initial }: { initial: SlotView[] }) {
 
       <ul className="space-y-3">
         {slots.map((slot) => {
-          const isVideo = slot.mediaType === "video" || slot.src.endsWith(".mp4") || slot.src.endsWith(".webm");
+          const isVideoFile = slot.src.endsWith(".mp4") || slot.src.endsWith(".webm") || slot.src.endsWith(".mov");
+          const isVideo = slot.mediaType === "video" || isVideoFile;
 
           return (
             <li key={slot.id} className={`${card} flex flex-wrap items-center gap-4 p-4`}>
               <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                {isVideo ? (
+                {isVideoFile ? (
                   <video
                     src={slot.src}
+                    poster={slot.poster}
                     muted
                     playsInline
                     autoPlay
