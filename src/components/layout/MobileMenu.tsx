@@ -50,25 +50,41 @@ export function MobileMenu({
           transition={{ duration: reduceMotion ? 0.01 : 0.32, ease: [0.22, 0.61, 0.36, 1] }}
           className="on-dark fixed inset-0 z-50 flex h-dvh flex-col overflow-y-auto overscroll-contain bg-navy-deep text-white xl:hidden"
         >
-          <div className="container-site flex h-16 shrink-0 items-center justify-between sm:h-[4.5rem]">
-            <Image
-              src="/images/logos/nabeen-logo-white.png"
-              alt="Nabeen, luxury fabrics by DJI"
-              width={1088}
-              height={345}
-              className="h-8 w-auto"
-            />
+          <div className="flex h-16 shrink-0 items-center justify-between px-4 sm:h-[4.5rem] sm:px-8">
+            {/* Mobile emblem: DJI crest emblem on mobile */}
+            <div className="block sm:hidden">
+              <Image
+                src="/images/logos/dji-logo-transparent.png"
+                alt="D J Impex & Co."
+                width={120}
+                height={120}
+                className="h-9 w-auto object-contain"
+              />
+            </div>
+
+            {/* Tablet & Desktop logo */}
+            <div className="hidden sm:block">
+              <Image
+                src="/images/logos/nabeen-logo-white.png"
+                alt="Nabeen, luxury fabrics by DJI"
+                width={1088}
+                height={345}
+                className="h-8 w-auto"
+              />
+            </div>
+
             <button
               type="button"
               onClick={onClose}
-              className="-mr-2 flex h-11 w-11 items-center justify-center"
+              aria-label="Close menu"
+              className="flex h-11 w-11 items-center justify-center rounded-lg transition-colors hover:bg-white/10 active:scale-95"
             >
               <span className="visually-hidden">Close menu</span>
-              <X aria-hidden="true" strokeWidth={1.25} size={26} />
+              <X aria-hidden="true" strokeWidth={1.5} size={24} />
             </button>
           </div>
 
-          <nav aria-label="Main" className="container-site mt-4 flex-1">
+          <nav aria-label="Main" className="mt-4 flex-1 px-4 sm:px-8">
             <ul className="grid">
               {navigation.map((item) => {
                 const active = pathname === item.href;
@@ -79,7 +95,7 @@ export function MobileMenu({
                       href={item.href}
                       onClick={onClose}
                       aria-current={active ? "page" : undefined}
-                      className="t-h3 block py-3 font-light text-[clamp(1.5rem,1.1rem+2.4vw,2.25rem)] sm:py-4"
+                      className="t-h3 block py-3.5 font-light text-[clamp(1.4rem,1.1rem+2vw,2.15rem)] transition-colors hover:text-accent sm:py-4"
                     >
                       {withReg(item.label)}
                     </Link>
@@ -90,7 +106,7 @@ export function MobileMenu({
           </nav>
 
           <div
-            className="container-site mt-6 border-t border-white/12 pt-5"
+            className="mt-6 border-t border-white/12 px-4 pt-5 sm:px-8"
             style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom))" }}
           >
             <LanguageSelector variant="mobile" className="mb-6" />
@@ -110,7 +126,7 @@ export function MobileMenu({
               <a
                 href={contact.tel}
                 onClick={() => track("call_click", { location: "menu" })}
-                className="flex min-h-11 min-w-0 items-center gap-3 break-words"
+                className="flex min-h-11 min-w-0 items-center gap-3 break-words hover:text-white"
               >
                 <Phone aria-hidden="true" size={17} strokeWidth={1.5} />
                 <span>{contact.telDisplay}</span>
@@ -118,7 +134,7 @@ export function MobileMenu({
               <a
                 href={contact.email}
                 onClick={() => track("email_click", { location: "menu" })}
-                className="flex min-h-11 min-w-0 items-center gap-3 break-words"
+                className="flex min-h-11 min-w-0 items-center gap-3 break-words hover:text-white"
               >
                 <Mail aria-hidden="true" size={17} strokeWidth={1.5} />
                 <span>{contact.emailDisplay}</span>
