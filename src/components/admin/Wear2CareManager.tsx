@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
-import { HeartHandshake, ImageUp, RotateCcw } from "lucide-react";
+import { HeartHandshake, ImageUp } from "lucide-react";
 
 import { mb, prepareImage } from "./prepareImage";
 import { request } from "./request";
-import { Badge, buttonPrimary, buttonQuiet, card, NoticeBar, type Notice } from "./ui";
+import { Badge, buttonPrimary, card, NoticeBar, type Notice } from "./ui";
 import type { SlotView } from "./SlotManager";
 
 export function Wear2CareManager({ initial }: { initial: SlotView[] }) {
@@ -44,21 +44,6 @@ export function Wear2CareManager({ initial }: { initial: SlotView[] }) {
         ? `${slot.label} was replaced, resized from ${mb(prepared.from)} to ${mb(prepared.to)}.`
         : `${slot.label} was replaced.`,
     });
-  }
-
-  async function revert(slot: SlotView) {
-    setBusyId(slot.id);
-    const result = await request<{ slot: SlotView }>(`/api/admin/slots/${slot.id}`, {
-      method: "DELETE",
-    });
-    setBusyId(null);
-
-    if (!result.ok) {
-      setNotice({ tone: "error", message: `${slot.label}: ${result.error}` });
-      return;
-    }
-    setSlots((current) => current.map((s) => (s.id === slot.id ? { ...s, ...result.data.slot } : s)));
-    setNotice({ tone: "success", message: `${slot.label} is back to the original photograph.` });
   }
 
   return (
@@ -138,19 +123,6 @@ export function Wear2CareManager({ initial }: { initial: SlotView[] }) {
                     <ImageUp size={14} />
                     <span>Replace image</span>
                   </button>
-
-                  {slot.replaced && (
-                    <button
-                      type="button"
-                      disabled={isBusy}
-                      onClick={() => revert(slot)}
-                      className={buttonQuiet}
-                      title="Restore original image"
-                    >
-                      <RotateCcw size={14} />
-                      <span className="hidden sm:inline">Original</span>
-                    </button>
-                  )}
                 </div>
               </div>
             </article>
