@@ -85,7 +85,7 @@ export function SignatureLines({
   images,
 }: {
   lines?: { name: string; products: string[] }[];
-  images?: Record<string, { src: string; alt?: string }>;
+  images?: Record<string, { src: string; alt?: string; title?: string }>;
 }) {
   const isDesktop = useMediaQuery("(min-width: 64rem)");
   const [open, setOpen] = useState(1); // Default to 02 Nabeen Royale
@@ -96,6 +96,7 @@ export function SignatureLines({
     ...col,
     products: col.products.map((prod) => ({
       ...prod,
+      name: prod.id && images?.[prod.id]?.title?.trim() ? images[prod.id].title!.trim() : prod.name,
       image: prod.id && images?.[prod.id]?.src ? images[prod.id].src : prod.image,
     })),
   }));

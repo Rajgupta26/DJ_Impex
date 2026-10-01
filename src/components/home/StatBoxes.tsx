@@ -14,25 +14,25 @@ const STAT_ITEMS: StatItem[] = [
     lead: "1995",
     title: "Founded",
     subtitle: "Over 30 years of textile excellence - Mumbai",
-    accentColor: "var(--color-navy-mid)", // 5.63:1 on white
+    accentColor: "var(--color-navy)",
   },
   {
     lead: "Star",
     title: "Export House",
     subtitle: "Govt. of India recognized",
-    accentColor: "var(--color-navy-soft)", // 11.36:1 on white
+    accentColor: "var(--color-navy)",
   },
   {
     lead: "1000+",
     title: "Designs & Varieties",
     subtitle: "Active shirting & suiting catalogue",
-    accentColor: "var(--color-navy)", // 14.43:1 on white
+    accentColor: "var(--color-navy)",
   },
   {
     lead: "Make in India",
     title: "Indigenous Craft",
     subtitle: "Chosen Across Africa",
-    accentColor: "var(--color-navy-deep)", // 17.68:1 on white
+    accentColor: "var(--color-navy)",
   },
 ];
 

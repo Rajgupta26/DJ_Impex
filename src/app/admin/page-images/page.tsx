@@ -4,7 +4,10 @@ import { resolveSlots } from "@/lib/slots";
 export const dynamic = "force-dynamic";
 
 const isManagedElsewhere = (slot: { id: string }) =>
-  slot.id.startsWith("wear2care-") || slot.id === "home-brief";
+  slot.id.startsWith("wear2care-") ||
+  slot.id.startsWith("fabric-") ||
+  slot.id.startsWith("nabeen-") ||
+  slot.id === "home-brief";
 
 // resolveSlots falls back to the shipped defaults rather than throwing, so
 // there is no error state to render here: the worst case is the page showing

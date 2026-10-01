@@ -59,6 +59,9 @@ export const slotSchema = z.object({
   id: z.string().min(1),
   src: z.string().min(1),
   alt: z.string().trim().max(240).default(""),
+  title: z.string().trim().max(160).optional(),
+  description: z.string().trim().max(1000).optional(),
+  weave: z.string().trim().max(160).optional(),
   /** The uploaded file, so reverting can remove it. */
   fileName: z.string().nullable().default(null),
   updatedAt: isoDate,
@@ -102,22 +105,6 @@ const incomingSlug = z.union([
 /** The fields a client may send when creating. Ids and stamps are ours. */
 export const blogInputSchema = blogSchema.omit({ id: true, updatedAt: true }).extend({ slug: incomingSlug });
 
-/**
- * The patch schemas are written out by hand, without defaults, and that is the
- * whole point of them.
- *
- * `.partial()` does not remove a field's `.default()`: parsing `{ title: "x" }`
- * against a partialled schema returns every defaulted field as well, set to its
- * default. Merging that over a stored row does not patch it, it resets it.
- * Pressing Publish sent `{ status }` alone and silently blanked the post's
- * body, excerpt, cover image, author and category on the way through -- and
- * because `status` itself defaults to "draft", a patch that left it out
- * unpublished the post. It saved successfully every time, which is why this
- * looked like the website failing to pick changes up.
- *
- * Nothing here carries a default, so an absent key stays absent and a patch
- * only touches what was actually sent.
- */
 export const imagePatchSchema = z
   .object({
     title: z.string().trim().min(1, "Please add a title.").max(120),
@@ -138,6 +125,15 @@ export const blogPatchSchema = z
     author: z.string().trim().max(80),
     publishedDate: isoDate,
     status: z.enum(["draft", "published"]),
+  })
+  .partial();
+
+export const slotPatchSchema = z
+  .object({
+    title: z.string().trim().max(160),
+    alt: z.string().trim().max(240),
+    description: z.string().trim().max(1000),
+    weave: z.string().trim().max(160),
   })
   .partial();
 

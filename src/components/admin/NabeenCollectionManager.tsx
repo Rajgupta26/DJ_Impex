@@ -2,11 +2,21 @@
 
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
-import { ImageUp, Search } from "lucide-react";
+import { ImageUp, Pencil, RotateCcw, Search } from "lucide-react";
 
 import { mb, prepareImage } from "./prepareImage";
 import { request } from "./request";
-import { Badge, buttonPrimary, card, NoticeBar, type Notice } from "./ui";
+import {
+  Badge,
+  buttonPrimary,
+  buttonQuiet,
+  card,
+  Field,
+  inputClass,
+  Modal,
+  NoticeBar,
+  type Notice,
+} from "./ui";
 import type { SlotView } from "./SlotManager";
 
 interface CollectionCategory {
@@ -35,7 +45,51 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
   const [search, setSearch] = useState<string>("");
   const [notice, setNotice] = useState<Notice>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [editingSlot, setEditingSlot] = useState<SlotView | null>(null);
+  const [editForm, setEditForm] = useState<{ title: string; alt: string }>({
+    title: "",
+    alt: "",
+  });
+  const [savingEdit, setSavingEdit] = useState(false);
   const inputs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  function openEditModal(slot: SlotView) {
+    const swatchName = slot.title || (slot.label.includes(":") ? slot.label.split(":")[1].trim() : slot.label);
+    setEditingSlot(slot);
+    setEditForm({
+      title: swatchName,
+      alt: slot.alt || "",
+    });
+  }
+
+  async function handleSaveDetails(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editingSlot) return;
+
+    setSavingEdit(true);
+    const result = await request<{ slot: SlotView }>(`/api/admin/slots/${editingSlot.id}`, {
+      method: "PATCH",
+      json: {
+        title: editForm.title.trim(),
+        alt: editForm.alt.trim(),
+      },
+    });
+    setSavingEdit(false);
+
+    if (!result.ok) {
+      setNotice({ tone: "error", message: `${editingSlot.label}: ${result.error}` });
+      return;
+    }
+
+    setSlots((current) =>
+      current.map((s) => (s.id === editingSlot.id ? { ...s, ...result.data.slot } : s)),
+    );
+    setNotice({
+      tone: "success",
+      message: `Updated swatch details for ${editForm.title || editingSlot.label}.`,
+    });
+    setEditingSlot(null);
+  }
 
   async function replace(slot: SlotView, file: File) {
     setBusyId(slot.id);
@@ -45,6 +99,7 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
     body.set("id", slot.id);
     body.set("file", prepared.file);
     body.set("alt", slot.alt);
+    if (slot.title) body.set("title", slot.title);
 
     const result = await request<{ slot: SlotView }>("/api/admin/slots", { method: "POST", body });
     setBusyId(null);
@@ -62,6 +117,21 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
     });
   }
 
+  async function revert(slot: SlotView) {
+    setBusyId(slot.id);
+    const result = await request<{ slot: SlotView }>(`/api/admin/slots/${slot.id}`, {
+      method: "DELETE",
+    });
+    setBusyId(null);
+
+    if (!result.ok) {
+      setNotice({ tone: "error", message: `${slot.label}: ${result.error}` });
+      return;
+    }
+    setSlots((current) => current.map((s) => (s.id === slot.id ? { ...s, ...result.data.slot } : s)));
+    setNotice({ tone: "success", message: `${slot.label} is back to the original swatch.` });
+  }
+
   const filteredSlots = useMemo(() => {
     return slots.filter((slot) => {
       // Category filter
@@ -76,9 +146,10 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
       if (search.trim()) {
         const q = search.toLowerCase().trim();
         const matchesLabel = slot.label.toLowerCase().includes(q);
+        const matchesTitle = (slot.title || "").toLowerCase().includes(q);
         const matchesWhere = slot.where.toLowerCase().includes(q);
         const matchesAlt = slot.alt.toLowerCase().includes(q);
-        return matchesLabel || matchesWhere || matchesAlt;
+        return matchesLabel || matchesTitle || matchesWhere || matchesAlt;
       }
 
       return true;
@@ -94,7 +165,7 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
           <h1 className="text-2xl font-semibold">Nabeen Collection Swatches</h1>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             {slots.length} fabric swatches across 4 signature lines ·{" "}
-            {replacedCount === 0 ? "none replaced" : `${replacedCount} replaced`}
+            {replacedCount === 0 ? "none customized" : `${replacedCount} customized`}
           </p>
         </div>
       </div>
@@ -152,9 +223,10 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
       ) : (
         <ul className="grid grid-cols-1 gap-3.5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
           {filteredSlots.map((slot) => {
-            const [collectionName, swatchName] = slot.label.includes(":")
+            const [collectionPrefix, defaultName] = slot.label.includes(":")
               ? slot.label.split(":").map((s) => s.trim())
               : ["Nabeen", slot.label];
+            const swatchName = slot.title || defaultName;
 
             return (
               <li
@@ -175,9 +247,9 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-1.5">
                       <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider dark:text-slate-500">
-                        {collectionName}
+                        {collectionPrefix}
                       </span>
-                      {slot.replaced ? <Badge tone="blue">Replaced</Badge> : null}
+                      {slot.replaced ? <Badge tone="blue">Customized</Badge> : null}
                     </div>
                     <h3 className="break-words text-base font-semibold text-slate-900 dark:text-slate-100">
                       {swatchName}
@@ -188,13 +260,35 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
                 <div className="flex items-center justify-end gap-2 border-t border-slate-100 pt-3 dark:border-slate-800/80">
                   <button
                     type="button"
+                    className={buttonQuiet}
+                    disabled={busyId === slot.id}
+                    onClick={() => openEditModal(slot)}
+                  >
+                    <Pencil size={13} aria-hidden="true" />
+                    Edit name
+                  </button>
+
+                  <button
+                    type="button"
                     className={buttonPrimary}
                     disabled={busyId === slot.id}
                     onClick={() => inputs.current[slot.id]?.click()}
                   >
-                    <ImageUp size={14} aria-hidden="true" />
+                    <ImageUp size={13} aria-hidden="true" />
                     {busyId === slot.id ? "Uploading…" : "Replace"}
                   </button>
+
+                  {slot.replaced ? (
+                    <button
+                      type="button"
+                      className={buttonQuiet}
+                      disabled={busyId === slot.id}
+                      onClick={() => revert(slot)}
+                      title="Restore original swatch"
+                    >
+                      <RotateCcw size={13} aria-hidden="true" />
+                    </button>
+                  ) : null}
                 </div>
 
                 <input
@@ -215,6 +309,58 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
             );
           })}
         </ul>
+      )}
+
+      {/* Edit Swatch Name Modal */}
+      {editingSlot && (
+        <Modal
+          open={Boolean(editingSlot)}
+          onClose={() => setEditingSlot(null)}
+          title={`Edit Swatch · ${editingSlot.label}`}
+        >
+          <form onSubmit={handleSaveDetails} className="space-y-4">
+            <Field label="Swatch Name" hint="Displayed name for this fabric swatch in the collection catalog.">
+              {(props) => (
+                <input
+                  {...props}
+                  type="text"
+                  required
+                  value={editForm.title}
+                  onChange={(e) => setEditForm((f) => ({ ...f, title: e.target.value }))}
+                  className={inputClass}
+                  placeholder="e.g. Desert Sand Superfine"
+                />
+              )}
+            </Field>
+
+            <Field label="Alt Text" hint="Describes the fabric color and texture for accessibility.">
+              {(props) => (
+                <input
+                  {...props}
+                  type="text"
+                  value={editForm.alt}
+                  onChange={(e) => setEditForm((f) => ({ ...f, alt: e.target.value }))}
+                  className={inputClass}
+                  placeholder="e.g. Nabeen Classic swatch in Desert Sand"
+                />
+              )}
+            </Field>
+
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <button
+                type="button"
+                className={buttonQuiet}
+                onClick={() => setEditingSlot(null)}
+                disabled={savingEdit}
+              >
+                Cancel
+              </button>
+              <button type="submit" className={buttonPrimary} disabled={savingEdit}>
+                {savingEdit ? "Saving…" : "Save Swatch Details"}
+              </button>
+            </div>
+          </form>
+        </Modal>
       )}
     </div>
   );

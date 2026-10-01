@@ -1,23 +1,50 @@
+import Image from "next/image";
+
 /**
  * The fabric remains in motion, while the page copy is real text rather than
  * enlarged lettering baked into the footage.
  */
-export function VisionBanner({ title, strapline }: { title: string; strapline?: string }) {
+export function VisionBanner({
+  title,
+  strapline,
+  videoSrc = "/video/luxury-in-every-thread.mp4",
+  poster = "/images/brand-imagery/luxury-white-silk-banner.jpg",
+}: {
+  title: string;
+  strapline?: string;
+  videoSrc?: string;
+  poster?: string;
+}) {
+  const isVideo = !videoSrc.match(/\.(jpg|jpeg|png|webp|avif)$/i);
+
   return (
     <section aria-labelledby="about-banner-title" className="bg-white pt-16 sm:pt-[4.5rem] lg:pt-[5.25rem]">
       <div className="relative flex min-h-[24rem] w-full items-center overflow-hidden py-16 sm:min-h-[calc(100svh-4.5rem)] lg:min-h-[calc(100svh-5.25rem)]">
-        <video
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full origin-bottom scale-[2.2] object-cover [filter:grayscale(1)_contrast(0.62)_brightness(1.08)]"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          poster="/images/brand-imagery/luxury-white-silk-banner.jpg"
-        >
-          <source src="/video/luxury-in-every-thread.mp4" type="video/mp4" />
-        </video>
+        {isVideo ? (
+          <video
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full origin-bottom scale-[2.2] object-cover [filter:grayscale(1)_contrast(0.62)_brightness(1.08)]"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            poster={poster}
+            key={videoSrc}
+          >
+            <source src={videoSrc} type="video/mp4" />
+          </video>
+        ) : (
+          <div className="absolute inset-0">
+            <Image
+              src={videoSrc}
+              alt=""
+              fill
+              priority
+              className="object-cover"
+            />
+          </div>
+        )}
         <div aria-hidden="true" className="absolute inset-0 bg-white/30" />
 
         <div className="container-site text-navy relative text-center">

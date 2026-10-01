@@ -10,6 +10,7 @@ import { withReg } from "@/components/ui/Reg";
 import { getPage } from "@/lib/content";
 import { field, section } from "@/lib/markdown";
 import { buildMetadata, pageTitle } from "@/lib/seo";
+import { slotMap } from "@/lib/slots";
 
 export const metadata: Metadata = buildMetadata({
   title: pageTitle("About DJ Impex & Co. & Our Vision"),
@@ -18,7 +19,7 @@ export const metadata: Metadata = buildMetadata({
   path: "/about",
 });
 
-export default function AboutPage() {
+export default async function AboutPage() {
   const about = getPage("about");
   const aboutHead = section(about, "about-dj-impex-co-dji") || section(about, "about-d-j-impex-co-dji");
 
@@ -26,12 +27,23 @@ export default function AboutPage() {
   const visionHead = section(vision, "our-vision");
   const pillars = section(vision, "the-five-pillars");
 
-  const title = field(aboutHead, "page-title-h1") || "About DJ Impex & Co.";
-  const strapline = field(aboutHead, "strapline") || "Empowering the textile industry with high-quality fabrics.";
+  const fallbackTitle = field(aboutHead, "page-title-h1") || "About DJ Impex & Co.";
+  const fallbackStrapline = field(aboutHead, "strapline") || "Empowering the textile industry with high-quality fabrics.";
+
+  const slots = await slotMap();
+  const videoSlot = slots["about-video"];
+
+  const title = videoSlot?.title || fallbackTitle;
+  const strapline = videoSlot?.description || fallbackStrapline;
+  const videoSrc = videoSlot?.src || "/video/luxury-in-every-thread.mp4";
 
   return (
     <>
-      <VisionBanner title={title} strapline={strapline} />
+      <VisionBanner
+        title={title}
+        strapline={strapline}
+        videoSrc={videoSrc}
+      />
 
       <WelcomeSection />
       <RecognitionSection />

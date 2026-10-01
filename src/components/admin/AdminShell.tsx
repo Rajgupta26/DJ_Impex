@@ -5,14 +5,15 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 import { useMediaQuery } from "@/lib/useMediaQuery";
-import { ExternalLink, HeartHandshake, Images, KeyRound, Layers, LayoutPanelTop, LogOut, Mail, Menu, Moon, Newspaper, Sun, X } from "lucide-react";
+import { ExternalLink, HeartHandshake, Images, KeyRound, Layers, LayoutPanelTop, LogOut, Mail, Menu, Moon, Newspaper, Sparkles, Sun, X } from "lucide-react";
 import { logoutAdminAction } from "@/app/actions/admin-auth";
 import { ChangePasswordModal } from "@/components/admin/ChangePasswordModal";
 
 const NAV = [
   { href: "/admin/images", label: "Image gallery", Icon: Images },
   { href: "/admin/page-images", label: "Page images", Icon: LayoutPanelTop },
-  { href: "/admin/nabeen-collection", label: "Nabeen collection", Icon: Layers },
+  { href: "/admin/the-nabeen-collection", label: "The Nabeen Collection", Icon: Sparkles },
+  { href: "/admin/nabeen-collection", label: "Nabeen", Icon: Layers },
   { href: "/admin/wear2care", label: "Wear2Care images", Icon: HeartHandshake },
   { href: "/admin/blogs", label: "Blog manager", Icon: Newspaper },
   { href: "/admin/enquiries", label: "Enquiries", Icon: Mail },

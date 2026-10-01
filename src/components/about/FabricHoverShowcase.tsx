@@ -104,7 +104,7 @@ interface FabricHoverShowcaseProps {
    * fabric can be replaced from the admin panel. Anything not overridden falls
    * back to the picture this file ships with.
    */
-  images?: Record<string, { src: string; alt: string }>;
+  images?: Record<string, { src: string; alt: string; title?: string; description?: string; weave?: string }>;
 }
 
 export function FabricHoverShowcase({
@@ -119,7 +119,16 @@ export function FabricHoverShowcase({
   const items = names.map((name, idx) => {
     const item = resolveFabricItem(name, idx);
     const replacement = images?.[`fabric-${item.id}`];
-    return replacement ? { ...item, image: replacement.src, alt: replacement.alt } : item;
+    return replacement
+      ? {
+          ...item,
+          name: replacement.title?.trim() || item.name,
+          image: replacement.src || item.image,
+          alt: replacement.alt || item.alt,
+          weave: replacement.weave?.trim() || item.weave,
+          description: replacement.description?.trim() || item.description,
+        }
+      : item;
   });
   const [activeItem, setActiveItem] = useState<FabricItem>(items[0] || FABRIC_COLLECTION[0]);
   const reduceMotion = useReducedMotion();

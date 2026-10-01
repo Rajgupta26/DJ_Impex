@@ -3,21 +3,13 @@ import "server-only";
 import { readCollection } from "@/lib/admin/store";
 
 /**
- * The image slots in the design that the panel may replace.
+ * The media slots in the design that the panel may replace.
  *
  * A slot is a position, not a picture: the hero's backdrop, the photograph
  * beside the brief, the image paired with a fabric in the collection. Each one
  * ships with a default that lives in the repository, and the panel can put a
- * different image in it or put the original back.
- *
- * This is deliberately not the same as the gallery. A gallery swatch can be
- * deleted because the grid simply gets shorter; a slot cannot, because the
- * design has a hole where it was. So slots are replaced and reverted, never
- * emptied.
- *
- * Adding a slot is a code change on purpose. The registry is what tells the
- * panel that a position exists, what it is called and where it appears, and
- * none of that can be inferred from an image path.
+ * different image/video in it or put the original back, as well as customize
+ * names and descriptions.
  */
 
 export type ImageSlot = {
@@ -29,9 +21,26 @@ export type ImageSlot = {
   defaultAlt: string;
   /** What shape the replacement wants to be. */
   hint: string;
+  mediaType?: "image" | "video";
+  poster?: string;
+  defaultTitle?: string;
+  defaultDescription?: string;
+  defaultWeave?: string;
 };
 
 export const IMAGE_SLOTS: readonly ImageSlot[] = [
+  {
+    id: "about-video",
+    label: "About DJI landing video banner",
+    where: "About DJI page, top hero background",
+    defaultSrc: "/video/luxury-in-every-thread.mp4",
+    defaultAlt: "Luxury in every thread - white silk banner in motion",
+    hint: "Video (MP4, WebM) or high-res landscape banner.",
+    mediaType: "video",
+    poster: "/images/brand-imagery/luxury-white-silk-banner.jpg",
+    defaultTitle: "About DJ Impex & Co.",
+    defaultDescription: "Empowering the textile industry with high-quality fabrics.",
+  },
   {
     id: "home-hero",
     label: "Home hero backdrop",
@@ -56,27 +65,63 @@ export const IMAGE_SLOTS: readonly ImageSlot[] = [
     defaultAlt: "Spinning frames drawing cotton into yarn",
     hint: "Wide landscape, and evenly lit: the page title sits over it.",
   },
-  // One per fabric in the collection showcase. The names come from the copy in
-  // about.md; these are the photographs paired with them.
-  fabricSlot("suiting", "Suiting", "/images/gallery/04-charcoal-herringbone.jpg", "Nabeen Suiting fabric"),
+  // 7 fabrics in "The Nabeen Collection" showcase on the home page.
   fabricSlot(
-    "giza-cotton",
-    "Giza Cotton",
-    "/images/gallery/07-blush-stripe.jpg",
-    "Nabeen Giza Cotton fabric",
+    "atiku",
+    "Atiku",
+    "/images/gallery/02-taupe-dobby.jpg",
+    "Nabeen Atiku dobby woven fabric",
+    "Structured Dobby Weave",
+    "Signature textured cotton renowned in West African couture for its crisp finish and rich body.",
+  ),
+  fabricSlot(
+    "suiting",
+    "Suiting",
+    "/images/gallery/04-charcoal-herringbone.jpg",
+    "Nabeen Suiting fabric in charcoal herringbone broken twill weave",
+    "Wool-Touch Broken Twill",
+    "Substantial drape and structured weave tailored for ceremonial and formal suiting.",
+  ),
+  fabricSlot(
+    "jacquard",
+    "Jacquard",
+    "/images/gallery/01-aqua-jacquard.jpg",
+    "Nabeen Jacquard rich woven pattern cloth",
+    "Embossed Jacquard Weave",
+    "Intricate woven motifs with subtle luster and substantial hand, perfect for statement traditional wear.",
   ),
   fabricSlot(
     "swiss-voile",
     "Swiss Voile",
     "/images/gallery/03-white-jacquard.jpg",
-    "Nabeen Swiss Voile fabric",
+    "Nabeen Swiss Voile fabric in fine white jacquard weave",
+    "High-Twist Fine Voile",
+    "Ultra-fine yarn counts producing a featherweight, silky hand feel with graceful drape.",
   ),
-  fabricSlot("lace", "Lace", "/images/gallery/01-aqua-jacquard.jpg", "Nabeen Lace fabric"),
-  fabricSlot("atiku", "Atiku", "/images/gallery/02-taupe-dobby.jpg", "Nabeen Atiku fabric"),
-  fabricSlot("voile", "Voile", "/images/gallery/06-mint-dobby.jpg", "Nabeen Voile fabric"),
-  fabricSlot("brocade", "Brocade", "/images/gallery/05-camel-check-jacquard.jpg", "Nabeen Brocade fabric"),
-  fabricSlot("cashmere", "Cashmere", "/images/gallery/08-champagne-check.jpg", "Nabeen Cashmere fabric"),
-  fabricSlot("wool", "Wool", "/images/gallery/09-sky-circle-jacquard.jpg", "Nabeen Wool fabric"),
+  fabricSlot(
+    "african-wax-prints",
+    "African Wax Prints",
+    "/images/gallery/05-camel-check-jacquard.jpg",
+    "Nabeen African Wax Prints premium cotton textile",
+    "Vibrant Wax-Resist Cotton",
+    "Richly patterned, color-fast premium cotton textiles celebrated across African celebrations and everyday luxury.",
+  ),
+  fabricSlot(
+    "giza-cotton-shirting",
+    "Giza Cotton Shirting",
+    "/images/gallery/07-blush-stripe.jpg",
+    "Nabeen Giza Cotton Shirting fabric",
+    "Extra-Long Staple Cotton",
+    "Spun from prestigious Giza Egyptian cotton fibers for peerless luster, strength, and crisp garment silhouettes.",
+  ),
+  fabricSlot(
+    "zurique-swiss-men-lace",
+    "Zürique Swiss Men Lace",
+    "/images/gallery/09-sky-circle-jacquard.jpg",
+    "Nabeen Zürique Swiss Men Lace fabric",
+    "Swiss-Inspired Viscose & Cotton",
+    "Refined openwork lace tailored specifically for West African menswear, agbada tailoring, and prestigious occasions.",
+  ),
 
   // 01 Nabeen Classic
   signatureSlot("classic", "Nabeen Classic", "oscar", "Oscar", "/images/gallery/04-charcoal-herringbone.jpg"),
@@ -120,6 +165,8 @@ export const IMAGE_SLOTS: readonly ImageSlot[] = [
     defaultSrc: "/images/wear2care/handover.jpg",
     defaultAlt: "Representatives gathered for the Wear2Care x Ali Nuhu charity donation, beneath the campaign banner",
     hint: "Wide landscape photograph (16:9 or similar). It sits behind the page title.",
+    defaultTitle: "Wear2Care × Ali Nuhu Charity Donation",
+    defaultDescription: "Representatives gathered for the charity donation beneath the campaign banner.",
   },
   {
     id: "wear2care-donation-1",
@@ -128,6 +175,8 @@ export const IMAGE_SLOTS: readonly ImageSlot[] = [
     defaultSrc: "/images/wear2care/handover.jpg",
     defaultAlt: "Representatives gathered for the Wear2Care x Ali Nuhu charity donation, beneath the campaign banner",
     hint: "4:3 landscape photograph showing the handover event.",
+    defaultTitle: "Official Handover",
+    defaultDescription: "Official handover ceremony representing community support.",
   },
   {
     id: "wear2care-donation-2",
@@ -136,17 +185,29 @@ export const IMAGE_SLOTS: readonly ImageSlot[] = [
     defaultSrc: "/images/wear2care/donation.jpg",
     defaultAlt: "Food and household supplies donated through Wear2Care x Ali Nuhu, stacked beneath the campaign banner",
     hint: "4:3 landscape photograph showing the donated goods.",
+    defaultTitle: "Donated Provisions",
+    defaultDescription: "Essential supplies, food, and household goods donated to children's homes.",
   },
 ] as const;
 
-function fabricSlot(id: string, name: string, defaultSrc: string, defaultAlt: string): ImageSlot {
+function fabricSlot(
+  id: string,
+  name: string,
+  defaultSrc: string,
+  defaultAlt: string,
+  defaultWeave?: string,
+  defaultDescription?: string,
+): ImageSlot {
   return {
     id: `fabric-${id}`,
-    label: `Collection: ${name}`,
-    where: "Home page, “Our exclusive collection”",
+    label: `Home Collection: ${name}`,
+    where: "Home page → “The Nabeen Collection” showcase",
     defaultSrc,
     defaultAlt,
-    hint: "Portrait or square. It is shown as a tall panel.",
+    defaultTitle: name,
+    defaultWeave,
+    defaultDescription,
+    hint: "Portrait or square fabric photo.",
   };
 }
 
@@ -163,6 +224,7 @@ function signatureSlot(
     where: `Nabeen page → ${lineName}`,
     defaultSrc,
     defaultAlt: `${lineName} - ${productName} fabric swatch`,
+    defaultTitle: productName,
     hint: "Fabric swatch thumbnail.",
   };
 }
@@ -170,21 +232,43 @@ function signatureSlot(
 export type ResolvedSlot = ImageSlot & {
   src: string;
   alt: string;
+  title: string;
+  description: string;
+  weave: string;
   /** True when the panel has put something else in this slot. */
   replaced: boolean;
 };
 
 /**
- * Every slot with whatever image is actually in it.
+ * Every slot with whatever image is actually in it and customizable text overrides.
  *
  * A failed read falls back to the defaults, so a page keeps its design rather
  * than losing its images because a store was unreachable.
  */
 export async function resolveSlots(): Promise<ResolvedSlot[]> {
-  let overrides = new Map<string, { src: string; alt: string }>();
+  let overrides = new Map<
+    string,
+    {
+      src: string;
+      alt: string;
+      title?: string;
+      description?: string;
+      weave?: string;
+    }
+  >();
+
   try {
     overrides = new Map(
-      (await readCollection("slots")).map((row) => [row.id, { src: row.src, alt: row.alt }]),
+      (await readCollection("slots")).map((row) => [
+        row.id,
+        {
+          src: row.src,
+          alt: row.alt,
+          title: row.title,
+          description: row.description,
+          weave: row.weave,
+        },
+      ]),
     );
   } catch (error) {
     console.error("[slots] Could not read the replacements, using the defaults:", error);
@@ -196,6 +280,9 @@ export async function resolveSlots(): Promise<ResolvedSlot[]> {
       ...slot,
       src: override?.src ?? slot.defaultSrc,
       alt: override?.alt || slot.defaultAlt,
+      title: override?.title || slot.defaultTitle || slot.label,
+      description: override?.description || slot.defaultDescription || "",
+      weave: override?.weave || slot.defaultWeave || "",
       replaced: Boolean(override),
     };
   });
