@@ -43,11 +43,12 @@ export const IMAGE_SLOTS: readonly ImageSlot[] = [
   },
   {
     id: "home-hero",
-    label: "Home hero backdrop",
+    label: "Home hero landing video / backdrop",
     where: "Home page, behind the headline",
     defaultSrc: "/video/nabeen-marconi.jpg",
     defaultAlt: "Marconi by Nabeen: white jacquard shirting in raking light",
-    hint: "Wide landscape. It sits behind white text, so a darker or evener image reads best.",
+    hint: "Video (MP4, WebM) or high-res landscape banner.",
+    mediaType: "video",
   },
   {
     id: "home-brief",

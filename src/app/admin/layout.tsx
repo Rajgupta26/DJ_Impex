@@ -17,14 +17,10 @@ export const metadata: Metadata = {
 const THEME_SCRIPT = `try{if(localStorage.getItem("nabeen-admin-theme")==="dark"){document.documentElement.classList.add("admin-dark")}}catch(e){}`;
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  // A missing password is reported in the panel rather than assumed safe: see
-  // src/middleware.ts for what the password actually does.
-  const unprotected = !process.env.ADMIN_PASSWORD;
-
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
-      <AdminShell unprotected={unprotected}>{children}</AdminShell>
+      <AdminShell>{children}</AdminShell>
     </>
   );
 }

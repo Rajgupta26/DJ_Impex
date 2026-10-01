@@ -147,6 +147,15 @@ export function Modal({
 export type Notice = { tone: "success" | "error" | "info"; message: string } | null;
 
 export function NoticeBar({ notice, onDismiss }: { notice: Notice; onDismiss: () => void }) {
+  // Automatically dismiss notice banner after 10 seconds
+  useEffect(() => {
+    if (!notice) return;
+    const timer = setTimeout(() => {
+      onDismiss();
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [notice, onDismiss]);
+
   if (!notice) return null;
   const tone = {
     success: {

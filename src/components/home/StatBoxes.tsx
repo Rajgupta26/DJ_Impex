@@ -97,13 +97,10 @@ export function StatBoxes({ className = "" }: { className?: string }) {
                   />
                 </div>
 
-                {/* Large Lead Stat Number / Name - BOLD IN REVERTED BRAND COLORS */}
-                <div className="flex min-h-[3.5rem] items-baseline lg:min-h-[4rem]">
+                {/* Large Lead Stat Number / Name - IDENTICAL UNIFIED SCALE & ALIGNMENT ACROSS ALL 4 CARDS */}
+                <div className="flex h-12 items-center lg:h-16">
                   <span
-                    className={`t-number leading-none font-bold tracking-tight ${item.lead.length > 5
-                        ? "text-[clamp(1.2rem,0.75rem+2vw,1.85rem)] uppercase lg:text-[clamp(1.85rem,1.4rem+1.2vw,2.5rem)]"
-                        : "text-[clamp(2.1rem,1.3rem+3vw,3.25rem)] lg:text-[clamp(3.25rem,2.4rem+2.2vw,4.5rem)]"
-                      }`}
+                    className="t-number leading-none tracking-tight text-[clamp(1.75rem,1.25rem+1.5vw,2.45rem)] lg:text-[clamp(2.35rem,1.75rem+1vw,3.15rem)] whitespace-nowrap"
                     style={{ color: item.accentColor }}
                   >
                     {item.lead}

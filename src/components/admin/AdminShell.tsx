@@ -22,7 +22,7 @@ const NAV = [
 const THEME_KEY = "nabeen-admin-theme";
 export const THEME_CLASS = "admin-dark";
 
-export function AdminShell({ children, unprotected }: { children: React.ReactNode; unprotected: boolean }) {
+export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   if (pathname === "/admin/login") {
     return <>{children}</>;
@@ -235,13 +235,6 @@ export function AdminShell({ children, unprotected }: { children: React.ReactNod
               ) : null}
             </div>
           </header>
-
-          {unprotected ? (
-            <p className="border-b border-amber-200 bg-amber-50 px-4 py-2.5 text-xs text-amber-900 lg:px-8 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200">
-              This panel has no sign-in. Set ADMIN_PASSWORD in the environment to require a password before
-              anyone can read enquiries or change content.
-            </p>
-          ) : null}
 
           <main className="mx-auto max-w-6xl px-4 py-6 lg:px-8 lg:py-8">{children}</main>
         </div>

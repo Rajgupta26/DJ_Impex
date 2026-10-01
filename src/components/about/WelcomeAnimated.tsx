@@ -60,7 +60,7 @@ export function WelcomeAnimated({
         </motion.div>
       </div>
 
-      {/* Right Column: Paragraphs gliding up smoothly line-by-line */}
+      {/* Right Column: Paragraphs gliding up smoothly line-by-line with text-justify */}
       <div className="space-y-6">
         {lead ? (
           <motion.p
@@ -68,7 +68,7 @@ export function WelcomeAnimated({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2, margin: "-40px 0px" }}
             transition={{ duration: 0.75, delay: 0.2, ease }}
-            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed"
+            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-justify"
           >
             {withReg(lead)}
           </motion.p>
@@ -80,7 +80,7 @@ export function WelcomeAnimated({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2, margin: "-40px 0px" }}
             transition={{ duration: 0.75, delay: 0.32, ease }}
-            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed"
+            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-justify"
           >
             {withReg(craft)}
           </motion.p>
@@ -92,7 +92,7 @@ export function WelcomeAnimated({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2, margin: "-40px 0px" }}
             transition={{ duration: 0.75, delay: 0.44, ease }}
-            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed"
+            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-justify"
           >
             {withReg(invitation)}
           </motion.p>
