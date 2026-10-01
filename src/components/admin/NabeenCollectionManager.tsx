@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
-import { ImageUp, RotateCcw, Search, Sparkles } from "lucide-react";
+import { ImageUp, Search } from "lucide-react";
 
 import { mb, prepareImage } from "./prepareImage";
 import { request } from "./request";
-import { Badge, buttonPrimary, buttonQuiet, card, NoticeBar, type Notice } from "./ui";
+import { Badge, buttonPrimary, card, NoticeBar, type Notice } from "./ui";
 import type { SlotView } from "./SlotManager";
 
 interface CollectionCategory {
@@ -60,21 +60,6 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
         ? `${slot.label} was replaced, resized from ${mb(prepared.from)} to ${mb(prepared.to)}.`
         : `${slot.label} swatch image was replaced.`,
     });
-  }
-
-  async function revert(slot: SlotView) {
-    setBusyId(slot.id);
-    const result = await request<{ slot: SlotView }>(`/api/admin/slots/${slot.id}`, {
-      method: "DELETE",
-    });
-    setBusyId(null);
-
-    if (!result.ok) {
-      setNotice({ tone: "error", message: `${slot.label}: ${result.error}` });
-      return;
-    }
-    setSlots((current) => current.map((s) => (s.id === slot.id ? { ...s, ...result.data.slot } : s)));
-    setNotice({ tone: "success", message: `${slot.label} is back to the original swatch image.` });
   }
 
   const filteredSlots = useMemo(() => {
@@ -210,17 +195,6 @@ export function NabeenCollectionManager({ initial }: { initial: SlotView[] }) {
                     <ImageUp size={14} aria-hidden="true" />
                     {busyId === slot.id ? "Uploading…" : "Replace"}
                   </button>
-                  {slot.replaced ? (
-                    <button
-                      type="button"
-                      className={buttonQuiet}
-                      disabled={busyId === slot.id}
-                      onClick={() => revert(slot)}
-                    >
-                      <RotateCcw size={14} aria-hidden="true" />
-                      Original
-                    </button>
-                  ) : null}
                 </div>
 
                 <input
