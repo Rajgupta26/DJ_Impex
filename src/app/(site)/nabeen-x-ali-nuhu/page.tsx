@@ -74,14 +74,14 @@ export default async function AliNuhuPage() {
           <p className="mt-10">
             <TrackedLink
               href={whatsappLink(
-                "Hello Nabeen team, I would like to know more about the Wear2Care collection.",
+                "Hello Nabeen team, I was inspired by the Wear2Care initiative and would like to connect with your team.",
               )}
               event="whatsapp_click"
               location="cause"
               className="btn btn-primary"
             >
               <WhatsAppGlyph size={20} />
-              <span>Enquire Now</span>
+              <span>Connect on WhatsApp</span>
             </TrackedLink>
           </p>
         </Container>
