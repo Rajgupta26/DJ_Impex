@@ -8,8 +8,8 @@ import { withReg } from "@/components/ui/Reg";
 export function VisionBanner({
   title,
   strapline,
-  videoSrc = "/video/about-dji-original-a53e1fc3.mp4",
-  poster = "/video/about-dji-original-a53e1fc3.jpg",
+  videoSrc = "/video/about-video.mp4",
+  poster = "/video/luxury-in-every-thread.jpg",
   showOverlay = false,
   preserveFrame = true,
 }: {
@@ -33,16 +33,12 @@ export function VisionBanner({
 
   return (
     <section
+      data-hero
       aria-labelledby="about-banner-title"
-      className="relative overflow-hidden bg-white pt-16 sm:pt-[4.5rem] lg:pt-[5.25rem]"
+      className="site-hero on-dark relative h-[82svh] min-h-[32rem] w-full max-w-full overflow-hidden bg-navy-deep text-white sm:h-[100dvh] sm:min-h-[36rem]"
     >
-      <div
-        className={
-          preserveFrame
-            ? "relative aspect-video w-full overflow-hidden sm:aspect-auto sm:h-[calc(100svh_-_4.5rem)] lg:h-[calc(100svh_-_5.25rem)]"
-            : "relative flex min-h-[calc(100svh-4rem)] sm:min-h-[calc(100svh-4.5rem)] lg:min-h-[calc(100svh-5.25rem)] w-full items-center justify-center overflow-hidden py-16"
-        }
-      >
+      {/* Video / Background Layer extending to top edge */}
+      <div className="absolute inset-0 h-full w-full overflow-hidden">
         {isVideo ? (
           <video
             key={videoSrc}
@@ -59,44 +55,21 @@ export function VisionBanner({
             <source src={videoSrc} type="video/mp4" />
           </video>
         ) : (
-          <div className="pointer-events-none absolute inset-0 z-0">
-            <Image
-              src={videoSrc}
-              alt=""
-              fill
-              priority
-              className="object-cover object-center"
-            />
-          </div>
-        )}
-
-        {/* Soft luxury veil for maximum text contrast and legibility only when overlay is active */}
-        {showOverlay ? (
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-10 bg-white/40 backdrop-blur-[0.5px]"
+          <Image
+            src={videoSrc}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            quality={90}
+            className="object-cover object-center"
           />
-        ) : null}
+        )}
+      </div>
 
-        <div
-          className={
-            showOverlay
-              ? "container-site relative z-20 mx-auto px-4 text-center"
-              : "sr-only"
-          }
-        >
-          <h1
-            id="about-banner-title"
-            className="mx-auto max-w-5xl font-sans text-[clamp(2.15rem,1.35rem+3.25vw,4.05rem)] font-bold leading-[1.14] tracking-tight text-navy drop-shadow-sm"
-          >
-            {withReg(title)}
-          </h1>
-          {strapline ? (
-            <p className="mx-auto mt-4 max-w-3xl font-sans text-lg font-normal leading-relaxed text-slate sm:text-xl lg:text-[1.35rem]">
-              {withReg(strapline)}
-            </p>
-          ) : null}
-        </div>
+      <div className={showOverlay ? "container-site relative z-20 mx-auto px-4 text-center" : "sr-only"}>
+        <h1 id="about-banner-title">{withReg(title)}</h1>
+        {strapline ? <p>{withReg(strapline)}</p> : null}
       </div>
     </section>
   );
