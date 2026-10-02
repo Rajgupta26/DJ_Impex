@@ -16,6 +16,15 @@ export interface FabricItem {
 
 export const FABRIC_COLLECTION: FabricItem[] = [
   {
+    id: "wool",
+    name: "Wool",
+    image: "/images/gallery/swatch-silver-rock.jpg",
+    alt: "Nabeen Wool luxury fabric",
+    weave: "Fine Merino & Worsted Wool",
+    description:
+      "Sumptuous, breathable luxury wool tailored for premier traditional attire, executive suiting, and cold-weather elegance.",
+  },
+  {
     id: "atiku",
     name: "Atiku",
     image: "/images/gallery/02-taupe-dobby.jpg",
@@ -366,7 +375,7 @@ export function FabricHoverShowcase({
         </div>
 
         {/* Collection Tail beneath the fabric list */}
-        <div className={`mt-1 pt-0 -translate-y-[32%] lg:col-start-1 ${showLead ? "lg:row-start-3" : "lg:row-start-2"}`}>
+        <div className={`mt-1 pt-0 translate-y-[38%] lg:col-start-1 ${showLead ? "lg:row-start-3" : "lg:row-start-2"}`}>
           <p className="text-slate">{collectionTail}</p>
         </div>
       </div>

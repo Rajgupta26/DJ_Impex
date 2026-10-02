@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 
 interface StatItem {
   lead: string;
+  leadCaption?: string;
   title: string;
   subtitle: string;
   accentColor: string;
@@ -20,19 +21,20 @@ const STAT_ITEMS: StatItem[] = [
     lead: "Star",
     title: "Export House",
     subtitle: "Govt. of India recognized",
-    accentColor: "var(--color-navy)",
+    accentColor: "var(--color-navy-soft)", // 11.36:1 on white
   },
   {
     lead: "1000+",
     title: "Designs & Varieties",
     subtitle: "Active shirting & suiting catalogue",
-    accentColor: "var(--color-navy)",
+    accentColor: "var(--color-navy)", // 14.43:1 on white
   },
   {
     lead: "Make in India",
+    leadCaption: "Chosen Across Africa",
     title: "Indigenous Craft",
-    subtitle: "Chosen Across Africa",
-    accentColor: "var(--color-navy)",
+    subtitle: "Mil-direct, container load",
+    accentColor: "var(--color-navy-deep)", // 17.68:1 on white
   },
 ];
 
@@ -46,15 +48,14 @@ export function StatBoxes({ className = "" }: { className?: string }) {
   const getBoxAnimation = (index: number) => {
     if (reduceMotion) {
       return {
-        initial: { opacity: 0, x: 0 },
-        whileInView: { opacity: 1, x: 0 },
-        viewport: { once: true, amount: 0.2 },
+        initial: { opacity: 0 },
+        whileInView: { opacity: 1 },
         transition: { duration: 0.01 },
       };
     }
 
     const isLeft = index < 2;
-    const initialX = isLeft ? "var(--reveal-distance-negative,-60px)" : "var(--reveal-distance,60px)";
+    const initialX = isLeft ? -60 : 60;
     // Stagger timing:
     // Left pair: Box 0 (0.15s) -> Box 1 (0.40s)
     // Right pair: Box 2 (0.55s) -> Box 3 (0.80s)
@@ -73,8 +74,8 @@ export function StatBoxes({ className = "" }: { className?: string }) {
   };
 
   return (
-    <div className={`w-full overflow-hidden bg-transparent ${className}`.trim()}>
-      <div className="grid grid-cols-2 lg:grid-cols-4">
+    <div className={`w-full overflow-hidden bg-white ${className}`.trim()}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {STAT_ITEMS.map((item, index) => {
           const anim = getBoxAnimation(index);
 
@@ -85,11 +86,11 @@ export function StatBoxes({ className = "" }: { className?: string }) {
               whileInView={anim.whileInView}
               viewport={anim.viewport}
               transition={anim.transition}
-              className="group relative flex min-w-0 min-h-[11rem] sm:min-h-[14rem] lg:min-h-[15.5rem] flex-col items-center justify-between p-4 text-center sm:p-7 lg:p-9 cursor-pointer transition-colors duration-300 hover:bg-mist/40"
+              className="group relative flex min-h-[12.5rem] sm:min-h-[14rem] lg:min-h-[15.5rem] flex-col justify-between p-6 sm:p-7 lg:p-9 cursor-pointer transition-colors duration-300 hover:bg-mist/40"
             >
-              <div className="flex w-full flex-col items-center">
+              <div>
                 {/* Top Accent Line with 0 -> full length hover effect */}
-                <div className="mx-auto mb-5 block h-[2px] w-14 overflow-hidden rounded-full bg-line/60">
+                <div className="mb-5 block h-[2px] w-14 overflow-hidden rounded-full bg-line/60">
                   <span
                     aria-hidden="true"
                     className="block h-full w-0 transition-all duration-500 ease-out group-hover:w-full group-active:w-full"
@@ -97,18 +98,31 @@ export function StatBoxes({ className = "" }: { className?: string }) {
                   />
                 </div>
 
-                {/* Large Lead Stat Number / Name - CENTERED */}
-                <div className="flex h-12 items-center justify-center text-center lg:h-16">
+                {/* Large Lead Stat Number / Name - BOLD IN REVERTED BRAND COLORS */}
+                <div
+                  className={`flex items-start ${
+                    item.leadCaption ? "" : "min-h-[3.5rem] lg:min-h-[4rem]"
+                  }`}
+                >
                   <span
-                    className="t-number leading-none tracking-tight text-[clamp(1.75rem,1.25rem+1.5vw,2.45rem)] lg:text-[clamp(2.35rem,1.75rem+1vw,3.15rem)] whitespace-nowrap"
+                    className={`t-number leading-none font-bold tracking-tight ${
+                      item.lead === "Make in India"
+                        ? "whitespace-nowrap text-[clamp(1.5rem,2.6vw,2.75rem)]"
+                        : "text-[clamp(3.25rem,2.4rem+2.2vw,4.5rem)]"
+                    }`}
                     style={{ color: item.accentColor }}
                   >
                     {item.lead}
                   </span>
                 </div>
+                {item.leadCaption && (
+                  <p className="mt-2 text-xs font-medium text-slate lg:text-sm leading-relaxed">
+                    {item.leadCaption}
+                  </p>
+                )}
               </div>
 
-              <div className="mt-5 w-full border-t border-line/50 pt-3 text-center">
+              <div className="mt-5 border-t border-line/50 pt-3">
                 {/* Title */}
                 <h3 className="text-sm font-semibold tracking-normal text-navy lg:text-base">
                   {item.title}
@@ -130,7 +144,7 @@ export function StatBoxes({ className = "" }: { className?: string }) {
               {index % 2 === 0 && (
                 <span
                   aria-hidden="true"
-                  className="block lg:hidden absolute right-0 top-1/2 -translate-y-1/2 h-20 w-px bg-line/70 pointer-events-none"
+                  className="hidden sm:block lg:hidden absolute right-0 top-1/2 -translate-y-1/2 h-20 w-px bg-line/70 pointer-events-none"
                 />
               )}
             </motion.div>

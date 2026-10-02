@@ -81,7 +81,7 @@ export default async function AliNuhuPage() {
               className="btn btn-primary"
             >
               <WhatsAppGlyph size={20} />
-              <span>Connect on WhatsApp</span>
+              <span>Enquire Now</span>
             </TrackedLink>
           </p>
         </Container>

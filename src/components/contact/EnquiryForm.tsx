@@ -322,7 +322,7 @@ export function EnquiryForm({
 
           <div className="grid gap-2">
             <label htmlFor={`${id}-message`} className="t-small font-semibold">
-              Message or quantities
+              Message
             </label>
             <textarea
               id={`${id}-message`}

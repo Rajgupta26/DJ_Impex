@@ -67,7 +67,15 @@ export const IMAGE_SLOTS: readonly ImageSlot[] = [
     defaultAlt: "Spinning frames drawing cotton into yarn",
     hint: "Wide landscape, and evenly lit: the page title sits over it.",
   },
-  // 7 fabrics in "The Nabeen Collection" showcase on the home page.
+  // 8 fabrics in "The Nabeen Collection" showcase on the home page.
+  fabricSlot(
+    "wool",
+    "Wool",
+    "/images/gallery/swatch-silver-rock.jpg",
+    "Nabeen Wool luxury fabric",
+    "Fine Merino & Worsted Wool",
+    "Sumptuous, breathable luxury wool tailored for premier traditional attire, executive suiting, and cold-weather elegance.",
+  ),
   fabricSlot(
     "atiku",
     "Atiku",

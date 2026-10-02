@@ -1,17 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef, type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { withReg } from "@/components/ui/Reg";
-import { DJIAnimatedLogo } from "@/components/home/DJIAnimatedLogo";
 
 interface BriefAnimatedProps {
   title: string;
   tagline?: string;
   paragraphs: string[];
-  linkLabel: string;
+  linkLabel?: string;
   trustMarksSlot?: ReactNode;
   /** The replaceable photograph beside the brief. See lib/slots. */
   imageSrc?: string;
@@ -20,9 +20,7 @@ interface BriefAnimatedProps {
 
 export function BriefAnimated({
   title,
-  tagline,
   paragraphs,
-  linkLabel,
   trustMarksSlot,
 }: BriefAnimatedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -78,11 +76,13 @@ export function BriefAnimated({
 
         <div className="mt-8 grid gap-5">
           {paragraphs.map((paragraph, index) => {
-            const formatted = paragraph.replace(/D J Impex & Co\./g, "D\u00A0J\u00A0Impex\u00A0&\u00A0Co.");
+            const formatted = paragraph
+              .replace(/D\s*J\s*Impex\s*&\s*Co\./g, "D\u2009J Impex & Co.")
+              .replace(/DJ\s*Impex/g, "D\u2009J Impex");
             return (
               <motion.p
-                key={paragraph}
-                className="measure text-left text-slate lg:text-justify"
+                key={index}
+                className="measure text-left text-slate"
                 variants={leftVariants}
                 custom={index + 1}
               >
@@ -99,13 +99,11 @@ export function BriefAnimated({
         >
           <Link
             href="/about"
-            className="group inline-flex flex-col items-start gap-1 transition-opacity hover:opacity-80"
+            className="group inline-flex items-center gap-2 border-b border-navy pb-1 font-sans text-sm font-semibold text-navy transition-all hover:opacity-80 sm:text-base"
           >
-            <span className="inline-block border-b border-navy pb-0.5 font-sans text-xs font-semibold tracking-[0.16em] text-slate uppercase transition-colors group-hover:text-navy sm:text-sm">
-            Crafted In India
-            </span>
-            <span className="inline-block border-b border-navy pb-0.5 font-sans text-xs font-semibold tracking-[0.16em] text-slate uppercase transition-colors group-hover:text-navy sm:text-sm">
-            Chosen Across Africa
+            <span>Read Our Story</span>
+            <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">
+              →
             </span>
           </Link>
         </motion.div>
@@ -130,14 +128,21 @@ export function BriefAnimated({
         }}
       >
         <div className="relative flex items-center justify-center">
-          <DJIAnimatedLogo size={242} />
+          <Image
+            src="/images/logos/dji-logo-transparent.png"
+            alt="D J Impex & Co."
+            width={242}
+            height={242}
+            priority
+            className="h-auto w-[200px] object-contain sm:w-[242px]"
+          />
         </div>
 
-        <div className="mt-4 flex flex-col items-center justify-center text-center -translate-x-[20%]">
-          <p className="text-xs font-bold tracking-[0.2em] text-navy uppercase sm:text-sm">
-            DJ Impex & Co.
+        <div className="mt-4 flex flex-col items-center justify-center text-center -translate-x-[15%]">
+          <p className="text-[16.5px] font-bold tracking-normal text-navy uppercase sm:text-[18.5px]">
+            D{"\u2009"}J Impex & Co.
           </p>
-          <p className="mt-1 text-xs font-medium text-slate">
+          <p className="mt-1 text-[13px] font-medium text-slate sm:text-[14.5px]">
             Star Export House · Est. 1995
           </p>
         </div>

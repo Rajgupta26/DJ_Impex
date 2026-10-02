@@ -20,6 +20,11 @@ import {
 import type { SlotView } from "./SlotManager";
 
 const FABRIC_DEFAULTS: Record<string, { name: string; weave: string; description: string }> = {
+  "fabric-wool": {
+    name: "Wool",
+    weave: "Fine Merino & Worsted Wool",
+    description: "Sumptuous, breathable luxury wool tailored for premier traditional attire, executive suiting, and cold-weather elegance.",
+  },
   "fabric-atiku": {
     name: "Atiku",
     weave: "Structured Dobby Weave",
@@ -174,11 +179,11 @@ export function HomeCollectionManager({ initial }: { initial: SlotView[] }) {
       <div>
         <h1 className="text-2xl font-semibold">The Nabeen Collection</h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          7 signature fabrics featured in the interactive home page showcase ·{" "}
+          8 signature fabrics featured in the interactive home page showcase ·{" "}
           {replacedCount === 0 ? "none customized" : `${replacedCount} customized`}
         </p>
         <p className="mt-2 max-w-2xl text-xs text-slate-500 dark:text-slate-400">
-          Upload custom high-resolution photographs or edit fabric names, weave specifications, and descriptions for any of the 7 fabrics on the home page showcase.
+          Upload custom high-resolution photographs or edit fabric names, weave specifications, and descriptions for any of the 8 fabrics on the home page showcase.
         </p>
       </div>
 

@@ -153,33 +153,29 @@ export function TestimonialsCarousel({
 
       {/* High-Contrast Foreground Content */}
       <div className="container-site relative z-10">
-        <h2 className="t-h2 w-full max-w-none text-white sm:-translate-x-2">
-          {heading.includes("|") ? (
-            heading.split("|").map((line, i) => (
-              <span
-                key={i}
-                className={`block lg:whitespace-nowrap ${
-                  i > 0 ? "text-[clamp(1.1rem,0.8rem+1.21vw,1.925rem)] opacity-90" : ""
-                }`}
-              >
-                {withReg(line.trim())}
-              </span>
-            ))
-          ) : heading.includes("\n") ? (
-            heading.split("\n").map((line, i) => (
-              <span
-                key={i}
-                className={`block lg:whitespace-nowrap ${
-                  i > 0 ? "text-[clamp(1.1rem,0.8rem+1.21vw,1.925rem)] opacity-90" : ""
-                }`}
-              >
-                {withReg(line.trim())}
-              </span>
-            ))
+        <div className="w-full max-w-none sm:-translate-x-2">
+          {heading.includes("|") || heading.includes("\n") ? (
+            (() => {
+              const parts = heading.includes("|") ? heading.split("|") : heading.split("\n");
+              const mainTitle = parts[0]?.trim() || "";
+              const subTitle = parts.slice(1).join(" ").trim();
+              return (
+                <>
+                  <h2 className="t-h2 text-white sm:whitespace-nowrap">
+                    {withReg(mainTitle)}
+                  </h2>
+                  {subTitle ? (
+                    <p className="mt-3.5 text-[clamp(1.1rem,0.95rem+0.5vw,1.45rem)] font-light text-white/85 sm:whitespace-nowrap">
+                      {withReg(subTitle)}
+                    </p>
+                  ) : null}
+                </>
+              );
+            })()
           ) : (
-            <span className="block sm:whitespace-nowrap">{withReg(heading)}</span>
+            <h2 className="t-h2 text-white sm:whitespace-nowrap">{withReg(heading)}</h2>
           )}
-        </h2>
+        </div>
 
         <div ref={emblaRef} className="mt-7 overflow-hidden sm:mt-8">
           <div className="flex">

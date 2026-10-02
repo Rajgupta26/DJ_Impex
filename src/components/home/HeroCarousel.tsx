@@ -168,7 +168,7 @@ export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]
             className="btn btn-on-dark cursor-pointer"
           >
             <WhatsAppGlyph size={20} />
-            <span>Enquire on WhatsApp</span>
+            <span>Enquire Now</span>
           </button>
         </div>
       </div>
