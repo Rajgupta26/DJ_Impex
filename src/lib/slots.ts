@@ -38,7 +38,7 @@ export const IMAGE_SLOTS: readonly ImageSlot[] = [
     hint: "Video (MP4, WebM) or high-res landscape banner.",
     mediaType: "video",
     poster: "/video/about-dji-original-a53e1fc3.jpg",
-    defaultTitle: "About DJ Impex & Co.",
+    defaultTitle: "About D J Impex & Co.",
     defaultDescription: "Empowering the textile industry with high-quality fabrics.",
   },
   {

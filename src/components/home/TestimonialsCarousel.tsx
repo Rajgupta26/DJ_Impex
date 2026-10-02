@@ -109,7 +109,7 @@ export function TestimonialsCarousel({
 
   return (
     <section
-      className="on-dark bg-navy relative overflow-hidden py-10 text-white sm:py-12 lg:py-14"
+      className="on-dark bg-navy relative overflow-hidden pt-24 pb-12 text-white sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16"
       aria-roledescription="carousel"
       aria-label="What our trade partners say"
       onFocusCapture={() => setPaused(true)}
@@ -160,16 +160,16 @@ export function TestimonialsCarousel({
               const mainTitle = parts[0]?.trim() || "";
               const subTitle = parts.slice(1).join(" ").trim();
               return (
-                <>
+                <div className="space-y-1 sm:space-y-1.5">
                   <h2 className="t-h2 text-white sm:whitespace-nowrap">
                     {withReg(mainTitle)}
                   </h2>
                   {subTitle ? (
-                    <p className="mt-6 sm:mt-7 text-[clamp(1.1rem,0.95rem+0.5vw,1.45rem)] font-light text-white/85 sm:whitespace-nowrap">
+                    <p className="text-base sm:text-lg lg:text-xl font-normal text-white/80 tracking-wide sm:whitespace-nowrap">
                       {withReg(subTitle)}
                     </p>
                   ) : null}
-                </>
+                </div>
               );
             })()
           ) : (
@@ -177,7 +177,7 @@ export function TestimonialsCarousel({
           )}
         </div>
 
-        <div ref={emblaRef} className="mt-7 overflow-hidden sm:mt-8">
+        <div ref={emblaRef} className="mt-10 overflow-hidden sm:mt-12 lg:mt-14">
           <div className="flex">
             {items.map((item, index) => (
               <figure

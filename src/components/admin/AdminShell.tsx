@@ -199,7 +199,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 >
                   <div className="px-3 py-2.5 border-b border-slate-100 dark:border-slate-800">
                     <p className="text-xs font-semibold text-slate-900 dark:text-slate-100">
-                      DJ Impex Admin
+                      D J Impex Admin
                     </p>
                     <p className="truncate text-xs text-slate-500 dark:text-slate-400">
                       admin@djimpex.in

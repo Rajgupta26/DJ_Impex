@@ -5,7 +5,7 @@ import { checkAdminSession } from "@/app/actions/admin-auth";
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
 
 export const metadata: Metadata = {
-  title: "Sign In · DJ Impex Admin",
+  title: "Sign In · D J Impex Admin",
   robots: { index: false, follow: false, nocache: true },
 };
 

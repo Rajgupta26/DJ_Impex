@@ -32,7 +32,7 @@ export function AdminLoginForm() {
           <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center shrink-0">
             <Image
               src="/images/logos/dji-logo-transparent.png"
-              alt="DJ Impex"
+              alt="D J Impex"
               width={64}
               height={64}
               priority
@@ -41,7 +41,7 @@ export function AdminLoginForm() {
           </div>
           <div>
             <span className="block font-sans text-2xl font-bold tracking-tight text-navy">
-              DJ Impex
+              D J Impex
             </span>
             <span className="block text-xs font-semibold text-slate tracking-wide">
               Nabeen<sup className="text-[0.65em]">®</sup> Admin Portal
@@ -58,7 +58,7 @@ export function AdminLoginForm() {
             <div className="mx-auto mb-3 flex items-center justify-center">
               <Image
                 src="/images/logos/dji-logo-transparent.png"
-                alt="DJ Impex"
+                alt="D J Impex"
                 width={52}
                 height={52}
                 priority
@@ -179,7 +179,7 @@ export function AdminLoginForm() {
       {/* Page Footer */}
       <footer className="relative z-10 py-3.5 text-center text-xs text-slate-400">
         <p>
-          © {new Date().getFullYear()} DJ Impex &amp; Co. ·{" "}
+          © {new Date().getFullYear()} D J Impex &amp; Co. ·{" "}
           <Link href="/" className="hover:text-navy transition font-medium">
             Back to Website
           </Link>

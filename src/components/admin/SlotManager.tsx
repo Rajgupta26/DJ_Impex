@@ -268,7 +268,7 @@ export function SlotManager({ initial }: { initial: SlotView[] }) {
                   value={editForm.title}
                   onChange={(e) => setEditForm((f) => ({ ...f, title: e.target.value }))}
                   className={inputClass}
-                  placeholder="e.g. DJ IMPEX & CO."
+                  placeholder="e.g. D J IMPEX & CO."
                 />
               )}
             </Field>

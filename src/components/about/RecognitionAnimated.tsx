@@ -83,7 +83,7 @@ export function RecognitionAnimated({
             <span className="h-full w-14 bg-navy" />
           </motion.div>
 
-          {/* Body Paragraphs with Justified Alignment */}
+          {/* Body Paragraphs */}
           <div className="mt-8 space-y-4">
             {paragraphs.map((paragraph, index) => (
               <motion.p
@@ -92,7 +92,7 @@ export function RecognitionAnimated({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, delay: 0.15 + index * 0.1, ease }}
-                className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-justify"
+                className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-left"
               >
                 {withReg(paragraph)}
               </motion.p>
@@ -103,7 +103,7 @@ export function RecognitionAnimated({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.15 + paragraphs.length * 0.1, ease }}
-              className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-justify"
+              className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-left"
             >
               {withReg(tradeNotice)}
             </motion.p>

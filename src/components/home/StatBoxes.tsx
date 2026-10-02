@@ -33,7 +33,7 @@ const STAT_ITEMS: StatItem[] = [
     lead: "Make in India",
     leadCaption: "Chosen Across Africa",
     title: "Indigenous Craft",
-    subtitle: "Mil-direct, container load",
+    subtitle: "Mill-direct, container load",
     accentColor: "var(--color-navy-deep)", // 17.68:1 on white
   },
 ];

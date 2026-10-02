@@ -13,21 +13,21 @@ import { buildMetadata, pageTitle } from "@/lib/seo";
 import { slotMap } from "@/lib/slots";
 
 export const metadata: Metadata = buildMetadata({
-  title: pageTitle("About DJ Impex & Co. & Our Vision"),
+  title: pageTitle("About D J Impex & Co. & Our Vision"),
   description:
-    "DJ Impex & Co. has sourced, manufactured, supplied and traded fabric from Mumbai since 1995, exporting to Africa and the Middle East under the brand Nabeen®. Guided by our five foundational pillars.",
+    "D J Impex & Co. has sourced, manufactured, supplied and traded fabric from Mumbai since 1995, exporting to Africa and the Middle East under the brand Nabeen®. Guided by our five foundational pillars.",
   path: "/about",
 });
 
 export default async function AboutPage() {
   const about = getPage("about");
-  const aboutHead = section(about, "about-dj-impex-co-dji") || section(about, "about-d-j-impex-co-dji");
+  const aboutHead = section(about, "about-d-j-impex-co-dji") || section(about, "about-dj-impex-co-dji");
 
   const vision = getPage("vision");
   const visionHead = section(vision, "our-vision");
   const pillars = section(vision, "the-five-pillars");
 
-  const fallbackTitle = field(aboutHead, "page-title-h1") || "About DJ Impex & Co.";
+  const fallbackTitle = field(aboutHead, "page-title-h1") || "About D J Impex & Co.";
   const fallbackStrapline = field(aboutHead, "strapline") || "Empowering the textile industry with high-quality fabrics.";
 
   const slots = await slotMap();

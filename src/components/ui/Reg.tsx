@@ -48,14 +48,14 @@ export function withReg(text: string): ReactNode {
     if (/^(DJ\s*Impex\s*&\s*Co\.|D\s*J\s*Impex\s*&\s*Co\.)$/i.test(part)) {
       return (
         <span key={partIndex} className="whitespace-nowrap notranslate" translate="no">
-          DJ Impex &amp; Co.
+          D J Impex &amp; Co.
         </span>
       );
     }
     if (/^(DJ\s*Impex|D\s*J\s*Impex)$/i.test(part)) {
       return (
         <span key={partIndex} className="whitespace-nowrap notranslate" translate="no">
-          DJ Impex
+          D J Impex
         </span>
       );
     }
