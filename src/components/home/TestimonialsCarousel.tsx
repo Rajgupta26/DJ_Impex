@@ -165,7 +165,7 @@ export function TestimonialsCarousel({
                     {withReg(mainTitle)}
                   </h2>
                   {subTitle ? (
-                    <p className="mt-3.5 text-[clamp(1.1rem,0.95rem+0.5vw,1.45rem)] font-light text-white/85 sm:whitespace-nowrap">
+                    <p className="mt-6 sm:mt-7 text-[clamp(1.1rem,0.95rem+0.5vw,1.45rem)] font-light text-white/85 sm:whitespace-nowrap">
                       {withReg(subTitle)}
                     </p>
                   ) : null}

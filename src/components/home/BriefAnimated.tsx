@@ -138,11 +138,11 @@ export function BriefAnimated({
           />
         </div>
 
-        <div className="mt-4 flex flex-col items-center justify-center text-center -translate-x-[15%]">
-          <p className="text-[16.5px] font-bold tracking-normal text-navy uppercase sm:text-[18.5px]">
+        <div className="mt-4 flex flex-col items-center justify-center text-center -translate-x-[6%]">
+          <p className="text-[19.5px] font-bold tracking-normal text-navy uppercase sm:text-[22px]">
             D{"\u2009"}J Impex & Co.
           </p>
-          <p className="mt-1 text-[13px] font-medium text-slate sm:text-[14.5px]">
+          <p className="mt-1.5 text-[14px] font-medium text-slate sm:text-[15.5px]">
             Star Export House · Est. 1995
           </p>
         </div>

@@ -74,8 +74,8 @@ export function StatBoxes({ className = "" }: { className?: string }) {
   };
 
   return (
-    <div className={`w-full overflow-hidden bg-white ${className}`.trim()}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+    <div className={`w-full overflow-hidden bg-transparent ${className}`.trim()}>
+      <div className="grid grid-cols-2 lg:grid-cols-4">
         {STAT_ITEMS.map((item, index) => {
           const anim = getBoxAnimation(index);
 
@@ -86,11 +86,13 @@ export function StatBoxes({ className = "" }: { className?: string }) {
               whileInView={anim.whileInView}
               viewport={anim.viewport}
               transition={anim.transition}
-              className="group relative flex min-h-[12.5rem] sm:min-h-[14rem] lg:min-h-[15.5rem] flex-col justify-between p-6 sm:p-7 lg:p-9 cursor-pointer transition-colors duration-300 hover:bg-mist/40"
+              className={`group relative flex min-h-[11rem] sm:min-h-[14rem] lg:min-h-[15.5rem] flex-col justify-between p-4 sm:p-7 lg:p-9 cursor-pointer transition-colors duration-300 hover:bg-mist/40 ${
+                index < 2 ? "border-b border-line/50 lg:border-b-0" : ""
+              }`}
             >
               <div>
                 {/* Top Accent Line with 0 -> full length hover effect */}
-                <div className="mb-5 block h-[2px] w-14 overflow-hidden rounded-full bg-line/60">
+                <div className="mb-4 sm:mb-5 block h-[2px] w-10 sm:w-14 overflow-hidden rounded-full bg-line/60">
                   <span
                     aria-hidden="true"
                     className="block h-full w-0 transition-all duration-500 ease-out group-hover:w-full group-active:w-full"
@@ -101,14 +103,14 @@ export function StatBoxes({ className = "" }: { className?: string }) {
                 {/* Large Lead Stat Number / Name - BOLD IN REVERTED BRAND COLORS */}
                 <div
                   className={`flex items-start ${
-                    item.leadCaption ? "" : "min-h-[3.5rem] lg:min-h-[4rem]"
+                    item.leadCaption ? "" : "min-h-[2.5rem] sm:min-h-[3.5rem] lg:min-h-[4rem]"
                   }`}
                 >
                   <span
                     className={`t-number leading-none font-bold tracking-tight ${
                       item.lead === "Make in India"
-                        ? "whitespace-nowrap text-[clamp(1.5rem,2.6vw,2.75rem)]"
-                        : "text-[clamp(3.25rem,2.4rem+2.2vw,4.5rem)]"
+                        ? "whitespace-nowrap text-[clamp(1.15rem,3.8vw,2.75rem)]"
+                        : "text-[clamp(2.1rem,1.8rem+2.2vw,4.5rem)]"
                     }`}
                     style={{ color: item.accentColor }}
                   >
@@ -116,35 +118,36 @@ export function StatBoxes({ className = "" }: { className?: string }) {
                   </span>
                 </div>
                 {item.leadCaption && (
-                  <p className="mt-2 text-xs font-medium text-slate lg:text-sm leading-relaxed">
+                  <p className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs font-medium text-slate lg:text-sm leading-relaxed">
                     {item.leadCaption}
                   </p>
                 )}
               </div>
 
-              <div className="mt-5 border-t border-line/50 pt-3">
+              <div className="mt-4 sm:mt-5 border-t border-line/50 pt-2.5 sm:pt-3">
                 {/* Title */}
-                <h3 className="text-sm font-semibold tracking-normal text-navy lg:text-base">
+                <h3 className="text-xs sm:text-sm font-semibold tracking-normal text-navy lg:text-base">
                   {item.title}
                 </h3>
 
                 {/* Subtitle */}
-                <p className="mt-1 text-xs text-slate lg:text-sm leading-relaxed">
+                <p className="mt-1 text-[11px] sm:text-xs text-slate lg:text-sm leading-relaxed">
                   {item.subtitle}
                 </p>
               </div>
 
-              {/* Smaller, centered subtle vertical dividing hairline (NOT a full box border) */}
+              {/* Dividing hairline on desktop */}
               {index < 3 && (
                 <span
                   aria-hidden="true"
                   className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 h-20 w-px bg-line/70 pointer-events-none"
                 />
               )}
+              {/* Vertical dividing hairline for 2-column mobile layout */}
               {index % 2 === 0 && (
                 <span
                   aria-hidden="true"
-                  className="hidden sm:block lg:hidden absolute right-0 top-1/2 -translate-y-1/2 h-20 w-px bg-line/70 pointer-events-none"
+                  className="block lg:hidden absolute right-0 top-1/2 -translate-y-1/2 h-20 w-px bg-line/70 pointer-events-none"
                 />
               )}
             </motion.div>
