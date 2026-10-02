@@ -17,7 +17,7 @@ export function ContactSection() {
   const site = getSite();
 
   return (
-    <section id="contact" className="relative overflow-hidden scroll-mt-20 lg:scroll-mt-24 border-t border-line bg-white pt-[var(--spacing-section)] pb-8 sm:pb-12">
+    <section id="contact" className="relative overflow-hidden scroll-mt-12 lg:scroll-mt-14 border-t border-line bg-white pt-[calc(var(--spacing-section)*0.73)] pb-8 sm:pb-12">
       {/* Luxury white fabric drape background */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <Image

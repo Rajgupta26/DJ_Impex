@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { useRef, type ReactNode } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
 import { withReg } from "@/components/ui/Reg";
-import { useMediaQuery } from "@/lib/useMediaQuery";
-import { TextLink } from "@/components/ui/TextLink";
 import { DJIAnimatedLogo } from "@/components/home/DJIAnimatedLogo";
 
 interface BriefAnimatedProps {
@@ -29,19 +27,7 @@ export function BriefAnimated({
 }: BriefAnimatedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
-  const compact = useMediaQuery("(max-width: 1023px)");
   const ease = [0.22, 1, 0.36, 1] as const;
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "center center"],
-  });
-
-  // Scroll-linked transforms:
-  // Starts large and prominent as user scrolls down, then scales into its resting place
-  const logoScale = useTransform(scrollYProgress, [0, 1], reduceMotion ? [1, 1] : [compact ? 1.15 : 1.85, 1]);
-  const logoY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [-35, 0]);
-  const logoOpacity = useTransform(scrollYProgress, [0, 0.2, 1], [0.3, 0.85, 1]);
 
   const leftVariants = {
     hidden: { opacity: 0, x: reduceMotion ? 0 : "var(--reveal-distance-negative,-50px)" },
@@ -131,9 +117,9 @@ export function BriefAnimated({
         ) : null}
       </motion.div>
 
-      {/* Right Column: Just the DJI Logo and Text (Increased logo size by 20%) */}
+      {/* Right Column: Just the DJI Logo and Text */}
       <motion.div
-        className="relative mx-auto flex w-full max-w-[320px] flex-col items-center justify-center text-center sm:max-w-[360px] lg:w-[360px] lg:self-center"
+        className="relative mx-auto flex w-full max-w-[340px] flex-col items-center justify-center text-center sm:max-w-[380px] lg:w-[380px] lg:self-center"
         initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: "var(--reveal-distance,50px)" }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.25, margin: "-60px 0px" }}
@@ -143,14 +129,11 @@ export function BriefAnimated({
           ease,
         }}
       >
-        <motion.div
-          style={reduceMotion ? {} : { scale: logoScale, y: logoY, opacity: logoOpacity }}
-          className="relative flex items-center justify-center origin-center"
-        >
-          <DJIAnimatedLogo size={210} />
-        </motion.div>
+        <div className="relative flex items-center justify-center">
+          <DJIAnimatedLogo size={242} />
+        </div>
 
-        <div className="mt-3 w-full translate-x-[10%] text-center">
+        <div className="mt-4 flex flex-col items-center justify-center text-center -translate-x-[20%]">
           <p className="text-xs font-bold tracking-[0.2em] text-navy uppercase sm:text-sm">
             DJ Impex & Co.
           </p>

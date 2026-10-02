@@ -23,8 +23,6 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    overflow-x: clip;
-    max-width: 100%;
   }
 
   *,
@@ -36,8 +34,6 @@
   body {
     margin: 0;
     text-wrap: pretty;
-    overflow-x: clip;
-    max-width: 100%;
   }
 
   h1,

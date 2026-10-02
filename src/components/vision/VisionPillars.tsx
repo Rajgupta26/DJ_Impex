@@ -145,7 +145,7 @@ export function VisionPillars({
                       {withReg(pillar.lead ?? "")}
                     </motion.h3>
                     <motion.p
-                      className="text-slate font-sans mt-3 max-w-[42rem] font-normal text-base sm:text-lg leading-relaxed lg:mt-1.5 lg:pl-[20%]"
+                      className="text-slate font-sans mt-3 max-w-[42rem] font-normal text-base sm:text-lg leading-relaxed lg:mt-1.5"
                       variants={textVariants}
                       custom={index}
                     >

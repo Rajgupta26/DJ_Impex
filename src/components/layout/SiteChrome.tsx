@@ -41,7 +41,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           }}
         />
 
-        <main id="main" className="overflow-x-clip max-w-full">{children}</main>
+        <main id="main">{children}</main>
 
         <Footer />
 

@@ -73,11 +73,10 @@ export function VisionBanner({
 
   return (
     <section
-      data-hero
       aria-labelledby="about-banner-title"
-      className="relative overflow-hidden bg-[#fafbfc]"
+      className="relative overflow-hidden bg-white pt-16 sm:pt-[4.5rem] lg:pt-[5.25rem]"
     >
-      <div className="relative flex h-[100dvh] min-h-[100svh] w-full items-center justify-center overflow-hidden">
+      <div className="relative flex min-h-[24rem] w-full items-center justify-center overflow-hidden py-16 sm:min-h-[calc(100svh-4.5rem)] lg:min-h-[calc(100svh-5.25rem)]">
         {/* Background Video (Dual-buffered continuous seamless loop - 100% crystal clear full screen) */}
         {isVideo ? (
           <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">

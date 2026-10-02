@@ -85,11 +85,11 @@ export function StatBoxes({ className = "" }: { className?: string }) {
               whileInView={anim.whileInView}
               viewport={anim.viewport}
               transition={anim.transition}
-              className="group relative flex min-w-0 min-h-[11rem] sm:min-h-[14rem] lg:min-h-[15.5rem] flex-col justify-between p-4 sm:p-7 lg:p-9 cursor-pointer transition-colors duration-300 hover:bg-mist/40"
+              className="group relative flex min-w-0 min-h-[11rem] sm:min-h-[14rem] lg:min-h-[15.5rem] flex-col items-center justify-between p-4 text-center sm:p-7 lg:p-9 cursor-pointer transition-colors duration-300 hover:bg-mist/40"
             >
-              <div>
+              <div className="flex w-full flex-col items-center">
                 {/* Top Accent Line with 0 -> full length hover effect */}
-                <div className="mb-5 block h-[2px] w-14 overflow-hidden rounded-full bg-line/60">
+                <div className="mx-auto mb-5 block h-[2px] w-14 overflow-hidden rounded-full bg-line/60">
                   <span
                     aria-hidden="true"
                     className="block h-full w-0 transition-all duration-500 ease-out group-hover:w-full group-active:w-full"
@@ -97,8 +97,8 @@ export function StatBoxes({ className = "" }: { className?: string }) {
                   />
                 </div>
 
-                {/* Large Lead Stat Number / Name - IDENTICAL UNIFIED SCALE & ALIGNMENT ACROSS ALL 4 CARDS */}
-                <div className="flex h-12 items-center lg:h-16">
+                {/* Large Lead Stat Number / Name - CENTERED */}
+                <div className="flex h-12 items-center justify-center text-center lg:h-16">
                   <span
                     className="t-number leading-none tracking-tight text-[clamp(1.75rem,1.25rem+1.5vw,2.45rem)] lg:text-[clamp(2.35rem,1.75rem+1vw,3.15rem)] whitespace-nowrap"
                     style={{ color: item.accentColor }}
@@ -108,7 +108,7 @@ export function StatBoxes({ className = "" }: { className?: string }) {
                 </div>
               </div>
 
-              <div className="mt-5 border-t border-line/50 pt-3">
+              <div className="mt-5 w-full border-t border-line/50 pt-3 text-center">
                 {/* Title */}
                 <h3 className="text-sm font-semibold tracking-normal text-navy lg:text-base">
                   {item.title}

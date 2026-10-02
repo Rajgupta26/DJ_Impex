@@ -366,7 +366,7 @@ export function FabricHoverShowcase({
         </div>
 
         {/* Collection Tail beneath the fabric list */}
-        <div className={`mt-6 pt-2 lg:col-start-1 ${showLead ? "lg:row-start-3" : "lg:row-start-2"}`}>
+        <div className={`mt-1 pt-0 -translate-y-[32%] lg:col-start-1 ${showLead ? "lg:row-start-3" : "lg:row-start-2"}`}>
           <p className="text-slate">{collectionTail}</p>
         </div>
       </div>
