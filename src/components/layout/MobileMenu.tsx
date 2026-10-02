@@ -103,7 +103,7 @@ export function MobileMenu({
               className="btn btn-on-dark w-full justify-center"
             >
               <WhatsAppGlyph size={20} />
-              <span>Enquire on WhatsApp</span>
+              <span>Enquire Now</span>
             </a>
 
             <div className="mt-6 grid gap-3 text-white/75">
