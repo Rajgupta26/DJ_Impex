@@ -35,7 +35,9 @@ export default async function AboutPage() {
 
   const title = videoSlot?.title || fallbackTitle;
   const strapline = videoSlot?.description || fallbackStrapline;
-  const videoSrc = videoSlot?.src || "/video/luxury-in-every-thread.mp4";
+  const videoSrc = videoSlot?.src || "/video/about-dji-original-a53e1fc3.mp4";
+  const isSuppliedVideo =
+    videoSrc.split(/[?#]/)[0] === "/video/about-dji-original-a53e1fc3.mp4";
 
   return (
     <>
@@ -43,6 +45,8 @@ export default async function AboutPage() {
         title={title}
         strapline={strapline}
         videoSrc={videoSrc}
+        showOverlay={!isSuppliedVideo}
+        preserveFrame={isSuppliedVideo}
       />
 
       <WelcomeSection />
