@@ -2,7 +2,8 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
-import { useId, useState, useSyncExternalStore } from "react";
+import { useEffect, useId, useState, useSyncExternalStore } from "react";
+import { X, ZoomIn } from "lucide-react";
 
 import { withReg } from "@/components/ui/Reg";
 
@@ -81,7 +82,6 @@ export const SIGNATURE_COLLECTIONS: CollectionLine[] = [
 ];
 
 export function SignatureLines({
-  lines,
   images,
 }: {
   lines?: { name: string; products: string[] }[];
@@ -89,8 +89,28 @@ export function SignatureLines({
 }) {
   const isDesktop = useMediaQuery("(min-width: 64rem)");
   const [open, setOpen] = useState(0); // Default to 01 Nabeen Classic
+  const [zoomedProduct, setZoomedProduct] = useState<{
+    product: ProductSwatch;
+    collectionName: string;
+  } | null>(null);
   const id = useId();
   const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (!zoomedProduct) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setZoomedProduct(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [zoomedProduct]);
 
   const collections = SIGNATURE_COLLECTIONS.map((col) => ({
     ...col,
@@ -103,173 +123,273 @@ export function SignatureLines({
 
   const activeCollection = collections[open] ?? collections[0];
 
-  if (isDesktop) {
-    return (
-      <div className="grid grid-cols-[21rem_1fr] gap-10 lg:gap-14">
-        {/* Left Tab List */}
-        <div
-          role="tablist"
-          aria-label="Signature Collections"
-          className="flex flex-col gap-2.5 border-r border-line/70 pr-8"
-        >
-          {collections.map((line, index) => {
-            const isSelected = index === open;
-            return (
+  return (
+    <>
+      {isDesktop ? (
+        <div className="grid grid-cols-[21rem_1fr] gap-10 lg:gap-14">
+          {/* Left Tab List */}
+          <div
+            role="tablist"
+            aria-label="Signature Collections"
+            className="flex flex-col gap-2.5 border-r border-line/70 pr-8"
+          >
+            {collections.map((line, index) => {
+              const isSelected = index === open;
+              return (
+                <button
+                  key={line.name}
+                  type="button"
+                  role="tab"
+                  id={`${id}-tab-${index}`}
+                  aria-selected={isSelected}
+                  aria-controls={`${id}-panel-${index}`}
+                  tabIndex={isSelected ? 0 : -1}
+                  onClick={() => setOpen(index)}
+                  onKeyDown={(event) => {
+                    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+                    event.preventDefault();
+                    const next =
+                      event.key === "ArrowDown"
+                        ? (open + 1) % SIGNATURE_COLLECTIONS.length
+                        : (open - 1 + SIGNATURE_COLLECTIONS.length) % SIGNATURE_COLLECTIONS.length;
+                    setOpen(next);
+                    document.getElementById(`${id}-tab-${next}`)?.focus();
+                  }}
+                  className={`group relative flex w-full items-center justify-between rounded-xl px-5 py-4 text-left transition-all duration-200 cursor-pointer ${
+                    isSelected
+                      ? "bg-slate-200/50 shadow-sm border border-slate-300/60"
+                      : "hover:bg-slate-200/30 text-slate-600 hover:text-navy"
+                  }`}
+                >
+                  {/* Active left indicator bar */}
+                  {isSelected && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-0 top-3 bottom-3 w-1 rounded-r bg-navy"
+                    />
+                  )}
+
+                  <div className="flex items-center gap-4">
+                    <span
+                      className={`font-sans text-xs font-semibold tracking-wider transition-colors ${
+                        isSelected ? "text-navy" : "text-slate-400 group-hover:text-slate-600"
+                      }`}
+                    >
+                      {line.number}
+                    </span>
+                    <span
+                      className={`block font-sans text-lg sm:text-xl font-normal leading-tight transition-colors ${
+                        isSelected ? "font-medium text-navy-deep" : "text-navy group-hover:text-navy-deep"
+                      }`}
+                    >
+                      {withReg(line.name)}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right Active Panel */}
+          <div className="min-h-[22rem]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={open}
+                role="tabpanel"
+                id={`${id}-panel-${open}`}
+                aria-labelledby={`${id}-tab-${open}`}
+                tabIndex={0}
+                initial={
+                  reduceMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, rotateX: -12, y: 10 }
+                }
+                animate={{ opacity: 1, rotateX: 0, y: 0 }}
+                exit={
+                  reduceMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, rotateX: 12, y: -10 }
+                }
+                transition={{ duration: reduceMotion ? 0.01 : 0.24, ease: [0.22, 1, 0.36, 1] }}
+                style={{ transformPerspective: 800, transformOrigin: "top center" }}
+              >
+                <div className="border-b border-line/70 pb-4">
+                  <h3 className="font-sans text-2xl sm:text-3xl text-navy-deep font-normal tracking-tight">
+                    {withReg(activeCollection.name)}
+                  </h3>
+                  <p className="mt-2 text-sm sm:text-[15px] font-light leading-relaxed text-slate-600 max-w-2xl">
+                    {activeCollection.description}
+                  </p>
+                </div>
+
+                {/* Swatch Grid */}
+                <div className="mt-6 grid grid-cols-2 gap-4 lg:gap-5">
+                  {activeCollection.products.map((product) => (
+                    <SwatchCard
+                      key={product.name}
+                      product={product}
+                      onSelect={() =>
+                        setZoomedProduct({
+                          product,
+                          collectionName: `${activeCollection.number} · ${activeCollection.name}`,
+                        })
+                      }
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      ) : (
+        /* Mobile / Tablet Responsive Layout */
+        <div className="space-y-4">
+          {/* Mobile Horizontal Tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+            {collections.map((line, index) => (
               <button
                 key={line.name}
                 type="button"
-                role="tab"
-                id={`${id}-tab-${index}`}
-                aria-selected={isSelected}
-                aria-controls={`${id}-panel-${index}`}
-                tabIndex={isSelected ? 0 : -1}
                 onClick={() => setOpen(index)}
-                onKeyDown={(event) => {
-                  if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
-                  event.preventDefault();
-                  const next =
-                    event.key === "ArrowDown"
-                      ? (open + 1) % SIGNATURE_COLLECTIONS.length
-                      : (open - 1 + SIGNATURE_COLLECTIONS.length) % SIGNATURE_COLLECTIONS.length;
-                  setOpen(next);
-                  document.getElementById(`${id}-tab-${next}`)?.focus();
-                }}
-                className={`group relative flex w-full items-center justify-between rounded-xl px-5 py-4 text-left transition-all duration-200 cursor-pointer ${
-                  isSelected
-                    ? "bg-slate-200/50 shadow-sm border border-slate-300/60"
-                    : "hover:bg-slate-200/30 text-slate-600 hover:text-navy"
+                aria-pressed={index === open}
+                className={`flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 text-left text-sm transition-all cursor-pointer font-sans font-normal ${
+                  index === open
+                    ? "bg-navy text-white shadow-sm font-medium"
+                    : "bg-white/80 text-slate-700 border border-line hover:bg-white"
                 }`}
               >
-                {/* Active left indicator bar */}
-                {isSelected && (
-                  <span
-                    aria-hidden="true"
-                    className="absolute left-0 top-3 bottom-3 w-1 rounded-r bg-navy"
-                  />
-                )}
-
-                <div className="flex items-center gap-4">
-                  <span
-                    className={`font-sans text-xs font-semibold tracking-wider transition-colors ${
-                      isSelected ? "text-navy" : "text-slate-400 group-hover:text-slate-600"
-                    }`}
-                  >
-                    {line.number}
-                  </span>
-                  <span
-                    className={`block font-sans text-lg sm:text-xl font-normal leading-tight transition-colors ${
-                      isSelected ? "font-medium text-navy-deep" : "text-navy group-hover:text-navy-deep"
-                    }`}
-                  >
-                    {withReg(line.name)}
-                  </span>
-                </div>
+                <span className="font-sans text-xs opacity-75">{line.number}</span>
+                <span>{withReg(line.name)}</span>
               </button>
-            );
-          })}
-        </div>
+            ))}
+          </div>
 
-        {/* Right Active Panel */}
-        <div className="min-h-[22rem]">
+          {/* Mobile Active Collection Panel */}
           <AnimatePresence mode="wait">
             <motion.div
               key={open}
-              role="tabpanel"
-              id={`${id}-panel-${open}`}
-              aria-labelledby={`${id}-tab-${open}`}
-              tabIndex={0}
-              initial={
-                reduceMotion
-                  ? { opacity: 0 }
-                  : { opacity: 0, rotateX: -12, y: 10 }
-              }
-              animate={{ opacity: 1, rotateX: 0, y: 0 }}
-              exit={
-                reduceMotion
-                  ? { opacity: 0 }
-                  : { opacity: 0, rotateX: 12, y: -10 }
-              }
-              transition={{ duration: reduceMotion ? 0.01 : 0.24, ease: [0.22, 1, 0.36, 1] }}
-              style={{ transformPerspective: 800, transformOrigin: "top center" }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="rounded-xl border border-line/80 bg-white/90 p-4 shadow-sm backdrop-blur-sm sm:p-5"
             >
-              <div className="border-b border-line/70 pb-4">
-                <h3 className="font-sans text-2xl sm:text-3xl text-navy-deep font-normal tracking-tight">
+              <div className="border-b border-line pb-3">
+                <h3 className="font-sans text-2xl text-navy-deep font-normal mt-0.5">
                   {withReg(activeCollection.name)}
                 </h3>
-                <p className="mt-2 text-sm sm:text-[15px] font-light leading-relaxed text-slate-600 max-w-2xl">
+                <p className="mt-1.5 text-sm text-slate-600 font-light leading-relaxed">
                   {activeCollection.description}
                 </p>
               </div>
 
-              {/* Swatch Grid */}
-              <div className="mt-6 grid grid-cols-2 gap-4 lg:gap-5">
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {activeCollection.products.map((product) => (
-                  <SwatchCard key={product.name} product={product} />
+                  <SwatchCard
+                    key={product.name}
+                    product={product}
+                    onSelect={() =>
+                      setZoomedProduct({
+                        product,
+                        collectionName: `${activeCollection.number} · ${activeCollection.name}`,
+                      })
+                    }
+                  />
                 ))}
               </div>
             </motion.div>
           </AnimatePresence>
         </div>
-      </div>
-    );
-  }
+      )}
 
-  // Mobile / Tablet Responsive Layout
-  return (
-    <div className="space-y-4">
-      {/* Mobile Horizontal Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-        {collections.map((line, index) => (
-          <button
-            key={line.name}
-            type="button"
-            onClick={() => setOpen(index)}
-            aria-pressed={index === open}
-            className={`flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 text-left text-sm transition-all cursor-pointer font-sans font-normal ${
-              index === open
-                ? "bg-navy text-white shadow-sm font-medium"
-                : "bg-white/80 text-slate-700 border border-line hover:bg-white"
-            }`}
+      {/* Enlarged Fabric Zoom Lightbox Modal */}
+      <AnimatePresence>
+        {zoomedProduct && (
+          <motion.div
+            key="zoom-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setZoomedProduct(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-navy-deep/80 p-3.5 sm:p-6 md:p-8 backdrop-blur-md cursor-zoom-out"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Enlarged view of ${zoomedProduct.product.name}`}
           >
-            <span className="font-sans text-xs opacity-75">{line.number}</span>
-            <span>{withReg(line.name)}</span>
-          </button>
-        ))}
-      </div>
+            <motion.div
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.88, y: 14 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.88, y: 14 }}
+              transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+              onClick={() => {
+                // Clicking on the modal container/image toggles zoom out back to normal
+                setZoomedProduct(null);
+              }}
+              className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-white/20 bg-white shadow-2xl cursor-pointer"
+            >
+              {/* Header with Title and Close Button */}
+              <div
+                className="flex items-center justify-between border-b border-line bg-white/95 px-4 py-3 sm:px-6 sm:py-3.5 backdrop-blur-xs"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div>
+                  <span className="font-sans text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                    {withReg(zoomedProduct.collectionName)}
+                  </span>
+                  <h3 className="font-sans text-lg font-medium text-navy-deep sm:text-xl">
+                    {withReg(zoomedProduct.product.name)}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setZoomedProduct(null)}
+                  aria-label="Close zoomed view"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200 hover:text-navy cursor-pointer"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
 
-      {/* Mobile Active Collection Panel */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={open}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.2 }}
-          className="rounded-xl border border-line/80 bg-white/90 p-4 shadow-sm backdrop-blur-sm sm:p-5"
-        >
-          <div className="border-b border-line pb-3">
-            <h3 className="font-sans text-2xl text-navy-deep font-normal mt-0.5">
-              {withReg(activeCollection.name)}
-            </h3>
-            <p className="mt-1.5 text-sm text-slate-600 font-light leading-relaxed">
-              {activeCollection.description}
-            </p>
-          </div>
+              {/* Large Fabric Image Preview */}
+              <div className="relative aspect-[4/3] w-full bg-slate-100 sm:aspect-[16/10]">
+                <Image
+                  src={zoomedProduct.product.image}
+                  alt={zoomedProduct.product.name}
+                  fill
+                  sizes="(max-width: 768px) 94vw, 672px"
+                  quality={95}
+                  priority
+                  className="object-cover"
+                />
+              </div>
 
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {activeCollection.products.map((product) => (
-              <SwatchCard key={product.name} product={product} />
-            ))}
-          </div>
-        </motion.div>
+              {/* Bottom hint */}
+              <div className="border-t border-line/60 bg-slate-50/90 px-4 py-2 text-center text-xs text-slate-500 sm:px-6">
+                Click anywhere or press Esc to close
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }
 
-function SwatchCard({ product }: { product: ProductSwatch }) {
+function SwatchCard({
+  product,
+  onSelect,
+}: {
+  product: ProductSwatch;
+  onSelect: () => void;
+}) {
   return (
-    <div className="group relative flex items-center gap-3.5 rounded-lg border border-line/80 bg-white/90 p-3 shadow-xs backdrop-blur-xs transition-all duration-200 hover:border-slate-400 hover:bg-white hover:shadow-md cursor-pointer">
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-label={`View enlarged ${product.name} fabric swatch`}
+      className="group relative flex w-full items-center gap-3.5 rounded-lg border border-line/80 bg-white/90 p-3 text-left shadow-xs backdrop-blur-xs transition-all duration-200 hover:border-slate-400 hover:bg-white hover:shadow-md cursor-pointer"
+    >
       {/* Fabric Swatch Thumbnail with contrast border and framing */}
       <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-md border border-slate-300/90 bg-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.08)] sm:h-16 sm:w-24">
         <Image
@@ -280,6 +400,10 @@ function SwatchCard({ product }: { product: ProductSwatch }) {
           quality={88}
           className="object-cover transition-transform duration-300 group-hover:scale-105 brightness-[0.98] contrast-[1.04]"
         />
+        {/* Subtle zoom indicator on hover */}
+        <div className="absolute inset-0 flex items-center justify-center bg-navy-deep/20 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+          <ZoomIn className="h-4 w-4 text-white drop-shadow" />
+        </div>
       </div>
 
       {/* Swatch Name (Open Sans Normal, no subheadings, no arrow) */}
@@ -288,7 +412,7 @@ function SwatchCard({ product }: { product: ProductSwatch }) {
           {withReg(product.name)}
         </h4>
       </div>
-    </div>
+    </button>
   );
 }
 
