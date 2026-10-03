@@ -36,9 +36,11 @@ export function telLink(): string {
   return `tel:${getSite().contact.phonePrimary.e164}`;
 }
 
-export function mailtoLink(subject?: string): string {
-  const email = getSite().contact.emailPrimary.value;
-  return subject ? `mailto:${email}?subject=${encodeURIComponent(subject)}` : `mailto:${email}`;
+export function mailtoLink(subject?: string, emailAddress?: string): string {
+  const email = emailAddress || getSite().contact.emailPrimary.value;
+  const encodedEmail = encodeURIComponent(email);
+  const encodedSubject = subject ? encodeURIComponent(subject) : "";
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodedEmail}${encodedSubject ? `&su=${encodedSubject}` : ""}`;
 }
 
 export function directionsLink(): string {

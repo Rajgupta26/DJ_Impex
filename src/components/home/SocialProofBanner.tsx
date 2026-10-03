@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -211,8 +210,16 @@ function CountUp({ isInView, label }: { isInView: boolean; label: string }) {
  * the place; when Google has no rating the block is left out rather than
  * filled in.
  */
-export function SocialProofBanner({ designs, google }: { designs: string; google: GoogleRating | null }) {
-  const containerRef = useRef<HTMLElement>(null);
+export function SocialProofBanner({
+  designs,
+  google,
+  className = "",
+}: {
+  designs: string;
+  google: GoogleRating | null;
+  className?: string;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.25 });
   const reduceMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
@@ -220,26 +227,7 @@ export function SocialProofBanner({ designs, google }: { designs: string; google
   const ease = [0.22, 1, 0.36, 1] as const;
 
   return (
-    <section
-      ref={containerRef}
-      className="relative border-line/60 overflow-hidden border-b bg-white pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-8 lg:pb-20"
-    >
-      {/* Luxury white fabric drape background */}
-      <div className="pointer-events-none absolute inset-0 z-0">
-        <Image
-          src="/images/brand-imagery/white-fabric-drape.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          quality={90}
-          className="object-cover object-center opacity-70"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-white/70 backdrop-blur-[0.5px]"
-        />
-      </div>
-
+    <div ref={containerRef} className={`relative z-10 min-w-0 pt-12 sm:pt-16 lg:pt-20 ${className}`.trim()}>
       <Container className="relative z-10 min-w-0">
         {/* Strictly symmetric 3-column grid (1fr / auto / 1fr) with left and right blocks pushed to outer corners */}
         <div
@@ -250,7 +238,7 @@ export function SocialProofBanner({ designs, google }: { designs: string; google
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -70 }}
             animate={isInView ? { opacity: 1, x: 0 } : undefined}
             transition={{ duration: 1.0, ease }}
-            className={`flex min-w-0 w-full items-center justify-center gap-5 sm:gap-6 ${google ? "md:justify-start" : ""}`}
+            className={`flex w-full min-w-0 items-center justify-center gap-5 sm:gap-6 ${google ? "md:justify-start" : ""}`}
           >
             <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#e3f4ee] transition-transform duration-300 hover:scale-105 sm:h-20 sm:w-20">
               <UsersThreeOutline />
@@ -285,7 +273,7 @@ export function SocialProofBanner({ designs, google }: { designs: string; google
               transition={{ duration: 1.0, ease }}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              className="flex min-w-0 w-full items-center justify-center gap-5 sm:gap-6 md:justify-end"
+              className="flex w-full min-w-0 items-center justify-center gap-5 sm:gap-6 md:justify-end"
             >
               <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-gray-100 bg-white shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:scale-105 sm:h-20 sm:w-20">
                 <GoogleLogo />
@@ -310,6 +298,6 @@ export function SocialProofBanner({ designs, google }: { designs: string; google
           ) : null}
         </div>
       </Container>
-    </section>
+    </div>
   );
 }

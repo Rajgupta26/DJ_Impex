@@ -32,7 +32,7 @@ export function EnquirySection() {
   // it would make the section a scroll container and the sticky column inside it
   // would stop sticking. WeaveArt already clips itself.
   return (
-    <section className="relative isolate bg-navy text-white">
+    <section className="bg-navy relative isolate text-white">
       <WeaveArt pattern="ogee" scale={1.3} />
 
       <Container className="relative py-[clamp(3rem,2rem+2.6vw,4.5rem)]">
@@ -42,7 +42,7 @@ export function EnquirySection() {
               beside it; pushing these to a far-off foot, or making them travel
               with the scroll, were both worse answers to the same gap. */}
           <div className="on-dark lg:pr-6">
-            <p className="t-small font-semibold text-accent">{field(copy, "eyebrow")}</p>
+            <p className="t-small text-accent font-semibold">{field(copy, "eyebrow")}</p>
             <h2 className="t-h2 mt-4 max-w-[15ch]">{withReg(field(copy, "heading"))}</h2>
             <p className="measure mt-6 text-white/75">{withReg(field(copy, "intro"))}</p>
 
@@ -74,7 +74,7 @@ export function EnquirySection() {
                       href={telLink()}
                       event="call_click"
                       location="home_enquiry"
-                      external={false}
+
                       className="text-link text-link-on-dark"
                     >
                       {site.contact.phonePrimary.display}
@@ -97,7 +97,7 @@ export function EnquirySection() {
                       href={mailtoLink("Fabric enquiry")}
                       event="email_click"
                       location="home_enquiry"
-                      external={false}
+
                       className="text-link text-link-on-dark"
                     >
                       {site.contact.emailPrimary.value}
@@ -108,10 +108,10 @@ export function EnquirySection() {
             </dl>
           </div>
 
-          <div className="relative bg-white p-[clamp(1.5rem,1rem+1.4vw,2.25rem)] text-navy">
+          <div className="text-navy relative bg-white p-[clamp(1.5rem,1rem+1.4vw,2.25rem)]">
             {/* A thread of gold at the corner rather than a rule across the whole
                 edge. The accent is meant to be thread-thin in both directions. */}
-            <span aria-hidden="true" className="absolute left-0 top-0 h-px w-24 bg-accent" />
+            <span aria-hidden="true" className="bg-accent absolute top-0 left-0 h-px w-24" />
             <h3 className="t-h3">{field(copy, "form-heading")}</h3>
             <EnquiryForm
               variant="full"

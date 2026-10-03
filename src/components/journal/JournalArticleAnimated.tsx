@@ -94,7 +94,6 @@ export function JournalArticleAnimated({ post }: { post: Post }) {
             <span>{post.category}</span>
             <span aria-hidden="true">·</span>
             <span>{post.readingMinutes} min read</span>
-            <PublishedDate post={post} />
           </p>
 
           <h1 className="t-h1 mt-6 max-w-none [text-wrap:pretty]">

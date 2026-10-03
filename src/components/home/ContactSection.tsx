@@ -13,11 +13,20 @@ const MAPS_EMBED_URL = "https://maps.google.com/maps?q=18.9481781,72.8319929&hl=
 /**
  * The exact contact section from /contact, situated on the home page directly before the footer.
  */
-export function ContactSection() {
+export function ContactSection({
+  children,
+  className = "",
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) {
   const site = getSite();
 
   return (
-    <section id="contact" className="relative overflow-hidden scroll-mt-12 lg:scroll-mt-14 border-t border-line bg-white pt-[calc(var(--spacing-section)*0.73)] pb-8 sm:pb-12">
+    <section
+      id="contact"
+      className="border-line relative scroll-mt-12 overflow-hidden border-t border-b bg-white pt-[calc(var(--spacing-section)*0.73)] pb-12 sm:pb-16 lg:scroll-mt-14 lg:pb-20"
+    >
       {/* Luxury white fabric drape background */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <Image
@@ -28,15 +37,12 @@ export function ContactSection() {
           quality={90}
           className="object-cover object-top opacity-70"
         />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-white/70 backdrop-blur-[0.5px]"
-        />
+        <div aria-hidden="true" className="absolute inset-0 bg-white/70 backdrop-blur-[0.5px]" />
       </div>
       <Container className="relative z-10">
-        <div className="grid min-w-0 gap-10 lg:grid-cols-[5fr_7fr] lg:gap-20 items-start">
+        <div className="grid min-w-0 items-start gap-10 lg:grid-cols-[5fr_7fr] lg:gap-20">
           <div className="flex min-w-0 flex-col gap-5">
-            <div className="min-w-0 rounded-2xl bg-navy text-white on-dark p-5 sm:p-7 shadow-lg">
+            <div className="bg-navy on-dark min-w-0 rounded-2xl p-5 text-white shadow-lg sm:p-7">
               <h2 className="t-h3 text-white">Talk to us directly</h2>
               <div className="mt-5 sm:mt-6">
                 <ContactChannels onDark={true} />
@@ -45,12 +51,12 @@ export function ContactSection() {
 
             <div className="min-w-0">
               <h3 className="t-h3 text-navy">Head Office</h3>
-              <p className="mt-1 text-sm text-slate">Visit us at our location below.</p>
+              <p className="text-slate mt-1 text-sm">Visit us at our location below.</p>
               <a
                 href={MAPS_PLACE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative mt-3 block h-[162px] w-full min-w-0 overflow-hidden rounded-2xl border border-line bg-sand/30 shadow-sm transition-all duration-300 hover:shadow-md"
+                className="group border-line bg-sand/30 relative mt-3 block h-[162px] w-full min-w-0 overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-md"
                 aria-label="Open company location in Google Maps (opens in a new tab)"
               >
                 <iframe
@@ -60,7 +66,7 @@ export function ContactSection() {
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
-                <div className="absolute top-3 right-3 flex items-center gap-1.5 rounded-lg bg-navy/90 px-3 py-1.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm transition-colors group-hover:bg-navy">
+                <div className="bg-navy/90 group-hover:bg-navy absolute top-3 right-3 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm transition-colors">
                   <MapPin size={13} className="text-accent" />
                   <span>Open in Maps</span>
                   <ExternalLink size={12} className="text-white/70" />
@@ -80,6 +86,7 @@ export function ContactSection() {
           </div>
         </div>
       </Container>
+      {children}
     </section>
   );
 }

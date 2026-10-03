@@ -124,8 +124,9 @@ export default async function HomePage() {
       />
 
       <NabeenGallery />
-      <ContactSection />
-      <SocialProofBanner designs={site.brand.designsCount.value} google={googleRating} />
+      <ContactSection>
+        <SocialProofBanner designs={site.brand.designsCount.value} google={googleRating} />
+      </ContactSection>
     </>
   );
 }

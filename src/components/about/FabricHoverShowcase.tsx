@@ -18,7 +18,7 @@ export const FABRIC_COLLECTION: FabricItem[] = [
   {
     id: "wool",
     name: "Wool",
-    image: "/images/gallery/swatch-silver-rock.jpg",
+    image: "/images/gallery/08-champagne-check.jpg",
     alt: "Nabeen Wool luxury fabric",
     weave: "Fine Merino & Worsted Wool",
     description:
@@ -122,9 +122,7 @@ export function FabricHoverShowcase({
   collectionTail,
   images,
 }: FabricHoverShowcaseProps) {
-  const showLead = Boolean(
-    collectionLead && collectionLead.trim().toLowerCase() !== "the nabeen collection",
-  );
+  const showLead = Boolean(collectionLead && collectionLead.trim().toLowerCase() !== "the nabeen collection");
   const items = names.map((name, idx) => {
     const item = resolveFabricItem(name, idx);
     const replacement = images?.[`fabric-${item.id}`];
@@ -188,15 +186,24 @@ export function FabricHoverShowcase({
               return (
                 <motion.button
                   key={item.id}
-                  ref={(node) => { tabRefs.current[index] = node; }}
+                  ref={(node) => {
+                    tabRefs.current[index] = node;
+                  }}
                   type="button"
                   role="tab"
                   aria-selected={isActive}
                   tabIndex={isActive ? 0 : -1}
                   onKeyDown={(event) => {
-                    const next = event.key === "Home" ? 0 : event.key === "End" ? items.length - 1
-                      : ["ArrowRight", "ArrowDown"].includes(event.key) ? (index + 1) % items.length
-                      : ["ArrowLeft", "ArrowUp"].includes(event.key) ? (index - 1 + items.length) % items.length : -1;
+                    const next =
+                      event.key === "Home"
+                        ? 0
+                        : event.key === "End"
+                          ? items.length - 1
+                          : ["ArrowRight", "ArrowDown"].includes(event.key)
+                            ? (index + 1) % items.length
+                            : ["ArrowLeft", "ArrowUp"].includes(event.key)
+                              ? (index - 1 + items.length) % items.length
+                              : -1;
                     if (next < 0) return;
                     event.preventDefault();
                     handleSelect(items[next]);
@@ -248,20 +255,9 @@ export function FabricHoverShowcase({
                   </span>
 
                   <span
-                    className={`lg:t-h3 inline-block min-w-0 text-sm font-medium tracking-tight transition-[color,transform] duration-200 ease-out lg:group-hover:-translate-x-1 lg:group-focus:-translate-x-1 lg:text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] lg:font-light ${
-                      isActive
-                        ? "text-navy lg:bg-clip-text lg:text-transparent lg:[text-shadow:0_1px_1px_rgb(13_23_51_/_0.2)]"
-                        : "text-inherit"
+                    className={`lg:t-h3 inline-block min-w-0 text-sm font-medium tracking-tight transition-[color,transform] duration-200 ease-out lg:text-[clamp(1.25rem,1rem+0.9vw,1.7rem)] lg:font-light lg:group-hover:-translate-x-1 lg:group-focus:-translate-x-1 ${
+                      isActive ? "text-navy font-semibold lg:font-normal" : "text-inherit"
                     }`}
-                    style={
-                      isActive && !compact
-                        ? {
-                            backgroundImage: `linear-gradient(rgb(13 23 51 / 0.18), rgb(13 23 51 / 0.18)), url(${item.image})`,
-                            backgroundPosition: "center",
-                            backgroundSize: "cover",
-                          }
-                        : undefined
-                    }
                   >
                     {item.name}
                   </span>
@@ -285,8 +281,10 @@ export function FabricHoverShowcase({
         </div>
 
         {/* Right Column: Hero cutting & fabric layers */}
-        <div className={`mt-8 flex flex-col lg:col-start-2 ${showLead ? "lg:row-start-2 lg:mt-5" : "lg:row-start-1 lg:mt-0"}`}>
-          <div className="border-line/60 bg-mist relative flex min-h-72 aspect-[4/3] w-full flex-col overflow-hidden rounded-2xl border sm:aspect-[16/11] lg:aspect-auto lg:h-[clamp(32rem,47vw,40rem)] lg:min-h-0">
+        <div
+          className={`mt-8 flex flex-col lg:col-start-2 ${showLead ? "lg:row-start-2 lg:mt-5" : "lg:row-start-1 lg:mt-0"}`}
+        >
+          <div className="border-line/60 bg-mist relative flex aspect-[4/3] min-h-72 w-full flex-col overflow-hidden rounded-2xl border sm:aspect-[16/11] lg:aspect-auto lg:h-[clamp(32rem,47vw,40rem)] lg:min-h-0">
             <div className="bg-mist relative min-h-0 w-full flex-1 overflow-hidden">
               {/* A full cloth base fills the rounded overlap gaps behind every layer. */}
               <AnimatePresence initial={false}>
@@ -357,7 +355,10 @@ export function FabricHoverShowcase({
                   />
 
                   {/* Caption & Weave information */}
-                  <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/20 to-transparent lg:hidden" />
+                  <div
+                    aria-hidden="true"
+                    className="from-navy-deep/90 via-navy-deep/20 pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent lg:hidden"
+                  />
                   <div className="absolute inset-x-0 bottom-0 p-4 text-white [text-shadow:0_1px_8px_rgb(13_23_51_/_0.8)] sm:p-7">
                     <div className="text-accent flex flex-col items-start gap-1 font-sans text-xs tracking-wider uppercase sm:flex-row sm:items-center sm:justify-between">
                       <span className="text-white">{activeItem.weave}</span>
@@ -375,7 +376,9 @@ export function FabricHoverShowcase({
         </div>
 
         {/* Collection Tail beneath the fabric list */}
-        <div className={`mt-1 pt-0 translate-y-[38%] lg:col-start-1 ${showLead ? "lg:row-start-3" : "lg:row-start-2"}`}>
+        <div
+          className={`mt-1 translate-y-[38%] pt-0 lg:col-start-1 ${showLead ? "lg:row-start-3" : "lg:row-start-2"}`}
+        >
           <p className="text-slate">{collectionTail}</p>
         </div>
       </div>

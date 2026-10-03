@@ -3,7 +3,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { TbcTag } from "@/components/ui/TbcTag";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { getSite } from "@/lib/content";
-import { directionsLink, telLink } from "@/lib/contact";
+import { directionsLink, mailtoLink, telLink } from "@/lib/contact";
 
 /** Every way to reach the team. */
 export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
@@ -26,7 +26,7 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
                 href={telLink()}
                 event="call_click"
                 location="contact_page"
-                external={false}
+
                 className={`text-link ${onDark ? "text-link-on-dark" : ""}`}
               >
                 {contact.phonePrimary.display}
@@ -39,7 +39,7 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
                 href={`tel:${contact.phoneSecondary.e164}`}
                 event="call_click"
                 location="contact_page"
-                external={false}
+
                 className={`text-link ${onDark ? "text-link-on-dark" : ""}`}
               >
                 {contact.phoneSecondary.display}
@@ -59,18 +59,20 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
             <dt className={`t-small font-semibold ${onDark ? "text-white/80" : ""}`}>Email</dt>
             <dd className="mt-1">
               <span className="grid gap-1">
-                {[contact.emailPrimary.value, contact.emailAdmin.value, contact.emailSecondary.value].map((email) => (
-                  <TrackedLink
-                    key={email}
-                    href={`mailto:${email}?subject=${encodeURIComponent("Fabric enquiry")}`}
-                    event="email_click"
-                    location="contact_page"
-                    external={false}
-                    className={`text-link max-w-full w-fit break-words ${onDark ? "text-link-on-dark" : ""}`}
-                  >
-                    {email}
-                  </TrackedLink>
-                ))}
+                {[contact.emailPrimary.value, contact.emailAdmin.value, contact.emailSecondary.value].map(
+                  (email) => (
+                    <TrackedLink
+                      key={email}
+                      href={mailtoLink("Fabric enquiry", email)}
+                      event="email_click"
+                      location="contact_page"
+
+                      className={`text-link w-fit max-w-full break-words ${onDark ? "text-link-on-dark" : ""}`}
+                    >
+                      {email}
+                    </TrackedLink>
+                  ),
+                )}
               </span>
             </dd>
           </div>
