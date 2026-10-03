@@ -88,7 +88,7 @@ export function SignatureLines({
   images?: Record<string, { src: string; alt?: string; title?: string }>;
 }) {
   const isDesktop = useMediaQuery("(min-width: 64rem)");
-  const [open, setOpen] = useState(1); // Default to 02 Nabeen Royale
+  const [open, setOpen] = useState(0); // Default to 01 Nabeen Classic
   const id = useId();
   const reduceMotion = useReducedMotion();
 
