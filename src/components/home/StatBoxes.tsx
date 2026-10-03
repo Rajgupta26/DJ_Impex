@@ -1,7 +1,3 @@
-"use client";
-
-import { motion, useReducedMotion } from "motion/react";
-
 interface StatItem {
   lead: string;
   leadCaption?: string;
@@ -39,60 +35,20 @@ const STAT_ITEMS: StatItem[] = [
 ];
 
 export function StatBoxes({ className = "" }: { className?: string }) {
-  const reduceMotion = useReducedMotion();
-  const ease = [0.22, 1, 0.36, 1] as const;
-
-  // Dual-direction staggered animation configuration:
-  // Boxes 0 and 1 slide in from the left, one after another.
-  // Boxes 2 and 3 slide in from the right, one after another.
-  const getBoxAnimation = (index: number) => {
-    if (reduceMotion) {
-      return {
-        initial: { opacity: 0 },
-        whileInView: { opacity: 1 },
-        transition: { duration: 0.01 },
-      };
-    }
-
-    const isLeft = index < 2;
-    const initialX = isLeft ? -60 : 60;
-    // Stagger timing:
-    // Left pair: Box 0 (0.15s) -> Box 1 (0.40s)
-    // Right pair: Box 2 (0.55s) -> Box 3 (0.80s)
-    const delays = [0.15, 0.4, 0.55, 0.8];
-
-    return {
-      initial: { opacity: 0, x: initialX },
-      whileInView: { opacity: 1, x: 0 },
-      viewport: { once: true, amount: 0.2, margin: "-40px 0px" },
-      transition: {
-        duration: 1.2,
-        delay: delays[index] ?? 0.15,
-        ease,
-      },
-    };
-  };
-
   return (
-    <div className={`w-full overflow-hidden bg-transparent ${className}`.trim()}>
-      <div className="grid grid-cols-2 lg:grid-cols-4">
+    <div className={`w-full min-w-0 bg-transparent ${className}`.trim()}>
+      {/* Keep cards in their final position from the server render onward.
+          Auto-fit also stacks them when the viewport or text size needs more room. */}
+      <div className="grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))] px-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-4 lg:px-0">
         {STAT_ITEMS.map((item, index) => {
-          const anim = getBoxAnimation(index);
-
           return (
-            <motion.div
+            <div
               key={item.title}
-              initial={anim.initial}
-              whileInView={anim.whileInView}
-              viewport={anim.viewport}
-              transition={anim.transition}
-              className={`group relative flex min-h-[11rem] sm:min-h-[14rem] lg:min-h-[15.5rem] flex-col justify-between p-4 sm:p-7 lg:p-9 cursor-pointer transition-colors duration-300 hover:bg-mist/40 ${
-                index < 2 ? "border-b border-line/50 lg:border-b-0" : ""
-              }`}
+              className="group border-line/50 hover:bg-mist/40 relative flex min-h-[11rem] min-w-0 flex-col justify-between border-b p-4 transition-colors duration-300 sm:min-h-[14rem] sm:p-7 lg:min-h-[15.5rem] lg:border-b-0 lg:p-9"
             >
               <div>
                 {/* Top Accent Line with 0 -> full length hover effect */}
-                <div className="mb-4 sm:mb-5 block h-[2px] w-10 sm:w-14 overflow-hidden rounded-full bg-line/60">
+                <div className="bg-line/60 mb-4 block h-[2px] w-10 overflow-hidden rounded-full sm:mb-5 sm:w-14">
                   <span
                     aria-hidden="true"
                     className="block h-full w-0 transition-all duration-500 ease-out group-hover:w-full group-active:w-full"
@@ -102,14 +58,14 @@ export function StatBoxes({ className = "" }: { className?: string }) {
 
                 {/* Large Lead Stat Number / Name - BOLD IN REVERTED BRAND COLORS */}
                 <div
-                  className={`flex items-start ${
+                  className={`flex min-w-0 items-start ${
                     item.leadCaption ? "" : "min-h-[2.5rem] sm:min-h-[3.5rem] lg:min-h-[4rem]"
                   }`}
                 >
                   <span
-                    className={`t-number leading-none font-bold tracking-tight ${
+                    className={`t-number max-w-full min-w-0 leading-tight font-bold tracking-tight [overflow-wrap:anywhere] ${
                       item.lead === "Make in India"
-                        ? "whitespace-nowrap text-[clamp(1.15rem,3.8vw,2.75rem)]"
+                        ? "text-[clamp(1.15rem,3.8vw,2.75rem)]"
                         : "text-[clamp(2.1rem,1.8rem+2.2vw,4.5rem)]"
                     }`}
                     style={{ color: item.accentColor }}
@@ -118,20 +74,20 @@ export function StatBoxes({ className = "" }: { className?: string }) {
                   </span>
                 </div>
                 {item.leadCaption && (
-                  <p className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs font-medium text-slate lg:text-sm leading-relaxed">
+                  <p className="text-slate mt-1.5 text-[11px] leading-relaxed font-medium [overflow-wrap:anywhere] sm:mt-2 sm:text-xs lg:text-sm">
                     {item.leadCaption}
                   </p>
                 )}
               </div>
 
-              <div className="mt-4 sm:mt-5 border-t border-line/50 pt-2.5 sm:pt-3">
+              <div className="border-line/50 mt-4 min-w-0 border-t pt-2.5 [overflow-wrap:anywhere] sm:mt-5 sm:pt-3">
                 {/* Title */}
-                <h3 className="text-xs sm:text-sm font-semibold tracking-normal text-navy lg:text-base">
+                <h3 className="text-navy text-xs font-semibold tracking-normal sm:text-sm lg:text-base">
                   {item.title}
                 </h3>
 
                 {/* Subtitle */}
-                <p className="mt-1 text-[11px] sm:text-xs text-slate lg:text-sm leading-relaxed">
+                <p className="text-slate mt-1 text-[11px] leading-relaxed sm:text-xs lg:text-sm">
                   {item.subtitle}
                 </p>
               </div>
@@ -140,17 +96,10 @@ export function StatBoxes({ className = "" }: { className?: string }) {
               {index < 3 && (
                 <span
                   aria-hidden="true"
-                  className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 h-20 w-px bg-line/70 pointer-events-none"
+                  className="bg-line/70 pointer-events-none absolute top-1/2 right-0 hidden h-20 w-px -translate-y-1/2 lg:block"
                 />
               )}
-              {/* Vertical dividing hairline for 2-column mobile layout */}
-              {index % 2 === 0 && (
-                <span
-                  aria-hidden="true"
-                  className="block lg:hidden absolute right-0 top-1/2 -translate-y-1/2 h-20 w-px bg-line/70 pointer-events-none"
-                />
-              )}
-            </motion.div>
+            </div>
           );
         })}
       </div>

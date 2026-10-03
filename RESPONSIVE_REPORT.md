@@ -98,3 +98,15 @@ Files changed for this responsive pass (existing unrelated work was preserved):
 - [src/lib/useMediaQuery.ts](C:/Users/aksha/Desktop/DJ_Impex/src/lib/useMediaQuery.ts)
 
 Browser evidence: [production width matrix](C:/Users/aksha/AppData/Local/Temp/dj-responsive-after/production-verified-matrix.json), [final focused check](C:/Users/aksha/AppData/Local/Temp/dj-responsive-after/final-focused-check.json), [completed phone preview](C:/Users/aksha/AppData/Local/Temp/dj-responsive-after/home-completed-390-full.png), and [statistics preview](C:/Users/aksha/AppData/Local/Temp/dj-responsive-after/statistics-completed-390.png). Further tablet/desktop and short-screen dialog captures are saved alongside them.
+
+Mobile statistics correction — 3 October 2026
+
+The client's iPhone screenshot showed statistics clipped on both sides. The statistics used +/-60px horizontal entrance transforms inside an overflow-hidden wrapper. Both the local and deployed page emitted these initial transforms at 390px; a browser that delays or fails to complete the reveal can leave the cards outside their visible area.
+
+StatBoxes now renders stationary, visible cards as a Server Component, without Motion, hydration, or intersection-observer dependencies. The mobile grid uses available width and a 10rem minimum card width to switch between one and two columns; tablet and desktop retain two and four columns. Mobile gutters, shrinkable items, and wrapping labels keep all text within the cards. Safari automatic text inflation is normalised with text-size-adjust: 100%, while browser zoom remains available. Viewport width and initial scale are explicit.
+
+Production verification passed 62 focused cases, 31 each in Chromium (Edge) and WebKit 26.5. Each engine checked 320, 360, 375, 390, 393, 412, 414, 430, 480, 600, 768, 820, 912, 1024, 1280, 1366, 1440, 1536, and 1920px; 150% root font sizing at eight widths; reduced motion; 844x390 landscape; scrolling away and returning; and JavaScript-disabled statistics. No clipped card text, transformed/hidden statistics, document horizontal overflow, or application runtime exceptions were recorded. The 390px statistics screenshots were visually reviewed in both engines.
+
+TypeScript, the production build, targeted ESLint for the changed TypeScript files, and git diff --check passed. Full repository ESLint remains blocked by 21 existing errors and 12 warnings in unchanged files, including AdminShell and LanguageSelector.
+
+Evidence is in C:/Users/aksha/AppData/Local/Temp/dj-mobile-stat-fix: chromium-results.json, webkit-results.json, chromium-stats-390.png, and webkit-stats-390.png. Browser tests emulate device viewports and do not replace a final check on the client's physical iPhone. The change is local and has not been deployed to Vercel.
