@@ -47,7 +47,6 @@ export default async function AboutPage() {
         poster={poster}
         showOverlay={false}
         preserveFrame={true}
-        mobileBackground="/images/brand-imagery/white-fabric-drape.jpg"
       />
 
       <WelcomeSection />

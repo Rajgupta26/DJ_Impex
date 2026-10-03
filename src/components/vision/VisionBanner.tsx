@@ -12,7 +12,6 @@ export function VisionBanner({
   poster = "/video/luxury-in-every-thread.jpg",
   showOverlay = false,
   preserveFrame = true,
-  mobileBackground,
 }: {
   title: string;
   strapline?: string;
@@ -20,7 +19,6 @@ export function VisionBanner({
   poster?: string;
   showOverlay?: boolean;
   preserveFrame?: boolean;
-  mobileBackground?: string;
 }) {
   const isVideo = !videoSrc.match(/\.(jpg|jpeg|png|webp|avif)$/i);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -37,16 +35,10 @@ export function VisionBanner({
     <section
       data-hero
       aria-labelledby="about-banner-title"
-      className={`site-hero on-dark relative h-[82svh] min-h-[32rem] w-full max-w-full overflow-hidden bg-navy-deep text-white sm:h-[100dvh] sm:min-h-[36rem] ${preserveFrame ? "about-banner--preserve-frame" : ""} ${mobileBackground ? "about-banner--mobile-content" : ""}`}
+      className={`site-hero on-dark relative h-[82svh] min-h-[32rem] w-full max-w-full overflow-hidden bg-navy-deep text-white sm:h-[100dvh] sm:min-h-[36rem] ${preserveFrame ? "about-banner--preserve-frame" : ""}`}
     >
       {/* Video / Background Layer extending to top edge */}
       <div className="about-banner__media absolute inset-0 h-full w-full overflow-hidden">
-        {mobileBackground ? (
-          <div className="absolute inset-0 hidden max-sm:block">
-            <Image src={mobileBackground} alt="" fill priority sizes="100vw" className="object-cover" />
-            <div className="absolute inset-0 bg-white/55" />
-          </div>
-        ) : null}
         {isVideo ? (
           <video
             key={videoSrc}
@@ -58,7 +50,7 @@ export function VisionBanner({
             playsInline
             preload="auto"
             poster={poster}
-            className={`pointer-events-none absolute inset-0 h-full w-full object-cover object-center ${mobileBackground ? "max-sm:hidden" : ""}`}
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
           >
             <source src={videoSrc} type="video/mp4" />
           </video>
@@ -70,12 +62,12 @@ export function VisionBanner({
             priority
             sizes="100vw"
             quality={90}
-            className={`object-cover object-center ${mobileBackground ? "max-sm:hidden" : ""}`}
+            className="object-cover object-center"
           />
         )}
       </div>
 
-      <div className={showOverlay ? "container-site relative z-20 mx-auto px-4 text-center" : mobileBackground ? "about-banner__copy sr-only" : "sr-only"}>
+      <div className={showOverlay ? "container-site relative z-20 mx-auto px-4 text-center" : "sr-only"}>
         <h1 id="about-banner-title">{withReg(title)}</h1>
         {strapline ? <p>{withReg(strapline)}</p> : null}
       </div>
