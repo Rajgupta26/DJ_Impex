@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { X, ZoomIn } from "lucide-react";
 
 import { withReg } from "@/components/ui/Reg";
@@ -89,12 +90,17 @@ export function SignatureLines({
 }) {
   const isDesktop = useMediaQuery("(min-width: 64rem)");
   const [open, setOpen] = useState(0); // Default to 01 Nabeen Classic
+  const [mounted, setMounted] = useState(false);
   const [zoomedProduct, setZoomedProduct] = useState<{
     product: ProductSwatch;
     collectionName: string;
   } | null>(null);
   const id = useId();
   const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!zoomedProduct) return;
@@ -302,76 +308,81 @@ export function SignatureLines({
         </div>
       )}
 
-      {/* Enlarged Fabric Zoom Lightbox Modal */}
-      <AnimatePresence>
-        {zoomedProduct && (
-          <motion.div
-            key="zoom-modal"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => setZoomedProduct(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-navy-deep/80 p-3.5 sm:p-6 md:p-8 backdrop-blur-md cursor-zoom-out"
-            role="dialog"
-            aria-modal="true"
-            aria-label={`Enlarged view of ${zoomedProduct.product.name}`}
-          >
-            <motion.div
-              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.88, y: 14 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.88, y: 14 }}
-              transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-              onClick={() => {
-                // Clicking on the modal container/image toggles zoom out back to normal
-                setZoomedProduct(null);
-              }}
-              className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-white/20 bg-white shadow-2xl cursor-pointer"
-            >
-              {/* Header with Title and Close Button */}
-              <div
-                className="flex items-center justify-between border-b border-line bg-white/95 px-4 py-3 sm:px-6 sm:py-3.5 backdrop-blur-xs"
-                onClick={(e) => e.stopPropagation()}
+      {/* Enlarged Fabric Zoom Lightbox Modal rendered via Portal in document.body for full viewport coverage & perfect centering */}
+      {mounted &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {zoomedProduct && (
+              <motion.div
+                key="zoom-modal"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setZoomedProduct(null)}
+                className="fixed inset-0 z-[80] flex items-center justify-center bg-navy-deep/80 p-4 sm:p-6 backdrop-blur-md cursor-zoom-out"
+                role="dialog"
+                aria-modal="true"
+                aria-label={`Enlarged view of ${zoomedProduct.product.name}`}
               >
-                <div>
-                  <span className="font-sans text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                    {withReg(zoomedProduct.collectionName)}
-                  </span>
-                  <h3 className="font-sans text-lg font-medium text-navy-deep sm:text-xl">
-                    {withReg(zoomedProduct.product.name)}
-                  </h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setZoomedProduct(null)}
-                  aria-label="Close zoomed view"
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200 hover:text-navy cursor-pointer"
+                <motion.div
+                  initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9, y: 10 }}
+                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  onClick={() => {
+                    // Clicking on the modal container/image toggles zoom out back to normal
+                    setZoomedProduct(null);
+                  }}
+                  className="relative flex max-h-[85vh] w-full max-w-md sm:max-w-lg md:max-w-xl flex-col overflow-hidden rounded-2xl border border-white/20 bg-white shadow-2xl cursor-pointer"
                 >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
+                  {/* Header with Title and Close Button */}
+                  <div
+                    className="flex items-center justify-between border-b border-line bg-white/95 px-4 py-3 sm:px-5 sm:py-3.5 backdrop-blur-xs"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div>
+                      <span className="font-sans text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                        {withReg(zoomedProduct.collectionName)}
+                      </span>
+                      <h3 className="font-sans text-base font-medium text-navy-deep sm:text-lg">
+                        {withReg(zoomedProduct.product.name)}
+                      </h3>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setZoomedProduct(null)}
+                      aria-label="Close zoomed view"
+                      className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200 hover:text-navy cursor-pointer"
+                    >
+                      <X className="h-4 w-4 sm:h-5 sm:w-5" />
+                    </button>
+                  </div>
 
-              {/* Large Fabric Image Preview */}
-              <div className="relative aspect-[4/3] w-full bg-slate-100 sm:aspect-[16/10]">
-                <Image
-                  src={zoomedProduct.product.image}
-                  alt={zoomedProduct.product.name}
-                  fill
-                  sizes="(max-width: 768px) 94vw, 672px"
-                  quality={95}
-                  priority
-                  className="object-cover"
-                />
-              </div>
+                  {/* Large Fabric Image Preview */}
+                  <div className="relative aspect-[4/3] w-full bg-slate-100 sm:aspect-[16/11]">
+                    <Image
+                      src={zoomedProduct.product.image}
+                      alt={zoomedProduct.product.name}
+                      fill
+                      sizes="(max-width: 640px) 90vw, (max-width: 1024px) 520px, 576px"
+                      quality={95}
+                      priority
+                      className="object-cover"
+                    />
+                  </div>
 
-              {/* Bottom hint */}
-              <div className="border-t border-line/60 bg-slate-50/90 px-4 py-2 text-center text-xs text-slate-500 sm:px-6">
-                Click anywhere or press Esc to close
-              </div>
-            </motion.div>
-          </motion.div>
+                  {/* Bottom hint */}
+                  <div className="border-t border-line/60 bg-slate-50/90 px-4 py-2 text-center text-xs text-slate-500 sm:px-5">
+                    Click anywhere to close
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
     </>
   );
 }
