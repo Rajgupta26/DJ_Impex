@@ -20,9 +20,9 @@ export function WelcomeAnimated({
   const ease = [0.22, 1, 0.36, 1] as const;
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[5fr_7fr] lg:gap-16 items-start">
+    <div className="grid min-w-0 gap-10 lg:grid-cols-[5fr_7fr] lg:gap-16 items-start">
       {/* Left Column: Eyebrow, Heading, Closing */}
-      <div>
+      <div className="min-w-0">
         <motion.span
           initial={{ opacity: 0, y: reduceMotion ? 0 : 25 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -41,7 +41,7 @@ export function WelcomeAnimated({
           className="t-h2 mt-4 font-sans font-normal tracking-tight text-navy"
         >
           <span className="block">Welcome to</span>
-          <span className="block sm:whitespace-nowrap">D J Impex &amp; Co.</span>
+          <span className="block lg:whitespace-nowrap">D J Impex &amp; Co.</span>
         </motion.h2>
 
         <motion.div
@@ -61,14 +61,14 @@ export function WelcomeAnimated({
       </div>
 
       {/* Right Column: Paragraphs gliding up smoothly line-by-line with text-justify */}
-      <div className="space-y-6">
+      <div className="min-w-0 space-y-6">
         {lead ? (
           <motion.p
             initial={{ opacity: 0, y: reduceMotion ? 0 : 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2, margin: "-40px 0px" }}
             transition={{ duration: 0.75, delay: 0.2, ease }}
-            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-justify"
+            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-left sm:text-justify"
           >
             {withReg(lead)}
           </motion.p>
@@ -80,7 +80,7 @@ export function WelcomeAnimated({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2, margin: "-40px 0px" }}
             transition={{ duration: 0.75, delay: 0.32, ease }}
-            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-justify"
+            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-left sm:text-justify"
           >
             {withReg(craft)}
           </motion.p>
@@ -92,7 +92,7 @@ export function WelcomeAnimated({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2, margin: "-40px 0px" }}
             transition={{ duration: 0.75, delay: 0.44, ease }}
-            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-justify"
+            className="font-sans font-normal text-base sm:text-lg text-slate leading-relaxed text-left sm:text-justify"
           >
             {withReg(invitation)}
           </motion.p>

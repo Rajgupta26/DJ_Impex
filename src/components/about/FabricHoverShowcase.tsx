@@ -284,8 +284,8 @@ export function FabricHoverShowcase({
         <div
           className={`mt-8 flex flex-col lg:col-start-2 ${showLead ? "lg:row-start-2 lg:mt-5" : "lg:row-start-1 lg:mt-0"}`}
         >
-          <div className="border-line/60 bg-mist relative flex aspect-[4/3] min-h-72 w-full flex-col overflow-hidden rounded-2xl border sm:aspect-[16/11] lg:aspect-auto lg:h-[clamp(32rem,47vw,40rem)] lg:min-h-0">
-            <div className="bg-mist relative min-h-0 w-full flex-1 overflow-hidden">
+          <div className="border-line/60 bg-mist relative flex min-w-0 w-full flex-col overflow-hidden rounded-2xl border lg:h-[clamp(32rem,47vw,40rem)]">
+            <div className="bg-mist relative aspect-[4/3] min-h-72 w-full overflow-hidden sm:aspect-[16/11] lg:aspect-auto lg:min-h-0 lg:flex-1">
               {/* A full cloth base fills the rounded overlap gaps behind every layer. */}
               <AnimatePresence initial={false}>
                 <motion.div
@@ -354,12 +354,8 @@ export function FabricHoverShowcase({
                     priority
                   />
 
-                  {/* Caption & Weave information */}
-                  <div
-                    aria-hidden="true"
-                    className="from-navy-deep/90 via-navy-deep/20 pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent lg:hidden"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 p-4 text-white [text-shadow:0_1px_8px_rgb(13_23_51_/_0.8)] sm:p-7">
+                  {/* Desktop captions retain their existing placement. */}
+                  <div className="absolute inset-x-0 bottom-0 hidden p-4 text-white [text-shadow:0_1px_8px_rgb(13_23_51_/_0.8)] sm:p-7 lg:block">
                     <div className="text-accent flex flex-col items-start gap-1 font-sans text-xs tracking-wider uppercase sm:flex-row sm:items-center sm:justify-between">
                       <span className="text-white">{activeItem.weave}</span>
                       <span className="text-white/60">NABEEN® COLLECTION</span>
@@ -371,6 +367,18 @@ export function FabricHoverShowcase({
                   </div>
                 </motion.div>
               </AnimatePresence>
+            </div>
+
+            {/* Keep phone photographs clear; readable captions sit below them. */}
+            <div className="min-w-0 bg-white p-4 [overflow-wrap:anywhere] sm:p-7 lg:hidden">
+              <div className="flex flex-col items-start gap-1 font-sans text-xs tracking-wider text-slate uppercase sm:flex-row sm:items-center sm:justify-between">
+                <span>{activeItem.weave}</span>
+                <span>NABEEN® COLLECTION</span>
+              </div>
+              <h3 className="t-h3 mt-1.5 text-2xl font-light text-navy sm:text-3xl">
+                {activeItem.name}
+              </h3>
+              <p className="mt-2 max-w-md text-sm text-slate">{activeItem.description}</p>
             </div>
           </div>
         </div>

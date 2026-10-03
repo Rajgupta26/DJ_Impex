@@ -35,10 +35,10 @@ export function VisionBanner({
     <section
       data-hero
       aria-labelledby="about-banner-title"
-      className="site-hero on-dark relative h-[82svh] min-h-[32rem] w-full max-w-full overflow-hidden bg-navy-deep text-white sm:h-[100dvh] sm:min-h-[36rem]"
+      className={`site-hero on-dark relative h-[82svh] min-h-[32rem] w-full max-w-full overflow-hidden bg-navy-deep text-white sm:h-[100dvh] sm:min-h-[36rem] ${preserveFrame ? "about-banner--preserve-frame" : ""}`}
     >
       {/* Video / Background Layer extending to top edge */}
-      <div className="absolute inset-0 h-full w-full overflow-hidden">
+      <div className="about-banner__media absolute inset-0 h-full w-full overflow-hidden">
         {isVideo ? (
           <video
             key={videoSrc}

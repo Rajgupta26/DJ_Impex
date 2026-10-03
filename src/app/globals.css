@@ -334,6 +334,32 @@ body {
     min-height: clamp(32rem, 82svh, 44rem);
   }
 
+  /* About's landscape film contains its own title and strapline.
+     Keep the entire frame below the header instead of cropping its text. */
+  .site-hero.about-banner--preserve-frame {
+    display: block;
+    height: auto;
+    min-height: 0;
+    padding-top: 4rem;
+  }
+
+  .about-banner--preserve-frame .about-banner__media {
+    position: relative;
+    inset: auto;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .about-banner--preserve-frame .about-banner__media :is(video, img) {
+    object-fit: contain;
+  }
+
+  @media (width >= 40rem) {
+    .site-hero.about-banner--preserve-frame {
+      padding-top: 4.5rem;
+    }
+  }
+
   .site-hero__media {
     position: absolute;
     inset: 0;
