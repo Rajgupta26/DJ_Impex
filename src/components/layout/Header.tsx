@@ -124,7 +124,7 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
         className="site-header on-dark fixed inset-x-0 top-0 z-40 border-b border-transparent text-white transition-colors duration-[var(--duration-base)] data-[solid=true]:border-line data-[solid=true]:bg-white data-[solid=true]:text-navy"
       >
         <div className="flex h-16 w-full items-center justify-between gap-3 px-[var(--spacing-gutter)] sm:h-[4.5rem] sm:px-8 lg:h-[5.25rem] lg:gap-6 lg:px-12 xl:px-16">
-          <Link href="/" aria-label="Nabeen, luxury fabrics by DJI: home" className="relative block">
+          <Link href="/" aria-label="Nabeen, luxury fabrics by DJI: home" className="relative block shrink-0">
             <Image
               src="/images/logos/nabeen-logo-white.png"
               alt="Nabeen, luxury fabrics by DJI"
@@ -144,7 +144,7 @@ export function Header({ navigation, contact }: { navigation: NavItem[]; contact
             />
           </Link>
 
-          <div className="flex items-center gap-4 lg:gap-7">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-4 lg:gap-7">
             <nav aria-label="Main" className="hidden items-center gap-7 xl:flex">
               {navigation.map((item) => {
                 const isJournal = item.href === "/#journal";

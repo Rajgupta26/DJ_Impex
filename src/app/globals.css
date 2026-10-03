@@ -395,6 +395,11 @@ body {
 }
 
 @media (width < 40rem) {
+  /* The hero film includes a wordmark: cover it behind the phone controls. */
+  .site-header[data-solid="false"] {
+    background-color: var(--color-navy-deep);
+  }
+
   .site-hero__actions {
     display: grid;
     justify-items: stretch;

@@ -340,20 +340,23 @@ export function LanguageSelector({
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label="Select language"
-        className={`flex min-h-11 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all duration-[var(--duration-quick)] lg:min-h-0 ${
-          onDark
-            ? "border-white/25 bg-white/10 text-white hover:border-accent hover:bg-white/15"
-            : "border-slate/25 bg-slate-50 text-navy hover:border-navy hover:bg-white"
-        }`}
+        className="group inline-flex min-h-11 items-center text-xs font-medium lg:min-h-0"
       >
-        <Globe size={13} className="text-accent" aria-hidden="true" />
+        {/* A compact phone pill inside the full-height touch target. */}
+        <span className={`flex items-center gap-1 rounded-full border px-2 py-1.5 transition-colors duration-[var(--duration-quick)] sm:min-h-11 sm:gap-1.5 sm:px-3 lg:min-h-0 ${
+          onDark
+            ? "border-white/25 bg-white/10 text-white group-hover:border-accent group-hover:bg-white/15"
+            : "border-slate/25 bg-slate-50 text-navy group-hover:border-navy group-hover:bg-white"
+        }`}>
+        <Globe size={13} className="text-accent size-3 sm:size-[13px]" aria-hidden="true" />
         <span className="uppercase tracking-wider font-semibold">{activeLangObj.code}</span>
-        <ChevronDown size={11} className={`opacity-70 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+        <ChevronDown size={11} className={`size-2.5 opacity-70 transition-transform duration-200 sm:size-[11px] ${isOpen ? "rotate-180" : ""}`} />
+        </span>
       </button>
 
       {isOpen && (
         <div
-          className={`fixed inset-x-[var(--spacing-gutter)] top-[4.5rem] w-auto overflow-hidden rounded-xl border p-2 shadow-2xl backdrop-blur-xl z-50 animate-in fade-in zoom-in-95 duration-150 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-64 ${
+          className={`fixed inset-x-[var(--spacing-gutter)] top-[4.5rem] max-h-[calc(100dvh-5.5rem)] w-auto overflow-y-auto rounded-xl border p-2 shadow-2xl backdrop-blur-xl z-50 animate-in fade-in zoom-in-95 duration-150 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:max-h-none sm:w-64 sm:overflow-hidden ${
             onDark
               ? "border-white/20 bg-navy-deep/95 text-white"
               : "border-line bg-white/98 text-navy shadow-navy/15"
