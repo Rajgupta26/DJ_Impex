@@ -172,7 +172,14 @@ export function SlotManager({ initial }: { initial: SlotView[] }) {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <Image src={slot.src} alt={slot.alt || ""} fill sizes="112px" className="object-cover" />
+                  <Image
+                    src={slot.src}
+                    alt={slot.alt || ""}
+                    fill
+                    sizes="112px"
+                    className="object-cover"
+                    unoptimized={slot.src.endsWith(".svg")}
+                  />
                 )}
                 {isVideo && (
                   <span className="absolute bottom-1 right-1 rounded bg-black/70 px-1 py-0.5 text-[10px] text-white flex items-center gap-0.5">

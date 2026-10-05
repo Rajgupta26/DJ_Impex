@@ -61,10 +61,10 @@ export const IMAGE_SLOTS: readonly ImageSlot[] = [
   },
   {
     id: "about-hero",
-    label: "About page banner",
-    where: "About DJI, at the top",
-    defaultSrc: "/images/hero/spinning-frames.jpg",
-    defaultAlt: "Spinning frames drawing cotton into yarn",
+    label: "Nabeen page banner",
+    where: "Nabeen page, at the top",
+    defaultSrc: "/images/hero/nabeen-hero-pattern.svg",
+    defaultAlt: "Nabeen luxury fabrics banner",
     hint: "Wide landscape, and evenly lit: the page title sits over it.",
   },
   // 8 fabrics in "The Nabeen Collection" showcase on the home page.

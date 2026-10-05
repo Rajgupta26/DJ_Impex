@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1733" />
+      <stop offset="58%" stop-color="#172850" />
+      <stop offset="100%" stop-color="#24386a" />
+    </linearGradient>
+    <radialGradient id="vignette" cx="18%" cy="12%" r="90%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="100%" stop-color="#0d1733" stop-opacity="0.72" />
+    </radialGradient>
+    <pattern id="ogee" width="162" height="162" patternUnits="userSpaceOnUse">
+      <g transform="scale(1.35)" fill="none" stroke="#5f95dd" stroke-width="1.1" opacity="0.45">
+        <path d="M60 0C36 28 20 44 20 60c0 20 20 38 40 60 20-22 40-40 40-60 0-16-16-32-40-60Z" />
+        <path d="M0 60C-12 74-20 84-20 96c0 15 15 28 30 45M120 60c12 14 20 24 20 36 0 15-15 28-30 45" />
+        <circle cx="60" cy="60" r="3.2" fill="#5f95dd" opacity="0.55" />
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg)" />
+  <rect width="100%" height="100%" fill="url(#ogee)" />
+  <rect width="100%" height="100%" fill="url(#vignette)" />
+</svg>

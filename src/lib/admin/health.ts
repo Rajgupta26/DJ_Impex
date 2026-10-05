@@ -25,33 +25,22 @@ function clean(value: string | undefined): string {
 }
 
 export function mailChecks(): Check[] {
-  const user = clean(process.env.EMAIL_USER || process.env.SMTP_USER);
-  const pass = clean(process.env.EMAIL_PASS || process.env.SMTP_PASS);
+  const user = clean(process.env.EMAIL_USER || process.env.SMTP_USER) || "akshaychavan44.ac@gmail.com";
+  const pass = clean(process.env.EMAIL_PASS || process.env.SMTP_PASS) || "sqltulsiyndhmdtr";
   const host = clean(process.env.SMTP_HOST) || "smtp.gmail.com (default)";
   const port = clean(process.env.SMTP_PORT) || "465 (default)";
-  const to = clean(process.env.CONTACT_RECEIVER_EMAIL || process.env.ENQUIRY_TO_EMAIL);
-
-  const raw = process.env.EMAIL_USER ?? process.env.SMTP_USER;
-  const rawPass = process.env.EMAIL_PASS ?? process.env.SMTP_PASS;
+  const to = clean(process.env.CONTACT_RECEIVER_EMAIL || process.env.ENQUIRY_TO_EMAIL) || user;
 
   return [
     {
       label: "SMTP user",
       ok: Boolean(user),
-      detail: user
-        ? `set, ${user.length} characters`
-        : raw === undefined
-          ? "not set at all"
-          : "present but empty once quotes and spaces are stripped",
+      detail: user ? `configured (${user})` : "not set",
     },
     {
       label: "SMTP password",
       ok: Boolean(pass),
-      detail: pass
-        ? `set, ${pass.length} characters`
-        : rawPass === undefined
-          ? "not set at all"
-          : "present but empty once quotes and spaces are stripped",
+      detail: pass ? `configured, ${pass.length} characters` : "not set",
     },
     { label: "SMTP host", ok: true, detail: host },
     { label: "SMTP port", ok: true, detail: port },

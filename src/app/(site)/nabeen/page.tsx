@@ -20,9 +20,12 @@ export const metadata: Metadata = buildMetadata({
   path: "/nabeen",
 });
 
+export const dynamic = "force-dynamic";
+
 export default async function NabeenPage() {
   const site = getSite();
   const slots = await slotMap();
+  const heroSlot = slots["about-hero"];
   const page = getPage("nabeen");
   const head = section(page, "nabeen");
   const intro = section(page, "introduction");
@@ -36,11 +39,18 @@ export default async function NabeenPage() {
   const standsFor = site.values.slice(3);
   const coreLine = `${coreValues.slice(0, -1).join(", ")} and ${coreValues.at(-1)}.`.toLowerCase();
 
+  const heroImage = heroSlot?.replaced ? heroSlot.src : undefined;
+  const heroAlt = heroSlot?.replaced ? (heroSlot.alt || "Nabeen Luxury Fabrics") : undefined;
+  const heroTitle = heroSlot?.replaced && heroSlot.title ? heroSlot.title : field(head, "h1");
+  const heroStrapline = heroSlot?.replaced && heroSlot.description ? heroSlot.description : field(head, "strapline");
+
   return (
     <>
       <PageHero
-        title={withReg(field(head, "h1"))}
-        strapline={withReg(field(head, "strapline"))}
+        title={withReg(heroTitle)}
+        strapline={withReg(heroStrapline)}
+        image={heroImage}
+        alt={heroAlt}
         pattern="ogee"
       />
 

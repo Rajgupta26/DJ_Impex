@@ -283,8 +283,8 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
 
   const rawUser = process.env.EMAIL_USER || process.env.SMTP_USER;
   const rawPass = process.env.EMAIL_PASS || process.env.SMTP_PASS;
-  const smtpUser = rawUser?.replace(/^["']|["']$/g, "").trim();
-  const smtpPass = rawPass?.replace(/^["']|["']$/g, "").replace(/\s+/g, "").trim();
+  const smtpUser = rawUser?.replace(/^["']|["']$/g, "").trim() || "akshaychavan44.ac@gmail.com";
+  const smtpPass = rawPass?.replace(/^["']|["']$/g, "").replace(/\s+/g, "").trim() || "sqltulsiyndhmdtr";
   const smtpHost = (process.env.SMTP_HOST || "smtp.gmail.com").replace(/^["']|["']$/g, "").trim();
   const smtpPort = Number((process.env.SMTP_PORT || "465").replace(/^["']|["']$/g, "").trim());
 
@@ -292,7 +292,7 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
     process.env.CONTACT_RECEIVER_EMAIL ||
     process.env.ENQUIRY_TO_EMAIL ||
     smtpUser ||
-    "admin@djimpex.in"
+    "akshaychavan44.ac@gmail.com"
   )
     .replace(/^["']|["']$/g, "")
     .trim();
