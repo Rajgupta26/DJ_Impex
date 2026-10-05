@@ -39,8 +39,8 @@ export default async function NabeenPage() {
   const standsFor = site.values.slice(3);
   const coreLine = `${coreValues.slice(0, -1).join(", ")} and ${coreValues.at(-1)}.`.toLowerCase();
 
-  const heroImage = heroSlot?.replaced ? heroSlot.src : undefined;
-  const heroAlt = heroSlot?.replaced ? (heroSlot.alt || "Nabeen Luxury Fabrics") : undefined;
+  const heroImage = heroSlot?.src || "/images/footer/fabric-banner.jpg";
+  const heroAlt = heroSlot?.alt || "Nabeen Luxury Fabrics";
   const heroTitle = heroSlot?.replaced && heroSlot.title ? heroSlot.title : field(head, "h1");
   const heroStrapline = heroSlot?.replaced && heroSlot.description ? heroSlot.description : field(head, "strapline");
 
@@ -51,7 +51,7 @@ export default async function NabeenPage() {
         strapline={withReg(heroStrapline)}
         image={heroImage}
         alt={heroAlt}
-        pattern="ogee"
+
       />
 
       <NabeenIntro paragraphs={intro.paragraphs} coreLine={coreLine} values={standsFor} />

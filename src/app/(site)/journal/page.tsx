@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import { ExploreNabeenCTA } from "@/components/ui/ExploreNabeenCTA";
 import { getJournalPosts } from "@/lib/journal";
+import { slotMap } from "@/lib/slots";
 import { buildMetadata, pageTitle } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -49,14 +50,25 @@ export default async function JournalPage() {
   const [lead, ...rest] = await getJournalPosts();
   const supporting = rest.slice(0, 2);
   const olderPosts = rest.slice(2);
+  const slots = await slotMap();
+  const heroSlot = slots["journal-hero"];
+
+  const heroImage = heroSlot?.src || "/images/footer/fabric-banner.jpg";
+  const heroAlt = heroSlot?.alt || "The Fabric Journal";
+  const heroTitle = heroSlot?.replaced && heroSlot.title ? heroSlot.title : "The Fabric Journal";
+  const heroStrapline =
+    heroSlot?.replaced && heroSlot.description
+      ? heroSlot.description
+      : "Guides to choosing, judging and wearing fine fabric.";
 
   return (
     <>
       <PageHero
-        title="The Fabric Journal"
-        strapline="Guides to choosing, judging and wearing fine fabric."
+        title={heroTitle}
+        strapline={heroStrapline}
         straplineClassName="md:max-w-none md:whitespace-nowrap"
-        pattern="check"
+        image={heroImage}
+        alt={heroAlt}
       />
 
       <div className="relative overflow-hidden bg-white">

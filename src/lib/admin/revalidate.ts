@@ -34,11 +34,12 @@ export function revalidateGallery(): void {
   safely("/");
 }
 
-/** After a design slot changes. Slots appear on the home page, /about, /nabeen, /nabeen-x-ali-nuhu and /vision. */
+/** After a design slot changes. Slots appear on the home page, /about, /nabeen, /nabeen-x-ali-nuhu, /journal and /vision. */
 export function revalidateSlots(): void {
   safely("/");
   safely("/about");
   safely("/nabeen");
   safely("/nabeen-x-ali-nuhu");
+  safely("/journal");
   safely("/vision");
 }

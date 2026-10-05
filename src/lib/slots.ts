@@ -63,9 +63,21 @@ export const IMAGE_SLOTS: readonly ImageSlot[] = [
     id: "about-hero",
     label: "Nabeen page banner",
     where: "Nabeen page, at the top",
-    defaultSrc: "/images/hero/nabeen-hero-pattern.svg",
+    defaultSrc: "/images/footer/fabric-banner.jpg",
     defaultAlt: "Nabeen luxury fabrics banner",
     hint: "Wide landscape, and evenly lit: the page title sits over it.",
+    defaultTitle: "Nabeen®: Luxury Fabrics by DJI",
+    defaultDescription: "Your Style, Our Fabric: A Perfect Blend of Tradition and Modernity.",
+  },
+  {
+    id: "journal-hero",
+    label: "The Fabric Journal banner",
+    where: "The Fabric Journal page, at the top",
+    defaultSrc: "/images/footer/fabric-banner.jpg",
+    defaultAlt: "The Fabric Journal banner",
+    hint: "Wide landscape, and evenly lit: the page title sits over it.",
+    defaultTitle: "The Fabric Journal",
+    defaultDescription: "Guides to choosing, judging and wearing fine fabric.",
   },
   // 8 fabrics in "The Nabeen Collection" showcase on the home page.
   fabricSlot(
