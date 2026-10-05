@@ -14,7 +14,7 @@ import { track } from "@/lib/analytics";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 
 const DEFAULT_POPUP_WHATSAPP =
-  "https://wa.me/917304763996?text=Hello%20Nabeen%20team%2C%20I%E2%80%99m%20interested%20in%20your%20fabrics.%20Please%20share%20available%20designs%2C%20prices%2C%20and%20order%20details.";
+  "https://wa.me/919819693626?text=Hello%20Nabeen%20team%2C%20I%E2%80%99m%20interested%20in%20your%20fabrics.%20Please%20share%20available%20designs%2C%20prices%2C%20and%20order%20details.";
 
 /**
  * The welcome pop-up: centered luxury card with Nabeen mark, rule, brand statement,

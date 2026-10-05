@@ -127,8 +127,23 @@ export function EnquiryForm({
     const prefill = lines.join("\n");
 
     track("whatsapp_click", { location: "enquiry_form_whatsapp_btn" });
-    const baseUrl = whatsappHref ? whatsappHref.split("?")[0] : "https://wa.me/917304763996";
+    const baseUrl = whatsappHref ? whatsappHref.split("?")[0] : "https://wa.me/919819693626";
     window.open(`${baseUrl}?text=${encodeURIComponent(prefill)}`, "_blank", "noopener,noreferrer");
+
+    // Automatically trigger SMTP email send in background
+    const submitData = new FormData();
+    submitData.set("fullName", name);
+    submitData.set("countryCode", code);
+    submitData.set("whatsappNumber", phone);
+    if (emailVal) submitData.set("email", emailVal);
+    selected.forEach((f) => submitData.append("fabrics", f));
+    selectedUsage.forEach((u) => submitData.append("usage", u));
+    submitData.set("message", msg);
+    submitData.set("variant", variant);
+
+    submitEnquiry(IDLE, submitData).catch((err) => {
+      console.error("[enquiry] background submit failed:", err);
+    });
   };
 
   const fullName = (

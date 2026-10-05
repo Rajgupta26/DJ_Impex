@@ -41,8 +41,8 @@ export function ContactSection({
       </div>
       <Container className="relative z-10">
         <div className="grid min-w-0 items-start gap-10 lg:grid-cols-[5fr_7fr] lg:gap-20">
-          <div className="flex min-w-0 flex-col gap-5">
-            <div className="bg-navy on-dark min-w-0 rounded-2xl p-5 text-white shadow-lg sm:p-7">
+          <div className="flex min-w-0 flex-col gap-6">
+            <div className="bg-navy on-dark min-w-0 rounded-2xl p-6 text-white shadow-lg sm:p-8 lg:p-9">
               <h2 className="t-h3 text-white">Talk to us directly</h2>
               <div className="mt-5 sm:mt-6">
                 <ContactChannels onDark={true} />
@@ -56,7 +56,7 @@ export function ContactSection({
                 href={MAPS_PLACE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group border-line bg-sand/30 relative mt-3 block h-[162px] w-full min-w-0 overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-md"
+                className="group border-line bg-sand/30 relative mt-3 block h-[190px] w-full min-w-0 overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-md"
                 aria-label="Open company location in Google Maps (opens in a new tab)"
               >
                 <iframe

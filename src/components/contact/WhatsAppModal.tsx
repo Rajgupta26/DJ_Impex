@@ -14,12 +14,14 @@ import { COUNTRY_CODES, IDLE } from "@/lib/enquiry";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 
 const DEFAULT_FABRICS = [
-  "Giza Cotton",
-  "Swiss Lace",
-  "Atiku",
-  "Voile & Jacquard",
-  "Suiting",
   "Wool",
+  "Atiku",
+  "Suiting",
+  "Jacquard",
+  "Swiss Voile",
+  "African Wax Prints",
+  "Giza Cotton Shirting",
+  "Zürique Swiss Men Lace",
 ];
 
 const USAGE_OPTIONS = [
@@ -90,7 +92,7 @@ export function WhatsAppModal({
 
     // Client format: Hi Nabeen, I am *Name* from *country*, I am looking for *Fabrics of interest* for *usage* purposes.
     const message = `Hi Nabeen, I am ${fullName.trim()} from ${countryName}, I am looking for ${fabricsText} for ${usageText} purposes.`;
-    const whatsappUrl = `https://wa.me/917304763996?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/919819693626?text=${encodeURIComponent(message)}`;
 
     // Open WhatsApp in a new tab
     window.open(whatsappUrl, "_blank");

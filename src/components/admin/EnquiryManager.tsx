@@ -227,7 +227,9 @@ export function EnquiryManager({ initial }: { initial: AdminEnquiry[] }) {
               <dd>
                 {open.email ? (
                   <a
-                    href={`mailto:${encodeURIComponent(open.email)}`}
+                    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(open.email.trim())}&su=${encodeURIComponent(`Re: ${open.subject || "Fabric Enquiry"} - Nabeen®`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-navy underline dark:text-slate-200"
                   >
                     {open.email}
@@ -244,7 +246,12 @@ export function EnquiryManager({ initial }: { initial: AdminEnquiry[] }) {
 
             <div className="flex flex-wrap justify-end gap-2 pt-1">
               {open.email ? (
-                <a href={`mailto:${encodeURIComponent(open.email)}`} className={buttonQuiet}>
+                <a
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(open.email.trim())}&su=${encodeURIComponent(`Re: ${open.subject || "Fabric Enquiry"} - Nabeen®`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonQuiet}
+                >
                   <Mail size={14} aria-hidden="true" />
                   Reply by email
                 </a>

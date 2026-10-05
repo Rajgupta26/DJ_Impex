@@ -55,7 +55,7 @@
       "display": "+91 98196 93626",
       "e164": "+919819693626",
       "status": "confirmed",
-      "note": "Appears in brochure, Facebook and prototype."
+      "note": "Primary phone for enquiries."
     },
     "phoneSecondary": {
       "display": "+91 22-47833999",
@@ -64,7 +64,7 @@
       "note": "Brochure only."
     },
     "whatsapp": {
-      "e164": "917304763996",
+      "e164": "919819693626",
       "prefill": "Hello Nabeen team, I’m interested in your fabrics. Please share available designs, prices, and order details.",
       "status": "confirmed",
       "note": "Assumed to be the primary phone. Confirm which number is on WhatsApp."
@@ -235,15 +235,9 @@
     "status": "tbc",
     "items": [
       {
-        "slug": "giza-cotton",
-        "name": "Giza Cotton",
-        "line": "Egyptian Giza cotton shirting."
-      },
-      {
-        "slug": "swiss-lace",
-        "name": "Swiss Lace",
-        "line": "Swiss-inspired men's lace, including Zürique.",
-        "highlight": "Zürique"
+        "slug": "wool",
+        "name": "Wool",
+        "line": "Australian and Turkish wool."
       },
       {
         "slug": "atiku",
@@ -251,19 +245,35 @@
         "line": "Atiku fabric for traditional menswear."
       },
       {
-        "slug": "voile-jacquard",
-        "name": "Voile & Jacquard",
-        "line": "Light voiles and woven jacquard patterns."
-      },
-      {
         "slug": "suiting",
         "name": "Suiting",
         "line": "Suiting fabrics for tailored menswear."
       },
       {
-        "slug": "wool",
-        "name": "Wool",
-        "line": "Australian and Turkish wool."
+        "slug": "jacquard",
+        "name": "Jacquard",
+        "line": "Woven jacquard patterns and rich textures."
+      },
+      {
+        "slug": "swiss-voile",
+        "name": "Swiss Voile",
+        "line": "Light Swiss voiles for luxury menswear."
+      },
+      {
+        "slug": "african-wax-prints",
+        "name": "African Wax Prints",
+        "line": "Premium African wax print designs."
+      },
+      {
+        "slug": "giza-cotton-shirting",
+        "name": "Giza Cotton Shirting",
+        "line": "Egyptian Giza cotton shirting."
+      },
+      {
+        "slug": "zurique-swiss-men-lace",
+        "name": "Zürique Swiss Men Lace",
+        "line": "Zürique Swiss-inspired men's lace.",
+        "highlight": "Zürique"
       }
     ]
   },

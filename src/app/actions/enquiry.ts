@@ -164,7 +164,7 @@ function getCustomerHtml(enquiry: Enquiry): string {
               </p>
               
               <p class="mobile-text" style="margin: 0 0 24px 0; font-size: 15px; line-height: 1.6; color: #334155;">
-                Our export and customer support team is reviewing your requirements and will reach out to you directly on WhatsApp at <strong>${enquiry.countryCode} ${enquiry.whatsappNumber}</strong> or via this email.
+                Our team is reviewing your requirements and will reach out to you directly on WhatsApp at <strong>${enquiry.countryCode} ${enquiry.whatsappNumber}</strong>.
               </p>
 
               <!-- Summary Card -->
@@ -177,17 +177,6 @@ function getCustomerHtml(enquiry: Enquiry): string {
                       ${enquiry.usage.length ? `<tr><td style="padding: 3px 0; width: 35%;"><strong>Usage:</strong></td><td style="padding: 3px 0; color: #0f172a;">${enquiry.usage.join(", ")}</td></tr>` : ""}
                       ${enquiry.message ? `<tr><td style="padding: 3px 0; width: 35%; vertical-align: top;"><strong>Message:</strong></td><td style="padding: 3px 0; color: #0f172a;">${enquiry.message}</td></tr>` : ""}
                     </table>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- WhatsApp CTA Button -->
-              <table role="presentation" class="btn-table" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 28px auto 24px;">
-                <tr>
-                  <td align="center" style="border-radius: 4px; background-color: #172850;">
-                    <a href="https://wa.me/917304763996" class="btn-link" target="_blank" style="font-size: 14px; font-weight: 600; color: #ffffff; text-decoration: none; padding: 12px 26px; display: inline-block; border-radius: 4px;">
-                      Chat with us on WhatsApp &rarr;
-                    </a>
                   </td>
                 </tr>
               </table>
@@ -345,7 +334,7 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
 
     // 2. Send auto-reply confirmation to the customer (if email provided)
     if (enquiry.email) {
-      const customerText = `Dear ${enquiry.fullName},\n\nThank you for reaching out to Nabeen®. We have received your enquiry regarding our luxury fabric collection.\n\nOur export team will connect with you shortly on WhatsApp (${enquiry.countryCode} ${enquiry.whatsappNumber}) or by email.\n\nEnquiry Summary:\n- Fabrics of interest: ${enquiry.fabrics.length ? enquiry.fabrics.join(", ") : "General enquiry"}\n${enquiry.usage.length ? `- Usage: ${enquiry.usage.join(", ")}\n` : ""}${enquiry.message ? `- Message: ${enquiry.message}\n` : ""}\nIf you need urgent assistance, you can reach us on WhatsApp: https://wa.me/917304763996\n\nWarm regards,\nThe Nabeen® Team\nD J Impex & Co., Mumbai`;
+      const customerText = `Dear ${enquiry.fullName},\n\nThank you for reaching out to Nabeen®. We have received your enquiry regarding our luxury fabric collection.\n\nOur team is reviewing your requirements and will reach out to you directly on WhatsApp (${enquiry.countryCode} ${enquiry.whatsappNumber}).\n\nEnquiry Summary:\n- Fabrics of interest: ${enquiry.fabrics.length ? enquiry.fabrics.join(", ") : "General enquiry"}\n${enquiry.usage.length ? `- Usage: ${enquiry.usage.join(", ")}\n` : ""}${enquiry.message ? `- Message: ${enquiry.message}\n` : ""}\nWarm regards,\nThe Nabeen® Team\nD J Impex & Co., Mumbai`;
 
       await transporter.sendMail({
         from: enquiryFrom,

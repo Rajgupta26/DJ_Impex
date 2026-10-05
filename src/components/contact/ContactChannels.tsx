@@ -10,8 +10,8 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
   const { contact } = getSite();
 
   return (
-    <div className="grid gap-5">
-      <dl className="grid gap-5">
+    <div className="grid gap-6">
+      <dl className="grid gap-6">
         <div className="flex gap-4">
           <Phone
             aria-hidden="true"
@@ -48,7 +48,7 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
           </div>
         </div>
 
-        <div className={`flex gap-4 border-t pt-5 ${onDark ? "border-white/15" : "border-line"}`}>
+        <div className={`flex gap-4 border-t pt-5 sm:pt-6 ${onDark ? "border-white/15" : "border-line"}`}>
           <Mail
             aria-hidden="true"
             size={18}
@@ -78,7 +78,7 @@ export function ContactChannels({ onDark = true }: { onDark?: boolean } = {}) {
           </div>
         </div>
 
-        <div className={`flex gap-4 border-t pt-5 ${onDark ? "border-white/15" : "border-line"}`}>
+        <div className={`flex gap-4 border-t pt-5 sm:pt-6 ${onDark ? "border-white/15" : "border-line"}`}>
           <MapPin
             aria-hidden="true"
             size={18}
