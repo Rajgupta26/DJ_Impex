@@ -24,6 +24,9 @@ import { jsonLdScript, organizationJsonLd } from "@/lib/seo";
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const site = getSite();
   const whatsapp = whatsappLink();
+  const popupWhatsapp = whatsappLink(
+    "Hello Nabeen team, I’m interested in your fabrics. Please share available designs, prices, and order details.",
+  );
 
   return (
     <>
@@ -49,7 +52,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         <Preloader />
 
         <ContactPopup
-          whatsappHref={whatsapp}
+          whatsappHref={popupWhatsapp}
           line={site.popup.line}
           cta={site.popup.cta}
           delaySeconds={site.popup.delaySeconds}

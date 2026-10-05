@@ -185,7 +185,7 @@ function getCustomerHtml(enquiry: Enquiry): string {
               <table role="presentation" class="btn-table" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 28px auto 24px;">
                 <tr>
                   <td align="center" style="border-radius: 4px; background-color: #172850;">
-                    <a href="https://wa.me/919819693626" class="btn-link" target="_blank" style="font-size: 14px; font-weight: 600; color: #ffffff; text-decoration: none; padding: 12px 26px; display: inline-block; border-radius: 4px;">
+                    <a href="https://wa.me/917304763996" class="btn-link" target="_blank" style="font-size: 14px; font-weight: 600; color: #ffffff; text-decoration: none; padding: 12px 26px; display: inline-block; border-radius: 4px;">
                       Chat with us on WhatsApp &rarr;
                     </a>
                   </td>
@@ -291,8 +291,7 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
   const enquiryTo = (
     process.env.CONTACT_RECEIVER_EMAIL ||
     process.env.ENQUIRY_TO_EMAIL ||
-    smtpUser ||
-    "akshaychavan44.ac@gmail.com"
+    "admin@djimpex.in"
   )
     .replace(/^["']|["']$/g, "")
     .trim();
@@ -346,7 +345,7 @@ export async function submitEnquiry(_previous: EnquiryState, formData: FormData)
 
     // 2. Send auto-reply confirmation to the customer (if email provided)
     if (enquiry.email) {
-      const customerText = `Dear ${enquiry.fullName},\n\nThank you for reaching out to Nabeen®. We have received your enquiry regarding our luxury fabric collection.\n\nOur export team will connect with you shortly on WhatsApp (${enquiry.countryCode} ${enquiry.whatsappNumber}) or by email.\n\nEnquiry Summary:\n- Fabrics of interest: ${enquiry.fabrics.length ? enquiry.fabrics.join(", ") : "General enquiry"}\n${enquiry.usage.length ? `- Usage: ${enquiry.usage.join(", ")}\n` : ""}${enquiry.message ? `- Message: ${enquiry.message}\n` : ""}\nIf you need urgent assistance, you can reach us on WhatsApp: https://wa.me/919819693626\n\nWarm regards,\nThe Nabeen® Team\nD J Impex & Co., Mumbai`;
+      const customerText = `Dear ${enquiry.fullName},\n\nThank you for reaching out to Nabeen®. We have received your enquiry regarding our luxury fabric collection.\n\nOur export team will connect with you shortly on WhatsApp (${enquiry.countryCode} ${enquiry.whatsappNumber}) or by email.\n\nEnquiry Summary:\n- Fabrics of interest: ${enquiry.fabrics.length ? enquiry.fabrics.join(", ") : "General enquiry"}\n${enquiry.usage.length ? `- Usage: ${enquiry.usage.join(", ")}\n` : ""}${enquiry.message ? `- Message: ${enquiry.message}\n` : ""}\nIf you need urgent assistance, you can reach us on WhatsApp: https://wa.me/917304763996\n\nWarm regards,\nThe Nabeen® Team\nD J Impex & Co., Mumbai`;
 
       await transporter.sendMail({
         from: enquiryFrom,

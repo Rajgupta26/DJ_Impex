@@ -29,7 +29,7 @@ export function mailChecks(): Check[] {
   const pass = clean(process.env.EMAIL_PASS || process.env.SMTP_PASS) || "sqltulsiyndhmdtr";
   const host = clean(process.env.SMTP_HOST) || "smtp.gmail.com (default)";
   const port = clean(process.env.SMTP_PORT) || "465 (default)";
-  const to = clean(process.env.CONTACT_RECEIVER_EMAIL || process.env.ENQUIRY_TO_EMAIL) || user;
+  const to = clean(process.env.CONTACT_RECEIVER_EMAIL || process.env.ENQUIRY_TO_EMAIL) || "admin@djimpex.in";
 
   return [
     {
@@ -46,8 +46,8 @@ export function mailChecks(): Check[] {
     { label: "SMTP port", ok: true, detail: port },
     {
       label: "Enquiries are sent to",
-      ok: Boolean(to || user),
-      detail: to || (user ? "the SMTP user's own address" : "nowhere: no address configured"),
+      ok: Boolean(to),
+      detail: to,
     },
   ];
 }

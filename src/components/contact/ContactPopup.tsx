@@ -8,17 +8,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useAnyOverlayOpen, useOverlay } from "@/components/layout/OverlayContext";
 import { withReg } from "@/components/ui/Reg";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 import { track } from "@/lib/analytics";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 
+const DEFAULT_POPUP_WHATSAPP =
+  "https://wa.me/917304763996?text=Hello%20Nabeen%20team%2C%20I%E2%80%99m%20interested%20in%20your%20fabrics.%20Please%20share%20available%20designs%2C%20prices%2C%20and%20order%20details.";
+
 /**
  * The welcome pop-up: centered luxury card with Nabeen mark, rule, brand statement,
- * and action button that smoothly scrolls to the contact section.
+ * and action button that opens WhatsApp directly with a prefilled enquiry message.
  *
  * Appears automatically every time the page is loaded/refreshed after delaySeconds.
  */
 export function ContactPopup({
+  whatsappHref = DEFAULT_POPUP_WHATSAPP,
   line = "Wrap Yourself in Opulence with the Finest African-Inspired Luxury Fabrics by Nabeen®",
   cta = "WhatsApp us",
   delaySeconds = 5,
@@ -111,27 +116,16 @@ export function ContactPopup({
               {withReg(line)}
             </p>
 
-            <button
-              type="button"
-              onClick={() => {
-                track("whatsapp_click", { location: "popup" });
-                close("success");
-                if (pathname === "/") {
-                  const el = document.getElementById("contact");
-                  if (el) {
-                    el.scrollIntoView({ behavior: "smooth" });
-                  } else {
-                    window.location.hash = "contact";
-                  }
-                } else {
-                  window.location.href = "/#contact";
-                }
-              }}
+            <TrackedLink
+              href={whatsappHref}
+              event="whatsapp_click"
+              location="popup"
+              onClick={() => close("success")}
               className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2.5 rounded bg-[var(--color-whatsapp)] px-7 py-3 text-sm font-semibold uppercase tracking-[0.06em] text-[var(--color-whatsapp-ink)] transition-opacity duration-[var(--duration-quick)] hover:opacity-90"
             >
               <WhatsAppGlyph size={18} />
               <span>{cta}</span>
-            </button>
+            </TrackedLink>
           </motion.div>
         </div>
       ) : null}

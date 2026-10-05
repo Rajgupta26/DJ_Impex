@@ -116,18 +116,18 @@ export function EnquiryForm({
 
     setClientErrors({});
 
-    const lines: string[] = ["*New Fabric Enquiry - Nabeen®*"];
-    lines.push(`• *Name:* ${name}`);
-    lines.push(`• *WhatsApp:* ${code} ${phone}`);
-    if (emailVal) lines.push(`• *Email:* ${emailVal}`);
-    if (selected.length > 0) lines.push(`• *Fabrics:* ${selected.join(", ")}`);
-    if (selectedUsage.length > 0) lines.push(`• *Usage:* ${selectedUsage.join(", ")}`);
-    if (msg) lines.push(`• *Message:* ${msg}`);
+    const lines: string[] = ["Hi, I'm interested in Nabeen.", ""];
+    lines.push(`Name: ${name}`);
+    lines.push(`WhatsApp: ${code} ${phone}`);
+    if (emailVal) lines.push(`Email: ${emailVal}`);
+    if (selected.length > 0) lines.push(`Fabrics: ${selected.join(", ")}`);
+    if (selectedUsage.length > 0) lines.push(`Usage: ${selectedUsage.join(", ")}`);
+    if (msg) lines.push(`Message: ${msg}`);
 
     const prefill = lines.join("\n");
 
     track("whatsapp_click", { location: "enquiry_form_whatsapp_btn" });
-    const baseUrl = whatsappHref ? whatsappHref.split("?")[0] : "https://wa.me/919819693626";
+    const baseUrl = whatsappHref ? whatsappHref.split("?")[0] : "https://wa.me/917304763996";
     window.open(`${baseUrl}?text=${encodeURIComponent(prefill)}`, "_blank", "noopener,noreferrer");
   };
 
