@@ -41,7 +41,7 @@ export function ContactSection({
       </div>
       <Container className="relative z-10">
         <div className="grid min-w-0 items-start gap-10 lg:grid-cols-[5fr_7fr] lg:gap-20">
-          <div className="flex min-w-0 flex-col gap-6">
+          <div className="flex min-w-0 flex-col gap-4 sm:gap-5">
             <div className="bg-navy on-dark min-w-0 rounded-2xl p-6 text-white shadow-lg sm:p-8 lg:p-9">
               <h2 className="t-h3 text-white">Talk to us directly</h2>
               <div className="mt-5 sm:mt-6">
@@ -51,12 +51,12 @@ export function ContactSection({
 
             <div className="min-w-0">
               <h3 className="t-h3 text-navy">Head Office</h3>
-              <p className="text-slate mt-1 text-sm">Visit us at our location below.</p>
+              <p className="text-slate mt-0.5 text-sm">Visit us at our location below.</p>
               <a
                 href={MAPS_PLACE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group border-line bg-sand/30 relative mt-3 block h-[190px] w-full min-w-0 overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-md"
+                className="group border-line bg-sand/30 relative mt-2.5 block h-[165px] w-full min-w-0 overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-md"
                 aria-label="Open company location in Google Maps (opens in a new tab)"
               >
                 <iframe

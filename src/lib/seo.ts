@@ -51,6 +51,21 @@ type BuildMetadata = {
   keywords?: string[];
 };
 
+export const DEFAULT_KEYWORDS = [
+  "luxury fabrics",
+  "men's fabrics",
+  "Swiss lace",
+  "Giza cotton",
+  "Atiku fabric",
+  "African wax prints",
+  "Star Export House",
+  "D J Impex & Co.",
+  "Nabeen",
+  "Mumbai fabric exporter",
+  "Kano Nigeria fabrics",
+  "luxury menswear",
+];
+
 export function buildMetadata({
   title,
   description,
@@ -64,13 +79,14 @@ export function buildMetadata({
   // Routes share the branded card at /opengraph-image unless they pass their own.
   // Pointing at "{route}/opengraph-image" would 404 for every route without one.
   const ogImage = image ?? "/opengraph-image";
+  const allKeywords = keywords && keywords.length > 0 ? keywords : DEFAULT_KEYWORDS;
 
   return {
     // Absolute: pageTitle() has already applied the suffix, and the root layout's
     // template would otherwise append it a second time.
     title: { absolute: title },
     description,
-    keywords,
+    keywords: allKeywords,
     alternates: { canonical: url },
     openGraph: {
       title,
@@ -78,7 +94,7 @@ export function buildMetadata({
       url,
       siteName: "Nabeen® Luxury Fabrics by DJI",
       locale: "en_NG",
-      alternateLocale: ["en_IN"],
+      alternateLocale: ["en_IN", "en_US", "en_GB"],
       type,
       ...(publishedTime ? { publishedTime } : {}),
       images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
@@ -88,6 +104,19 @@ export function buildMetadata({
       title,
       description,
       images: [ogImage],
+      site: "@nabeen.ng",
+      creator: "@nabeen.ng",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
   };
 }
@@ -122,6 +151,22 @@ export function organizationJsonLd() {
         availableLanguage: ["en"],
       },
     ],
+  };
+}
+
+/** WebSite schema for search actions and branding */
+export function websiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Nabeen® Luxury Fabrics",
+    alternateName: "D J Impex & Co.",
+    url: SITE_URL,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/journal?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
   };
 }
 

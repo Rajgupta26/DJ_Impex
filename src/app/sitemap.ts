@@ -1,33 +1,68 @@
 import type { MetadataRoute } from "next";
 
-import { getPosts, getSite } from "@/lib/content";
+import { getJournalPosts } from "@/lib/journal";
 import { SITE_URL } from "@/lib/seo";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  // Deduplicated and filtered: exclude hash anchors like /#journal from sitemap XML
-  const hrefs = [
-    ...new Set(
-      ["/", ...getSite().navigation.map((item) => item.href)].filter(
-        (href) => !href.startsWith("/#"),
-      ),
-    ),
+  // Core public marketing pages
+  const staticPages: MetadataRoute.Sitemap = [
+    {
+      url: SITE_URL,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 1.0,
+    },
+    {
+      url: `${SITE_URL}/about`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/nabeen`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/nabeen-x-ali-nuhu`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/journal`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
 
-  const pages = hrefs.map((href) => ({
-    url: href === "/" ? SITE_URL : `${SITE_URL}${href}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: href === "/" ? 1 : 0.8,
-  }));
+  // All published journal articles (MDX + admin published posts)
+  let postEntries: MetadataRoute.Sitemap = [];
+  try {
+    const posts = await getJournalPosts();
+    postEntries = posts.map((post) => {
+      let lastModified = now;
+      if (post.publishedAt) {
+        const parsed = new Date(post.publishedAt);
+        if (!isNaN(parsed.getTime())) {
+          lastModified = parsed;
+        }
+      }
 
-  const posts = getPosts().map((post) => ({
-    url: `${SITE_URL}/journal/${post.slug}`,
-    lastModified: post.dateStatus === "tbc" ? now : new Date(post.publishedAt),
-    changeFrequency: "yearly" as const,
-    priority: 0.6,
-  }));
+      return {
+        url: `${SITE_URL}/journal/${post.slug}`,
+        lastModified,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      };
+    });
+  } catch (err) {
+    console.error("[sitemap] Failed to load journal posts:", err);
+  }
 
-  return [...pages, ...posts];
+  return [...staticPages, ...postEntries];
 }

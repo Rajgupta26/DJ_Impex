@@ -8,7 +8,7 @@ import { Preloader } from "@/components/layout/Preloader";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { getSite } from "@/lib/content";
 import { directionsLink, mailtoLink, telLink, whatsappLink } from "@/lib/contact";
-import { jsonLdScript, organizationJsonLd } from "@/lib/seo";
+import { jsonLdScript, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
 /**
  * Everything that wraps a marketing page: header, footer, preloader, pop-up.
@@ -61,9 +61,9 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         <WhatsAppModal fabrics={site.fabricTypes.items.map((f) => f.name)} />
       </OverlayProvider>
 
-      {/* Organisation markup describes the business, so it ships with the
-          marketing pages rather than from the root layout, which /admin shares. */}
+      {/* Organisation and WebSite markup describes the business and enables rich snippet indexing */}
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(organizationJsonLd())} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(websiteJsonLd())} />
     </>
   );
 }

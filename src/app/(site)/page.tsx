@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { BriefSection } from "@/components/home/BriefSection";
 import { ContactSection } from "@/components/home/ContactSection";
 import { HeroCarousel, type HeroSlideView } from "@/components/home/HeroCarousel";
@@ -11,6 +13,14 @@ import { getGoogleRating, getPositiveGoogleReviews } from "@/lib/google-reviews"
 import { slotMap } from "@/lib/slots";
 import { field, section } from "@/lib/markdown";
 import { visible } from "@/lib/site";
+import { buildMetadata, pageTitle } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata({
+  title: pageTitle("House Of Luxury Men's Fabrics"),
+  description:
+    "Nabeen®, the premier luxury fabric brand by D J Impex & Co. (Govt. of India recognized Star Export House). Woven in India since 1995 and exported to Africa and the Middle East.",
+  path: "/",
+});
 
 /**
  * The home page, in the client's order (content/home.md):
