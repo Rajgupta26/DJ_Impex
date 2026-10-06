@@ -11,6 +11,7 @@ import { withReg } from "@/components/ui/Reg";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
+import { useWhatsAppPopup } from "@/components/layout/OverlayContext";
 import { track } from "@/lib/analytics";
 
 export type HeroMedia =
@@ -45,6 +46,7 @@ const FILM_INTERVAL = 13000;
  */
 export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]; whatsappHref: string }) {
   const reduceMotion = useReducedMotion();
+  const { open: openWhatsAppModal } = useWhatsAppPopup();
   const [emblaRef, embla] = useEmblaCarousel({ loop: true, duration: 40 }, [Fade()]);
   const [selected, setSelected] = useState(0);
   const playing = true;
@@ -157,15 +159,17 @@ export function HeroCarousel({ slides, whatsappHref }: { slides: HeroSlideView[]
             <span>Discover Nabeen</span>
           </Link>
 
-          <TrackedLink
-            href={whatsappHref}
-            event="whatsapp_click"
-            location="hero"
+          <button
+            type="button"
+            onClick={() => {
+              track("whatsapp_click", { location: "hero" });
+              openWhatsAppModal();
+            }}
             className="btn btn-on-dark cursor-pointer"
           >
             <WhatsAppGlyph size={20} />
             <span>Enquire Now</span>
-          </TrackedLink>
+          </button>
         </div>
       </div>
 

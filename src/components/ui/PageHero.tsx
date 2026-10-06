@@ -5,8 +5,8 @@ import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { WeaveArt, type WeavePattern } from "@/components/ui/WeaveArt";
 
 /**
- * The inner-page hero: clear fabric/photograph display with subtle bottom shadow for text legibility,
- * the H1 set bottom-left. No selvedge here: the selvedge belongs only to the home hero and the footer.
+ * The inner-page hero: fabric/photograph display with dark navy overlay matching the footer,
+ * the H1 set bottom-left.
  */
 export function PageHero({
   title,
@@ -48,7 +48,7 @@ export function PageHero({
           priority
           sizes="100vw"
           quality={88}
-          className="object-cover brightness-90"
+          className="pointer-events-none object-cover brightness-75"
           style={{ objectPosition }}
           unoptimized={image.startsWith("/api/")}
         />
@@ -58,16 +58,10 @@ export function PageHero({
         </div>
       )}
 
-      {/* Subtle top vignette for transparent navbar clarity */}
+      {/* Rich dark navy overlay matching footer to ensure identical contrast and tone */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/50 via-black/20 to-transparent"
-      />
-
-      {/* Subtle neutral bottom vignette strictly for text legibility, preserving true HD image colors without any blue cast */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
+        className="pointer-events-none absolute inset-0 bg-navy-deep/80"
       />
 
       <div className="container-site relative w-full pb-7 pt-24 [text-shadow:0_2px_12px_rgba(0,0,0,0.6)] sm:pb-8 sm:pt-26 md:pb-9 md:pt-28">

@@ -74,15 +74,11 @@ export function Footer() {
         alt=""
         fill
         sizes="100vw"
-        quality={90}
-        className="pointer-events-none object-cover brightness-90"
-        style={{ objectPosition: "center 25%" }}
+        quality={88}
+        className="pointer-events-none object-cover object-center brightness-75"
       />
-      {/* Subtle neutral gradient vignettes to preserve the clean, rich blue silk folds and sheen while ensuring text contrast */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"
-      />
+      {/* Rich dark navy overlay to ensure optimal contrast and readability */}
+      <div aria-hidden="true" className="bg-navy-deep/80 pointer-events-none absolute inset-0" />
 
       <div className="relative z-10">
         <div className="container-site grid gap-8 pt-10 pb-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.85fr_1.15fr_1.6fr] lg:gap-8 lg:pt-20 lg:pb-14">
@@ -117,6 +113,7 @@ export function Footer() {
                   href={telLink()}
                   event="call_click"
                   location="footer"
+
                   className="transition-colors hover:text-white"
                 >
                   {contact.phonePrimary.display}
@@ -128,6 +125,7 @@ export function Footer() {
                   href={`tel:${contact.phoneSecondary.e164}`}
                   event="call_click"
                   location="footer"
+
                   className="transition-colors hover:text-white"
                 >
                   {contact.phoneSecondary.display}
@@ -139,6 +137,7 @@ export function Footer() {
                   href={mailtoLink("Fabric enquiry")}
                   event="email_click"
                   location="footer"
+
                   className="transition-colors hover:text-white"
                 >
                   {contact.emailPrimary.value}
@@ -149,6 +148,7 @@ export function Footer() {
                   href={mailtoLink("Fabric enquiry", contact.emailAdmin.value)}
                   event="email_click"
                   location="footer"
+
                   className="transition-colors hover:text-white"
                 >
                   {contact.emailAdmin.value}
@@ -159,6 +159,7 @@ export function Footer() {
                   href={mailtoLink("Fabric enquiry", contact.emailSecondary.value)}
                   event="email_click"
                   location="footer"
+
                   className="transition-colors hover:text-white"
                 >
                   {contact.emailSecondary.value}
@@ -218,6 +219,7 @@ export function Footer() {
                   href={telLink()}
                   event="call_click"
                   location="footer_actions"
+
                   className="btn btn-primary !h-11 !justify-center !px-4 !text-sm lg:!w-full"
                 >
                   <Phone aria-hidden="true" size={14} strokeWidth={1.8} />
@@ -227,6 +229,7 @@ export function Footer() {
                   href={mailtoLink("Fabric enquiry")}
                   event="email_click"
                   location="footer_actions"
+
                   className="btn btn-outline !h-11 !justify-center !border-white/20 !px-4 !text-sm !text-white hover:!bg-white/10 lg:!w-full"
                 >
                   <Mail aria-hidden="true" size={14} strokeWidth={1.8} />
