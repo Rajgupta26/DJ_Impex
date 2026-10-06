@@ -159,7 +159,7 @@ export function HomeCollectionManager({ initial }: { initial: SlotView[] }) {
 
   async function revert(slot: SlotView) {
     setBusyId(slot.id);
-    const result = await request<{ slot: SlotView }>(`/api/admin/slots/${slot.id}`, {
+    const result = await request<{ slot: SlotView; message?: string }>(`/api/admin/slots/${slot.id}`, {
       method: "DELETE",
     });
     setBusyId(null);
@@ -169,7 +169,10 @@ export function HomeCollectionManager({ initial }: { initial: SlotView[] }) {
       return;
     }
     setSlots((current) => current.map((s) => (s.id === slot.id ? { ...s, ...result.data.slot } : s)));
-    setNotice({ tone: "success", message: `${slot.label} is back to the original image and text.` });
+    setNotice({
+      tone: "success",
+      message: result.data.message || `Restored previous version for ${slot.label}.`,
+    });
   }
 
   const replacedCount = slots.filter((s) => s.replaced).length;
@@ -263,10 +266,14 @@ export function HomeCollectionManager({ initial }: { initial: SlotView[] }) {
                     className={`${buttonQuiet} py-2 text-xs`}
                     disabled={busyId === slot.id}
                     onClick={() => revert(slot)}
-                    title="Restore original image and text"
+                    title={
+                      slot.historyCount && slot.historyCount > 0
+                        ? `Restore previous version (${slot.historyCount} older version${slot.historyCount > 1 ? "s" : ""} saved)`
+                        : "Restore original image and text"
+                    }
                   >
                     <RotateCcw size={13} aria-hidden="true" />
-                    <span className="sr-only sm:not-sr-only">Original</span>
+                    <span className="sr-only sm:not-sr-only">Restore</span>
                   </button>
                 ) : null}
 

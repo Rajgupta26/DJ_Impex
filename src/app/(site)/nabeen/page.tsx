@@ -51,6 +51,7 @@ export default async function NabeenPage() {
         strapline={withReg(heroStrapline)}
         image={heroImage}
         alt={heroAlt}
+        objectPosition="center 25%"
 
       />
 

@@ -106,7 +106,7 @@ export function Wear2CareManager({ initial }: { initial: SlotView[] }) {
 
   async function revert(slot: SlotView) {
     setBusyId(slot.id);
-    const result = await request<{ slot: SlotView }>(`/api/admin/slots/${slot.id}`, {
+    const result = await request<{ slot: SlotView; message?: string }>(`/api/admin/slots/${slot.id}`, {
       method: "DELETE",
     });
     setBusyId(null);
@@ -116,7 +116,10 @@ export function Wear2CareManager({ initial }: { initial: SlotView[] }) {
       return;
     }
     setSlots((current) => current.map((s) => (s.id === slot.id ? { ...s, ...result.data.slot } : s)));
-    setNotice({ tone: "success", message: `${slot.label} is back to the original image and caption.` });
+    setNotice({
+      tone: "success",
+      message: result.data.message || `Restored previous version for ${slot.label}.`,
+    });
   }
 
   return (
@@ -221,7 +224,11 @@ export function Wear2CareManager({ initial }: { initial: SlotView[] }) {
                       disabled={isBusy}
                       onClick={() => revert(slot)}
                       className={buttonQuiet}
-                      title="Restore original"
+                      title={
+                        slot.historyCount && slot.historyCount > 0
+                          ? `Restore previous version (${slot.historyCount} older version${slot.historyCount > 1 ? "s" : ""} saved)`
+                          : "Restore original"
+                      }
                     >
                       <RotateCcw size={13} />
                     </button>

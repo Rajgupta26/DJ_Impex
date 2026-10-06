@@ -31,6 +31,7 @@ export type SlotView = {
   description?: string;
   weave?: string;
   replaced: boolean;
+  historyCount?: number;
 };
 
 /**
@@ -122,7 +123,7 @@ export function SlotManager({ initial }: { initial: SlotView[] }) {
 
   async function revert(slot: SlotView) {
     setBusyId(slot.id);
-    const result = await request<{ slot: SlotView }>(`/api/admin/slots/${slot.id}`, {
+    const result = await request<{ slot: SlotView; message?: string }>(`/api/admin/slots/${slot.id}`, {
       method: "DELETE",
     });
     setBusyId(null);
@@ -132,7 +133,10 @@ export function SlotManager({ initial }: { initial: SlotView[] }) {
       return;
     }
     setSlots((current) => current.map((s) => (s.id === slot.id ? { ...s, ...result.data.slot } : s)));
-    setNotice({ tone: "success", message: `${slot.label} is back to the original content.` });
+    setNotice({
+      tone: "success",
+      message: result.data.message || `Restored previous version for ${slot.label}.`,
+    });
   }
 
   const replaced = slots.filter((slot) => slot.replaced).length;
@@ -229,9 +233,14 @@ export function SlotManager({ initial }: { initial: SlotView[] }) {
                     className={buttonQuiet}
                     disabled={busyId === slot.id}
                     onClick={() => revert(slot)}
+                    title={
+                      slot.historyCount && slot.historyCount > 0
+                        ? `Restore previous version (${slot.historyCount} older version${slot.historyCount > 1 ? "s" : ""} saved)`
+                        : "Restore original media"
+                    }
                   >
                     <RotateCcw size={14} aria-hidden="true" />
-                    Use original
+                    Restore previous
                   </button>
                 ) : null}
               </div>

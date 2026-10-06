@@ -48,7 +48,7 @@ export function PageHero({
           priority
           sizes="100vw"
           quality={88}
-          className="object-cover"
+          className="object-cover brightness-90"
           style={{ objectPosition }}
           unoptimized={image.startsWith("/api/")}
         />

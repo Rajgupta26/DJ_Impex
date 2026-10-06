@@ -1,8 +1,8 @@
 "use client";
 
-import { useAnyOverlayOpen, useWhatsAppPopup } from "@/components/layout/OverlayContext";
+import { useAnyOverlayOpen } from "@/components/layout/OverlayContext";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
-import { track } from "@/lib/analytics";
 
 /**
  * On every page: WhatsApp button, bottom-right, clear of the iOS home
@@ -15,7 +15,6 @@ export function FloatingActions({
   directionsHref?: string;
 }) {
   const overlayOpen = useAnyOverlayOpen();
-  const { open: openWhatsAppModal } = useWhatsAppPopup();
 
   return (
     <div
@@ -25,19 +24,16 @@ export function FloatingActions({
       }`}
       style={{ bottom: "calc(1rem + env(safe-area-inset-bottom))" }}
     >
-      <button
-        type="button"
+      <TrackedLink
+        href={whatsappHref}
+        event="whatsapp_click"
+        location="floating"
         aria-label="Enquire on WhatsApp"
-        onClick={() => {
-          track("whatsapp_click", { location: "floating" });
-          openWhatsAppModal();
-        }}
-        disabled={overlayOpen}
         tabIndex={overlayOpen ? -1 : undefined}
         className="group relative flex h-12 w-12 items-center justify-center rounded-[var(--radius-pill)] bg-[var(--color-whatsapp)] text-[var(--color-whatsapp-ink)] shadow-[var(--shadow-float)] transition-transform duration-[var(--duration-quick)] hover:-translate-y-0.5 sm:h-14 sm:w-14"
       >
         <WhatsAppGlyph size={24} />
-      </button>
+      </TrackedLink>
     </div>
   );
 }

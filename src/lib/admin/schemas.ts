@@ -50,10 +50,21 @@ export const blogSchema = z.object({
   updatedAt: isoDate,
 });
 
+export const slotHistoryItemSchema = z.object({
+  src: z.string().min(1),
+  alt: z.string().trim().max(240).default(""),
+  title: z.string().trim().max(160).optional(),
+  description: z.string().trim().max(1000).optional(),
+  weave: z.string().trim().max(160).optional(),
+  fileName: z.string().nullable().default(null),
+  savedAt: isoDate,
+});
+
+export type SlotHistoryItem = z.infer<typeof slotHistoryItemSchema>;
+
 /**
  * A replacement image put into one of the design's slots. The id is the slot's
- * own id from lib/slots, so there is at most one row per slot and reverting is
- * simply deleting it.
+ * own id from lib/slots, holding up to 3 older versions in `history` for restoring.
  */
 export const slotSchema = z.object({
   id: z.string().min(1),
@@ -62,8 +73,10 @@ export const slotSchema = z.object({
   title: z.string().trim().max(160).optional(),
   description: z.string().trim().max(1000).optional(),
   weave: z.string().trim().max(160).optional(),
-  /** The uploaded file, so reverting can remove it. */
+  /** The uploaded file, so restoring/reverting can manage it. */
   fileName: z.string().nullable().default(null),
+  /** Previous revisions (maximum 3), most recent first. */
+  history: z.array(slotHistoryItemSchema).default([]),
   updatedAt: isoDate,
 });
 

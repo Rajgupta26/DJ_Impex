@@ -69,6 +69,7 @@ export default async function JournalPage() {
         straplineClassName="md:max-w-none md:whitespace-nowrap"
         image={heroImage}
         alt={heroAlt}
+        objectPosition="center 25%"
       />
 
       <div className="relative overflow-hidden bg-white">

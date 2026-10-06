@@ -1,6 +1,6 @@
 import { fail, handleError, ok } from "@/lib/admin/api";
 import { revalidateSlots } from "@/lib/admin/revalidate";
-import type { AdminSlot } from "@/lib/admin/schemas";
+import type { AdminSlot, SlotHistoryItem } from "@/lib/admin/schemas";
 import { mutate, nowIso, saveUpload, UPLOAD_URL_BASE } from "@/lib/admin/store";
 import { IMAGE_SLOTS, resolveSlots } from "@/lib/slots";
 
@@ -78,10 +78,31 @@ export async function POST(request: Request) {
       src = `${UPLOAD_URL_BASE}/${fileName}`;
     }
 
+    let droppedFileNames: string[] = [];
+
     const previous = await mutate("slots", (rows) => {
       const existing = rows.find((entry) => entry.id === slot.id) ?? null;
       const effectiveSrc = hasFile ? src : (existing?.src ?? slot.defaultSrc);
       const effectiveFileName = hasFile ? fileName : (existing?.fileName ?? null);
+
+      let history: SlotHistoryItem[] = [];
+      if (existing) {
+        const currentItem: SlotHistoryItem = {
+          src: existing.src,
+          alt: existing.alt,
+          title: existing.title,
+          description: existing.description,
+          weave: existing.weave,
+          fileName: existing.fileName,
+          savedAt: existing.updatedAt || nowIso(),
+        };
+        const allHistory = [currentItem, ...(existing.history || [])];
+        history = allHistory.slice(0, 3);
+        const dropped = allHistory.slice(3);
+        droppedFileNames = dropped
+          .map((item) => item.fileName)
+          .filter((f): f is string => Boolean(f) && f !== effectiveFileName && !history.some((h) => h.fileName === f));
+      }
 
       const row: AdminSlot = {
         id: slot.id,
@@ -91,6 +112,7 @@ export async function POST(request: Request) {
         description: description !== undefined ? description : (existing?.description || slot.defaultDescription),
         weave: weave !== undefined ? weave : (existing?.weave || slot.defaultWeave),
         fileName: effectiveFileName,
+        history,
         updatedAt: nowIso(),
       };
 
@@ -100,9 +122,15 @@ export async function POST(request: Request) {
       };
     });
 
-    if (hasFile && previous?.existing?.fileName) {
+    if (droppedFileNames.length > 0) {
       const { deleteUpload } = await import("@/lib/admin/store");
-      await deleteUpload(previous.existing.fileName);
+      for (const f of droppedFileNames) {
+        try {
+          await deleteUpload(f);
+        } catch {
+          // ignore cleanup errors
+        }
+      }
     }
 
     revalidateSlots();
@@ -115,6 +143,7 @@ export async function POST(request: Request) {
       description: previous.row.description || slot.defaultDescription || "",
       weave: previous.row.weave || slot.defaultWeave || "",
       replaced: true,
+      historyCount: previous.row.history?.length ?? 0,
     };
 
     return ok({ slot: resolved }, 201);

@@ -39,6 +39,7 @@ export async function PATCH(request: Request, { params }: Context) {
         description: patch.description !== undefined ? patch.description : (existing?.description ?? slot.defaultDescription),
         weave: patch.weave !== undefined ? patch.weave : (existing?.weave ?? slot.defaultWeave),
         fileName: existing?.fileName ?? null,
+        history: existing?.history ?? [],
         updatedAt: nowIso(),
       };
 
@@ -59,6 +60,7 @@ export async function PATCH(request: Request, { params }: Context) {
         description: saved.description || slot.defaultDescription || "",
         weave: saved.weave || slot.defaultWeave || "",
         replaced: true,
+        historyCount: saved.history?.length ?? 0,
       },
     });
   } catch (error) {
@@ -66,25 +68,87 @@ export async function PATCH(request: Request, { params }: Context) {
   }
 }
 
-/** Revert a slot to the media the design shipped with. */
+/** Restore a slot to its previous version (up to 3 revisions) or to original media. */
 export async function DELETE(_request: Request, { params }: Context) {
   try {
     const { id } = await params;
     const slot = IMAGE_SLOTS.find((entry) => entry.id === id);
     if (!slot) return fail("That media slot does not exist.", 404);
 
-    const removed = await mutate("slots", (rows) => {
+    type RestoreResult =
+      | { type: "restored"; row: AdminSlot }
+      | { type: "reverted_to_original"; row: null }
+      | null;
+
+    let fileToDelete: string | null = null;
+
+    const restoreResult = await mutate<"slots", RestoreResult>("slots", (rows) => {
       const match = rows.find((entry) => entry.id === id);
       if (!match) return { rows, result: null };
-      return { rows: rows.filter((entry) => entry.id !== id), result: match };
+
+      const history = match.history || [];
+      if (history.length > 0) {
+        const [restored, ...remainingHistory] = history;
+        if (
+          match.fileName &&
+          match.fileName !== restored.fileName &&
+          !remainingHistory.some((h) => h.fileName === match.fileName)
+        ) {
+          fileToDelete = match.fileName;
+        }
+        const updatedRow: AdminSlot = {
+          id: match.id,
+          src: restored.src,
+          alt: restored.alt,
+          title: restored.title,
+          description: restored.description,
+          weave: restored.weave,
+          fileName: restored.fileName,
+          history: remainingHistory,
+          updatedAt: nowIso(),
+        };
+        return {
+          rows: [updatedRow, ...rows.filter((entry) => entry.id !== id)],
+          result: { type: "restored", row: updatedRow },
+        };
+      } else {
+        if (match.fileName) {
+          fileToDelete = match.fileName;
+        }
+        return {
+          rows: rows.filter((entry) => entry.id !== id),
+          result: { type: "reverted_to_original", row: null },
+        };
+      }
     });
 
-    if (!removed) return fail("That slot is already showing its original media.", 404);
+    if (!restoreResult) return fail("That slot is already showing its original media.", 404);
 
-    if (removed.fileName) {
-      await deleteUpload(removed.fileName);
+    if (fileToDelete) {
+      try {
+        await deleteUpload(fileToDelete);
+      } catch {
+        // ignore cleanup errors
+      }
     }
     revalidateSlots();
+
+    if (restoreResult.type === "restored" && restoreResult.row) {
+      return ok({
+        slot: {
+          ...slot,
+          src: restoreResult.row.src,
+          alt: restoreResult.row.alt,
+          title: restoreResult.row.title || slot.defaultTitle || slot.label,
+          description: restoreResult.row.description || slot.defaultDescription || "",
+          weave: restoreResult.row.weave || slot.defaultWeave || "",
+          replaced: true,
+          historyCount: restoreResult.row.history?.length ?? 0,
+        },
+        message: `Restored previous version for ${slot.label}.`,
+      });
+    }
+
     return ok({
       slot: {
         ...slot,
@@ -94,7 +158,9 @@ export async function DELETE(_request: Request, { params }: Context) {
         description: slot.defaultDescription || "",
         weave: slot.defaultWeave || "",
         replaced: false,
+        historyCount: 0,
       },
+      message: `${slot.label} is back to the original content.`,
     });
   } catch (error) {
     return handleError("slots:revert", error);

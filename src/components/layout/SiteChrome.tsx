@@ -1,5 +1,4 @@
 import { ContactPopup } from "@/components/contact/ContactPopup";
-import { WhatsAppModal } from "@/components/contact/WhatsAppModal";
 import { FloatingActions } from "@/components/contact/FloatingActions";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -58,7 +57,6 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           delaySeconds={site.popup.delaySeconds}
           fabrics={site.fabricTypes.items.map((f) => f.name)}
         />
-        <WhatsAppModal fabrics={site.fabricTypes.items.map((f) => f.name)} />
       </OverlayProvider>
 
       {/* Organisation and WebSite markup describes the business and enables rich snippet indexing */}

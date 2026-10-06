@@ -364,6 +364,8 @@ export type ResolvedSlot = ImageSlot & {
   weave: string;
   /** True when the panel has put something else in this slot. */
   replaced: boolean;
+  /** Number of previous versions available to restore (up to 3). */
+  historyCount?: number;
 };
 
 /**
@@ -381,6 +383,7 @@ export async function resolveSlots(): Promise<ResolvedSlot[]> {
       title?: string;
       description?: string;
       weave?: string;
+      historyCount: number;
     }
   >();
 
@@ -394,6 +397,7 @@ export async function resolveSlots(): Promise<ResolvedSlot[]> {
           title: row.title,
           description: row.description,
           weave: row.weave,
+          historyCount: row.history?.length ?? 0,
         },
       ]),
     );
@@ -411,6 +415,7 @@ export async function resolveSlots(): Promise<ResolvedSlot[]> {
       description: override?.description || slot.defaultDescription || "",
       weave: override?.weave || slot.defaultWeave || "",
       replaced: Boolean(override),
+      historyCount: override?.historyCount ?? 0,
     };
   });
 }
