@@ -137,7 +137,7 @@ export function WhatsAppModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 16 }}
             transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.61, 0.36, 1] }}
-            className="relative max-h-[calc(100dvh-1.5rem)] w-full max-w-[28rem] overflow-y-auto overscroll-contain rounded-2xl bg-white p-5 shadow-[var(--shadow-float)] sm:max-h-[92dvh] sm:p-8"
+            className="relative max-h-[calc(100dvh-1.5rem)] w-full max-w-[28rem] overflow-y-auto overscroll-contain rounded-2xl bg-white p-5 shadow-[var(--shadow-float)] sm:max-h-[92dvh] sm:p-7"
           >
             <button
               type="button"
@@ -157,15 +157,12 @@ export function WhatsAppModal({
                 priority
                 className="mx-auto h-7 w-auto"
               />
-              <h2 id="whatsapp-modal-title" className="mt-4 text-xl font-bold text-navy sm:text-2xl">
+              <h2 id="whatsapp-modal-title" className="mt-3.5 text-xl font-bold text-navy sm:text-2xl">
                 Enquire on WhatsApp
               </h2>
-              <p className="mt-1 text-xs text-slate sm:text-sm">
-                Connect directly with our export team with your details pre-filled.
-              </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="mt-6 grid min-w-0 grid-cols-1 gap-4 [&>div]:min-w-0">
+            <form onSubmit={handleSubmit} className="mt-4 grid min-w-0 grid-cols-1 gap-3.5 [&>div]:min-w-0">
               {error ? (
                 <div className="rounded-lg bg-red-50 p-2.5 text-xs text-red-600">
                   {error}
