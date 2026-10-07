@@ -162,11 +162,6 @@ export function websiteJsonLd() {
     name: "Nabeen® Luxury Fabrics",
     alternateName: "D J Impex & Co.",
     url: SITE_URL,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${SITE_URL}/journal?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
