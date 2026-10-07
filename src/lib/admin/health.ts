@@ -25,8 +25,8 @@ function clean(value: string | undefined): string {
 }
 
 export function mailChecks(): Check[] {
-  const user = clean(process.env.EMAIL_USER || process.env.SMTP_USER) || "akshaychavan44.ac@gmail.com";
-  const pass = clean(process.env.EMAIL_PASS || process.env.SMTP_PASS) || "sqltulsiyndhmdtr";
+  const user = clean(process.env.EMAIL_USER || process.env.SMTP_USER);
+  const pass = clean(process.env.EMAIL_PASS || process.env.SMTP_PASS);
   const host = clean(process.env.SMTP_HOST) || "smtp.gmail.com (default)";
   const port = clean(process.env.SMTP_PORT) || "465 (default)";
   const to = clean(process.env.CONTACT_RECEIVER_EMAIL || process.env.ENQUIRY_TO_EMAIL) || "admin@djimpex.in";
